@@ -51,7 +51,7 @@ public class LoginServiceImpl
 	public int setUserRememberMe(
 			String email, String rememberCookie, Date rememberAge
 			) throws Exception {
-		log.debug("login({}, {}, {}) invoked.", email, rememberCookie, rememberAge);
+		log.debug("setUserRememberMe({}, {}, {}) invoked.", email, rememberCookie, rememberAge);
 		
 		int affectedLines = this.mapper.updateUserRememberMe(email, rememberCookie, rememberAge);
 
@@ -60,4 +60,15 @@ public class LoginServiceImpl
 	}//setUserRememberMe
 
 
-}
+	@Override
+	public UserVO findUserWithCookie(String cookieValue) throws Exception {
+		log.debug("findUserWithCookie({}) invoked.", cookieValue);
+		
+		UserVO user = this.mapper.selectUserWithCookie(cookieValue);
+		
+		log.info("user : {}", user);
+
+		return user;
+	}//findUserWithCookie
+
+}//end class

@@ -18,9 +18,6 @@
             console.clear();
             console.debug('jq started..');
 
-            //게시글의 등록, 서정, 삭제 처리 후 리다이렉션을 통해,
-            // 게시글 목록화면으로 이동시킬 대 함께 임시박스(rttrs)로 전송시킨
-            //처리 결과를 경고창으로 출력시키자
             var failMSG = "${failMessage}";
             if(failMSG.length > 0){
                 alert(failMSG);
@@ -51,7 +48,7 @@
         <p></p>
         
         <div>
-        	Remember Me <input type="checkbox" name="rememberMe">
+        	Remember Me <input type="checkbox" name="rememberMe" checked>
         </div>
        
         <button type="submit">sign in</button>

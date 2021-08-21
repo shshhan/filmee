@@ -70,7 +70,17 @@ public class LoginServiceTests {
 
 	}//testSetUserRememberMe
 	
-	
+	@Test
+	public void testFindUserWithCookie() throws Exception{
+		log.debug("testSelectUserWithCookie() invoked.");
+		
+		String cookieValue = "sessionId";
+		
+		UserVO user = this.service.findUserWithCookie(cookieValue);
+		
+		log.info("user : {}", user);
+		
+	}//testSelectUserWithCookie
 
 	@After
 	public void tearDown() {

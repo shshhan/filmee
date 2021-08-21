@@ -32,8 +32,10 @@ public class MainController {
 	
 	public static final String loginKey = "__LOGIN__";
 	
+	//View-Controller : main, logout
+	
 	@PostMapping("loginPost")
-	public String loginPost(LoginDTO dto, Model model, HttpSession session) throws Exception {
+	public void loginPost(LoginDTO dto, Model model, HttpSession session) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
 		
 		UserVO user = this.service.login(dto);
@@ -53,7 +55,6 @@ public class MainController {
 			
 		}//if
 		
-		return "main/main";
 	}//loginPost
 	
 	@GetMapping("/loginFailed")
@@ -65,11 +66,4 @@ public class MainController {
 		return "redirect:/main/login";	//로그인 실패시 메세지와 함께 다시 로그인창
 	}//loginFailed
 		
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		session.invalidate();
-		
-		return "redirect:/main/main";	//기존에 있던 페이지로 돌아가야하지 않을까?
-		
-	}//logout
 }//end class

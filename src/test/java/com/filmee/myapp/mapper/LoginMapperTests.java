@@ -68,6 +68,18 @@ public class LoginMapperTests {
 		
 	}//testUpdateUserRememberMe
 	
+	@Test
+	public void testSelectUserWithCookie() throws Exception{
+		log.debug("testSelectUserWithCookie() invoked.");
+		
+		String cookieValue = "sessionId";
+		
+		UserVO user = this.mapper.selectUserWithCookie(cookieValue);
+		
+		log.info("user : {}", user);
+		
+	}//testSelectUserWithCookie
+	
 	
 
 	@After

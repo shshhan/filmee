@@ -37,16 +37,50 @@
 		status-code="200" 
 		/>
 		
+		<!--  for test  -->
+	<view-controller
+		path = "/main/useronly"
+		view-name = "main/useronly"
+		status-code = "200"
+		/>
+		
+	<view-controller
+		path = "/main/logout"
+		view-name = "main/logout"
+		status-code = "200"
+		/>
+		
 
 	<beans:bean
 		id="loginInterceptor"
 		class="com.filmee.myapp.interceptor.LoginInterceptor"
 		/> 
+		
+	<beans:bean
+		id="authInterceptor"
+		class="com.filmee.myapp.interceptor.AuthInterceptor"
+		/>
+		
+	<beans:bean
+		id="logoutInterceptor"
+		class="com.filmee.myapp.interceptor.LogoutInterceptor"
+		/>		
+	
 
 	<interceptors>
 		<interceptor>
 			<mapping path="/main/loginPost" />
 			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/main/useronly" />
+			<beans:ref bean="authInterceptor" />
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/main/logout" />
+			<beans:ref bean="logoutInterceptor" />
 		</interceptor>
 
 	</interceptors>

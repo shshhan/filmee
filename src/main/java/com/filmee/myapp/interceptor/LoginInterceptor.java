@@ -24,7 +24,11 @@ public class LoginInterceptor
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		log.debug("prehandle() invoked.");
+		log.debug("preHandle(request, response, handler) invoked.");
+		
+		//login(GET) -> loginPost(POST)가 아닌 우리가 구현하려는데로 화면에서 바로 넘어오는거라면
+		// authinterceptor에서 처럼 originalURL 받아서 로그인 이후에 기존에 있던 화면으로 redirect 가능할듯
+			
 		
 		HttpSession session = request.getSession();
 		
@@ -43,17 +47,18 @@ public class LoginInterceptor
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		log.debug("postHandle() invoked.");
-				
+		log.debug("postHandle(request, response, handler, {}) invoked.", modelAndView);
+			
+		//Session Scope에 로그인 정보 바인딩
+		
 		UserVO user = (UserVO)modelAndView.getModelMap().get(MainController.loginKey);
 		
-		if (user != null) {		//로그인 성공하면 session scope에 로그인 정보 바인딩
+		if (user != null) {
 			HttpSession session = request.getSession();
-
 			session.setAttribute(MainController.loginKey, user);
-			
 			log.info(">>>>> LoginKey on SessionScope. >>>>>");
 			
+			//RememberMe Cookie 생성 및 전송
 			if(request.getParameter("rememberMe") != null){
 				Cookie rememberMeCookie = 
 						new Cookie(LoginInterceptor.rememberMeKey, session.getId());
@@ -62,17 +67,35 @@ public class LoginInterceptor
 				rememberMeCookie.setPath("/");
 				
 				response.addCookie(rememberMeCookie);
-				
 				log.info(">>>>> RememberMeCookie added in Response. >>>>>");
-			}//if (rememberMe on)			
+			}//if (rememberMe on)
 			
-			
-			response.sendRedirect("/main");	//일단 로그인 성공하면 메인으로. 근데 기존에 있던 곳으로 돌아가야하지 않을까?
+			//기존 URL로 Redirect
+			if(session.getAttribute(AuthInterceptor.requestURIKey) != null){
+				String originalRequestURI = (String)session.getAttribute(AuthInterceptor.requestURIKey);
+				String originalQueryString = (String)session.getAttribute(AuthInterceptor.queryStringKey);
+				
+				if(originalRequestURI != null) {
+					response.sendRedirect(
+							originalRequestURI +
+							(originalQueryString != null && !"".equals(originalQueryString) ?
+									"?"+originalQueryString : "")
+							);
+					log.info(">>>>> Redirected to OriginalURI.");
+				}//if
+						
+				session.removeAttribute(AuthInterceptor.requestURIKey);
+				session.removeAttribute(AuthInterceptor.queryStringKey);
+				
+			}else {		
+				response.sendRedirect("/main");	//일단 로그인 성공하면 메인으로. 근데 기존에 있던 곳으로 돌아가야하지 않을까?
+					//authInterceptor에서 넘어왔다면 url바꿔서 보낼 수 있는데 만약 어딘가에서 로그인을 눌러 들어온거라면
+					//loginInterceptor preHandle에서 새롭게 url을 받을 시 auth에서 넘어온 것과 부딪힐듯
+			}//if(originalURL != null) - else							
 
 		}else {
-			
 			response.sendRedirect("/main/loginFailed");
-		}//if-else
+		}//if(user != null) - else
 	
 	}//postHandle
 
