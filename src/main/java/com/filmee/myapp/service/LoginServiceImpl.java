@@ -1,5 +1,6 @@
 package com.filmee.myapp.service;
 
+import java.util.Date;
 import java.util.Objects;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -31,20 +32,32 @@ public class LoginServiceImpl
 		log.debug("afterPropertiesSet() invoked.");
 		
 		Objects.requireNonNull(this.mapper);
-	}
+	}//afterPropertiesSet
 	
 	
 	@Override
-	public UserVO login(LoginDTO dto) {
+	public UserVO login(LoginDTO dto) throws Exception {
 		log.debug("login({}) invoked.", dto);
 		
 		UserVO user = this.mapper.selectUser(dto);
 		
-		Objects.requireNonNull(user);
 		log.info("user : {}", user);
 
 		return user;
-	}
+	}//login
+
+
+	@Override
+	public int setUserRememberMe(
+			String email, String rememberCookie, Date rememberAge
+			) throws Exception {
+		log.debug("login({}, {}, {}) invoked.", email, rememberCookie, rememberAge);
+		
+		int affectedLines = this.mapper.updateUserRememberMe(email, rememberCookie, rememberAge);
+
+		return affectedLines;
+
+	}//setUserRememberMe
 
 
 }

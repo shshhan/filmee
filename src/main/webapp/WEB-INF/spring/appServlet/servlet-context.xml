@@ -25,21 +25,42 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<view-controller 
+	path="/main"
+	view-name="main/main"
+	status-code="200" 
+	/>
+	
+	<view-controller 
+		path="/main/login"
+		view-name="main/login"
+		status-code="200" 
+		/>
+		
+
+	<beans:bean
+		id="loginInterceptor"
+		class="com.filmee.myapp.interceptor.LoginInterceptor"
+		/> 
+
+	<interceptors>
+		<interceptor>
+			<mapping path="/main/loginPost" />
+			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+
+	</interceptors>
+
+
+	<context:component-scan base-package="com.filmee.myapp.controller" />
+	<context:component-scan base-package="com.filmee.myapp.service" />
+	<context:component-scan base-package="org.zerock.myapp.interceptor" />
+
 	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	<!-- for Hash -->
+
 	
 
-		<view-controller 
-			path="/login"
-			view-name="login"
-			status-code="200" />
-
-
-		<context:component-scan base-package="com.filmee.myapp.controller" />
-		<context:component-scan base-package="com.filmee.myapp.service" />
-		<context:component-scan base-package="org.zerock.myapp.interceptor" />
-		<!-- 웹과 관련있기 때문에 서블릿 컨텍스트에서 component-scan.
-		@Controller와 @Service 어노테이션을 통해 빈에 등록된다. -->
 	
 	
 	

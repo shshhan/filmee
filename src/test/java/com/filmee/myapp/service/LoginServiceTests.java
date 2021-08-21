@@ -2,6 +2,8 @@ package com.filmee.myapp.service;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,24 +41,41 @@ public class LoginServiceTests {
 	}//setup
 
 	@Test
-	public void testLogin() {
+	public void testLogin() throws Exception {
 		log.debug("testLogin() invoked.");
 		
 		LoginDTO dto = new LoginDTO();
 		dto.setEmail("EMAIL1@GMAIL.COM");
 		dto.setPassword("PASS1");
-		dto.setRememberme("F");
+		dto.setRememberMe(false);
 		
 		UserVO user = this.service.login(dto);
 		
 		log.info("user : {}", user);
 		
-	}//setup
+	}//testLogin
+	
+	@Test
+	public void testSetUserRememberMe() throws Exception {
+		log.debug("testLogin() invoked.");
+		
+		String email = "EMAIL2@GMAIL.COM";
+		String rememberCookie = "sessionId";
+		Date rememberAge = new Date(System.currentTimeMillis() + (1000*60*60*24) );
+		
+		
+		int affectedLines = this.service.setUserRememberMe(email, rememberCookie, rememberAge);
+		
+		log.info("affectedLines : {}", affectedLines);
+
+	}//testSetUserRememberMe
+	
+	
 
 	@After
 	public void tearDown() {
 		log.debug("tearDown() invoked.");
-	}//setup
+	}//tearDown
 	
 }//end class
 

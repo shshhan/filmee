@@ -2,6 +2,8 @@ package com.filmee.myapp.mapper;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,20 +40,35 @@ public class LoginMapperTests {
 	}//setup
 
 	@Test
-	public void testSelectUser() {
+	public void testSelectUser() throws Exception {
 		log.debug("testSelecUser() invoked.");
 		
 		LoginDTO dto = new LoginDTO();
 		dto.setEmail("EMAIL1@GMAIL.COM");
 		dto.setPassword("PASS1");
-		dto.setRememberme("F");
+		dto.setRememberMe(false);
 		
 		UserVO user = this.mapper.selectUser(dto);
 		
 		log.info("user : {}", user);
-		
-		
+	
 	}//setup
+	
+	@Test
+	public void testUpdateUserRememberMe() throws Exception {
+		log.debug("testUpdateUserRememberMe() invoked.");
+		
+		String email = "EMAIL1@GMAIL.COM";
+		String rememberCookie = "sessionId";
+		Date rememberAge = new Date(System.currentTimeMillis() + (1000*60*60*24) );
+		
+		int affectedLines = this.mapper.updateUserRememberMe(email, rememberCookie,rememberAge);
+		
+		log.info("affectedLines : {}", affectedLines);
+		
+	}//testUpdateUserRememberMe
+	
+	
 
 	@After
 	public void tearDown() {
