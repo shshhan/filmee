@@ -1,0 +1,60 @@
+body,input,textarea,select,button,table{font-family:'Florencesans SC Exp'; font-size:12px; color:#333;}
+body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
+ul,ol{list-style:none;}
+fieldset,img{border:0; vertical-align:top;}
+address{font-style:normal;}
+p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
+/* a-style */
+a{color:#333;text-decoration:none;}
+a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
+
+/* ======================== header =============================== */
+
+#header{
+    width: 998px;
+    height: 150px;
+    margin: 0 auto;
+    background-color: rgba(240, 230, 230, 0);
+    font-size: 20px;
+    font-family: 'Florencesans SC Exp';
+}
+#logoimg{
+    width: 200px;
+    margin: 0;
+}
+
+#headermenu{
+    float: right;
+    margin-top: 30px;
+}
+#headermenu>li{
+    display: inline;
+    padding-right: 20px;
+    margin-top: 30px;
+    
+}
+#headermenu>li:nth-child(4), #headermenu>li:nth-child(5){
+    padding: 0
+}
+ img {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+  }
+
+.search-field {
+    width: 200px;
+    border: none;
+    border-radius: 100px;
+    outline: none;
+    
+  }
+  
+  .search-button {
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-left: -33px;
+  }
+  
