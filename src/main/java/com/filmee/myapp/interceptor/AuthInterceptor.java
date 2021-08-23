@@ -1,5 +1,7 @@
 package com.filmee.myapp.interceptor;
 
+import java.util.Date;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,7 +67,15 @@ public class AuthInterceptor
 					log.info(">>>>> LoginKey on SessionScope. >>>>>");
 
 					//새로운 세션으로 접속 시 rememberMeCookie 갱신
-					rememberMeCookie = new Cookie(LoginInterceptor.rememberMeKey, session.getId());
+					String sessionId = session.getId();
+					
+					this.service.setUserRememberMe(
+							user.getEmail(),
+							sessionId,
+							new Date(System.currentTimeMillis() + (1000*60*60*24*7))
+							);
+									
+					rememberMeCookie = new Cookie(LoginInterceptor.rememberMeKey, sessionId);
 							
 					rememberMeCookie.setMaxAge(60*60*24*7);
 					rememberMeCookie.setPath("/");

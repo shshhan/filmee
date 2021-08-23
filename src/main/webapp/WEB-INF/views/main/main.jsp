@@ -10,35 +10,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>main.jsp</title>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-
-	<script>
-		$(function(){
-			console.clear();
-			console.log('jq started...');
-
-            $('#login').click(function(){
-				console.debug('#login button clicked...');
-				location.href="/main/login";
-			});	//logout
-
-			$('#logout').click(function(){
-				console.debug('#logout button clicked...');
-				location.href="/main/logout";
-			});	//logout
-			
-		});	//jq
-	</script>
-
-
 </head>
 <body>
+
 	<h1>WEB-INF/views/main/main.jsp</h1>
 	
 	<hr>
 
-	<button type="button" id="login">로그인</button>
 	<button type="button" id="logout">로그아웃</button>
+	
+	<hr>
+	<p></p>
+	
+	
+
 </body>
 </html>
