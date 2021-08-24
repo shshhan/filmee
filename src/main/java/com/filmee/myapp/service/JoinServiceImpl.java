@@ -42,4 +42,14 @@ public class JoinServiceImpl
 	}//join
 
 
+	@Override
+	public int checkEmailDuplicated(String email) throws Exception {
+		log.debug("checkEmailDuplicated({}) invoked.", email);
+		
+		int result = this.mapper.selectMemberWithEmail(email);
+		
+		return result;
+	}//checkEmailDuplicated
+
+
 }//end class

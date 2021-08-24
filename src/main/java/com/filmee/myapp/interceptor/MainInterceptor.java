@@ -19,39 +19,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
-
 @Log4j2
 @NoArgsConstructor
-public class AuthInterceptor 
-	implements HandlerInterceptor {
-
-	public static final String requestURIKey = "__REQUEST_URI__";
-	public static final String queryStringKey = "__QUERYSTRING__";
+public class MainInterceptor implements HandlerInterceptor {
 	
 	@Setter(onMethod_= @Autowired)
 	private LoginService service;
-	
+		
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		log.debug("preHandle(request, response, handler) invoked.");
+		
 		
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);
 		
 		if(user != null) {
 			log.info(">>>>> Login Authenticated. >>>>>");
-		
-			return true;
-			
+					
 		} else { 
-			
-			//URI & QueryString session scope에 바인딩
-			String originalRequestURI = request.getRequestURI();
-			String originalQueryString = request.getQueryString();
-						
-			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
-			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
 			
 			//RememberMe 쿠키 있는지 확인
 			Cookie rememberMeCookie = WebUtils.getCookie(request, LoginInterceptor.rememberMeKey);
@@ -82,20 +69,14 @@ public class AuthInterceptor
 					
 					response.addCookie(rememberMeCookie);
 					log.info(">>>>> RememberMeCookie Renewed. >>>>>");
-									
-					return true;	//요청이 컨트롤러로 전달.
-					
+														
 				}	//if(user!=null)
 		
 			} // if(rememberMeCookie != null)
 			
-				response.sendRedirect("/main/login");
-				log.info("Redirected to /main/login");
-				
-				return false;	//요청이 컨트롤러로 전달되지 못함
-			
-		}//if-else
+		}//if(user != null)
 		
+		return true;
 	}//preHandle
 	
 }//end class

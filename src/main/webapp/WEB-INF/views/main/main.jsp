@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/resources/css/layout.css">
     <link rel="stylesheet" href="/resources/css/swiper.css">
     <link rel="stylesheet" href="/resources/css/main.css">
-    
+
     <script src="/resources/js/jquery-1.8.3.min.js"></script>
     <script src="/resources/js/swiper.js"></script>
     <script>
@@ -30,7 +30,6 @@
                         prevButton: '.back'
             });
         };
-        
     </script>
     
 

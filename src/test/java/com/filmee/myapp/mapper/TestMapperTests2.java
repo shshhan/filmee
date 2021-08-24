@@ -2,6 +2,9 @@ package com.filmee.myapp.mapper;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.domain.TestVO;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,10 +25,10 @@ import lombok.extern.log4j.Log4j2;
 @ContextConfiguration(locations = 
 		"file:src/main/webapp/WEB-INF/spring/root-context.xml"
 )
-public class JoinMapperTests {
+public class TestMapperTests2 {
 
 	@Setter(onMethod_= @Autowired)
-	private JoinMapper mapper;
+	private TestMapper mapper;
 	
 	@Before
 	public void setup() {
@@ -36,30 +39,14 @@ public class JoinMapperTests {
 	}//setup
 
 	@Test
-	public void testInsertMember() throws Exception {
-		log.debug("testInsertMember() invoked.");
+	public void testSelectJoinnedTable() throws Exception {
+		log.debug("testSelectJoinnedTable() invoked.");
 		
-		JoinDTO dto = new JoinDTO();
-		dto.setEmail("123@123.com");
-		dto.setNickname("현아천재짱짱");
-		dto.setPassword("123");
+		List<TestVO> testVO = this.mapper.selectJoinnedTable(7);
 		
-		int affectedLines = this.mapper.insertMember(dto);
-		
-		log.info("affectedLines : {}", affectedLines);
+		Objects.requireNonNull(testVO);
+		testVO.forEach(log::info);
 		
 	}//testInsertMember
-	
-	@Test
-	public void testSelectMemberWithEmail() throws Exception{
-		log.debug("testSelectMemberWithEmail invoked.");
-		
-		String email = "123@13.com";
-		
-		int result = this.mapper.selectMemberWithEmail(email);
-		
-		log.info("result : {}", result);
-	}//testSelectMemberWithEmail
-	
-	
+
 }//end class

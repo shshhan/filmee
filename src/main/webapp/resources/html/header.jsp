@@ -5,58 +5,93 @@
 <head>
 <meta charset="UTF-8">
     <link rel="stylesheet" href="/resources/css/header.css">
-    
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-  
-    <script>
-    $(function(){
-        console.clear();
-        console.log('jq started..');
-        
-        var loginFailMessage = "${loginFailMessage}";
-        if(loginFailMessage.length > 0){
-            alert(loginFailMessage);
-            
-            $("#loginModal").attr("style", "display:block");
-        }//if
-        
-        
-        var loginKey = "${__LOGIN__}";
-        console.log('logkinKey : ', loginKey);
-        
-       if(loginKey.length > 0){
-            $("#strangerHeadermenu").attr("style", "display:none");
-        }else{
-        	$("#memberHeadermenu").attr("style", "display:none");
-        }//if-else
-        
-        	
-        $("#login_modal_a").click(function(){
-            $("#loginModal").attr("style", "display:block");
-        });//login_modal_a
+ 
+ 	<script>
+
+$(function(){
+    console.clear();
+    console.log('jq started..');
     
-        $(".modal_close_btn").click(function(){
-            $("#loginModal").attr("style", "display:none");
-            $("#joinModal").attr("style", "display:none");
-        });//modal_close_btn
-      
-        $("#join_modal_a").click(function(){
-            $("#joinModal").attr("style", "display:block");
-        });//join_modal_a
-        
-        
-        $("logout_a").click(function(e){
-        	e.preventDefault;
+    var message = "${message}";
+    switch(message){
+        case 'login_required' :
+            alert('로그인이 필요합니다.');
+            $("#loginModal").attr("style", "display:block");
+            break;
+            
+        case 'login_failed' :
+            alert('등록되지 않은 ID 혹은 비밀번호 입니다.');
+            $("#loginModal").attr("style", "display:block");   
+            break;
+    
+        case 'join' :
+            $("#joinModal").attr("style", "display:block");   
+            break;
 
-            location.href="/main/logout";
-        });//logout_a
-        
+        case 'join_succeeded' :
+            alert('회원가입 완료');
+            break;
 
-    });//jquery
+        case 'join_failed' :
+            alert('회원가입 실패');
+            break;
 
-    </script>
+        default :
 
+    }    
+    
+    
+ 	// var loginFailMessage = "${loginFailMessage}";
+    // if(loginFailMessage.length > 0){
+    //     alert(loginFailMessage);
+    //     $("#loginModal").attr("style", "display:block");   
+    // }//if
+    
+    // var joinMessage = "${joinMessage}";
+    // if(joinMessage.length > 0){
+    //     alert(joinMessage);
+    // }//if
+    
+    var loginKey = "${__LOGIN__}";
+    
+    if(loginKey.length > 0){
+        $("#strangerHeadermenu>li").attr("style", "display:none");
+    	$("#memberHeadermenu>li").attr("style", "display:inline");
+    }//if
+    
+
+    
+    $("#login_modal_a").click(function(){
+        $("#loginModal").attr("style", "display:block");
+    });//login_modal_a
+
+    $("#login_to_join").click(function(){
+    	location.href = "/main/join";
+    });//login_to_join
+    
+    $(".modal_close_btn").click(function(){
+        $("#loginModal").attr("style", "display:none");
+        $("#joinModal").attr("style", "display:none");
+    });//modal_close_btn
+  
+    $("#join_modal_a").click(function(){
+        $("#joinModal").attr("style", "display:block");
+    });//join_modal_a
+    
+    
+    $("logout_a").click(function(e){
+    	e.preventDefault;
+
+        location.href="/main/logout";
+    });//logout_a
+    
+
+});//jquery
+ 	
+ 	</script>
 </head>
 <body>
     <header>
@@ -109,8 +144,9 @@
                     <div>
                         Remember Me <input type="checkbox" name="rememberMe" checked>
                     </div>
-                    <button type="submit">sign in</button>
+                    <button type="submit">SIGN IN</button>
                 </form>
+                <button type="button" id="login_to_join">JOIN</button>
                 <button type="button" class="modal_close_btn">close</button>
             </div>
             <div class="modal_layer"></div>
@@ -118,20 +154,25 @@
 
         <div id="joinModal">
             <div class="modal_content">
-                <form action="" method="POST">
+                <form action="/main/joinPost" method="POST">
                     <div>
-                        <label for="joinEmail">EMAIL</label><br>
-                        <input type="email" id="joinEmail" name="email" placeholder="email">
+                        <label for="joinEmail"><b>EMAIL</b></label><br>
+                        <input type="email" id="joinEmail" name="email" placeholder="email" requried>
+                        <button type="button" id="sendCertificate" value="certificateNum">Send Certificate</button>
                     </div>
                     <p>&nbsp;</p>
                     <div>
-                        <label for="joinNickname">NICKNAME</label><br>
-                        <input type="text" id="joinNickname" name="nickname" placeholder="nickname">
+                        <input type="text" id="certficateNumber" name="certificateNumber" placeholder="Certificate Number" requried>
+                    </div>
+                    <p>&nbsp;</p>                    
+                    <div>
+                        <label for="joinNickname"><b>NICKNAME</b></label><br>
+                        <input type="text" id="joinNickname" name="nickname" placeholder="nickname" requried>
                     </div>
                     <p>&nbsp;</p>
                     <div>
-                        <label for="joinPassword">password</label><br>
-                        <input type="password" id="joinPassword" name="password" placeholder="password">
+                        <label for="joinPassword"><b>password</b></label><br>
+                        <input type="password" id="joinPassword" name="password" placeholder="password" requried>
                     </div>
                     <button type="submit">JOIN</button>
                 </form>

@@ -50,4 +50,16 @@ public class JoinServiceTests {
 		
 	}//testJoin
 	
+	@Test
+	public void testCheckEmailDuplicated() throws Exception{
+		log.debug("testCheckEmailDuplicated invoked.");
+		
+		String email = "123@123.com";
+		
+		int result = this.service.checkEmailDuplicated(email);
+		
+		log.info("result : {}", result);
+		
+	}//testCheckEmailDuplicated
+	
 }//end class

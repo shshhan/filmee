@@ -14,4 +14,10 @@
 	    	(#{email}, #{password}, #{nickname})
 
 	</insert>
+	
+	<select id="selectMemberWithEmail" resultType = "int">
+		SELECT count(*)
+		FROM fm_user
+		WHERE email = #{email}
+	</select>
 </mapper>

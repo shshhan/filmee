@@ -30,14 +30,8 @@
 	view-name="main/main"
 	status-code="200" 
 	/>
-	
-	<view-controller 
-		path="/main/login"
-		view-name="main/login"
-		status-code="200" 
-		/>
 		
-		<!--  for test  -->
+	<!--  for test  -->
 	<view-controller
 		path = "/main/useronly"
 		view-name = "main/useronly"
@@ -70,8 +64,16 @@
 	<beans:bean
 		id="logoutInterceptor"
 		class="com.filmee.myapp.interceptor.LogoutInterceptor"
+		/>
+				
+	<beans:bean
+		id="mainInterceptor"
+		class="com.filmee.myapp.interceptor.MainInterceptor"
 		/>		
-	
+	<beans:bean
+		id="noCacheInterceptor"
+		class="com.filmee.myapp.interceptor.NoCacheInterceptor" 
+		/>
 
 	<interceptors>
 		<interceptor>
@@ -80,9 +82,7 @@
 		</interceptor>
 		
 		<interceptor>
-			<mapping path="/main/useronly" />
-			<exclude-mapping path="/main/loginPost" />
-			<exclude-mapping path="/main/logout" />
+			<mapping path="/main/useronly" />			
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		
@@ -91,6 +91,20 @@
 			<beans:ref bean="logoutInterceptor" />
 		</interceptor>
 
+		<interceptor>
+			<mapping path="/*" />
+			<exclude-mapping path="/main/useronly" />	
+			<exclude-mapping path="/main/login" />
+			<exclude-mapping path="/main/loginPost" />
+			<exclude-mapping path="/main/loginFailed" />
+			<exclude-mapping path="/main/logout" />
+			<exclude-mapping path="/main/join" />
+			<exclude-mapping path="/main/joinPost" />
+			
+			 
+			<beans:ref bean="mainInterceptor" />
+		</interceptor>
+		
 	</interceptors>
 
 

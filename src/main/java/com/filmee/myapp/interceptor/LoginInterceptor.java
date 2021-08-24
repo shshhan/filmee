@@ -25,11 +25,7 @@ public class LoginInterceptor
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		log.debug("preHandle(request, response, handler) invoked.");
-		
-		//login(GET) -> loginPost(POST)가 아닌 우리가 구현하려는데로 화면에서 바로 넘어오는거라면
-		// authinterceptor에서 처럼 originalURL 받아서 로그인 이후에 기존에 있던 화면으로 redirect 가능할듯
-			
-		
+
 		HttpSession session = request.getSession();
 		
 		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);	//기존에 로그인 성공여부 확인

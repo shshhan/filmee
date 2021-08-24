@@ -30,7 +30,8 @@ a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
 }
 
 #strangerHeadermenu>li{
-    display: inline;
+	display : inline;
+	
     padding-right: 20px;
     margin-top: 30px;
     
@@ -46,7 +47,8 @@ a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
 }
 
 #memberHeadermenu>li{
-    display: inline;
+	display : none;
+	
     padding-right: 20px;
     margin-top: 30px;
     
@@ -132,8 +134,9 @@ a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
   margin-left:calc(100% - 100px - 10px);
 }
 
+
 #joinModal .modal_content {
-  width:300px;
+  width:400px;
   margin:100px auto;
   padding:20px 10px;
   background:#fff;
