@@ -23,9 +23,11 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = 
-		"file:src/main/webapp/WEB-INF/spring/root-context.xml"
-)
+@ContextConfiguration(locations = {
+		"file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"
+
+})
 public class LoginServiceTests {
 
 	
@@ -36,7 +38,7 @@ public class LoginServiceTests {
 	public void setup() {
 		log.debug("setup() invoked.");
 		
-		assertNotNull(service);
+		assertNotNull(this.service);
 		log.info("\t+++++ service : {}", this.service);
 	}//setup
 

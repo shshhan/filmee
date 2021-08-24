@@ -24,19 +24,39 @@ a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
     margin: 0;
 }
 
-#headermenu{
+#strangerHeadermenu{
     float: right;
     margin-top: 30px;
 }
-#headermenu>li{
+
+#strangerHeadermenu>li{
     display: inline;
     padding-right: 20px;
     margin-top: 30px;
     
 }
-#headermenu>li:nth-child(4), #headermenu>li:nth-child(5){
+
+#strangerHeadermenu>li:nth-child(4), #headermenu>li:nth-child(5){
     padding: 0
 }
+
+#memberHeadermenu{
+    float: right;
+    margin-top: 30px;
+}
+
+#memberHeadermenu>li{
+    display: inline;
+    padding-right: 20px;
+    margin-top: 30px;
+    
+}
+
+#memberHeadermenu>li:nth-child(4), #headermenu>li:nth-child(5){
+    padding: 0
+}
+
+
  img {
     width: 20px;
     height: 20px;
@@ -57,4 +77,77 @@ a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
     outline: none;
     margin-left: -33px;
   }
+
+  /* loginModal */
   
+ #loginModal {
+	display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+#loginModal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#loginModal .modal_content {
+  width:300px;
+  margin:100px auto;
+  padding:20px 10px;
+  background:#fff;
+  border:2px solid #666;
+
+  font-size: 15px;
+}
+
+#loginModal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+}
+
+
+  /* joinModal */
+
+
+#joinModal {
+	display:none;
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+#joinModal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#joinModal .modal_content {
+  width:300px;
+  margin:100px auto;
+  padding:20px 10px;
+  background:#fff;
+  border:2px solid #666;
+
+  font-size: 15px;
+}
+
+#joinModal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+}

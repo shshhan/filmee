@@ -1,10 +1,9 @@
 package com.filmee.myapp.mapper;
 
-import java.sql.Timestamp;
+import com.filmee.myapp.domain.JoinDTO;
 
 public interface JoinMapper {
 
-	public abstract int insertMember(
-			String email, String password, String nickname, char isAdmin, Timestamp joinTs
-			) throws Exception;
-}
+	public abstract int insertMember(JoinDTO dto) throws Exception;
+	
+}//end interface

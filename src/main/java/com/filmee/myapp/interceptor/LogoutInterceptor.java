@@ -38,11 +38,12 @@ public class LogoutInterceptor
 		Cookie rememberMeCookie = 
 				WebUtils.getCookie(request, LoginInterceptor.rememberMeKey);
 		
-		rememberMeCookie.setMaxAge(0);	
-		rememberMeCookie.setPath("/");
-		response.addCookie(rememberMeCookie);
-		log.info(">>>>> RememberMeCookie removed. >>>>>");
-
+		if(rememberMeCookie != null) {
+			rememberMeCookie.setMaxAge(0);	
+			rememberMeCookie.setPath("/");
+			response.addCookie(rememberMeCookie);
+			log.info(">>>>> RememberMeCookie removed. >>>>>");
+		}//if
 		return true;
 	}//preHandle
 
@@ -51,6 +52,8 @@ public class LogoutInterceptor
 			ModelAndView modelAndView) throws Exception {		
 		log.debug("postHandle(request, response, {}, {}) invoked.", handler, modelAndView);
 				
+	
+		
 		response.sendRedirect("/main");	
 		
 	}//postHandle

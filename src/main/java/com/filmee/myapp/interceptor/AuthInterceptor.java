@@ -49,7 +49,7 @@ public class AuthInterceptor
 			//URI & QueryString session scope에 바인딩
 			String originalRequestURI = request.getRequestURI();
 			String originalQueryString = request.getQueryString();
-			
+						
 			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
 			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
 			
@@ -88,6 +88,14 @@ public class AuthInterceptor
 				}	//if(user!=null)
 				
 			}//if(rememberMeCookie != null)
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			response.sendRedirect("/main/login");
 			log.info("Redirected to /main/login");

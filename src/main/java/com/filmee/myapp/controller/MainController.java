@@ -61,9 +61,9 @@ public class MainController {
 	public String loginFailed(RedirectAttributes rttrs) {
 		log.debug("loginFailed({}) invoked.", rttrs);
 		
-		rttrs.addFlashAttribute("failMessage", "등록되지 않은 Email 혹은 비밀번호입니다.");
+		rttrs.addFlashAttribute("loginFailMessage", "등록되지 않은 Email 혹은 비밀번호입니다.");
 		
-		return "redirect:/main/login";	//로그인 실패시 메세지와 함께 다시 로그인창
+		return "redirect:/main";	//로그인 실패시 메세지와 함께 다시 로그인창
 	}//loginFailed
 		
 }//end class

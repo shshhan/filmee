@@ -18,9 +18,9 @@
             console.clear();
             console.debug('jq started..');
 
-            var failMSG = "${failMessage}";
-            if(failMSG.length > 0){
-                alert(failMSG);
+            var loginFailMessage = "${loginFailMessage}";
+            if(loginFailMessage.length > 0){
+                alert(loginFailMessage);
             }//if
 
         });//jquery

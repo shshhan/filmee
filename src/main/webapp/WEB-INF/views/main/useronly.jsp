@@ -30,11 +30,14 @@
 </head>
 
 <body>
+   <%@include file="/resources/html/header.jsp"  %>
+
    <h1>WEB-INF/views/main/useronly.jsp</h1>
 	
 	<hr>
 	
 	<button type="button" id="logout">로그아웃</button>
+	    <%@include file="/resources/html/footer.jsp" %>
 	
 </body>
 </html>
