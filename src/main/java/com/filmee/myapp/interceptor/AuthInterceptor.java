@@ -18,6 +18,7 @@ import com.filmee.myapp.service.LoginService;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+import oracle.security.crypto.core.MessageDigest;
 
 
 @Log4j2
@@ -35,7 +36,7 @@ public class AuthInterceptor
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		log.debug("preHandle(request, response, handler) invoked.");
-		
+			
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);
 		

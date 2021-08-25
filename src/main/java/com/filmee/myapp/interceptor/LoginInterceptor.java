@@ -83,7 +83,7 @@ public class LoginInterceptor
 				session.removeAttribute(AuthInterceptor.requestURIKey);
 				session.removeAttribute(AuthInterceptor.queryStringKey);
 				
-			}else {		
+			} else {		
 				response.sendRedirect("/main");	//일단 로그인 성공하면 메인으로. 근데 기존에 있던 곳으로 돌아가야하지 않을까?
 					//authInterceptor에서 넘어왔다면 url바꿔서 보낼 수 있는데 만약 어딘가에서 로그인을 눌러 들어온거라면
 					//loginInterceptor preHandle에서 새롭게 url을 받을 시 auth에서 넘어온 것과 부딪힐듯
@@ -91,9 +91,10 @@ public class LoginInterceptor
 
 		}else {
 			response.sendRedirect("/main/loginFailed");
+			
 		}//if(user != null) - else
 	
 	}//postHandle
 
 
-}
+}//end class

@@ -46,6 +46,17 @@ public class LoginServiceImpl
 		return user;
 	}//login
 
+	@Override
+	public String getUserSalt(String email) throws Exception {
+		log.debug("getUserSalt({}) invoked.", email);
+		
+		String salt = this.mapper.selectSaltByEmail(email);
+		
+		log.info("salt : {}", salt);
+		
+		return salt;
+	}//getUserSalt
+	
 
 	@Override
 	public int setUserRememberMe(
@@ -70,5 +81,8 @@ public class LoginServiceImpl
 
 		return user;
 	}//findUserWithCookie
+
+
+
 
 }//end class

@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,30 +37,36 @@ public class JoinMapperTests {
 	}//setup
 
 	@Test
-	public void testInsertMember() throws Exception {
-		log.debug("testInsertMember() invoked.");
+	public void testInsertUser() throws Exception {
+		log.debug("testInsertUser() invoked.");
 		
 		JoinDTO dto = new JoinDTO();
-		dto.setEmail("123@123.com");
-		dto.setNickname("현아천재짱짱");
+		dto.setEmail("22@22.com");
+		dto.setNickname("testing");
 		dto.setPassword("123");
 		
-		int affectedLines = this.mapper.insertMember(dto);
+		String salt = FilmeeUtil.getSalt();
+		String hashedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
 		
-		log.info("affectedLines : {}", affectedLines);
+		dto.setPassword(hashedPw);
+		dto.setSalt(salt);
 		
-	}//testInsertMember
+		int affectedLines = this.mapper.insertUser(dto);
+		
+		log.info("affectedLines : {}", affectedLines);		
+		
+	}//testInsertUser
 	
 	@Test
-	public void testSelectMemberWithEmail() throws Exception{
-		log.debug("testSelectMemberWithEmail invoked.");
+	public void testSelectUserWithEmail() throws Exception{
+		log.debug("testSelectUserWithEmail invoked.");
 		
 		String email = "123@13.com";
 		
-		int result = this.mapper.selectMemberWithEmail(email);
+		int result = this.mapper.selectUserWithEmail(email);
 		
 		log.info("result : {}", result);
-	}//testSelectMemberWithEmail
+	}//testSelectUserWithEmail
 	
 	
 }//end class

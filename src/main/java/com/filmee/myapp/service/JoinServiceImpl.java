@@ -36,7 +36,7 @@ public class JoinServiceImpl
 	public int join(JoinDTO dto) throws Exception {
 		log.debug("join({}) invoked.", dto);
 		
-		int affectedLines = this.mapper.insertMember(dto);
+		int affectedLines = this.mapper.insertUser(dto);
 		
 		return affectedLines;
 	}//join
@@ -46,7 +46,7 @@ public class JoinServiceImpl
 	public int checkEmailDuplicated(String email) throws Exception {
 		log.debug("checkEmailDuplicated({}) invoked.", email);
 		
-		int result = this.mapper.selectMemberWithEmail(email);
+		int result = this.mapper.selectUserWithEmail(email);
 		
 		return result;
 	}//checkEmailDuplicated

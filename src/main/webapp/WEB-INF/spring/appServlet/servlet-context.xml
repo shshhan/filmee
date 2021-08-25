@@ -70,10 +70,6 @@
 		id="mainInterceptor"
 		class="com.filmee.myapp.interceptor.MainInterceptor"
 		/>		
-	<beans:bean
-		id="noCacheInterceptor"
-		class="com.filmee.myapp.interceptor.NoCacheInterceptor" 
-		/>
 
 	<interceptors>
 		<interceptor>

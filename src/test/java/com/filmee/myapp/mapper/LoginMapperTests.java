@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.filmee.myapp.domain.LoginDTO;
 import com.filmee.myapp.domain.UserVO;
+import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,15 +45,32 @@ public class LoginMapperTests {
 		log.debug("testSelecUser() invoked.");
 		
 		LoginDTO dto = new LoginDTO();
-		dto.setEmail("EMAIL1@GMAIL.COM");
-		dto.setPassword("PASS1");
-		dto.setRememberMe(false);
+		dto.setEmail("22@22.com");
+		dto.setPassword("123");
+		
+		String salt = this.mapper.selectSaltByEmail(dto.getEmail());
+		String pw = FilmeeUtil.hashing(dto.getPassword(), salt);
+		
+		dto.setPassword(pw);
 		
 		UserVO user = this.mapper.selectUser(dto);
 		
 		log.info("user : {}", user);
 	
 	}//setup
+	
+	@Test
+	public void testSelectSaltByEmail() throws Exception {
+		log.debug("testSelectSaltByEmail() invoked.");
+		
+		LoginDTO dto = new LoginDTO();
+		dto.setEmail("22@22.com");
+		dto.setPassword("123");
+		
+		String salt = this.mapper.selectSaltByEmail(dto.getEmail());
+		log.info("salt : {}", salt);	
+		
+	}//testSelectSaltByEmail
 	
 	@Test
 	public void testUpdateUserRememberMe() throws Exception {

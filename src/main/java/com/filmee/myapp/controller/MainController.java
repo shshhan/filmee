@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,10 +18,12 @@ import com.filmee.myapp.domain.LoginDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.JoinService;
 import com.filmee.myapp.service.LoginService;
+import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
+
 
 @Log4j2
 @NoArgsConstructor
@@ -50,11 +51,14 @@ public class MainController {
 		
 		return "redirect:/main";		
 	}//login
-	
-	
+		
 	@PostMapping("loginPost")
 	public void loginPost(LoginDTO dto, Model model, HttpSession session) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
+		
+		String salt = this.loginService.getUserSalt(dto.getEmail());
+		String hasedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
+		dto.setPassword(hasedPw);
 		
 		UserVO user = this.loginService.login(dto);
 		
@@ -69,9 +73,9 @@ public class MainController {
 				Date rememberAge = new Date(System.currentTimeMillis() + (1000*60*60*24*7) );
 				
 				this.loginService.setUserRememberMe(email, rememberCookie, rememberAge);
-			}//if
+			}//if(dto.isRememberMe())
 			
-		}//if
+		}//if(user != null)
 		
 	}//loginPost
 	
@@ -106,7 +110,13 @@ public class MainController {
 	public String joinPost(JoinDTO dto, RedirectAttributes rttrs, Model model) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
 		
-		if( this.joinService.join(dto) == 1) {
+		String salt = FilmeeUtil.getSalt();
+		String hashedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
+		
+		dto.setPassword(hashedPw);
+		dto.setSalt(salt);
+		
+		if( this.joinService.join(dto) == 1) {	// 정상 회원가입 처리됐다면
 			rttrs.addFlashAttribute("message", "join_succeeded");
 		} else {
 			rttrs.addFlashAttribute("message", "join_failed");

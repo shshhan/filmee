@@ -41,20 +41,9 @@ $(function(){
 
         default :
 
-    }    
+    }	//switch-case
     
-    
- 	// var loginFailMessage = "${loginFailMessage}";
-    // if(loginFailMessage.length > 0){
-    //     alert(loginFailMessage);
-    //     $("#loginModal").attr("style", "display:block");   
-    // }//if
-    
-    // var joinMessage = "${joinMessage}";
-    // if(joinMessage.length > 0){
-    //     alert(joinMessage);
-    // }//if
-    
+        
     var loginKey = "${__LOGIN__}";
     
     if(loginKey.length > 0){
@@ -92,6 +81,8 @@ $(function(){
 });//jquery
  	
  	</script>
+ 	
+ 	
 </head>
 <body>
     <header>

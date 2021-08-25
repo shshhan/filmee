@@ -6,16 +6,16 @@
 
 <mapper namespace="com.filmee.myapp.mapper.JoinMapper">
 
-    <insert id="insertMember">
+    <insert id="insertUser">
         
 		INSERT INTO
-	    	fm_user(email, password, nickname)
+	    	fm_user(email, password, nickname, salt)
 		VALUES
-	    	(#{email}, #{password}, #{nickname})
+	    	(#{email}, #{password}, #{nickname}, #{salt})
 
 	</insert>
 	
-	<select id="selectMemberWithEmail" resultType = "int">
+	<select id="selectUserWithEmail" resultType = "int">
 		SELECT count(*)
 		FROM fm_user
 		WHERE email = #{email}
