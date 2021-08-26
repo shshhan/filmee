@@ -46,16 +46,18 @@ public class LoginMapperTests {
 		
 		LoginDTO dto = new LoginDTO();
 		dto.setEmail("22@22.com");
-		dto.setPassword("123");
+		dto.setPassword("1234");
 		
-		String salt = this.mapper.selectSaltByEmail(dto.getEmail());
-		String pw = FilmeeUtil.hashing(dto.getPassword(), salt);
-		
-		dto.setPassword(pw);
+//		String salt = this.mapper.selectSaltByEmail(dto.getEmail());
+//		String pw = FilmeeUtil.hashing(dto.getPassword(), salt);
+//		
+//		dto.setPassword(pw);
 		
 		UserVO user = this.mapper.selectUser(dto);
 		
 		log.info("user : {}", user);
+		log.info("authCode : {}", user.getAuthCode());
+		log.info("authCode.length : {}", user.getAuthCode().length());
 	
 	}//setup
 	

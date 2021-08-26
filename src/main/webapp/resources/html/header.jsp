@@ -22,50 +22,55 @@
             // 로그인 여부에 따라 보여주는 header 변경
             var loginKey = "${__LOGIN__}";
 
-            console.log(loginKey);
-
             if(loginKey.length > 0){
                 $("#strangerHeadermenu>li").attr("style", "display:none");
                 $("#memberHeadermenu>li").attr("style", "display:inline");
-            }
+            }//if
 
             //전달된 message가 있으면 alert
             var message = "${message}";
-
             switch(message){
                 case 'login_required' :              
-                    // $("#alert_modal p").text("로그인이 필요한 서비스입니다.");
-                    // $("#alert_modal").modal("show");
-                    
-                    // var myModalEl = document.getElementById('alert_modal');
-                    // myModalEl.addEventListener('hidden.bs.modal',function(){
-                    //     $("#login").modal("show");
-                    // });
                     $("#login").modal("show");
                     break;
                     
-                case 'login_failed' :
-                    // $("#alert_modal p").text("등록되지 않은 ID 혹은 비밀번호 입니다.");
-                    // $("#alert_modal").modal("show");
+                case 'login_failed_no_info' :
+                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
+                    $("#alert_modal").modal("show");
 
-                    // var myModalEl = document.getElementById('alert_modal');
-                    // myModalEl.addEventListener('hidden.bs.modal',function(){
-                    //     $("#login").modal("show");
-                    // });
-                    $("#login").modal("show");
+                    var myModalEl = document.getElementById('alert_modal');
+                    myModalEl.addEventListener('hidden.bs.modal',function(){
+                        $("#login").modal("show");
+                    });
                     break;
-            
+                
+                case 'email_unauthorized' :
+                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+
                 case 'join' :
                     $("#join").modal("show");   
                     break;
 
-                case 'join_succeeded' :
-                    // $("#alert_modal p").text("회원가입이 완료되었습니다.");
+                case 'just_joinned' :
+                    $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
                     $("#alert_modal").modal("show");
                     break;
-                    
+
                 case 'join_failed' :
-                    // $("#alert_modal p").text("회원가입에 실패했습니다.");
+                    $("#alert_modal p").text("회원가입에 실패했습니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+
+                    var myModalEl = document.getElementById('alert_modal');
+                    myModalEl.addEventListener('hidden.bs.modal',function(){
+                        $("#join").modal("show");
+                    });
+                    break;
+                
+                case 'join_complete' :
+                    $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
                     $("#alert_modal").modal("show");
                     break;
 
@@ -84,12 +89,12 @@
 <body>
     <header>
         <div id="header">
-            <a href="">
+            <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
             </a>
             <!-- header for nonUser -->
             <ul id="strangerHeadermenu">
-                <li><a href="#" id="login_a" data-bs-toggle="modal" data-bs-target="#login">LOGIN</a></li>
+                <li><a href="#" id="login_a" data-bs-toggle="modal" data-bs-target="#login">SIGN IN</a></li>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#join">CREATE ACCOUNT</a></li>
                 <li><a href="/main/strangerPage">STRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
@@ -103,7 +108,7 @@
             </ul>
             <!-- header for user -->
             <ul id="memberHeadermenu">
-             	 <li><a href="/main/logout">LOG OUT</a></li>
+             	 <li><a href="/main/logout">SIGN OUT</a></li>
                 <li><a href="#" id="">~~~~</a></li>
                 <li><a href="/main/strangerPage">STRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
@@ -119,18 +124,23 @@
     </header>
 
     <!-- alert Modal -->
-    <!-- <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                <!-- <div class="modal-header"> -->
+                    <!-- <h2 class="modal-title" id="staticBackdropLabel"><B>LOGIN</B></h2> -->
+                    <!-- <p style="font-size: 15px; text-align: center;"></p> -->
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                <!-- </div> -->
                 <div class="modal-body">
-                    <p style="font-size: 15px; text-align: center;"></p>
+                    <p style="font-size: 16px; text-align: center;"></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
     <!-- login Modal -->

@@ -18,6 +18,7 @@ import com.filmee.myapp.domain.LoginDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.JoinService;
 import com.filmee.myapp.service.LoginService;
+import com.filmee.myapp.service.MailSendService;
 import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
@@ -38,6 +39,9 @@ public class MainController {
 	@Setter(onMethod_=@Autowired)
 	private JoinService joinService;
 	
+	@Setter(onMethod_=@Autowired)
+	private MailSendService mailService;
+	
 	public static final String loginKey = "__LOGIN__";
 	
 	//View-Controller : main, logout
@@ -46,26 +50,25 @@ public class MainController {
 	public String login(RedirectAttributes rttrs) {
 		log.debug("login(rttrs) invoked.");
 		
-//		rttrs.addFlashAttribute("loginFailMessage", "로그인이 필요합니다.");
 		rttrs.addFlashAttribute("message", "login_required");
 		
 		return "redirect:/main";		
 	}//login
 		
 	@PostMapping("loginPost")
-	public void loginPost(LoginDTO dto, Model model, HttpSession session) throws Exception {
+	public void loginPost(LoginDTO dto, Model model, HttpSession session, RedirectAttributes rttrs) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
 		
 		String salt = this.loginService.getUserSalt(dto.getEmail());
-		String hasedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
-		dto.setPassword(hasedPw);
+		String hashedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
+		dto.setPassword(hashedPw);
 		
 		UserVO user = this.loginService.login(dto);
 		
 		if(user != null) {
-			model.addAttribute(MainController.loginKey, user);
+			model.addAttribute(MainController.loginKey, user);	//로그인 정보를 model에 저장
 			
-			if(dto.isRememberMe()) {
+			if(dto.isRememberMe()) {	//Remember me on이면 DB에 쿠키정보 저장
 				String rememberCookie = session.getId();
 				
 				String email = dto.getEmail();
@@ -74,19 +77,31 @@ public class MainController {
 				
 				this.loginService.setUserRememberMe(email, rememberCookie, rememberAge);
 			}//if(dto.isRememberMe())
-			
+						
 		}//if(user != null)
+		
+		
+		
 		
 	}//loginPost
 	
-	@GetMapping("/loginFailed")
-	public String loginFailed(RedirectAttributes rttrs) {
+	@GetMapping("/loginFailed/noInfo")
+	public String loginFailedNoInfo(RedirectAttributes rttrs) {
 		log.debug("loginFailed({}) invoked.", rttrs);
 		
-		rttrs.addFlashAttribute("message", "login_failed");
+		rttrs.addFlashAttribute("message", "login_failed_no_info");
 		
 		return "redirect:/main";	//로그인 실패시 메세지와 함께 다시 로그인창
-	}//loginFailed
+	}//loginFailedNoInfo
+	
+	@GetMapping("/loginFailed/unauthorized")
+	public String loginFailedUnauthorized(RedirectAttributes rttrs) {
+		log.debug("loginFailed({}) invoked.", rttrs);
+		
+		rttrs.addFlashAttribute("message", "email_unauthorized");
+		
+		return "redirect:/main";	//로그인 실패시 메세지와 함께 다시 로그인창
+	}//loginFailedNoInfo
 
 	
 	@GetMapping("/join")
@@ -120,8 +135,6 @@ public class MainController {
 		return result;
 	}//checkNickname
 	
-
-	
 	@PostMapping("/joinPost")
 	public String joinPost(JoinDTO dto, RedirectAttributes rttrs, Model model) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
@@ -132,8 +145,11 @@ public class MainController {
 		dto.setPassword(hashedPw);
 		dto.setSalt(salt);
 		
+		String authCode = mailService.sendAuthMail(dto.getEmail());
+		dto.setAuthCode(authCode);
+		
 		if( this.joinService.join(dto) == 1) {	// 정상 회원가입 처리됐다면
-			rttrs.addFlashAttribute("message", "join_succeeded");
+			rttrs.addFlashAttribute("message", "just_joinned");
 		} else {
 			rttrs.addFlashAttribute("message", "join_failed");
 		}//if-else
@@ -142,5 +158,18 @@ public class MainController {
 		
 		return "redirect:/main";
 	}//joinPost
+		
+	@GetMapping("/emailAuthorized")
+	public String emailAuthorized(String email, String authCode, RedirectAttributes rttrs) throws Exception {
+		log.debug("emailAuthroized({}, {}) invoked.", email, authCode);
+		
+		if(this.joinService.isEmailAuthorized(email, authCode)) {
+			rttrs.addFlashAttribute("message", "join_complete");
+		} else {
+			rttrs.addFlashAttribute("message", "email_unauthroized");
+		}//if-else	
+		
+		return "redirect:/main";
+	}//emailAuthroized
 	
 }//end class

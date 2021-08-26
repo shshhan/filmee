@@ -9,21 +9,40 @@
     <insert id="insertUser">
         
 		INSERT INTO
-	    	fm_user(email, password, nickname, salt)
+	    	fm_user(email, password, nickname, salt, auth_code)
 		VALUES
-	    	(#{email}, #{password}, #{nickname}, #{salt})
+	    	(#{email}, #{password}, #{nickname}, #{salt}, #{authCode})
 
 	</insert>
 	
-	<select id="selectUserWithEmail" resultType = "int">
+	<select id="countUsersWithEmail" resultType = "int">
 		SELECT count(*)
 		FROM fm_user
 		WHERE email = #{email}
 	</select>
 	
-	<select id="selectUserWithNickname" resultType = "int">
+	<select id="countUsersWithNickname" resultType = "int">
 		SELECT count(*)
 		FROM fm_user
 		WHERE nickname = #{nickname}
 	</select>
+	
+	<!-- <select id="selectAuthCodeWithEmail" resultType = "string">
+		SELECT auth_code
+		FROM fm_user
+		WHERE email=#{email}
+	</select> -->
+
+	<update id="updateAuthCodeAuthorized">
+		UPDATE fm_user
+		   SET auth_code='authorized'
+		 WHERE email=#{email}
+		   AND #{authCode}=( 
+			 			   SELECT auth_code
+							 FROM fm_user
+							WHERE email=#{email}
+		   					)
+	</update>
+	
+	
 </mapper>

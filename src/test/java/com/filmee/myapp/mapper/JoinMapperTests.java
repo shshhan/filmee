@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.service.MailSendService;
 import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class JoinMapperTests {
 
 	@Setter(onMethod_= @Autowired)
 	private JoinMapper mapper;
+	@Setter(onMethod_=@Autowired)
+	private MailSendService mailService;
 	
 	@Before
 	public void setup() {
@@ -51,6 +54,10 @@ public class JoinMapperTests {
 		dto.setPassword(hashedPw);
 		dto.setSalt(salt);
 		
+		
+		String authCode = mailService.getAuthCode(6);
+		dto.setAuthCode(authCode);
+		
 		int affectedLines = this.mapper.insertUser(dto);
 		
 		log.info("affectedLines : {}", affectedLines);		
@@ -58,15 +65,39 @@ public class JoinMapperTests {
 	}//testInsertUser
 	
 	@Test
-	public void testSelectUserWithEmail() throws Exception{
+	public void testCountUsersWithEmail() throws Exception{
 		log.debug("testSelectUserWithEmail invoked.");
 		
 		String email = "123@13.com";
 		
-		int result = this.mapper.selectUserWithEmail(email);
+		int result = this.mapper.countUsersWithEmail(email);
 		
 		log.info("result : {}", result);
 	}//testSelectUserWithEmail
+	
+//	@Test
+//	public void testSelectAuthCodeWithEmail()throws Exception{
+//		log.debug("testSelectAuthCodeWithEmail() invoked.");
+//		
+//		String email = "22@22.com";
+//		
+//		String authCode = this.mapper.selectAuthCodeWithEmail(email);
+//		
+//		log.info("authCode: {}", authCode);
+//		
+//	}//testSelectAuthCodeWithEmail
+	
+	@Test
+	public void updateAuthCodeAuthorized()throws Exception{
+		log.debug("updateAuthCodeAuthorized() invoked.");
+		
+		String email = "22@22.com";
+		String authCode = "238365";
+		
+		int affectedLines = this.mapper.updateAuthCodeAuthorized(email, authCode);
+		
+		log.info("affectedLines : {}", affectedLines);
+	}//updateAuthCodeNull
 	
 	
 }//end class

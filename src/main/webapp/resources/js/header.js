@@ -3,7 +3,7 @@ function isEmail(email) {
 	var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 	return reg.test(email);
-}
+}//isEmail
    
    
    var emailCheck=0;
@@ -76,7 +76,6 @@ function isEmail(email) {
                 // $(".sign_up_btn").css("background-color", "#C2DBFE");
             }//if
         }//if-elseif-else
-
     };//checkPw
 
     function checkNickname(){

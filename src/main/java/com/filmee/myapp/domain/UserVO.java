@@ -1,7 +1,5 @@
 package com.filmee.myapp.domain;
 
-import java.sql.Timestamp;
-
 import lombok.Value;
 
 @Value
@@ -21,4 +19,5 @@ public class UserVO {
 //	private String susReason;
 //	private String RememberCookie;
 //	private Timestamp rememberAge;
+			private String authCode;
 }

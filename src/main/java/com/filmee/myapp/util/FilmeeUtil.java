@@ -46,12 +46,12 @@ public class FilmeeUtil {
 	private static String byteToString(byte[] temp) {
 		log.debug("byteToString(temp) invoked.");
 
-		StringBuilder builder = new StringBuilder();
+		StringBuffer buffer = new StringBuffer();
 		for (byte b : temp) {
-			builder.append(String.format("%02x", b));
+			buffer.append(String.format("%02x", b));
 		} // enhanced for
 
-		return builder.toString();
+		return buffer.toString();
 
 	}// byteToString
 

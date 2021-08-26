@@ -46,7 +46,7 @@ public class JoinServiceImpl
 	public int checkEmailDuplicated(String email) throws Exception {
 		log.debug("checkEmailDuplicated({}) invoked.", email);
 		
-		int result = this.mapper.selectUserWithEmail(email);
+		int result = this.mapper.countUsersWithEmail(email);
 		
 		return result;
 	}//checkEmailDuplicated
@@ -55,10 +55,23 @@ public class JoinServiceImpl
 	public int checkNicknameDuplicated(String nickname) throws Exception {
 		log.debug("checkNicknameDuplicated({}) invoked.", nickname);
 		
-		int result = this.mapper.selectUserWithNickname(nickname);
+		int result = this.mapper.countUsersWithNickname(nickname);
 		
 		return result;
 	}//checkNicknameDuplicated
+
+
+	@Override
+	public boolean isEmailAuthorized(String email, String authCode) throws Exception {
+		log.debug("isEmailAuthorized({}, {}) invoked.", email, authCode);
+		
+		if(this.mapper.updateAuthCodeAuthorized(email, authCode) == 1) {
+			return true;
+		} else {
+			return false;
+		}//if-else
+			
+	}//isEmailAuthorized
 
 
 }//end class

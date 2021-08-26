@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,20 +45,25 @@ public class LoginInterceptor
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		log.debug("postHandle(request, response, handler, {}) invoked.", modelAndView);
-			
-		//Session Scope에 로그인 정보 바인딩
-		
+					
 		UserVO user = (UserVO)modelAndView.getModelMap().get(MainController.loginKey);
-		
-		if (user != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute(MainController.loginKey, user);
+
+		HttpSession session = request.getSession();
+
+		if(user == null) {		//model에 로그인 정보가 없다면
+			response.sendRedirect("/main/loginFailed/noInfo");
+			
+		} else if( !user.getAuthCode().equals("authorized") ) {	//이메일 인증을 하지 않은 유저가 로그인을 시도했다면
+			response.sendRedirect("/main/loginFailed/unauthorized");
+			
+		} else {		//	이메일 인증까지 마친 유저가 로그인을 시도했다면
+			session.setAttribute(MainController.loginKey, user);	//로그인 정보가 있다면 Session Scope에 추가
 			log.info(">>>>> LoginKey on SessionScope. >>>>>");
 			
-			//RememberMe Cookie 생성 및 전송
-			if(request.getParameter("rememberMe") != null){
+			//RememberMe on이었으면 쿠키를 응답문서에 추가
+			if(request.getParameter("rememberMe") != null){		
 				Cookie rememberMeCookie = 
-						new Cookie(LoginInterceptor.rememberMeKey, session.getId());
+					new Cookie(LoginInterceptor.rememberMeKey, session.getId());
 				
 				rememberMeCookie.setMaxAge(60*60*24*7);
 				rememberMeCookie.setPath("/");
@@ -66,34 +72,83 @@ public class LoginInterceptor
 				log.info(">>>>> RememberMeCookie added in Response. >>>>>");
 			}//if (rememberMe on)
 			
-			//기존 URL로 Redirect
-			if(session.getAttribute(AuthInterceptor.requestURIKey) != null){
-				String originalRequestURI = (String)session.getAttribute(AuthInterceptor.requestURIKey);
+			//기존 URI가 있었다면 Redirect	(로그인이 필요한 URI로 요청이 들어와 AuthInterceptor를 거친 경우)
+			String originalRequestURI = (String)session.getAttribute(AuthInterceptor.requestURIKey);
+			
+			if(originalRequestURI != null) {
 				String originalQueryString = (String)session.getAttribute(AuthInterceptor.queryStringKey);
 				
-				if(originalRequestURI != null) {
-					response.sendRedirect(
+				response.sendRedirect(
 							originalRequestURI +
 							(originalQueryString != null && !"".equals(originalQueryString) ?
 									"?"+originalQueryString : "")
 							);
 					log.info(">>>>> Redirected to OriginalURI.");
-				}//if
-						
-				session.removeAttribute(AuthInterceptor.requestURIKey);
-				session.removeAttribute(AuthInterceptor.queryStringKey);
+					
+			}else {	//기존 URI가 없었다면 main으로 Redirect	(로그인 버튼으로 직접 요청이 들어온 경우)
+				response.sendRedirect("/main");
 				
-			} else {		
-				response.sendRedirect("/main");	//일단 로그인 성공하면 메인으로. 근데 기존에 있던 곳으로 돌아가야하지 않을까?
-					//authInterceptor에서 넘어왔다면 url바꿔서 보낼 수 있는데 만약 어딘가에서 로그인을 눌러 들어온거라면
-					//loginInterceptor preHandle에서 새롭게 url을 받을 시 auth에서 넘어온 것과 부딪힐듯
-			}//if(originalURL != null) - else							
-
-		}else {
-			response.sendRedirect("/main/loginFailed");
-			
-		}//if(user != null) - else
+			}//if-else
 	
+		}//if- else if -else
+		
+		//Session Scope에서 기존 URI 및 QueryString 삭제
+		session.removeAttribute(AuthInterceptor.requestURIKey);
+		session.removeAttribute(AuthInterceptor.queryStringKey);
+		
+		
+		
+		
+		
+//		if (user != null) {
+//			
+//			if( !user.getAuthCode().equals("authorized") ) { 	//이메일 인증을 안했다면 로그인 실패
+//				response.sendRedirect("/main/loginFailed/unauthorized");
+//			}
+//			
+//			HttpSession session = request.getSession();
+//			session.setAttribute(MainController.loginKey, user);	//model에 로그인 정보가 있다면 Session Scope에 추가
+//			log.info(">>>>> LoginKey on SessionScope. >>>>>");
+//			
+//			if(request.getParameter("rememberMe") != null){		//RememberMe on이었으면 쿠키를 응답문서에 추가
+//				Cookie rememberMeCookie = 
+//						new Cookie(LoginInterceptor.rememberMeKey, session.getId());
+//				
+//				rememberMeCookie.setMaxAge(60*60*24*7);
+//				rememberMeCookie.setPath("/");
+//				
+//				response.addCookie(rememberMeCookie);
+//				log.info(">>>>> RememberMeCookie added in Response. >>>>>");
+//			}//if (rememberMe on)
+//			
+//			
+//			if(session.getAttribute(AuthInterceptor.requestURIKey) != null){	
+//				String originalRequestURI = (String)session.getAttribute(AuthInterceptor.requestURIKey);
+//				String originalQueryString = (String)session.getAttribute(AuthInterceptor.queryStringKey);
+//				
+//				if(originalRequestURI != null) {	//기존 URI가 있다면 Redirect
+//					
+//					response.sendRedirect(
+//							originalRequestURI +
+//							(originalQueryString != null && !"".equals(originalQueryString) ?
+//									"?"+originalQueryString : "")
+//							);
+//					log.info(">>>>> Redirected to OriginalURI.");
+//				}//if
+//				
+//				session.removeAttribute(AuthInterceptor.requestURIKey);
+//				session.removeAttribute(AuthInterceptor.queryStringKey);
+//				
+//			} else {	//기존 URI가 없다면 일단 메인으로 Redirect
+//				response.sendRedirect("/main");	//일단 로그인 성공하면 메인으로. 근데 기존에 있던 곳으로 돌아가야하지 않을까?
+//												//authInterceptor에서 넘어왔다면 url바꿔서 보낼 수 있는데 만약 어딘가에서 로그인을 눌러 들어온거라면
+//												//loginInterceptor preHandle에서 새롭게 url을 받을 시 auth에서 넘어온 것과 부딪힐듯				
+//			}//if(originalURL != null) - else
+//			
+//		}else {
+//			response.sendRedirect("/main/loginFailed/noInfo");
+//		}// if(user!=null) - else
+		
 	}//postHandle
 
 

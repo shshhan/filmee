@@ -54,9 +54,8 @@ public class AuthInterceptor
 			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
 			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
 			
-			//RememberMe 쿠키 있는지 확인
+			//RememberMe 쿠키가 있었다면
 			Cookie rememberMeCookie = WebUtils.getCookie(request, LoginInterceptor.rememberMeKey);
-			
 			if(rememberMeCookie != null) {
 				String rememberMe = rememberMeCookie.getValue();
 				

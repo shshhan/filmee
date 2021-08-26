@@ -19,7 +19,8 @@
    <h1>WEB-INF/views/main/strangerPage.jsp</h1>
 	
 	<hr>
-
+	     <a href="/main/useronly">BOARD</a>                          
+	
 	    <%@include file="/resources/html/footer.jsp" %>
 	
 </body>

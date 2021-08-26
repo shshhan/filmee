@@ -62,4 +62,16 @@ public class JoinServiceTests {
 		
 	}//testCheckEmailDuplicated
 	
+	@Test
+	public void testisEmailAuthroized()throws Exception{
+		log.debug("updateAuthCodeNull() invoked.");
+		
+		String email = "22@22.com";
+		String authCode = "238365";
+		
+		boolean isAuthorized= this.service.isEmailAuthorized(email, authCode);
+		
+		log.info("affectedLines : {}", isAuthorized);
+	}//updateAuthCodeNull
+	
 }//end class

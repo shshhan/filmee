@@ -10,4 +10,5 @@ public class JoinDTO {
 	private String nickname;
 	
 	private String salt;
+	private String authCode;
 }//end class
