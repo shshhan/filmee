@@ -50,6 +50,15 @@ public class JoinServiceImpl
 		
 		return result;
 	}//checkEmailDuplicated
+	
+	@Override
+	public int checkNicknameDuplicated(String nickname) throws Exception {
+		log.debug("checkNicknameDuplicated({}) invoked.", nickname);
+		
+		int result = this.mapper.selectUserWithNickname(nickname);
+		
+		return result;
+	}//checkNicknameDuplicated
 
 
 }//end class

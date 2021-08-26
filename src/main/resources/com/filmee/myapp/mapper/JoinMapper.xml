@@ -20,4 +20,10 @@
 		FROM fm_user
 		WHERE email = #{email}
 	</select>
+	
+	<select id="selectUserWithNickname" resultType = "int">
+		SELECT count(*)
+		FROM fm_user
+		WHERE nickname = #{nickname}
+	</select>
 </mapper>

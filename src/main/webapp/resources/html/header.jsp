@@ -1,98 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+	
     <link rel="stylesheet" href="/resources/css/header.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
- 
- 	<script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <script src="/resources/js/header.js"></script>
+    <script>
 
-$(function(){
-    console.clear();
-    console.log('jq started..');
-    
-    var message = "${message}";
-    switch(message){
-        case 'login_required' :
-            alert('로그인이 필요합니다.');
-            $("#loginModal").attr("style", "display:block");
-            break;
+        $(function(){
+            console.clear();
+            console.log('jq started');
+       
+            // 로그인 여부에 따라 보여주는 header 변경
+            var loginKey = "${__LOGIN__}";
+
+            console.log(loginKey);
+
+            if(loginKey.length > 0){
+                $("#strangerHeadermenu>li").attr("style", "display:none");
+                $("#memberHeadermenu>li").attr("style", "display:inline");
+            }
+
+            //전달된 message가 있으면 alert
+            var message = "${message}";
+
+            switch(message){
+                case 'login_required' :              
+                    // $("#alert_modal p").text("로그인이 필요한 서비스입니다.");
+                    // $("#alert_modal").modal("show");
+                    
+                    // var myModalEl = document.getElementById('alert_modal');
+                    // myModalEl.addEventListener('hidden.bs.modal',function(){
+                    //     $("#login").modal("show");
+                    // });
+                    $("#login").modal("show");
+                    break;
+                    
+                case 'login_failed' :
+                    // $("#alert_modal p").text("등록되지 않은 ID 혹은 비밀번호 입니다.");
+                    // $("#alert_modal").modal("show");
+
+                    // var myModalEl = document.getElementById('alert_modal');
+                    // myModalEl.addEventListener('hidden.bs.modal',function(){
+                    //     $("#login").modal("show");
+                    // });
+                    $("#login").modal("show");
+                    break;
             
-        case 'login_failed' :
-            alert('등록되지 않은 ID 혹은 비밀번호 입니다.');
-            $("#loginModal").attr("style", "display:block");   
-            break;
-    
-        case 'join' :
-            $("#joinModal").attr("style", "display:block");   
-            break;
+                case 'join' :
+                    $("#join").modal("show");   
+                    break;
 
-        case 'join_succeeded' :
-            alert('회원가입 완료');
-            break;
+                case 'join_succeeded' :
+                    // $("#alert_modal p").text("회원가입이 완료되었습니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+                    
+                case 'join_failed' :
+                    // $("#alert_modal p").text("회원가입에 실패했습니다.");
+                    $("#alert_modal").modal("show");
+                    break;
 
-        case 'join_failed' :
-            alert('회원가입 실패');
-            break;
+                default :
+            }	//switch-case
 
-        default :
+            $("#close_login_open_join").click(function(){
+                $("#login").modal("hide");
+                $("#join").modal("show");   
+            });//close_login_open_join
 
-    }	//switch-case
-    
-        
-    var loginKey = "${__LOGIN__}";
-    
-    if(loginKey.length > 0){
-        $("#strangerHeadermenu>li").attr("style", "display:none");
-    	$("#memberHeadermenu>li").attr("style", "display:inline");
-    }//if
-    
+        });//jq
+    </script>
 
-    
-    $("#login_modal_a").click(function(){
-        $("#loginModal").attr("style", "display:block");
-    });//login_modal_a
-
-    $("#login_to_join").click(function(){
-    	location.href = "/main/join";
-    });//login_to_join
-    
-    $(".modal_close_btn").click(function(){
-        $("#loginModal").attr("style", "display:none");
-        $("#joinModal").attr("style", "display:none");
-    });//modal_close_btn
-  
-    $("#join_modal_a").click(function(){
-        $("#joinModal").attr("style", "display:block");
-    });//join_modal_a
-    
-    
-    $("logout_a").click(function(e){
-    	e.preventDefault;
-
-        location.href="/main/logout";
-    });//logout_a
-    
-
-});//jquery
- 	
- 	</script>
- 	
- 	
 </head>
 <body>
     <header>
         <div id="header">
             <a href="">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>     
+            </a>
+            <!-- header for nonUser -->
             <ul id="strangerHeadermenu">
-                <li><a href="#" id="login_modal_a">LOGIN</a></li>
-                <li><a href="#" id="join_modal_a">CREATE ACCOUNT</a></li>
+                <li><a href="#" id="login_a" data-bs-toggle="modal" data-bs-target="#login">LOGIN</a></li>
+                <li><a href="#" data-bs-toggle="modal" data-bs-target="#join">CREATE ACCOUNT</a></li>
                 <li><a href="/main/strangerPage">STRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
                 <li>
@@ -103,8 +101,9 @@ $(function(){
                 <li> <img src="/resources/img/search.png" width="20px" height="20px">
                 </li>
             </ul>
+            <!-- header for user -->
             <ul id="memberHeadermenu">
-             	 <li><a href="/main/logout" id="logout_a">LOG OUT</a></li>
+             	 <li><a href="/main/logout">LOG OUT</a></li>
                 <li><a href="#" id="">~~~~</a></li>
                 <li><a href="/main/strangerPage">STRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
@@ -116,62 +115,97 @@ $(function(){
                 <li> <img src="/resources/img/search.png" width="20px" height="20px">
                 </li>
             </ul>
-     
         </div>
-        
-	    <div id="loginModal">
-            <div class="modal_content">
-                <form action="/main/loginPost" method="POST">
-                    <div>
-                        <label for="loginEmail">user email</label><br>
-                        <input type="email" id="loginEmail" name="email" placeholder="email">
-                    </div>
-                    <p>&nbsp;</p>
-                    <div>
-                        <label for="loginPassword">password</label><br>
-                        <input type="password" id="loginPassword" name="password" placeholder="password">
-                    </div>
-                    <p>&nbsp;</p>
-                    <div>
-                        Remember Me <input type="checkbox" name="rememberMe" checked>
-                    </div>
-                    <button type="submit">SIGN IN</button>
-                </form>
-                <button type="button" id="login_to_join">JOIN</button>
-                <button type="button" class="modal_close_btn">close</button>
-            </div>
-            <div class="modal_layer"></div>
-        </div>
+    </header>
 
-        <div id="joinModal">
-            <div class="modal_content">
+    <!-- alert Modal -->
+    <!-- <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p style="font-size: 15px; text-align: center;"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <!-- login Modal -->
+    <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="staticBackdropLabel"><B>LOGIN</B></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/main/loginPost" method="POST">
+                        <div class="mb-3">
+                            <label for="login_email" class="form-label"><b>Email</b></label>
+                            <input type="email" class="form-control" id="login_email" name="email" placeholder="name@example.com" autocomplete="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"><b>password</b></label>
+                            <input type="password" class="form-control" id="login_password" name="password" placeholder="password" autocomplete="current-password">
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label" for="rememberMe">Remember me</label>
+                            <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">SIGN IN</button>
+                        </div>
+                    </form>
+                    <p>&nbsp;</p>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="button" id="close_login_open_join">JOIN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- join Modal -->
+    <div class="modal fade" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h2 class="modal-title" id="staticBackdropLabel"><B>join</B></h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
                 <form action="/main/joinPost" method="POST">
-                    <div>
-                        <label for="joinEmail"><b>EMAIL</b></label><br>
-                        <input type="email" id="joinEmail" name="email" placeholder="email" requried>
-                        <button type="button" id="sendCertificate" value="certificateNum">Send Certificate</button>
+                    <div class="mb-3">
+                        <label for="join_email" class="form-label"><b>Email</b></label>
+                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" oninput="javascript:checkEmail()">
+                    	<p id='email_message'></p>
                     </div>
-                    <p>&nbsp;</p>
-                    <div>
-                        <input type="text" id="certficateNumber" name="certificateNumber" placeholder="Certificate Number" requried>
+                    <!-- <div class="input-group mb-3">
+                        <label for="email" class="form-label"><b>Email</b></label>
+                        <input type="email" class="form-control" id="email" placeholder="name@example.com" aria-label="name@example.com" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">check</button>
+                        </div> -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label"><b>password</b></label>
+                        <input type="password" class="form-control" id="join_password" name="password" placeholder="password" oninput="javascript:checkPw()" autocomplete="new-password">
+                        <p id='pw_message'></p>
                     </div>
-                    <p>&nbsp;</p>                    
-                    <div>
-                        <label for="joinNickname"><b>NICKNAME</b></label><br>
-                        <input type="text" id="joinNickname" name="nickname" placeholder="nickname" requried>
+                    <div class="mb-3">
+                        <label for="nickname" class="form-label"><b>nickname</b></label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="John" oninput="javascript:checkNickname()">
+                        <p id='nick_message'></p>
+                        </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary sign_up_btn" type="submit" disabled><b>SIGN UP</b></button>
                     </div>
-                    <p>&nbsp;</p>
-                    <div>
-                        <label for="joinPassword"><b>password</b></label><br>
-                        <input type="password" id="joinPassword" name="password" placeholder="password" requried>
-                    </div>
-                    <button type="submit">JOIN</button>
                 </form>
-                <button type="button" class="modal_close_btn">close</button>
             </div>
-            <div class="modal_layer"></div>
         </div>
+        </div>
+    </div>
 
-    </header>    
 </body>
 </html>

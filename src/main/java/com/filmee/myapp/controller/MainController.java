@@ -88,14 +88,6 @@ public class MainController {
 		return "redirect:/main";	//로그인 실패시 메세지와 함께 다시 로그인창
 	}//loginFailed
 
-	@GetMapping("/checkEmail")
-	public @ResponseBody int check(String email) throws Exception {
-		log.debug("idCheck({}) invoked.", email);
-		
-		int result = this.joinService.checkEmailDuplicated(email);
-		
-		return result;
-	}//emailCheck
 	
 	@GetMapping("/join")
 	public String join(RedirectAttributes rttrs) {
@@ -104,7 +96,31 @@ public class MainController {
 		rttrs.addFlashAttribute("message", "join");
 		
 		return "redirect:/main";
-	}
+	}//join
+	
+	@ResponseBody
+	@GetMapping("/checkEmail")
+	public Integer checkEmail(String email) throws Exception {
+		log.debug("checkEmail({}) invoked.", email);
+		
+		int result = this.joinService.checkEmailDuplicated(email);
+		log.info("result : {}", result);
+		
+		return result;
+	}//checkEmail
+	
+	@ResponseBody
+	@GetMapping("/checkNickname")
+	public Integer checkNickname(String nickname) throws Exception {
+		log.debug("checkNickname({}) invoked.", nickname);
+		
+		int result = this.joinService.checkNicknameDuplicated(nickname);
+		log.info("result : {}", result);
+		
+		return result;
+	}//checkNickname
+	
+
 	
 	@PostMapping("/joinPost")
 	public String joinPost(JoinDTO dto, RedirectAttributes rttrs, Model model) throws Exception{

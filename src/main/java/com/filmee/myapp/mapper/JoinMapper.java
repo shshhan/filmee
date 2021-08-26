@@ -8,4 +8,6 @@ public interface JoinMapper {
 	
 	public abstract int selectUserWithEmail(String email)throws Exception;
 	
+	public abstract int selectUserWithNickname(String nickname)throws Exception;
+	
 }//end interface
