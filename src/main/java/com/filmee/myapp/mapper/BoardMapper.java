@@ -12,7 +12,9 @@ public interface BoardMapper {
 	public abstract int insertSelectKey(BoardVO board);		//작성
 	public abstract int update(BoardVO board);	//수정
 	public abstract int delete(Integer bno);	//삭제
-	
 	public abstract int getTotalCount(Criteria cri);	//게시판의 총 게시물 개수
+	public abstract int viewCnt(Integer bno);	//조회수
+	public abstract void likeCnt(Integer bno);	//좋아요수
+	public abstract void likeCheck(Integer writer);
 	
 }//end interface 

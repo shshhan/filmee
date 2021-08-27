@@ -6,9 +6,13 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.filmee.myapp.domain.BoardCommentVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
+import com.filmee.myapp.domain.FileVO;
+import com.filmee.myapp.mapper.BoardCommentMapper;
 import com.filmee.myapp.mapper.BoardMapper;
+import com.filmee.myapp.mapper.FileMapper;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,10 +25,13 @@ public class BoardServiceImpl
 	implements BoardService {
 	
 	@Autowired private BoardMapper mapper;
+	@Autowired private FileMapper fmapper;
+	@Autowired private BoardCommentMapper cmapper;
+
 
 	@Override
 	public List<BoardVO> getList(Criteria cri) {
-		log.debug("getList({}) invoked.",cri);
+		log.debug("getList({},{}) invoked.",cri);
 		Objects.requireNonNull(this.mapper);
 		
 		return this.mapper.getList(cri);
@@ -34,14 +41,16 @@ public class BoardServiceImpl
 	public BoardVO get(Integer bno) {
 		log.debug("get({}) invoked.",bno);
 		Objects.requireNonNull(this.mapper);
+		this.mapper.viewCnt(bno);
 		
 		return this.mapper.select(bno);
 	}//get
 
 	@Override
 	public boolean register(BoardVO board) {
-		log.debug("register({}) invoked.",board);
+		log.debug("register({},{}) invoked.",board);
 		Objects.requireNonNull(mapper);
+		Objects.requireNonNull(fmapper);
 		
 		return (this.mapper.insertSelectKey(board)==1);
 	}
@@ -70,5 +79,24 @@ public class BoardServiceImpl
 		
 		return this.mapper.getTotalCount(cri);
 	}
+
+	@Override
+	public int fileInsert(FileVO file) {
+		log.debug("fileInsert({}) invoked.",file);
+		Objects.requireNonNull(this.fmapper);
+		
+		int affectedLines = this.fmapper.insert(file);
+		return affectedLines;
+	}
+
+	@Override
+	public FileVO fileDetail(Integer bno) {
+		log.debug("fileDetail({}) invoked.", bno);
+		Objects.requireNonNull(this.fmapper);
+		
+		FileVO list = this.fmapper.find(bno);
+		
+		return list;
+	}//fileDetail
 
 }//end class

@@ -4,20 +4,20 @@ import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class BoardVO {
+@NoArgsConstructor
+public class BoardCommentVO {
 	
+	private Integer bcno;
 	private Integer bno;
-	private String category;
 	private Integer writer;
-	private String title;
 	private String content;
 	private Date insert_ts;
 	private Date update_ts;
-	private Date delete_ts;
-	private Integer view_cnt;
 	private Integer like_cnt;
+	private Integer parent_bcno;
 
-}
+}//end class
