@@ -30,26 +30,38 @@
 	view-name="main/main"
 	status-code="200" 
 	/>
-		
-	<!--  for test  -->
-	<view-controller
-		path = "/main/useronly"
-		view-name = "main/useronly"
-		status-code = "200"
-		/>
-		
+				
 	<view-controller
 		path = "/main/logout"
 		view-name = "main/logout"
 		status-code = "200"
 		/>
 		
+	<view-controller 
+		path = "/main/forgotPw"
+		view-name = "main/forgotPw"
+		status-code = "200"
+		/>
+	
+	
+	
+	<!--  for test  -->
+	<view-controller
+		path = "/main/useronly"
+		view-name = "main/useronly"
+		status-code = "200"
+		/>
 	<view-controller
 		path = "/main/strangerPage"
 		view-name = "main/strangerPage"
 		status-code = "200"
 		/>
-		
+	<view-controller
+		path = "/main/testMyPage"
+		view-name = "main/testMyPage"
+		status-code = "200"
+		/>
+	<!--  for test  -->	
 
 	<beans:bean
 		id="loginInterceptor"
@@ -57,48 +69,58 @@
 		/> 
 		
 	<beans:bean
-		id="authInterceptor"
-		class="com.filmee.myapp.interceptor.AuthInterceptor"
-		/>
-		
-	<beans:bean
 		id="logoutInterceptor"
 		class="com.filmee.myapp.interceptor.LogoutInterceptor"
 		/>
 				
 	<beans:bean
-		id="mainInterceptor"
-		class="com.filmee.myapp.interceptor.MainInterceptor"
+		id="authInterceptor"
+		class="com.filmee.myapp.interceptor.AuthInterceptor"
+		/>
+
+	<beans:bean
+		id="autoLoginInterceptor"
+		class="com.filmee.myapp.interceptor.AutoLoginInterceptor"
 		/>		
 
 	<interceptors>
 		<interceptor>
 			<mapping path="/main/loginPost" />
+			
 			<beans:ref bean="loginInterceptor" />
+		</interceptor>
+	
+		<interceptor>
+			<mapping path="/main/logout" />
+			
+			<beans:ref bean="logoutInterceptor" />
 		</interceptor>
 		
 		<interceptor>
 			<mapping path="/main/useronly" />			
+			<mapping path="/main/testMyPage" />	
+					
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		
 		<interceptor>
-			<mapping path="/main/logout" />
-			<beans:ref bean="logoutInterceptor" />
-		</interceptor>
-
-		<interceptor>
 			<mapping path="/*" />
-			<exclude-mapping path="/main/useronly" />	
-			<exclude-mapping path="/main/login" />
-			<exclude-mapping path="/main/loginPost" />
-			<exclude-mapping path="/main/loginFailed" />
-			<exclude-mapping path="/main/logout" />
-			<exclude-mapping path="/main/join" />
-			<exclude-mapping path="/main/joinPost" />
-			
-			 
-			<beans:ref bean="mainInterceptor" />
+			<mapping path="/*/*" />
+			<!-- 제외 경로 : 로그인 관련 + AuthInterceptor Path -->
+			<exclude-mapping path="/main/useronly" />			
+			<exclude-mapping path="/main/testMyPage" />	
+			<exclude-mapping path="/main/login" />	
+			<exclude-mapping path="/main/loginPost" />	
+			<exclude-mapping path="/main/loginNoInfo" />
+			<exclude-mapping path="/main/loginUnauthorized" />	
+			<exclude-mapping path="/main/join" />	
+			<exclude-mapping path="/main/checkEmail" />	
+			<exclude-mapping path="/main/checkNickname" />	
+			<exclude-mapping path="/main/joinPost" />	
+			<exclude-mapping path="/main/emailAuthorized" />	
+			<exclude-mapping path="/main/forgotPwPost" />	
+						 
+			<beans:ref bean="autoLoginInterceptor" />
 		</interceptor>
 		
 	</interceptors>
@@ -106,26 +128,7 @@
 
 	<context:component-scan base-package="com.filmee.myapp.controller" />
 	<context:component-scan base-package="org.zerock.myapp.interceptor" />
-
-	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
-	<!-- for Hash -->
-
-	<!-- <beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <beans:property name="host" value="smtp.gmail.com" />
-        <beans:property name="port" value="587" />
-        <beans:property name="username" value="이메일 주소"/>
-        <beans:property name="password" value="비밀번호" />
-        <beans:property name="javaMailProperties">
-            <beans:props>
-                <beans:prop key="mail.transport.protocol">smtp</beans:prop>
-                <beans:prop key="mail.smtp.auth">true</beans:prop>
-                <beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
-                <beans:prop key="mail.debug">true</beans:prop>
-            </beans:props>
-        </beans:property>
-    </beans:bean> -->
-
+	<context:component-scan base-package="org.zerock.myapp.exception" />
 	
 
-	
 </beans:beans>

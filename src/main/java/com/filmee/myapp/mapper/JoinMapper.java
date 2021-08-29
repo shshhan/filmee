@@ -1,10 +1,10 @@
 package com.filmee.myapp.mapper;
 
-import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.domain.UserDTO;
 
 public interface JoinMapper {
 
-	public abstract int insertUser(JoinDTO dto) throws Exception;
+	public abstract int insertUser(UserDTO dto) throws Exception;
 	
 	public abstract int countUsersWithEmail(String email)throws Exception;
 	

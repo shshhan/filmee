@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.filmee.myapp.domain.LoginDTO;
+import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
 
 import lombok.NoArgsConstructor;
@@ -46,7 +46,7 @@ public class LoginServiceTests {
 	public void testLogin() throws Exception {
 		log.debug("testLogin() invoked.");
 		
-		LoginDTO dto = new LoginDTO();
+		UserDTO dto = new UserDTO();
 		dto.setEmail("EMAIL1@GMAIL.COM");
 		dto.setPassword("PASS1");
 		dto.setRememberMe(false);

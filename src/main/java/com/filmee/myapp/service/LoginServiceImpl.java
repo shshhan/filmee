@@ -7,7 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.filmee.myapp.domain.LoginDTO;
+import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.mapper.LoginMapper;
 
@@ -36,7 +36,7 @@ public class LoginServiceImpl
 	
 	
 	@Override
-	public UserVO login(LoginDTO dto) throws Exception {
+	public UserVO login(UserDTO dto) throws Exception {
 		log.debug("login({}) invoked.", dto);
 		
 		UserVO user = this.mapper.selectUser(dto);
@@ -50,7 +50,7 @@ public class LoginServiceImpl
 	public String getUserSalt(String email) throws Exception {
 		log.debug("getUserSalt({}) invoked.", email);
 		
-		String salt = this.mapper.selectSaltByEmail(email);
+		String salt = this.mapper.selectSaltWithEmail(email);
 		
 		log.info("salt : {}", salt);
 		
@@ -83,6 +83,16 @@ public class LoginServiceImpl
 	}//findUserWithCookie
 
 
-
-
+	@Override
+	public boolean changePassword(UserDTO dto) throws Exception {
+		log.debug("changePassword({}) invoked.", dto);
+		
+		if(this.mapper.updatePassword(dto) == 1) {
+			return true;
+		}else {
+			return false;
+		}//if-else
+		
+	}//modifyPwToTempPw
+	
 }//end class

@@ -2,8 +2,13 @@ package com.filmee.myapp.service;
 
 public interface MailSendService {
 	
-	public abstract String getAuthCode(int size);
+	public final int EMAIL= 6;
+	public final int TEMP_PW = 8;
 	
-	public abstract String sendAuthMail(String email);
+	public abstract String getRandomCode(int size);
+	
+	public abstract void sendAuthMail(String email, String authCode);
+
+	public abstract void sendTempPwMail(String email, String tempPw);
 	
 }//end interface

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.domain.UserDTO;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,7 +39,7 @@ public class JoinServiceTests {
 	public void testJoin() throws Exception {
 		log.debug("join() invoked.");
 		
-		JoinDTO dto = new JoinDTO();
+		UserDTO dto = new UserDTO();
 		dto.setEmail("1234@1234.com");
 		dto.setNickname("진모천재짱짱");
 		dto.setPassword("1234");

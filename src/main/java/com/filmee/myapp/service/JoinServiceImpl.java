@@ -6,7 +6,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.mapper.JoinMapper;
 
 import lombok.NoArgsConstructor;
@@ -33,7 +33,7 @@ public class JoinServiceImpl
 	
 	
 	@Override
-	public int join(JoinDTO dto) throws Exception {
+	public int join(UserDTO dto) throws Exception {
 		log.debug("join({}) invoked.", dto);
 		
 		int affectedLines = this.mapper.insertUser(dto);

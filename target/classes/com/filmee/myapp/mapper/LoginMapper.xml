@@ -15,7 +15,7 @@
 
     </select>
     
-    <select id="selectSaltByEmail" resultType="string">
+    <select id="selectSaltWithEmail" resultType="string">
 
         SELECT salt
         FROM fm_user
@@ -39,17 +39,26 @@
     <select id="selectUserWithCookie" resultType="com.filmee.myapp.domain.UserVO">
 
         SELECT 
-                user_id, email, nickname, is_Admin, profile_text, profile_photo_path
+                user_id, email, nickname, is_Admin, profile_text, profile_photo_path, auth_code
         FROM
                 fm_user
         WHERE
                 remember_cookie = #{cookieValue}
           AND   
-                remember_age > sysdate
+                remember_age > current_date
 
     </select>
-
-
-
+    
+	<!-- 	//myPage쪽으로 넘어갈 부분 -->
+   
+	    <update id="updatePassword">
+		UPDATE fm_user
+		   SET password=#{password},
+		   	   salt=#{salt},
+		   	   update_ts=current_date
+		 WHERE email=#{email}
+	</update>
+	
+	
 
 </mapper>

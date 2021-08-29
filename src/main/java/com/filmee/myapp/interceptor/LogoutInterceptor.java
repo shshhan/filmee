@@ -28,9 +28,9 @@ public class LogoutInterceptor
 		//logout시 기존 주소로 다시 이동할 방법 생각해보기
 		
 		
-		//Session scope에서 LoginKey 삭제
 		HttpSession session = request.getSession();
 		
+		//Session scope에서 로그인정보 삭제
 		session.removeAttribute(MainController.loginKey);
 		log.info(">>>>> LoginKey removed. >>>>>");
 		
@@ -52,10 +52,7 @@ public class LogoutInterceptor
 			ModelAndView modelAndView) throws Exception {		
 		log.debug("postHandle(request, response, {}, {}) invoked.", handler, modelAndView);
 				
-	
-		
 		response.sendRedirect("/main");	
-		
 	}//postHandle
 
 }//end class

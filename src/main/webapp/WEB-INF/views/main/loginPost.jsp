@@ -15,12 +15,6 @@
 	<h1>WEB-INF/views/main/loginPost.jsp</h1>
 	
 	<hr>
-
-	<script>
-		//syntax : setTimeOut(callback, timeout[ms])
-		setTimeout(function() {
-			location.href="/main";
-		}, 3000)
-	</script>
+	없으면 오류나서 만들어둠. 실제로 여기로 이동하지는 않음
 </body>
 </html>

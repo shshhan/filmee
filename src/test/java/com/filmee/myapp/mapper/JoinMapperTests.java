@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.filmee.myapp.domain.JoinDTO;
+import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.service.MailSendService;
-import com.filmee.myapp.util.FilmeeUtil;
+import com.filmee.myapp.util.HashUtils;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +30,8 @@ public class JoinMapperTests {
 	private JoinMapper mapper;
 	@Setter(onMethod_=@Autowired)
 	private MailSendService mailService;
+	@Setter(onMethod_=@Autowired)
+	private HashUtils hashUtils;
 	
 	@Before
 	public void setup() {
@@ -43,19 +45,19 @@ public class JoinMapperTests {
 	public void testInsertUser() throws Exception {
 		log.debug("testInsertUser() invoked.");
 		
-		JoinDTO dto = new JoinDTO();
+		UserDTO dto = new UserDTO();
 		dto.setEmail("22@22.com");
 		dto.setNickname("testing");
 		dto.setPassword("123");
 		
-		String salt = FilmeeUtil.getSalt();
-		String hashedPw = FilmeeUtil.hashing(dto.getPassword(), salt);
+		String salt = hashUtils.getSalt();
+		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);
 		
 		dto.setPassword(hashedPw);
 		dto.setSalt(salt);
 		
 		
-		String authCode = mailService.getAuthCode(6);
+		String authCode = mailService.getRandomCode(6);
 		dto.setAuthCode(authCode);
 		
 		int affectedLines = this.mapper.insertUser(dto);

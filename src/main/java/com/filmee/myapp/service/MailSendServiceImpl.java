@@ -24,11 +24,11 @@ public class MailSendServiceImpl implements MailSendService {
 
 	@Setter(onMethod_=@Autowired)
 	private JavaMailSenderImpl mailSender;
-	
+		
 	//인증코드 난수 생성
 	@Override
-	public String getAuthCode(int size) {
-		log.debug("getAuthCode({}) invoked.", size);
+	public String getRandomCode(int size) {
+		log.debug("getRandomCode({}) invoked.", size);
 
 		Random random = new Random();
 		StringBuffer buffer = new StringBuffer();
@@ -47,11 +47,9 @@ public class MailSendServiceImpl implements MailSendService {
 
 	//인증 메일 발송
 	@Override
-	public String sendAuthMail(String email){
+	public void sendAuthMail(String email, String authCode){
 		log.debug("sendAuthMail({}) invoked.", email);
-		
-		String authCode = this.getAuthCode(6);
-		
+				
 		try {
 			MailUtils sendMail = new MailUtils(mailSender);
 			sendMail.setSubject("FilMEE 회원가입 이메일 인증");
@@ -63,9 +61,9 @@ public class MailSendServiceImpl implements MailSendService {
 				            .append(email)
 				            .append("&authCode=")
 				            .append(authCode)
-				            .append("' target='_blenk'>이메일 인증 확인</a>")
+				            .append("' target='_blenk'>이메일 인증하기</a>")
 				            .toString());
-            sendMail.setFrom("shawnshhan@gmail.com", "관리자");
+            sendMail.setFrom("shawnshhan@gmail.com", "FilMee");
             sendMail.setTo(email);
             sendMail.send();
 			
@@ -75,7 +73,34 @@ public class MailSendServiceImpl implements MailSendService {
 			e.printStackTrace();
 		}//try-catch
 		
-		return authCode;
 	}//sendAuthMail
 
-}
+	//비밀번호 재설정 링크 발송
+	@Override
+	public void sendTempPwMail(String email, String tempPw){
+		log.debug("sendTempPwMail({}) invoked.", email);
+			
+		try {
+			MailUtils sendMail = new MailUtils(mailSender);
+			sendMail.setSubject("FilMEE 임시 비밀번호");
+			sendMail.setText(
+					new StringBuffer()
+							.append("<h1>[임시 비밀번호]</h1>")
+							.append("<h3>로그인 후 반드시 비밀번호를 변경하세요.<h3>")
+							.append("<h2> 임시 비밀번호 : ")
+							.append(tempPw)
+							.append("</h2>")
+				            .toString());
+            sendMail.setFrom("shawnshhan@gmail.com", "FilMee");
+            sendMail.setTo(email);
+            sendMail.send();
+			
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}//try-catch
+
+	}//sendResetPwMail
+	
+}//end class

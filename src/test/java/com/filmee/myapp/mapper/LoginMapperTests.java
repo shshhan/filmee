@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.filmee.myapp.domain.LoginDTO;
+import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
-import com.filmee.myapp.util.FilmeeUtil;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -44,7 +43,7 @@ public class LoginMapperTests {
 	public void testSelectUser() throws Exception {
 		log.debug("testSelecUser() invoked.");
 		
-		LoginDTO dto = new LoginDTO();
+		UserDTO dto = new UserDTO();
 		dto.setEmail("22@22.com");
 		dto.setPassword("1234");
 		
@@ -62,14 +61,14 @@ public class LoginMapperTests {
 	}//setup
 	
 	@Test
-	public void testSelectSaltByEmail() throws Exception {
+	public void testSelectSaltWithEmail() throws Exception {
 		log.debug("testSelectSaltByEmail() invoked.");
 		
-		LoginDTO dto = new LoginDTO();
+		UserDTO dto = new UserDTO();
 		dto.setEmail("22@22.com");
 		dto.setPassword("123");
 		
-		String salt = this.mapper.selectSaltByEmail(dto.getEmail());
+		String salt = this.mapper.selectSaltWithEmail(dto.getEmail());
 		log.info("salt : {}", salt);	
 		
 	}//testSelectSaltByEmail
@@ -100,8 +99,6 @@ public class LoginMapperTests {
 		
 	}//testSelectUserWithCookie
 	
-	
-
 	@After
 	public void tearDown() {
 		log.debug("tearDown() invoked.");

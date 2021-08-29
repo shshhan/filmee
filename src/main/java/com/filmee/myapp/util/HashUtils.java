@@ -4,15 +4,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import org.springframework.stereotype.Component;
+
+import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class FilmeeUtil {
+@NoArgsConstructor
 
-	private static final int SALT_SIZE = 16;
+@Component
+public class HashUtils {
+
+	private final int SALT_SIZE = 16;
 	
-	public static String hashing(String password, String salt) throws NoSuchAlgorithmException {
+	public String hashing(String password, String salt) throws NoSuchAlgorithmException {
 		log.debug("hashing({}, {}) invoked.", password, salt );
+		
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 
 		password += salt;
@@ -20,7 +27,7 @@ public class FilmeeUtil {
 		md.update(password.getBytes());
 		byte[] temp = md.digest();
 
-		String hashedPw = FilmeeUtil.byteToString(temp);
+		String hashedPw = this.byteToString(temp);
 		
 		log.info("hasehdPw : {}", hashedPw);
 		
@@ -28,14 +35,14 @@ public class FilmeeUtil {
 		
 	}// hashing
 
-	public static String getSalt() {
+	public String getSalt() {
 		log.debug("getSalt() invoked.");
 		
 		SecureRandom rnd = new SecureRandom();
 		byte[] temp = new byte[SALT_SIZE];
 		rnd.nextBytes(temp);
 		
-		String salt = FilmeeUtil.byteToString(temp); 
+		String salt = this.byteToString(temp); 
 		
 		log.info("salt : {}", salt);
 		
@@ -43,7 +50,7 @@ public class FilmeeUtil {
 		
 	}//getSalt
 	
-	private static String byteToString(byte[] temp) {
+	private String byteToString(byte[] temp) {
 		log.debug("byteToString(temp) invoked.");
 
 		StringBuffer buffer = new StringBuffer();

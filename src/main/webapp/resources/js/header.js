@@ -1,121 +1,117 @@
+//이메일 양식 유효성 검사
 function isEmail(email) {
+	// console.log("isEamil invoked.");
 
 	var reg = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 	return reg.test(email);
-}//isEmail
-   
-   
-   var emailCheck=0;
-    var pwCheck=0;
-    var nickCheck=0;
-    
-    function checkEmail(){
-        var email = $('#join_email').val();
-        $.ajax({
-            data : {
-                email : email
-            },
-            type:'get',
-            url : "/main/checkEmail",
-            dataType:'json',
-            success : function(data){
-                if(email.length == 0){
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#join_email").css("background-color", "");
-                    $("#email_message").text("");
-                    emailCheck = 0;
-                } else if( !isEmail(email) ){
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#join_email").css("background-color", "#FFCECE");
-                    $("#email_message").text("Inappropriate email");
-                    emailCheck = 0;
-                } else if (data == '0') {
-                    $("#join_email").css("background-color", "#C2DBFE");
-                    $("#email_message").text("Available");
-                    emailCheck = 1;
-                    if(emailCheck == 1 && pwCheck == 1 && nickCheck == 1) {
-                        $(".sign_up_btn").prop("disabled", false);
-                        // $(".sign_up_btn").css("background-color", "#C2DBFE");
-                    }//if
-                } else if (data == '1') {
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#join_email").css("background-color", "#FFCECE");
-                    $("#email_message").text("Taken");
-                    emailCheck = 0;
-                }//if-elseif-elseif-elseif
-            }//success
-        });//ajax
-    };//checkEmail
+};//isEmail
+	
+//====== 회원가입 ======
 
-    function checkPw(){
-        var pw = $('#join_password').val();
-        var pwLeng = pw.length;
+// input에 입력시 유효성을 체크할 변수
+var isEmailChecked=false;
+var isPwValid=false;
+var isNickChecked=false;
 
-        if(pwLeng==0){
-            $(".sign_up_btn").prop("disabled", true);
-            // $(".sign_up_btn").css("background-color", "#aaaaaa");
-            $("#join_password").css("background-color", "");
-            $("#pw_message").text("");
-            pwCheck = 0;
-        }else if(pwLeng < 5){
-            $(".sign_up_btn").prop("disabled", true);
-            // $(".sign_up_btn").css("background-color", "#aaaaaa");
-            $("#join_password").css("background-color", "#FFCECE");
-            $("#pw_message").text("Passwords must be at least 6 characters.");
-            pwCheck=0;
-        }else{
-            $("#join_password").css("background-color", "#C2DBFE");
-            $("#pw_message").text("Avaliable");
-            pwCheck=1;
-            if(emailCheck == 1 && pwCheck == 1 && nickCheck == 1) {
-                $(".sign_up_btn").prop("disabled", false);
-                // $(".sign_up_btn").css("background-color", "#C2DBFE");
-            }//if
-        }//if-elseif-else
-    };//checkPw
+var isEmailExist=false;	//forgotPw.jsp에서 사용할 변수
 
-    function checkNickname(){
-        var nickname = $('#nickname').val();
-        $.ajax({
-            data : {
-                nickname : nickname
-            },
-            type:'get',
-            url : "/main/checkNickname",
-            dataType:'json',
-            success : function(data){
-                if(nickname.length == 0){
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#nickname").css("background-color", "");
-                    $("#nick_message").text("");
-                    nickCheck = 0;
-                } else if(nickname.length < 2){
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#nickname").css("background-color", "#FFCECE");
-                    $("#nick_message").text("Nickname must be at least 2 characters.");
-                    nickCheck = 0;
-                } else if (data == '0') {
-                    $("#nickname").css("background-color", "#C2DBFE");
-                    $("#nick_message").text("Available");
-                    nickCheck = 1;
-                    if(emailCheck == 1 && pwCheck == 1 && nickCheck == 1) {
-                        $(".sign_up_btn").prop("disabled", false);
-                        // $(".sign_up_btn").css("background-color", "#4CAF50");
-                    }//if
-                } else if (data == '1') {
-                    $(".sign_up_btn").prop("disabled", true);
-                    // $(".sign_up_btn").css("background-color", "#aaaaaa");
-                    $("#nickname").css("background-color", "#FFCECE");
-                    $("#nick_message").text("Taken");
-                    nickCheck = 0;
-                }//if-elseif-elseif
-            }//success
-        });//ajax
-    };//checkNickname
-    
+//모든 input 태그의 유효성 검사가 성공적이면 Change버튼 활성화
+function isSignUpBtnValid(){
+	// console.log("isSignUpBtnValid invoked.");
+
+	if(isEmailChecked && isPwValid && isNickChecked){
+		// console.log("good to go");
+		$(".sign_up_btn").prop("disabled", false);
+	}else{
+		// console.log("failed");
+		$(".sign_up_btn").prop("disabled", true);
+	}//if-else
+};//isChangeButtonValid
+
+function checkEmail(email){
+	console.log("checkEmail invoked.");
+	
+	// var email = $('#join_email').val();
+	console.log("checkEmail :", email);
+
+	$.ajax({
+		async:false,
+		data : {
+			email : email
+		},
+		type:'get',
+		url : "/main/checkEmail",
+		dataType:'json',
+		success : function(data){
+			// console.log("data :", data);
+			if(email.length == 0){
+				isEmailChecked = false;
+				$("#email_message").text("");
+			} else if( !isEmail(email) ){
+				isEmailChecked = false;
+				$("#email_message").text("옳바른 이메일 형식이 아닙니다.");                
+			} else if (data == '0') {
+				isEmailChecked = true;                
+				$("#email_message").text("✅☑✔");
+			} else if (data == '1') {
+				isEmailChecked = false;                
+				$("#email_message").text("이미 가입된 이메일주소입니다.");
+				isEmailExist = true;
+			}//if-elseif-elseif-elseif
+			console.log("isEmailExist header.js:",isEmailExist);
+			isSignUpBtnValid();
+		}//success
+	});//ajax
+};//checkEmail
+
+function checkPw(){
+	// console.log("checkPw invoked.");
+	
+	var pw = $('#join_password').val();
+	var pwLeng = pw.length;
+
+	if(pwLeng==0){
+		isPwValid = false;
+		$("#pw_message").text("");
+	}else if(pwLeng < 6){
+		isPwValid = false;
+		$("#pw_message").text("비밀번호는 6자리 이상이어야 합니다.");
+	}else{     
+		isPwValid = true;
+		$("#pw_message").text("✅☑✔");
+	}//if-elseif-else
+	isSignUpBtnValid();
+};//checkPw
+
+function checkNickname(){
+	// console.log("checkNickname invoked.");
+	
+	var nickname = $('#nickname').val();
+	$.ajax({
+		data : {
+			nickname : nickname
+		},
+		type:'get',
+		url : "/main/checkNickname",
+		dataType:'json',
+		success : function(data){
+			// console.log("data :", data);
+
+			if(nickname.length == 0){
+				isNickChecked = false;
+				$("#nick_message").text("");
+			} else if(nickname.length < 2){
+				isNickChecked = false;
+				$("#nick_message").text("닉네임은 두글자 이상이어야 합니다.");
+			} else if (data == '0') {
+				isNickChecked = true;
+				$("#nick_message").text("✅☑✔");     
+			} else if (data == '1') {
+				isNickChecked = false;
+				$("#nick_message").text("이미 등록된 닉네임입니다.");
+			}//if-elseif-elseif-elseif
+			isSignUpBtnValid();
+		}//success
+	});//ajax
+};//checkNickname

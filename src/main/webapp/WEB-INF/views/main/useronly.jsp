@@ -35,9 +35,10 @@
    <h1>WEB-INF/views/main/useronly.jsp</h1>
 	
 	<hr>
-	
-	<button type="button" id="logout">로그아웃</button>
-	    <%@include file="/resources/html/footer.jsp" %>
+
+	회원만 접근할 수 있는 주소 테스트하려고 만든 페이지
+		
+    <%@include file="/resources/html/footer.jsp" %>
 	
 </body>
 </html>

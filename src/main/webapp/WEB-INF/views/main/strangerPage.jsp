@@ -19,6 +19,7 @@
    <h1>WEB-INF/views/main/strangerPage.jsp</h1>
 	
 	<hr>
+	비회원도 접근 가능한 테스트용 메뉴
 	     <a href="/main/useronly">BOARD</a>                          
 	
 	    <%@include file="/resources/html/footer.jsp" %>

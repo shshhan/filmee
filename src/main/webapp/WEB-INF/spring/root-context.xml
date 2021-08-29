@@ -65,7 +65,9 @@
 
 	
 	<context:component-scan base-package="com.filmee.myapp.service" />
-	<context:component-scan base-package="org.zerock.myapp.aop" />
+	<context:component-scan base-package="com.filmee.myapp.aop" />
+	<context:component-scan base-package="com.filmee.myapp.util" />
+	
 	
 	<mybatis-spring:scan base-package="com.filmee.myapp.mapper" />
 		

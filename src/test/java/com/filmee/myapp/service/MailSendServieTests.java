@@ -38,7 +38,9 @@ public class MailSendServieTests {
 	public void testSendAuthMail() {
 		log.debug("testSendAuthMail() invoked.");
 		
-		String authCode = mss.sendAuthMail("hansh9501@naver.com");
+		String authCode = mss.getRandomCode(MailSendService.EMAIL);
+		mss.sendAuthMail("hansh9501@nm", authCode);
+	
 		log.info(authCode);
 	}//testSendAuthMail
-}
+}//end class

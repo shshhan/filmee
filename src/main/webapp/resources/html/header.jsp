@@ -7,76 +7,110 @@
 <meta charset="UTF-8">
 	
     <link rel="stylesheet" href="/resources/css/header.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
+   	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" ></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="/resources/js/header.js"></script>
+    
     <script>
 
         $(function(){
-            console.clear();
-            console.log('jq started');
+            // console.clear();
+            // console.log('jq started');
        
-            // 로그인 여부에 따라 보여주는 header 변경
-            var loginKey = "${__LOGIN__}";
+            // 로그인 여부 확인
+            //var loginKey = "${__LOGIN__}";
 
-            if(loginKey.length > 0){
+            //로그인 여부에 따라 보여주는 header 변경
+            if("${__LOGIN__}".length > 0){
                 $("#strangerHeadermenu>li").attr("style", "display:none");
                 $("#memberHeadermenu>li").attr("style", "display:inline");
             }//if
 
             //전달된 message가 있으면 alert
-            var message = "${message}";
-            switch(message){
+            //var message = "${message}";
+            switch("${message}"){
+                //====== 로그인 관련 ======
+
+                //로그인 필요시
                 case 'login_required' :              
                     $("#login").modal("show");
                     break;
-                    
-                case 'login_failed_no_info' :
+                
+                //로그인 실패시
+                case 'no_info' :
                     $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
                     $("#alert_modal").modal("show");
-
+                    
+                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
                     var myModalEl = document.getElementById('alert_modal');
                     myModalEl.addEventListener('hidden.bs.modal',function(){
                         $("#login").modal("show");
                     });
                     break;
                 
+                //회원가입 후 이메일 인증을 하지 않고 로그인 시
+                //
                 case 'email_unauthorized' :
                     $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
                     $("#alert_modal").modal("show");
                     break;
 
+                //====== 회원가입 관련 ======
+
+                //회원가입 버튼을 누를 시
                 case 'join' :
                     $("#join").modal("show");   
                     break;
 
+                //회원가입을 마쳤을 시
                 case 'just_joinned' :
                     $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
                     $("#alert_modal").modal("show");
                     break;
 
+                //회원가입 실패시
                 case 'join_failed' :
                     $("#alert_modal p").text("회원가입에 실패했습니다.");
                     $("#alert_modal").modal("show");
                     break;
 
+                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
                     var myModalEl = document.getElementById('alert_modal');
                     myModalEl.addEventListener('hidden.bs.modal',function(){
                         $("#join").modal("show");
                     });
                     break;
                 
+                //회원가입 후 이메일 인증까지 마쳤을 시
                 case 'join_complete' :
                     $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+
+                //임시비밀번호 발송시
+                case 'temp_pw_sent' :
+                    $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+                
+                //비밀번호 찾기에서 미가입 이메일 입력시
+                case 'no_info_forgot_pw' :
+                    $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
+                    $("#alert_modal").modal("show");
+                    break;
+                
+                case 'pw_changed' :
+                    $("#alert_modal p").text("비밀번호가 변경되었습니다.");
                     $("#alert_modal").modal("show");
                     break;
 
                 default :
             }	//switch-case
 
+            //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
             $("#close_login_open_join").click(function(){
                 $("#login").modal("hide");
                 $("#join").modal("show");   
@@ -94,9 +128,9 @@
             </a>
             <!-- header for nonUser -->
             <ul id="strangerHeadermenu">
-                <li><a href="#" id="login_a" data-bs-toggle="modal" data-bs-target="#login">SIGN IN</a></li>
+                <li><a href="#" data-bs-toggle="modal" data-bs-target="#login">SIGN IN</a></li>
                 <li><a href="#" data-bs-toggle="modal" data-bs-target="#join">CREATE ACCOUNT</a></li>
-                <li><a href="/main/strangerPage">STRANGER</a></li>                              
+                <li><a href="/main/strangerPage">StRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
                 <li>
                     <input type="search" placeholder="Search" class="search-field" />
@@ -108,8 +142,8 @@
             </ul>
             <!-- header for user -->
             <ul id="memberHeadermenu">
-             	 <li><a href="/main/logout">SIGN OUT</a></li>
-                <li><a href="#" id="">~~~~</a></li>
+             	<li><a href="/main/testMyPage">MY PAGE</a></li>
+             	<li><a href="/main/logout">SIGN OUT</a></li>
                 <li><a href="/main/strangerPage">STRANGER</a></li>                              
                 <li><a href="/main/useronly">BOARD</a></li>                              
                 <li>
@@ -124,9 +158,10 @@
     </header>
 
     <!-- alert Modal -->
+    <!-- <div class="modal fade" id="alert_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
     <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content"> 
                 <!-- <div class="modal-header"> -->
                     <!-- <h2 class="modal-title" id="staticBackdropLabel"><B>LOGIN</B></h2> -->
                     <!-- <p style="font-size: 15px; text-align: center;"></p> -->
@@ -145,10 +180,10 @@
 
     <!-- login Modal -->
     <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-dialog modal-dialog-centered  modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="staticBackdropLabel"><B>LOGIN</B></h2>
+                    <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN IN</B></h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -158,8 +193,9 @@
                             <input type="email" class="form-control" id="login_email" name="email" placeholder="name@example.com" autocomplete="username">
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label"><b>password</b></label>
+                            <label for="password" class="form-label"><b>Password</b></label><br>
                             <input type="password" class="form-control" id="login_password" name="password" placeholder="password" autocomplete="current-password">
+                            <div><a href="/main/forgotPw" style="color: #C2DBFE ;">Forgot Password</a></div>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label" for="rememberMe">Remember me</label>
@@ -183,14 +219,14 @@
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel"><B>join</B></h2>
+            <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN UP</B></h2>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form action="/main/joinPost" method="POST">
                     <div class="mb-3">
                         <label for="join_email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" oninput="javascript:checkEmail()">
+                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val())">
                     	<p id='email_message'></p>
                     </div>
                     <!-- <div class="input-group mb-3">
@@ -214,6 +250,31 @@
                 </form>
             </div>
         </div>
+        </div>
+    </div>
+
+    <!-- new_password Modal -->
+    <div class="modal fade" id="new_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="staticBackdropLabel"><B>FORGOT PASSWORD</B></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h2>가입 이메일 주소로 비밀번호 재설정 링크 전송.</h2>
+                    <h3>수신 이메일은 비밀번호 재설정 후 반드시 삭제</h3>
+                    <form action="#" method="POST">
+                        <div class="mb-3">
+                            <label for="new_password_email" class="form-label"><b>Email</b></label>
+                            <input type="email" class="form-control" id="new_password_email" name="email" placeholder="name@example.com" autocomplete="username">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">SEND</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
