@@ -1649,9 +1649,9 @@ body.in-app .site-body {
   color: #fff;
   border-bottom: 1px solid #fff;
 }
-/* .tabbed-content-block {
+ /* .tabbed-content-block {
   display: none;
-} */
+}  */
 .tabbed-content-block:first-child {
   display: block;
 }
@@ -3045,7 +3045,7 @@ p.optional-add .modal-link {
   color: #def;
   max-width: 28em;
 }
-#confirm-modal .buttons {
+#confirm-modal .buttons { 
   margin-bottom: 0;
   overflow: hidden;
 }

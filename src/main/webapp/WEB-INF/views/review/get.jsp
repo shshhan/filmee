@@ -24,11 +24,11 @@ pageEncoding="UTF-8" %>
       &lrm;${reviewVO.title} review by ${reviewVO.nickname} &bull; FILMEE
     </title>
 
-	<%@include file="../../../resources/html/header.jsp" %>   
+		<%@include file="../../../resources/html/header.jsp" %>   
 	
   
     <!-- CSS -->
-    <link href="../../resources/css/letterboxd.css" rel="stylesheet" media="screen, projection" />
+    <link href="/resources/css/letterboxd.css" rel="stylesheet" media="screen, projection" />
    
 
     <script>
@@ -195,7 +195,7 @@ pageEncoding="UTF-8" %>
                         name="review"
                         id="frm-review"
                         class="field"
-                        placeholder="Add a review..."
+                        placeholder="리뷰를 작성해주세요"
                       ></textarea>
                     </div>
                     <div class="form-row clearfix">
@@ -307,7 +307,7 @@ pageEncoding="UTF-8" %>
                   data-image-height="225"
                 >
                   <img
-                    src="https://www.themoviedb.org/t/p/original${reviewVO.poster_path}"
+                    src="https://www.themoviedb.org/t/p/original${reviewFilmUserVO.poster_path}"
                     width="150"
                     height="225"
                     alt="Tenet"
@@ -331,10 +331,10 @@ pageEncoding="UTF-8" %>
               <section class="film-viewing-info-wrapper">
                 <header class="page-header overflow person-header">
                   <div class="person-summary -inline">
-                    <a class="avatar -a24" href="/${reviewVO.writer}/">
+                    <a class="avatar -a24" href="/${reviewFilmUserVO.writer}/">
                       <img
                         src="https://secure.gravatar.com/avatar/ca5aabe664b120591b1d12557f735a9d?rating=PG&amp;size=48&amp;border=&amp;default=https%3A%2F%2Fs.ltrbxd.com%2Fstatic%2Fimg%2Favatar48.7a758b1e.png"
-                        alt="${reviewVO.writer}"
+                        alt="${reviewFilmUserVO.writer}"
                         width="24"
                         height="24"
                       />
@@ -346,8 +346,8 @@ pageEncoding="UTF-8" %>
                       itemtype="http://schema.org/Person"
                     >
                       <small class="context">Review by</small>
-                      <a href="/${reviewVO.writer}/" itemprop="sameAs" class="name">
-                        <span itemprop="name">${reviewVO.writer}</span>
+                      <a href="/${reviewFilmUserVO.writer}/" itemprop="sameAs" class="name">
+                        <span itemprop="name">${reviewFilmUserVO.writer}</span>
                       </a>
                     </h1>
                   </div>
@@ -357,8 +357,8 @@ pageEncoding="UTF-8" %>
 
                 <h2 class="headline-2 prettify">
                   <span class="film-title-wrapper">
-                    <a href="/film/${filmVO.film_id}/">${filmVO.title}</a>
-                    <small class="metadata"> <fmt:formatDate value="${reviewVO.release_date}" pattern="yyyy" /></small>
+                    <a href="/film/${reviewFilmUserVO.film_id}/">${reviewFilmUserVO.title}</a>
+                    <small class="metadata"> <fmt:formatDate value="${reviewFilmUserVO.release_date}" pattern="yyyy" /></small>
                   </span>
                   <span class="rating rating-large rated-large-10">
                     ★★★★★
@@ -376,11 +376,11 @@ pageEncoding="UTF-8" %>
               <div class="review body-text -prose -hero -loose">
                 <div>
                   <h3 class="hidden">
-                    ${reviewVO.nickname}’s review published on FILMEE:
+                    ${reviewFilmUserVO.nickname}’s review published on FILMEE:
                   </h3>
 
                   <div>
-                    <p>${reviewVO.content}</p>
+                    <p>${reviewFilmUserVO.content}</p>
                   </div>
                 </div>
               </div>
@@ -391,9 +391,9 @@ pageEncoding="UTF-8" %>
                 data-likeable-uid="viewing:130509321"
                 data-likeable-name="review"
                 data-likeable="true"
-                data-likes-page="/${reviewVO.writer}/film/tenet/2/likes/"
+                data-likes-page="/${reviewFilmUserVO.writer}/film/tenet/2/likes/"
                 data-format="svg"
-                data-owner="${reviewVO.writer}"
+                data-owner="${reviewFilmUserVO.writer}"
               >
                 <span class="svg-action -like"></span>
               </p>
@@ -403,7 +403,7 @@ pageEncoding="UTF-8" %>
                   show-on-hover
                   hide-when-logged-out hide-for-owner
                 "
-                data-owner="${reviewVO.writer}"
+                data-owner="${reviewFilmUserVO.writer}"
               >
                 <a
                   href="#"
@@ -415,14 +415,14 @@ pageEncoding="UTF-8" %>
                     tooltip
                   "
                   title="Block or Report"
-                  data-popmenu-id="report-member-${reviewVO.writer}-review-130509321"
+                  data-popmenu-id="report-member-${reviewFilmUserVO.writer}-review-130509321"
                   data-popmenu-direction="e"
                   >Block or Report</a
                 >
                 <div
-                  id="report-member-${reviewVO.writer}-review-130509321"
+                  id="report-member-${reviewFilmUserVO.writer}-review-130509321"
                   class="block-or-report-menu popmenu popup-menu"
-                  data-username="${reviewVO.writer}"
+                  data-username="${reviewFilmUserVO.writer}"
                 >
                   <ul>
                     <li class="popup-menu-text popmenu-close">

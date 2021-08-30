@@ -164,7 +164,7 @@
                                     <li class="active"><a href="#tab-cast" data-id="cast">Cast</a></li>
                                     <li><a href="#tab-details" data-id="details">Details</a></li>  
                                 </ul>
-                            </header>
+                            </header> 
 
                             <div id="tab-cast" class="tabbed-content-block" style="display:block;">
                             <h3 class="hidden">Cast</h3>
@@ -172,8 +172,8 @@
                                      <p> 
                                      <c:forEach items="${filmPeopleVOList}" var="filmPeopleVO" begin="0" end="29"  varStatus="status">
 	                                     <c:if test="${filmPeopleVO.credit_order != null}">
-		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.enname}"
-		                                     class="text-slug tooltip">${filmPeopleVO.enname}</a>
+		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.people_id}"
+		                                     class="text-slug tooltip1">${filmPeopleVO.enname}</a>
 										 </c:if>
 									</c:forEach> 
                                         
@@ -184,7 +184,7 @@
                                             <c:forEach items="${filmPeopleVOList}" var="filmPeopleVO" begin="30"  varStatus="status">
 	                                     		<c:if test="${filmPeopleVO.credit_order != null}">
 				                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.enname}"
-				                                     class="text-slug tooltip">${filmPeopleVO.enname}</a>
+				                                     class="text-slug tooltip1">${filmPeopleVO.enname}</a>
 										 		</c:if>
 											</c:forEach> 
     									</span>
@@ -273,7 +273,7 @@
                                 </li>
 
 
-                                <li><a href="${filmid}/review/register" class="add-this-film "> 리뷰 남기기 </a>
+                                <li><a href="review/register" class="add-this-film "> 리뷰 남기기 </a>
                                 </li>
 
 
@@ -295,43 +295,43 @@
                                         class="rating rated-2">★</span></span>
                                 <ul>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 0px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="1,034&nbsp;half-★ ratings (0%)">1,034&nbsp;half-★
                                             ratings (0%)<i style="height: 1.2879252956184999px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 16px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="3,373&nbsp;★ ratings (1%)">3,373&nbsp;★ ratings (1%)<i
                                                 style="height: 1.9392379324189557px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 32px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="1,979&nbsp;★½ ratings (0%)">1,979&nbsp;★½ ratings
                                             (0%)<i style="height: 1.5510678530261233px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 48px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="15,442&nbsp;★★ ratings (3%)">15,442&nbsp;★★ ratings
                                             (3%)<i style="height: 5.299944308453459px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 64px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="13,024&nbsp;★★½ ratings (3%)">13,024&nbsp;★★½ ratings
                                             (3%)<i style="height: 4.6266335107691905px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 80px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="74,896&nbsp;★★★ ratings (15%)">74,896&nbsp;★★★ ratings
                                             (15%)<i style="height: 21.8553703487845px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 96px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="65,474&nbsp;★★★½ ratings (13%)">65,474&nbsp;★★★½
                                             ratings (13%)<i style="height: 19.231741591224047px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 112px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="154,422&nbsp;★★★★ ratings (30%)">154,422&nbsp;★★★★
                                             ratings (30%)<i style="height: 44.0px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 128px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="71,170&nbsp;★★★★½ ratings (14%)">71,170&nbsp;★★★★½
                                             ratings (14%)<i style="height: 20.817836836720158px;"></i></a> </li>
                                     <li class="rating-histogram-bar" style="width: 15px; left: 144px"> <a
-                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip"
+                                            href="/film/the-social-network/ratings/by/rating/" class="ir tooltip1"
                                             data-original-title="111,355&nbsp;★★★★★ ratings (22%)">111,355&nbsp;★★★★★
                                             ratings (22%)<i style="height: 32.00766082553004px;"></i></a> </li>
                                 </ul> <span class="rating-green rating-green-tiny rating-5"><span
@@ -356,24 +356,30 @@
                 <a href="/film/${filmVO.film_id}/reviews/by/activity/" class="all-link">More</a>
                 <ul class="film-popular-review">
                     
+                      <c:forEach items="${reviewFilmUserVOList}" var="reviewFilmUserVO" begin="0" end="2"  varStatus="status">	                               
                         <li class="film-detail"> 
-                            <a class="avatar -a40" href="/ingridgoeswest/" > <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> <div class="film-detail-content"> <div class="attribution-block -large"> <p class="attribution"> <a href="/ingridgoeswest/film/good-time/" class="context" title="Read katie’s review"> Review by <strong class="name">katie</strong> </a> <span class="rating -green rated-10"> ★★★★★ </span> <span class="content-metadata"> <a href="/ingridgoeswest/film/good-time/" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> <div class="body-text -prose collapsible-text" data-full-text-url="/s/full-text/viewing:29006694/"> <p>Imagine your worst panic attack.</p><p>Times it by 100.</p> </div> <p class="like-link-target react-component -monotone" data-component-class="globals.comps.LikeLinkComponent" data-likeable-name="review" data-format="svg" > <span class="svg-action -like"></span> </p> </div> </li>
+                            <a class="avatar -a40" href="/ingridgoeswest/" > 
+                            <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> 
+                            <div class="film-detail-content"> <div class="attribution-block -large"> 
+                            <p class="attribution"> <a href="/ingridgoeswest/film/good-time/" class="context" title="${reviewFilmUserVO.nickname}의 리뷰"> 
+                            Review by <strong class="name">${reviewFilmUserVO.nickname}</strong> </a> 
+                            <span class="rating -green rated-10"> 
+                           <!--  ★★★★★  --> ${reviewFilmUserVO.rate}
+                            </span> <span class="content-metadata"> 
+                            <a href="/film/${filmVO.film_id}/${reviewVO.rno}" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> 
+                            <div class="body-text -prose collapsible-text" data-full-text-url="/s/full-text/viewing:29006694/"> 
+                            <p>${reviewFilmUserVO.content} </div> 
+                            <p class="like-link-target react-component -monotone" data-component-class="globals.comps.LikeLinkComponent" data-likeable-name="review" data-format="svg" > 
+                            <span class="svg-action -like"></span> </p> </div> </li>
 
-                
-                        <li class="film-detail"> 
-                            <a class="avatar -a40" href="/ingridgoeswest/" > <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> <div class="film-detail-content"> <div class="attribution-block -large"> <p class="attribution"> <a href="/ingridgoeswest/film/good-time/" class="context" title="Read katie’s review"> Review by <strong class="name">katie</strong> </a> <span class="rating -green rated-10"> ★★★★★ </span> <span class="content-metadata"> <a href="/ingridgoeswest/film/good-time/" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> <div class="body-text -prose collapsible-text" data-full-text-url="/s/full-text/viewing:29006694/"> <p>Imagine your worst panic attack.</p><p>Times it by 100.</p> </div> <p class="like-link-target react-component -monotone" data-component-class="globals.comps.LikeLinkComponent" data-likeable-name="review" data-format="svg" > <span class="svg-action -like"></span> </p> </div> </li>
-
-                    
-                            <li class="film-detail"> 
-                                <a class="avatar -a40" href="/ingridgoeswest/" > <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> <div class="film-detail-content"> <div class="attribution-block -large"> <p class="attribution"> <a href="/ingridgoeswest/film/good-time/" class="context" title="Read katie’s review"> Review by <strong class="name">katie</strong> </a> <span class="rating -green rated-10"> ★★★★★ </span> <span class="content-metadata"> <a href="/ingridgoeswest/film/good-time/" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> <div class="body-text -prose collapsible-text" data-full-text-url="/s/full-text/viewing:29006694/"> <p>Imagine your worst panic attack.</p><p>Times it by 100.</p> </div> <p class="like-link-target react-component -monotone" data-component-class="globals.comps.LikeLinkComponent" data-likeable-name="review" data-format="svg" > <span class="svg-action -like"></span> </p> </div> </li>
-                    
-                </ul>
+               		</c:forEach>
+               </ul>
             </section>
         </div>
 
     </div>
 
-<%@include file="../../resources/html/footer.jsp" %>
+<%@include file="/resources/html/footer.jsp" %>
 
 </body>
 

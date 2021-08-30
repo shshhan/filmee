@@ -38,27 +38,31 @@ public class FilmController {
 //	@GetMapping("info")
 //	public String getFilmInfo(@RequestParam("filmid") Integer film_id, Model model) {
 	@GetMapping("/{filmid}")
-	public String getFilmInfo(@PathVariable("filmid") Integer film_id, Model model) {
-		log.debug("getFilmInfo({}, {}) invoked.", film_id, model);
+	public String getFilmInfo(@PathVariable("filmid") Integer film_id, Integer rno, Model model) {
+		log.debug("getFilmInfo({}, {}, {}) invoked.", film_id, rno,  model);
 		
 		FilmVO filmVO = this.service.getFilmInfo(film_id);
 		List<FilmPeopleVO> filmPeopleVOList = this.service.getFilmPeople(film_id);
 		List<FilmGenreVO> filmGenreVOList = this.service.getGenre(film_id);
+		List<ReviewFilmUserVO> reviewFilmUserVOList = this.service.getList(film_id);
 		
 		assert filmVO != null;
 		assert filmPeopleVOList != null;
 		assert filmGenreVOList != null;
+		assert reviewFilmUserVOList != null;
+		
 		
 		// 일단 막아둠
-//		log.info("\t+ filmVO: {}", filmVO);
-//		filmPeopleVOList.forEach(log::info);
-//		filmGenreVOList.forEach(log::info);
-		
+		log.info("\t+ filmVO: {}", filmVO);
+		filmPeopleVOList.forEach(log::info);
+		filmGenreVOList.forEach(log::info);
+		reviewFilmUserVOList.forEach(log::info);
 		
 		model.addAttribute("filmVO", filmVO);
 		model.addAttribute("filmPeopleVOList", filmPeopleVOList);
 		model.addAttribute("filmGenreVOList", filmGenreVOList);
-	
+		model.addAttribute("reviewFilmUserVOList", reviewFilmUserVOList);
+		
 	
 		return "film"; 
 	} // getFilmInfo 
@@ -67,8 +71,9 @@ public class FilmController {
 	//----------------------------------------------------//
 	
 //	@GetMapping({"/review/{rno}", "modify" })  // modify는 get 성공한뒤에 생각할거.....
-	@GetMapping("/review/{rno}")
+	@GetMapping("{filmid}/review/{rno}")
 	public String getReview(
+			@PathVariable("filmid") Integer film_id,		
 			@PathVariable("rno") Integer rno,
 			@ModelAttribute("cri") CriteriaFilmReview cri,
 			Model model
@@ -76,21 +81,21 @@ public class FilmController {
 		log.debug("readReview({}, {}) invoked.", rno, model);
 		
 		
-		ReviewFilmUserVO reviewVO = this.service.get(rno);
+		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);
 		
-		assert reviewVO != null;
-		log.info("\t+ reviewVO: {}", reviewVO);
+		assert reviewFilmUserVO != null;
+		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
 				
-		model.addAttribute("reviewVO", reviewVO);
+		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
 
 		 
 		return "review/get"; 
 	} // getReview
 //	https://letterboxd.com/writer/film/filmid/	첫번째 리뷰 URL
 //	https://letterboxd.com/writer/film/filmid/1/  같은 영화에 리뷰를 또쓰면 이 URL
-// film/filmid/rno 이렇게 할까.. 
-	
-	@PostMapping("/review/register/{filmid}")
+// film/filmid/review/rno 이렇게 할까.. 
+
+	@PostMapping("{filmid}/review/register/")
 	public String register(
 			@PathVariable("filmid") Integer film_id,
 			@ModelAttribute("cri") CriteriaFilmReview cri,

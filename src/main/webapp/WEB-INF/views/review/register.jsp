@@ -66,7 +66,7 @@
 			<h1 id="diary-entry-form-heading">I watched…</h1>
 			<h2 class="headline-2 prettify"><span id="film-title">${filmVO.title}</span> <small class="metadata" id="film-year">2019</small></h2>
 			
-			<form method="post" action="review/register/${reviewVO.film_id}" id="diary-entry-form" class="fields-reversed"><input type="hidden" name="__csrf" value="a6d05d85249b6cbb8f2e">
+			<form method="post" action="${filmVO.filmid}/review/register" id="diary-entry-form" class="fields-reversed"><input type="hidden" name="__csrf" value="a6d05d85249b6cbb8f2e">
 				<input type="hidden" name="viewingId" value="" id="frm-viewing-id">
 				<input type="hidden" name="filmId" value="433863" id="frm-film-id">
 				<fieldset>
