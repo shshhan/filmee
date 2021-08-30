@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @NoArgsConstructor
 
-@RequestMapping("/")
+//@RequestMapping("/")
 @Controller
 public class MainController {
 	
