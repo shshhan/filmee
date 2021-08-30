@@ -29,6 +29,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @NoArgsConstructor
 
+
 @RequestMapping("/main/")
 @Controller
 public class MainController {
@@ -161,49 +162,7 @@ public class MainController {
 		
 		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
 	}//emailAuthroized
-	
 		
-	//-------myPage쪽으로 넘어갈 부분
-	
-	//forgotPw.jsp 혹은 xxxx.jsp(마이페이지)에 심어놓은 new-pw modal에서 submit 시
-	@PostMapping("newPassword")
-	public String newPassword(UserDTO dto, RedirectAttributes rttrs) throws Exception {
-		log.debug("newPassword({}) invoked.", dto);
-			
-		int result = this.loginService.changePassword(dto);
-		log.info("result : {}", result);
-		
-		switch(result) {
-			case 1: 
-				log.info(">>>>> result : 1 >>>>>>");
-				rttrs.addFlashAttribute("message", "temp_pw_sent");
-				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
-
-			case 2:
-				log.info(">>>>> result : 2 >>>>>>");
-				rttrs.addFlashAttribute("message", "pw_changed");
-				return "redirect:/main/testMyPage";	//마이페이지로 Redirect 후 메세지 띄움
-				
-			default:
-				log.info(">>>>> result : 2 >>>>>>");
-				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
-		}//switch-case
-	
-	}//newPassword
-	
-	//xxxx.jsp의 new_pw modal에서 현재 비밀번호 검증시 
-	@ResponseBody
-	@PostMapping("checkCurrentPw")
-	public Integer checkCurrentPw(UserDTO dto) throws Exception {
-		log.debug("newPassword({}) invoked.", dto);
-		
-		UserVO user = this.loginService.login(dto);		//이메일과 비밀번호로 로그인 여부 확인
-		if(user == null) {	//로그인에 실패한다면
-			return 0;
-		}else {				//로그인에 성공한다면
-			return 1;
-		}//if-else
-
-	}//checkCurrentPw
-	
 }//end class
+
+

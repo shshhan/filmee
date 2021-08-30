@@ -33,7 +33,7 @@
 		-->
 		<!--  JDBC DriverSpy -->
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202106301639_high?TNS_ADMIN=C:/opt/FillmeeCloudWallet/ATP"/>		
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202106301639_high?TNS_ADMIN=C:/OPT/FilmeeCloudWallet/ATP"/>		
 	
 		<property name="username" value="FILMEE"/>
 		<property name="password" value="Oracle12345!!!"/>
@@ -68,6 +68,7 @@
 	<context:component-scan base-package="com.filmee.myapp.aop" />
 	<context:component-scan base-package="com.filmee.myapp.util" />
 	
+
 	
 	<mybatis-spring:scan base-package="com.filmee.myapp.mapper" />
 		
