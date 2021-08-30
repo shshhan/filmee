@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmee.myapp.domain.ActivityVO;
@@ -31,9 +34,12 @@ import com.filmee.myapp.domain.MainReviewVO;
 import com.filmee.myapp.domain.MainUserVO;
 import com.filmee.myapp.domain.MyPageDTO;
 import com.filmee.myapp.domain.MypageReviewVO;
+
+
 import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.LoginService;
+
 import com.filmee.myapp.service.MypageService;
 
 import lombok.NoArgsConstructor;
@@ -50,9 +56,12 @@ public class MypageController {
 	@Autowired
 	MypageService service;
 	
+
+
 	@Autowired
 	LoginService loginService;
 	
+
 	@GetMapping("main")
 	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model) {
 		log.debug("myPageMain({}, {}) invoked", cri, model);
@@ -315,6 +324,8 @@ public class MypageController {
 		
 		return "redirect:/mypage/likedreviews";
 	} //deleteMyReview
+
+
 	
 	
 	//forgotPw.jsp 혹은 xxxx.jsp(마이페이지)에 심어놓은 new-pw modal에서 submit 시
@@ -357,5 +368,6 @@ public class MypageController {
 		}//if-else
 
 	}//checkCurrentPw
+
 
 } //end class

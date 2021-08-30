@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+
+
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 
@@ -18,13 +21,20 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
+
+
+
     	
     	<script src="/resources/js/header.js"></script>
         
+
         <script>
 
             $(function() {
             console.log('jq started.');
+
+
+
        
             //로그인 여부에 따라 보여주는 header 변경
             if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
@@ -120,6 +130,7 @@
             });//close_login_open_join
             
        
+
                 $('#header_search').on('propertychange change keyup paste input', function() {
 
                     var filmTitle = $('#header_search').val();
@@ -204,6 +215,26 @@
             <div id='header'>
 	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
+
+                  <a class="navbar-brand" href="#"><img id='header_nav_logo'  src='/resources/img/filmeeLogo.png'></a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="#" style='display: inline-block'>Login</a>
+                        <a class="nav-link" aria-current="page" href="#" style='display: none'>Logout</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#" style='display: inline-block'>Join</a>
+                        <a class="nav-link" href="#" style='display: none'>Mypage</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#">Board</a>
+                      </li>                                           
+                    </ul>
+
                   <a class="navbar-brand" href="/main"><img id='header_nav_logo'  src='../resources/img/filmeeLogo.png'></a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -228,6 +259,7 @@
                     
                     
                     
+
                     <form class="d-flex">
                         <select id='header_select' class="form-select" aria-label="Default select example">                            
                             <option value="1" selected>film</option>
@@ -245,6 +277,8 @@
               </nav>
             </div>
     	</header>
+
+
 
     <!-- alert Modal -->
     <!-- <div class="modal fade" id="alert_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
@@ -366,6 +400,7 @@
             </div>
         </div>
     </div>
+
 
 
 
