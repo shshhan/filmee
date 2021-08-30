@@ -48,17 +48,18 @@ import lombok.extern.log4j.Log4j2;
 
 @RequestMapping("/board/")
 @Controller
-public class BoardController {
+public class BoardController { 
 
 	@Autowired private BoardService service;
 	@Autowired private BoardCommentService cService;
 	
 	//게시글 전체 목록조회
 	@GetMapping("list")
-	public String list(@ModelAttribute("cri")Criteria cri, Model model) {
+	public String list(@ModelAttribute("cri")Criteria cri, Model model
+			) {
 		log.debug("list({},{}) invoked.",cri,model);
 		Objects.requireNonNull(service);
- 
+
 		List<BoardVO> list = this.service.getList(cri);
 		PageDTO page = new PageDTO(cri, this.service.getTotal(cri));
 		model.addAttribute("list",list);
@@ -268,7 +269,7 @@ public class BoardController {
 				new ResponseEntity<>("success",HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//create
 	
-	//------- 페이지네이션 + 목록조회 --------------------
+	//------- 목록조회 --------------------
 	@GetMapping(
 			value="replies/pages/{bno}/{page}",
 			produces= {

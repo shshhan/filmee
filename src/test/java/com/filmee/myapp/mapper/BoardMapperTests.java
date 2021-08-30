@@ -63,7 +63,7 @@ public class BoardMapperTests {
 				null, 
 				null, 
 				null, 
-				null
+				null,null
 				
 				);
 		int affectedLines = this.mapper.insertSelectKey(vo);
@@ -85,7 +85,7 @@ public class BoardMapperTests {
 				null, 
 				null, 
 				null, 
-				null
+				null,null
 				
 				);
 		
