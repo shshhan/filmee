@@ -235,29 +235,7 @@
                       </li>                                           
                     </ul>
 
-                  <a class="navbar-brand" href="/main"><img id='header_nav_logo'  src='../resources/img/filmeeLogo.png'></a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  
-                  
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
-                        <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
-                        <a class="nav-link memberHeadermenu" href="#" style='display: none'>Mypage</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/board/list">Board</a>
-                      </li>                                           
-                    </ul>
-                    
-                    
-                    
+                 
                     
 
                     <form class="d-flex">
