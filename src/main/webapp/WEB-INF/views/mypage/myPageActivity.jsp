@@ -18,8 +18,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-
-    <link rel="stylesheet" href="../resources/css/header.css">
+    
     <link rel="stylesheet" href="../resources/css/footer.css">
     
     <script>
@@ -48,12 +47,16 @@
     </script>
 
     <style>
+    
+    	* {
+    		text-decoration-line: none !important;
+    	}
 
         #container {
             width: 998px;
             margin: 0 auto;
 
-            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
+            font-family: 'ELAND 초이스'; 
         }
 
         #mypage_top_menu {
@@ -82,29 +85,11 @@
     
     </style>
 
+	<%@ include file="/resources/html/header.jsp" %>
+
 </head>
 <body>
 
-    <header>
-        <div id="header">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <ul id="headermenu">
-                <li><a href="">LOGIN</a></li>
-                <li><a href="">CREATE ACCOUNT</a></li>
-                <li><a href="/board/list">BOARD</a></li>
-                <li>
-                    <input type="search" placeholder="Search" class="search-field" />
-                    <button type="submit" class="search-button">
-                    </button>
-                </li>
-                <li> <img id="searchimg" src="/resources/img/search.png" >
-                </li>
-            </ul>
-        </div>
-
-    </header>
 
     <section>
 
@@ -124,19 +109,19 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Activity</a>
+                                <a class="nav-link active" aria-current="page" href="#">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criA.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">Films</a>
+                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criA.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">FILMS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criA.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criA.userid}&currPage=1&amount=5&pagesPerPage=5">REVIEWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criA.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
+                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criA.userid}&currPage=1&amount=10&pagesPerPage=5">FOLLOWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criA.userid}&currPage=1&amount=10&pagesPerPage=5">GuestBook</a>
+                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criA.userid}&currPage=1&amount=10&pagesPerPage=5">GUESTBOOK</a>
                             </li>
                         </ul>                        
                       </div>
