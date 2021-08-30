@@ -14,6 +14,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1024" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    
+    
  
     <!--이거없으면 BACKDROP이미지 흐리게보임..왜인진모름  -->
     <script>
@@ -29,7 +31,8 @@
 	
   
     <!-- CSS -->
-    <link href="../../resources/css/film.css" rel="stylesheet" media="screen, projection" />
+    
+    <link href="../resources/css/film.css" rel="stylesheet" media="screen, projection" />
    
     <script> 
 
@@ -76,6 +79,14 @@
         }
     </script>
 
+	<style>
+	
+		* {
+			font-family: 'ELAND 초이스';
+		}
+		
+	
+	</style>
 
 </head>
 
@@ -174,6 +185,7 @@
 	                                     <c:if test="${filmPeopleVO.credit_order != null}">
 		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.enname}"
 		                                     class="text-slug tooltip">${filmPeopleVO.enname}</a>
+		                                     
 										 </c:if>
 									</c:forEach> 
                                         
