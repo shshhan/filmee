@@ -42,26 +42,6 @@
 		view-name = "main/forgotPw"
 		status-code = "200"
 		/>
-	
-	
-	
-	<!--  for test  -->
-	<view-controller
-		path = "/main/useronly"
-		view-name = "main/useronly"
-		status-code = "200"
-		/>
-	<view-controller
-		path = "/main/strangerPage"
-		view-name = "main/strangerPage"
-		status-code = "200"
-		/>
-	<view-controller
-		path = "/main/testMyPage"
-		view-name = "main/testMyPage"
-		status-code = "200"
-		/>
-	<!--  for test  -->	
 
 	<beans:bean
 		id="loginInterceptor"
@@ -107,8 +87,7 @@
 			<mapping path="/*" />
 			<mapping path="/*/*" />
 			<!-- 제외 경로 : 로그인 관련 + AuthInterceptor Path -->
-			<exclude-mapping path="/main/useronly" />			
-			<exclude-mapping path="/main/testMyPage" />	
+
 			<exclude-mapping path="/main/login" />	
 			<exclude-mapping path="/main/loginPost" />	
 			<exclude-mapping path="/main/loginNoInfo" />
