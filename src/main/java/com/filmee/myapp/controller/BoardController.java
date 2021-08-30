@@ -36,7 +36,7 @@ import com.filmee.myapp.domain.BoardCommentVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
-import com.filmee.myapp.domain.PageDTO;
+import com.filmee.myapp.domain.BoardPageDTO;
 import com.filmee.myapp.service.BoardCommentService;
 import com.filmee.myapp.service.BoardService;
 
@@ -61,7 +61,7 @@ public class BoardController {
 		Objects.requireNonNull(service);
 
 		List<BoardVO> list = this.service.getList(cri);
-		PageDTO page = new PageDTO(cri, this.service.getTotal(cri));
+		BoardPageDTO page = new BoardPageDTO(cri, this.service.getTotal(cri));
 		model.addAttribute("list",list);
 		model.addAttribute("pageMaker",page);
 		return "board/list";
