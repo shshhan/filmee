@@ -33,9 +33,7 @@
 		-->
 		<!--  JDBC DriverSpy -->
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-
 		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@db202106301639_high?TNS_ADMIN=C:/OPT/FilmeeCloudWallet/ATP"/>		
-
 	
 		<property name="username" value="FILMEE"/>
 		<property name="password" value="Oracle12345!!!"/>
@@ -68,6 +66,9 @@
 	
 	<context:component-scan base-package="com.filmee.myapp.service" />
 	<context:component-scan base-package="com.filmee.myapp.aop" />
+	<context:component-scan base-package="com.filmee.myapp.util" />
+	
+
 	
 	<mybatis-spring:scan base-package="com.filmee.myapp.mapper" />
 		
@@ -93,6 +94,22 @@
                  <property name="defaultEncoding" value="utf-8" />
    </bean>
 		
-	<tx:annotation-driven />		 	
+	<tx:annotation-driven />		
+
+	<!-- Mail sender -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com" />
+        <property name="port" value="587" />
+        <property name="username" value="shawnshhan@gmail.com"/>
+        <property name="password" value="forTest999" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+    </bean>
 
 </beans>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmee.myapp.domain.ActivityVO;
@@ -30,6 +31,9 @@ import com.filmee.myapp.domain.MainReviewVO;
 import com.filmee.myapp.domain.MainUserVO;
 import com.filmee.myapp.domain.MyPageDTO;
 import com.filmee.myapp.domain.MypageReviewVO;
+import com.filmee.myapp.domain.UserDTO;
+import com.filmee.myapp.domain.UserVO;
+import com.filmee.myapp.service.LoginService;
 import com.filmee.myapp.service.MypageService;
 
 import lombok.NoArgsConstructor;
@@ -45,6 +49,9 @@ public class MypageController {
 	
 	@Autowired
 	MypageService service;
+	
+	@Autowired
+	LoginService loginService;
 	
 	@GetMapping("main")
 	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model) {
@@ -308,5 +315,47 @@ public class MypageController {
 		
 		return "redirect:/mypage/likedreviews";
 	} //deleteMyReview
+	
+	
+	//forgotPw.jsp 혹은 xxxx.jsp(마이페이지)에 심어놓은 new-pw modal에서 submit 시
+	@PostMapping("newPassword")
+	public String newPassword(UserDTO dto, RedirectAttributes rttrs) throws Exception {
+		log.debug("newPassword({}) invoked.", dto);
+			
+		int result = this.loginService.changePassword(dto);
+		log.info("result : {}", result);
+		
+		switch(result) {
+			case 1: 
+				log.info(">>>>> result : 1 >>>>>>");
+				rttrs.addFlashAttribute("message", "temp_pw_sent");
+				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
+
+			case 2:
+				log.info(">>>>> result : 2 >>>>>>");
+				rttrs.addFlashAttribute("message", "pw_changed");
+				return "redirect:/mypage/main";	//마이페이지로 Redirect 후 메세지 띄움
+				
+			default:
+				log.info(">>>>> result : 2 >>>>>>");
+				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
+		}//switch-case
+	
+	}//newPassword
+	
+	//xxxx.jsp의 new_pw modal에서 현재 비밀번호 검증시 
+	@ResponseBody
+	@PostMapping("checkCurrentPw")
+	public Integer checkCurrentPw(UserDTO dto) throws Exception {
+		log.debug("newPassword({}) invoked.", dto);
+		
+		UserVO user = this.loginService.login(dto);		//이메일과 비밀번호로 로그인 여부 확인
+		if(user == null) {	//로그인에 실패한다면
+			return 0;
+		}else {				//로그인에 성공한다면
+			return 1;
+		}//if-else
+
+	}//checkCurrentPw
 
 } //end class
