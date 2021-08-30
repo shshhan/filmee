@@ -30,11 +30,17 @@
             })//listbtn
            
         })//jq
+        
         function fn_addtoBoard(){
+        	
+        	var form = document.getElementById("writeForm");
+        	console.log($('#register_file'));
+        	
+        	
             
-            var form = document.getElementById("writeForm");
+            form.action = "/board/register";
+            form.method = "POST";
             
-            form.action = "register";
             form.submit();
             
         }//fn_addtoBoard
@@ -123,7 +129,7 @@
 							<td><textarea class="form-control" placeholder="글 내용" name="content" maxlength="2048" style="height: 350px;"></textarea></td>
 						</tr>
                         <tr>
-                              <td><input type="file" class="form-control" name="files" multiple></td>
+                              <td><input id='register_file' type="file" class="form-control" name="files" multiple></td>
                         </tr>
 					</tbody>
 				</table>

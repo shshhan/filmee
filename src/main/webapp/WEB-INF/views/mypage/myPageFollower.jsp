@@ -19,7 +19,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
 
+
     <link rel="stylesheet" href="../resources/css/header.css">
+
     <link rel="stylesheet" href="../resources/css/footer.css">
     
     <script>
@@ -63,11 +65,21 @@
 
     <style>
 
+    
+    	* {
+    		text-decoration-line: none !important;
+    	}
+
+
         #container {
             width: 998px;
             margin: 0 auto;
 
+
             font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
+
+            font-family: 'ELAND 초이스'; 
+
         }
 
         #mypage_top_menu {
@@ -99,8 +111,13 @@
     
     </style>
 
+    
+    <%@ include file="/resources/html/header.jsp" %>
+
+
 </head>
 <body>
+
 
     <header>
         <div id="header">
@@ -123,6 +140,7 @@
 
     </header>
 
+
     <section>
 
         <div id='container'>
@@ -141,6 +159,7 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
+
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
                             </li>
                             <li class="nav-item">
@@ -154,6 +173,21 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">GuestBook</a>
+
+                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criF.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">FILMS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criF.userid}&currPage=1&amount=5&pagesPerPage=5">REVIEWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">FOLLOWS</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">GUESTBOOK</a>
+
                             </li>
                         </ul>                        
                       </div>
@@ -200,7 +234,11 @@
 			                <a href='#' style='font-size: 17px'>${followers.nickname}</a>
 			            </div>
 		                     
+
 		            	<button id='cancelBtn' onclick="cancelFollower('${followers.follower}', '${followers.followee}')" type="button" class="btn btn-outline-danger btn-sm">cancel</button>                 
+
+		            	<button id='cancelBtn' onclick="cancelFollower('${followers.follower}', '${followers.followee}')" type="button" class="btn btn-outline-danger btn-sm">Cancel</button>                 
+
 		             
 		             	<hr>
 		

@@ -1,5 +1,7 @@
 package com.filmee.myapp.exception;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
@@ -15,19 +17,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 
 @ControllerAdvice				// 모든 패키지에서 발생하는 예외를 처리
-//@ControllerAdvice(
-//		basePackages = {"org.zerock.myapp.controller"}	//컨트롤러가 있는 패키지만 지정해서 그곳의 예외만 처리 
-//		)
-//@ControllerAdvice("org.zerock.myapp.controller")	//basePackages가 default이기 때문에 이렇게 해도 무방
 public class CommonExceptionHandler {	//예외처리용 클래스
 										//Alternative path
 	
+	//여기에 없는 새로운 예외 발생시 알아서 추가하기!!
 	
-	
-//	@ExceptionHandler({BindException.class, NullPointerException.class})		//특정 예외만을 처리하는 메서드
-//	public String handleBindException() {
-//		
-//	}//handleXXXException
 	
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	
@@ -75,5 +69,32 @@ public class CommonExceptionHandler {	//예외처리용 클래스
 		return "errorPage";	// viewResolver 작동
 	}//handleIllegalStateException
 	
+	@ExceptionHandler(NoSuchAlgorithmException.class)
+	public String handleNoSuchAlgorithmException(
+			Exception e, Model model) {		//Exception 객체를 받아올 수 있음
+		log.debug("handleNoSuchAlgorithmException(e, model) invoked.");
+		
+		log.error("1. Exception Type : " + e.getClass().getName());
+		log.error("2. Exception Message : " + e.getMessage());
+		
+		model.addAttribute("exception", e);
+		//화면으로 보낼 내용 있을 때 model 생성
+		
+		return "errorPage";	// viewResolver 작동
+	}//handleIllegalStateException
+		
+	@ExceptionHandler(NullPointerException.class)
+	public String handleNullPointerException(
+			Exception e, Model model) {		//Exception 객체를 받아올 수 있음
+		log.debug("handleNullPointerException(e, model) invoked.");
+		
+		log.error("1. Exception Type : " + e.getClass().getName());
+		log.error("2. Exception Message : " + e.getMessage());
+		
+		model.addAttribute("exception", e);
+		//화면으로 보낼 내용 있을 때 model 생성
+		
+		return "errorPage";	// viewResolver 작동
+	}//handleIllegalStateException
 	
 }//end class
