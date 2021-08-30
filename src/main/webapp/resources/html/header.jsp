@@ -36,6 +36,7 @@
                         success : function(listFilm) { 
                         	
                             $('#autocomplete_result_list').css('display', 'inline-block');
+                            $('#autocomplete_result_list').css('z-index', 3);
                             
                             $('.searchTrTemp').remove();
                     
@@ -131,7 +132,7 @@
                             <option value="2">user</option>                            
                         </select>  
                       	<input id='header_search' class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style='width: 300px'>
-                      	<table id='autocomplete_result_list' class="table table-striped table-hover" style='display: none'>
+                      	<table id='autocomplete_result_list' class='table table-hover' style='display: none; background-color: white;'>
                           <tr id='searchTr'><th style='display: none;'></th></tr>
                                                                          
                       	</table>

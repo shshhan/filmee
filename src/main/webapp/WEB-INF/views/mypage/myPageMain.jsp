@@ -76,6 +76,10 @@
     </script>
 
     <style>
+    
+    	* {
+    		text-decoration-line: none !important;
+    	}
 
         #container {
             width: 998px;
