@@ -10,6 +10,7 @@
 <body>
     <footer>
         <div id="footer">
+
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
             </a>
