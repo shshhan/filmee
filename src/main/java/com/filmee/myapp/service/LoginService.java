@@ -16,7 +16,7 @@ public interface LoginService {
 	
 	public abstract UserVO findUserWithCookie(String cookieValue) throws Exception;
 	
-	public abstract boolean changePassword(UserDTO dto) throws Exception;
+	public abstract int changePassword(UserDTO dto) throws Exception;
 	
 	//myPage쪽으로 넘어갈 부분
 

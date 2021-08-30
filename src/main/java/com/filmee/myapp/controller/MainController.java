@@ -65,12 +65,7 @@ public class MainController {
 	@PostMapping("loginPost")
 	public void loginPost(UserDTO dto, Model model, HttpSession session, RedirectAttributes rttrs) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
-		
-		//DB에 저장된 회원의 salt를 가져와 비밀번호와 함께 hashing
-		String salt = this.loginService.getUserSalt(dto.getEmail());
-		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);
-		dto.setPassword(hashedPw);
-		
+			
 		UserVO user = this.loginService.login(dto);		//회원 정보 확인
 		
 		if(user != null) {
@@ -113,19 +108,6 @@ public class MainController {
 		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
 	}//loginUnauthorized
 
-//	//Creat Account
-//	@GetMapping("join")
-//	public String join(RedirectAttributes rttrs) {
-//		log.debug("join(rttrs) invoked.");
-//		
-//		rttrs.addFlashAttribute("message", "join");
-//		
-//		return "redirect:/main";
-	
-//	이거 지울때 header.jsp에서 message에 join도 지우기
-//	}//join
-
-	
 	//====== 회원가입 관련 ======
 	
 	//header.jsp의 join modal에서 이메일 중복검사 시
@@ -156,19 +138,7 @@ public class MainController {
 	@PostMapping("joinPost")
 	public String joinPost(UserDTO dto, RedirectAttributes rttrs) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
-		
-		String salt = hashUtils.getSalt();		//유저 고유의 salt 생성
-		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);	//비밀번호와 salt를 함께 hashing
-		
-		String authCode = this.mailService.getRandomCode(MailSendService.EMAIL);	//인증키 생성
-		
-		this.mailService.sendAuthMail(dto.getEmail(), authCode);		//인증키가 포함된 인증 이메일 발송
-		
-		//dto에 hash 처리 된 비밀번호와 salt, 이메일 인증번호 저장 저장
-		dto.setPassword(hashedPw);
-		dto.setSalt(salt);
-		dto.setAuthCode(authCode);
-		
+				
 		if( this.joinService.join(dto) == 1) {	// 정상 회원가입 처리됐다면
 			rttrs.addFlashAttribute("message", "just_joinned");
 		} else {								// 정상 회원가입에 실패했다면
@@ -195,44 +165,30 @@ public class MainController {
 		
 	//-------myPage쪽으로 넘어갈 부분
 	
-	//
+	//forgotPw.jsp 혹은 xxxx.jsp(마이페이지)에 심어놓은 new-pw modal에서 submit 시
 	@PostMapping("newPassword")
 	public String newPassword(UserDTO dto, RedirectAttributes rttrs) throws Exception {
 		log.debug("newPassword({}) invoked.", dto);
-	
-		String salt = hashUtils.getSalt();	//보안을 위해 비밀번호 변경시 유저의 salt도 같이 변경
-		String password = dto.getPassword();
-		
-		boolean isFromForgotPw = false;		//true : 비밀번호 변경 / false : 비밀번호 찾기
-		
-		if(password == null) {				//비밀번호 찾기에서 요청이 들어온 경우 dto에 password 값이 없다.
-//			log.info("request from forgotPw");
 			
-			isFromForgotPw =true;
-			password = this.mailService.getRandomCode(MailSendService.TEMP_PW);	//임시 비밀번호 생성
-		}//if
+		int result = this.loginService.changePassword(dto);
+		log.info("result : {}", result);
 		
-		String hashedPw = hashUtils.hashing(password, salt);		//임시 비밀번호와 salt를 함께 hashing
-		
-		dto.setPassword(hashedPw);	//dto에 비밀번호와 salt를 저장
-		dto.setSalt(salt);
-		
-		if(this.loginService.changePassword(dto)) {	//임시비밀번호가 DB에 성공적으로 저장됐으면
-			if(isFromForgotPw) {
-				this.mailService.sendTempPwMail(dto.getEmail(),password);	//이메일로 임시 비밀번호 발송
+		switch(result) {
+			case 1: 
+				log.info(">>>>> result : 1 >>>>>>");
 				rttrs.addFlashAttribute("message", "temp_pw_sent");
-				
 				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
-				
-			} else {
+
+			case 2:
+				log.info(">>>>> result : 2 >>>>>>");
 				rttrs.addFlashAttribute("message", "pw_changed");
 				return "redirect:/main/testMyPage";	//마이페이지로 Redirect 후 메세지 띄움
 				
-			}//if-else	
-		}else {
-			return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
-			
-		}//if-else
+			default:
+				log.info(">>>>> result : 2 >>>>>>");
+				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
+		}//switch-case
+	
 	}//newPassword
 	
 	//xxxx.jsp의 new_pw modal에서 현재 비밀번호 검증시 
@@ -240,11 +196,6 @@ public class MainController {
 	@PostMapping("checkCurrentPw")
 	public Integer checkCurrentPw(UserDTO dto) throws Exception {
 		log.debug("newPassword({}) invoked.", dto);
-
-		String salt = this.loginService.getUserSalt(dto.getEmail());	//DB로부터 유저의 salt 획득
-		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);	//비밀번호와 salt를 함께 hashing
-		
-		dto.setPassword(hashedPw);
 		
 		UserVO user = this.loginService.login(dto);		//이메일과 비밀번호로 로그인 여부 확인
 		if(user == null) {	//로그인에 실패한다면

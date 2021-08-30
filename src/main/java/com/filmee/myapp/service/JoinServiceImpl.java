@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.mapper.JoinMapper;
+import com.filmee.myapp.util.HashUtils;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,12 @@ import lombok.extern.log4j.Log4j2;
 @Service
 public class JoinServiceImpl 
 	implements JoinService, InitializingBean {
+	
+	@Setter(onMethod_=@Autowired)
+	private HashUtils hashUtils;
+	
+	@Setter(onMethod_=@Autowired)
+	private MailSendService mailService;
 
 	@Setter(onMethod_=@Autowired)
 	private JoinMapper mapper;
@@ -35,6 +42,18 @@ public class JoinServiceImpl
 	@Override
 	public int join(UserDTO dto) throws Exception {
 		log.debug("join({}) invoked.", dto);
+		
+		String salt = hashUtils.getSalt();		//유저 고유의 salt 생성
+		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);	//비밀번호와 salt를 함께 hashing
+		
+		String authCode = this.mailService.getRandomCode(MailSendService.EMAIL);	//인증키 생성
+		
+		this.mailService.sendAuthMail(dto.getEmail(), authCode);		//인증키가 포함된 인증 이메일 발송
+		
+		//dto에 hash 처리 된 비밀번호와 salt, 이메일 인증번호 저장 저장
+		dto.setPassword(hashedPw);
+		dto.setSalt(salt);
+		dto.setAuthCode(authCode);
 		
 		int affectedLines = this.mapper.insertUser(dto);
 		
