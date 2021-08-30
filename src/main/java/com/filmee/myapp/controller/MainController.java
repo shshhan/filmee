@@ -10,10 +10,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @NoArgsConstructor
 
-//@RequestMapping("/")
+@RequestMapping("/main")
 @Controller
 public class MainController {
-	
-	
-	
-}//end class
+
+	@GetMapping("")
+	public void main() {
+		log.debug("main() invoked.");
+		
+	}
+}
