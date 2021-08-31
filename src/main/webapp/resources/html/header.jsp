@@ -24,102 +24,151 @@
         <script>
 
             $(function() {
-            console.log('jq started.');
-       
-            //로그인 여부에 따라 보여주는 header 변경
-            if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
-                $(".strangerHeadermenu").attr("style", "display:none");
-                $(".memberHeadermenu").attr("style", "display:inline");
-            }//if
+                console.log('jq started.');
+        
+                //로그인 여부에 따라 보여주는 header 변경
+                if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
+                    $(".strangerHeadermenu").attr("style", "display:none");
+                    $(".memberHeadermenu").attr("style", "display:inline");
+                }//if
 
-            //전달된 message가 있으면 alert
-            //var message = "${message}";
-            switch("${message}"){
-                //====== 로그인 관련 ======
+                //전달된 message가 있으면 alert
+                switch("${message}"){
+                    //====== 로그인 관련 ======
 
-                //로그인 필요시
-                case 'login_required' :              
-                    $("#login").modal("show");
-                    break;
-                
-                //로그인 실패시
-                case 'no_info' :
-                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
-                    $("#alert_modal").modal("show");
-                    
-                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                    var myModalEl = document.getElementById('alert_modal');
-                    myModalEl.addEventListener('hidden.bs.modal',function(){
+                    //로그인 필요시
+                    case 'login_required' :              
                         $("#login").modal("show");
-                    });
-                    break;
-                
-                //회원가입 후 이메일 인증을 하지 않고 로그인 시
-                //
-                case 'email_unauthorized' :
-                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
+                        break;
+                    
+                    //로그인 실패시
+                    case 'no_info' :
+                        $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
+                        $("#alert_modal").modal("show");
+                        
+                        //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
+                        var myModalEl = document.getElementById('alert_modal');
+                        myModalEl.addEventListener('hidden.bs.modal',function(){
+                            $("#login").modal("show");
+                        });
+                        break;
+                    
+                    //회원가입 후 이메일 인증을 하지 않고 로그인 시
+                    case 'email_unauthorized' :
+                        $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
+                        $("#alert_modal").modal("show");
+                        break;
 
-                //====== 회원가입 관련 ======
+                    //====== 회원가입 관련 ======
 
-                //회원가입 버튼을 누를 시
-                case 'join' :
+                    //회원가입 버튼을 누를 시
+                    case 'join' :
+                        $("#join").modal("show");   
+                        break;
+
+                    //회원가입을 마쳤을 시
+                    case 'just_joinned' :
+                        $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+
+                    //회원가입 실패시
+                    case 'join_failed' :
+                        $("#alert_modal p").text("회원가입에 실패했습니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+
+                        //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
+                        var myModalEl = document.getElementById('alert_modal');
+                        myModalEl.addEventListener('hidden.bs.modal',function(){
+                            $("#join").modal("show");
+                        });
+                        break;
+                    
+                    //회원가입 후 이메일 인증까지 마쳤을 시
+                    case 'join_complete' :
+                        $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+
+                    //임시비밀번호 발송시
+                    case 'temp_pw_sent' :
+                        $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+                    
+                    //비밀번호 찾기에서 미가입 이메일 입력시
+                    case 'no_info_forgot_pw' :
+                        $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+                    
+                    case 'pw_changed' :
+                        $("#alert_modal p").text("비밀번호가 변경되었습니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+
+                    default :
+                }	//switch-case
+
+                $(".login_submit_btn").on('click', function(e){
+                    e.preventDefault();   //submit 취소
+                    console.log("SIGN IN btn clicked and not submitted.");
+                    var url= window.document.location.href;
+                    console.log("url :", url);
+
+                    $.ajax({
+                        data : {
+                            email : $('#login_email').val(),
+                            password : $('#login_password').val(),
+                            rememberMe : $('#rememberMe').val()
+                        },
+                        type : 'post',
+                        url : "/main/loginPost",
+                        dataType : 'json',
+                        success : function(data){
+                            console.log("data :", data);
+                            
+                            switch(data){
+                                case 1 :
+                                    $("#login").modal("hide");
+
+                                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
+                                    $("#alert_modal").modal("show");
+
+                                    var alertModalEl = document.getElementById('alert_modal');
+                                    alertModalEl.addEventListener('hidden.bs.modal',function(){
+                                        $("#login").modal("show");
+                                    });
+
+                                    break;
+                                    
+                                case 2:
+                                    $("#login").modal("hide");
+
+                                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
+                                    $("#alert_modal").modal("show");
+
+                                    break;
+
+                                case 3:
+                                    location.reload();
+
+                                    break;
+                            }//switch-case
+
+                        }///success
+
+                    });//ajax
+			    });//onclick .login_submit_btn
+
+                //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
+                $("#close_login_open_join").click(function(){
+                    $("#login").modal("hide");
                     $("#join").modal("show");   
-                    break;
-
-                //회원가입을 마쳤을 시
-                case 'just_joinned' :
-                    $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                //회원가입 실패시
-                case 'join_failed' :
-                    $("#alert_modal p").text("회원가입에 실패했습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                    var myModalEl = document.getElementById('alert_modal');
-                    myModalEl.addEventListener('hidden.bs.modal',function(){
-                        $("#join").modal("show");
-                    });
-                    break;
+                });//close_login_open_join
                 
-                //회원가입 후 이메일 인증까지 마쳤을 시
-                case 'join_complete' :
-                    $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                //임시비밀번호 발송시
-                case 'temp_pw_sent' :
-                    $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-                
-                //비밀번호 찾기에서 미가입 이메일 입력시
-                case 'no_info_forgot_pw' :
-                    $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-                
-                case 'pw_changed' :
-                    $("#alert_modal p").text("비밀번호가 변경되었습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                default :
-            }	//switch-case
-
-            //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
-            $("#close_login_open_join").click(function(){
-                $("#login").modal("hide");
-                $("#join").modal("show");   
-            });//close_login_open_join
-            
-       
+        
                 $('#header_search').on('propertychange change keyup paste input', function() {
 
                     var filmTitle = $('#header_search').val();
@@ -130,26 +179,26 @@
                         type:'post',
                         data: filmTitleComplete,
                         success : function(listFilm) { 
-                        	
+                            
                             $('#autocomplete_result_list').css('display', 'inline-block');
                             $('#autocomplete_result_list').css('z-index', 3);
                             
                             $('.searchTrTemp').remove();
                     
-                    		console.log('length :' + listFilm.length);
-                    		
-                    		for(var i = 0; i < listFilm.length; i++) {
-                    			console.log('poster : ' + listFilm[i].poster);
-                    			console.log('title : ' + listFilm[i].title);
-                    			
-                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
-                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
-                    			
-                    			$('#searchTd'+i).append("<a href='#'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
-                            	$('#searchTd'+i).append("<a href='#' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
-                    		
-                    		} //for
-                    		
+                            console.log('length :' + listFilm.length);
+                            
+                            for(var i = 0; i < listFilm.length; i++) {
+                                console.log('poster : ' + listFilm[i].poster);
+                                console.log('title : ' + listFilm[i].title);
+                                
+                                $('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+                                $('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+                                
+                                $('#searchTd'+i).append("<a href='#'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
+                                $('#searchTd'+i).append("<a href='#' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
+                            
+                            } //for
+                            
                         } //success
                     
                     }); //ajax
@@ -291,7 +340,7 @@
                             <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">SIGN IN</button>
+                            <button type="submit" class="btn btn-primary login_submit_btn">SIGN IN</button>
                         </div>
                     </form>
                     <p>&nbsp;</p>

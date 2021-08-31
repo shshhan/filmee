@@ -1,6 +1,5 @@
 package com.filmee.myapp.controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
@@ -18,8 +17,6 @@ import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.JoinService;
 import com.filmee.myapp.service.LoginService;
-import com.filmee.myapp.service.MailSendService;
-import com.filmee.myapp.util.HashUtils;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,13 +36,7 @@ public class MainController {
 	
 	@Setter(onMethod_=@Autowired)
 	private JoinService joinService;
-	
-	@Setter(onMethod_=@Autowired)
-	private HashUtils hashUtils;
-	
-	@Setter(onMethod_=@Autowired)
-	private MailSendService mailService;
-	
+		
 	public static final String loginKey = "__LOGIN__";
 	
 	//View-Controller : main, logout, forgotPw
@@ -62,16 +53,27 @@ public class MainController {
 		return "redirect:/main"; // 메인으로 Redirect 후 loginModal 띄움
 	}//login
 	
-	//login modal에서 sign in 버튼 클릭 시 
+	//login modal에서 sign in 버튼 클릭 시
+	@ResponseBody
 	@PostMapping("loginPost")
-	public void loginPost(UserDTO dto, Model model, HttpSession session, RedirectAttributes rttrs) throws Exception {
-		log.debug("loginPost({}, model, {}) invoked.", dto, session);
+	public Integer loginPost(UserDTO dto, HttpSession session) throws Exception {
+		log.debug("loginPost({}, {}) invoked.", dto, session);
 			
 		UserVO user = this.loginService.login(dto);		//회원 정보 확인
+		log.info("user : {}", user);
 		
-		if(user != null) {
-			model.addAttribute(MainController.loginKey, user);	//로그인 정보를 Model에 추가
+		int result;
+		
+		if(user == null) {		//로그인 정보가 없다면
+			result = 1;
+						
+		} else if ( !user.getAuthCode().equals("authorized") ) {	//이메일 인증을 하지 않은 유저가 로그인을 시도했다면
+			result = 2;
 			
+		} else {	//이메일 인증까지 마친 유저가 로그인을 시도했다면
+			session.setAttribute(MainController.loginKey, user);
+			log.info(">>>>> LoginKey on SessionScope. >>>>>");
+
 			if(dto.isRememberMe()) {	//자동로그인 체크 했으면 DB에 쿠키정보 저장
 				String rememberCookie = session.getId();
 				
@@ -81,11 +83,16 @@ public class MainController {
 				
 				//DB에 sessionId(RememberMe 쿠키의 값)와 유효기간(RememberMe 쿠키의 유효기간) 저장
 				this.loginService.setUserRememberMe(email, rememberCookie, rememberAge);	
+				
 			}//if(dto.isRememberMe())
 			
-		}//if(user != null)
-
-		//LoginInterceptor의 postHandle 메서드에서 이후 로직 처리(로그인 정보 SessionScope에 추가, RememberMe 쿠키 생성 및 전송)
+			result = 3;
+			
+		}//if-elseIf-else
+		
+		return result;
+		
+		//LoginInterceptor의 postHandle 메서드에서 이후 로직 처리(RememberMe 쿠키 생성 및 전송)
 		
 	}//loginPost
 	
