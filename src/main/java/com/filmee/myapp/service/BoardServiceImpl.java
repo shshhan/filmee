@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
@@ -25,7 +26,7 @@ public class BoardServiceImpl
 	implements BoardService {
 	
 	@Autowired private BoardMapper mapper;
-	@Autowired private FileMapper fmapper;
+	@Autowired private FileMapper fmapper; 
 
 
 	@Override
@@ -37,7 +38,7 @@ public class BoardServiceImpl
 	}//getList
 
 	@Override
-	public BoardVO get(Integer bno) {
+	public BoardUserVO get(Integer bno) {
 		log.debug("get({}) invoked.",bno);
 		Objects.requireNonNull(this.mapper);
 		this.mapper.viewCnt(bno);

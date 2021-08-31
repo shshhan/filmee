@@ -8,7 +8,7 @@
 
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
     <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
@@ -30,17 +30,11 @@
             })//listbtn
            
         })//jq
-        
         function fn_addtoBoard(){
-        	
-        	var form = document.getElementById("writeForm");
-        	console.log($('#register_file'));
-        	
-        	
             
-            form.action = "/board/register";
-            form.method = "POST";
+            var form = document.getElementById("writeForm");
             
+            form.action = "register";
             form.submit();
             
         }//fn_addtoBoard
@@ -129,7 +123,7 @@
 							<td><textarea class="form-control" placeholder="글 내용" name="content" maxlength="2048" style="height: 350px;"></textarea></td>
 						</tr>
                         <tr>
-                              <td><input id='register_file' type="file" class="form-control" name="files" multiple></td>
+                              <td><input type="file" class="form-control" name="files" multiple></td>
                         </tr>
 					</tbody>
 				</table>

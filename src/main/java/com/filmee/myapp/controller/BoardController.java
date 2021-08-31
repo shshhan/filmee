@@ -32,8 +32,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.filmee.myapp.domain.BoardCommentUserVO;
 import com.filmee.myapp.domain.BoardCommentVO;
 import com.filmee.myapp.domain.BoardPageDTO;
+import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
@@ -79,14 +81,14 @@ public class BoardController {
 		log.debug("get({},{},{},{},{})invoked.",cri,bno,fileVO,model);
 		Objects.requireNonNull(service);
 		
-		BoardVO board = this.service.get(bno);
+		BoardUserVO board = this.service.get(bno);
 		fileVO = this.service.fileDetail(bno);
-		List<BoardCommentVO> vo = this.cService.list(bno);
+		List<BoardCommentUserVO> comment = this.cService.getList(bno);
 	
 		log.info("\t+ board:{}",board);
 		model.addAttribute("board",board);
 		model.addAttribute("file", fileVO);
-		model.addAttribute("boardCommentVO", vo);
+		model.addAttribute("comment", comment);
 	}//get
 	
 	//파일 다운로드
@@ -273,25 +275,23 @@ public class BoardController {
 	@GetMapping(
 			value="replies/pages/{bno}/{page}",
 			produces= {
-					MediaType.APPLICATION_XML_VALUE,
+//					MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE 
 			})
-	public ResponseEntity<List<BoardCommentVO>> getList(
-			@PathVariable("page") int page,
+	public ResponseEntity<List<BoardCommentUserVO>> getList(
 			@PathVariable("bno") int bno
 			){
-		log.debug("getList({},{}) invoked.",page,bno);
+		log.debug("getList({}) invoked.",bno);
+
 		 
-		Criteria cri = new Criteria();
-		 
-		return new ResponseEntity<>(this.cService.getList(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<>(this.cService.getList(bno), HttpStatus.OK);
 	}//getList
 
 	//------- 상세조회 --------------------
 	@GetMapping(
 			value="replies/{bcno}",
 			produces= {
-					MediaType.APPLICATION_XML_VALUE,
+//					MediaType.APPLICATION_XML_VALUE,
 					MediaType.APPLICATION_JSON_VALUE
 			})
 	public ResponseEntity<BoardCommentVO> get(@PathVariable("bcno") Integer bcno){
@@ -320,7 +320,7 @@ public class BoardController {
 			consumes="application/json",
 			produces= {MediaType.TEXT_PLAIN_VALUE}
 			)
-	public ResponseEntity<String> modify(
+	public ResponseEntity<String> modify( 
 			@RequestBody BoardCommentVO vo,
 			@PathVariable("bcno") int bcno)
 			{
