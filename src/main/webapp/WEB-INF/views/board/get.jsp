@@ -89,6 +89,7 @@
                 })
             })//modalRegisterBtn
 
+            $(".chat").css('cursor','pointer')
             $(".chat").on("click","li",function(e){
                 console.log(" >> chat clicked.");
                 bcno=$(this).data("bcno");
@@ -103,6 +104,7 @@
 
                     modal.find("button[id!='modalCloseBtn']");
                     modalModBtn.show();
+                    modalRemoveBtn.show();
                     modalRegisterBtn.hide();
                     $("#createComment").modal("show");
                 })
@@ -131,9 +133,11 @@
 					showList(1);
 				})
 			})
+
+
     	})//jq
 
-        
+
 
         $(function(){
             console.debug('>>> jq started.');
@@ -248,7 +252,6 @@
         #threeBtn{
             float: right;
         }
-
         #emptyheart{
             width: 20px;
             height: 20px;

@@ -39,6 +39,7 @@ import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
+import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.BoardCommentService;
 import com.filmee.myapp.service.BoardService;
 
@@ -63,6 +64,7 @@ public class BoardController {
 		Objects.requireNonNull(service);
 
 		List<BoardVO> list = this.service.getList(cri);
+		
 		BoardPageDTO page = new BoardPageDTO(cri, this.service.getTotal(cri));
 		model.addAttribute("list",list);
 		model.addAttribute("pageMaker",page);
@@ -199,13 +201,13 @@ public class BoardController {
 		rttrs.addAttribute("pagesPerPage",cri.getPagesPerPage());
 		rttrs.addAttribute("file", file.getFno());
 		
-		if(files==null) {
+		String fileName=files.getOriginalFilename();
+		if(fileName=="") {
 			this.service.register(board);
 			log.info(">> done if >> register");
 		} else {
 			this.service.register(board);
 
-			String fileName=files.getOriginalFilename();
 			String fileNameExtension=FilenameUtils.getExtension(fileName).toLowerCase();
 			File destinationFile;
 			String destinationFileName;

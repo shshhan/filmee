@@ -20,10 +20,11 @@
 
     <select id="list" resultType="com.filmee.myapp.domain.BoardCommentUserVO">
         <![CDATA[ 
-            SELECT /*+index_desc(fm_board_comment)*/C.*, u.user_id, u.nickname
+            SELECT C.*, u.user_id, u.nickname
             FROM fm_board_comment C, fm_user u
 			WHERE C.writer=u.user_id
             AND bno=#{bno}
+            ORDER BY bcno DESC
         ]]>
     </select>
 

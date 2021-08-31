@@ -8,7 +8,7 @@
 
 <html lang="ko">
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
 
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
     <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
@@ -25,20 +25,32 @@
             	console.log(this)
                 console.log("listBtn Clicked");
 
-                alert("작성 중이던 글이 있습니다. 정말 취소하시겠습니까?");
-                location.href="/board/list?category=&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+				if(confirm("작성 중이던 글이 있습니다. 정말 취소하시겠습니까?")){
+	                location.href="/board/list?category=&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"					
+				} else{
+					false;
+				}
             })//listbtn
            
         })//jq
+
+
         function fn_addtoBoard(){
-            
             var form = document.getElementById("writeForm");
+                            
+            if(!$("#title").val()){
+                alert("제목을 입력하세요.")
+                return false
+            } 
+            if(!$("#content").val()){
+                alert("내용을 입력하세요.")
+                return false
+            }
             
             form.action = "register";
             form.submit();
             
         }//fn_addtoBoard
-
     </script>
 
     
