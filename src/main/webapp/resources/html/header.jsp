@@ -109,20 +109,27 @@
                         break;
 
                     default :
-                }	//switch-case
+                }	//switch-case            
+                
+                $("#logout_a").on('click', function(e){
+                	console.log("logout_a clicked.");
 
-                $(".login_submit_btn").on('click', function(e){
-                    e.preventDefault();   //submit 취소
-                    console.log("SIGN IN btn clicked and not submitted.");
-                    var url= window.document.location.href;
-                    console.log("url :", url);
+                    var url = window.location.href;
+                    // console.log("url :", url);
+
+                    location.href = "/main/logout?url="+url;
+                    
+                });//logout_a clikced
+
+                $(".login_submit_btn").on('click', function(){
+                    console.log("SIGN IN btn clicked.");
+
+                    var formData = $("#login_form").serialize();
+                    console.log("formData : {}", formData);
 
                     $.ajax({
-                        data : {
-                            email : $('#login_email').val(),
-                            password : $('#login_password').val(),
-                            rememberMe : $('#rememberMe').val()
-                        },
+                    	async: false,
+                        data : formData,
                         type : 'post',
                         url : "/main/loginPost",
                         dataType : 'json',
@@ -152,24 +159,25 @@
                                     break;
 
                                 case 3:
-                                    location.reload();
+                                    // var originalRequestURI = "${__REQUEST_URI__}";
 
-                                    var originalRequestURI = "${__REQUEST_URI__}";
+                                    // if(originalRequestURI.length > 0){
+                                    //     var originalQueryString = "${__QUERYSTRING__}";
 
-                                    if(originalRequestURI.length > 0){
-                                        var originalQueryString = "${__QUERYSTRING__}";
-
-                                        var uri = 
-                                        originalRequestURI + ( originalQueryString != null && !"".equals(originalQueryString) ? "?"+originalQueryString : "" );
+                                    //     var uri = 
+                                    //     originalRequestURI + ( (originalQueryString != null) && ( !(originalQueryString==="") ) ? "?"+originalQueryString : "" );
                                         
-                                        console.log("uri :", uri);
+                                    //     console.log("uri :", uri);
 
-                                        location.href=uri;
-                                    }
+                                    //     location.href=uri;
+                                    // }else{
+                                    //     location.reload();
+                                    // }//if-else
+
                                     break;
                             }//switch-case
 
-                        }, //success
+                        } //success
 
                     });//ajax
 			    });//onclick .login_submit_btn
@@ -275,7 +283,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
-                        <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
+                        <a class="nav-link memberHeadermenu" id="logout_a" aria-current="page" href="#" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
@@ -337,7 +345,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/main/loginPost" method="POST">
+                    <form id="login_form" method="POST">
                         <div class="mb-3">
                             <label for="login_email" class="form-label"><b>Email</b></label>
                             <input type="email" class="form-control" id="login_email" name="email" placeholder="name@example.com" autocomplete="username">
@@ -352,7 +360,7 @@
                             <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary login_submit_btn">SIGN IN</button>
+                            <button type="button" class="btn btn-primary login_submit_btn">SIGN IN</button>
                         </div>
                     </form>
                     <p>&nbsp;</p>

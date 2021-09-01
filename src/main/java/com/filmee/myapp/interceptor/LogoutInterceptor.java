@@ -25,9 +25,6 @@ public class LogoutInterceptor
 			throws Exception {
 		log.debug("preHandle(request, response, handler) invoked.");
 
-		//logout시 기존 주소로 다시 이동할 방법 생각해보기
-		
-		
 		HttpSession session = request.getSession();
 		
 		//Session scope에서 로그인정보 삭제
@@ -46,13 +43,5 @@ public class LogoutInterceptor
 		}//if
 		return true;
 	}//preHandle
-
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {		
-		log.debug("postHandle(request, response, {}, {}) invoked.", handler, modelAndView);
-				
-		response.sendRedirect("/main");	
-	}//postHandle
 
 }//end class

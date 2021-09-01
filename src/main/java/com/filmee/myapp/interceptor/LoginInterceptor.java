@@ -51,7 +51,8 @@ public class LoginInterceptor
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);
 
-		if( user != null && request.getParameter("rememberMe") != null){	//자동로그인 체크 후 로그인 성공했으면		
+		log.info("request.getParameter(\"rememberMe\") : {}, {}", request.getParameter("rememberMe"), request.getParameter("rememberMe").getClass().getName());
+		if( user != null && request.getParameter("rememberMe").equals("on")){	//자동로그인 체크 후 로그인 성공했으면		
 			Cookie rememberMeCookie = 		 ///현재 sessionId를 값으로 갖는 RememberMe 쿠키 생성
 				new Cookie(LoginInterceptor.rememberMeKey, session.getId());
 			
@@ -61,24 +62,10 @@ public class LoginInterceptor
 			response.addCookie(rememberMeCookie);		//응답문서에 쿠키 추가
 			log.info(">>>>> RememberMeCookie added in Response. >>>>>");
 		}//if
-		
-//		//Session Scope에서 기존 URI 획득 (로그인이 필요한 URI로 요청이 들어와 AuthInterceptor를 거친 경우)
-//		String originalRequestURI = (String)session.getAttribute(AuthInterceptor.requestURIKey);
-//		
-//		if(originalRequestURI != null) {  //기존 URI가 있었다면 쿼리스트링까지 획득
-//			String originalQueryString = (String)session.getAttribute(AuthInterceptor.queryStringKey);
-//			
-//			response.sendRedirect(
-//						originalRequestURI +
-//						(originalQueryString != null && !"".equals(originalQueryString) ?
-//								"?"+originalQueryString : "")
-//						);										//쿼리 스트링이 null이나 공백이 아니라면 URI+QueryString으로 Redirect
-//				log.info(">>>>> Redirected to OriginalURI.");
-//		}//if
-//		
-//		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
-//		session.removeAttribute(AuthInterceptor.requestURIKey);
-//		session.removeAttribute(AuthInterceptor.queryStringKey);
+				
+		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
+		session.removeAttribute(AuthInterceptor.requestURIKey);
+		session.removeAttribute(AuthInterceptor.queryStringKey);
 
 	}//postHandle
 

@@ -6,10 +6,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,9 +39,17 @@ public class MainController {
 		
 	public static final String loginKey = "__LOGIN__";
 	
-	//View-Controller : main, logout, forgotPw
+	//View-Controller : main, forgotPw
 	
 	//====== 로그인 관련 ======
+	
+	//header.jsp의 로그아웃을 누를시
+	@GetMapping("logout")
+	public String logout(@RequestParam("url") String url) {
+		log.debug("logout({}) invoked.", url);
+		
+		return "redirect:"+url;	//QueryString으로 받은 기존 URL주소로 Redirect
+	}//logout
 	
 	//비로그인 상태에서 로그인 상태에서만 접근 가능한 요청을 보낼 시 AuthInterceptor에서 Redirect
 	@GetMapping("loginRequired")

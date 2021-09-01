@@ -72,10 +72,8 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
 				
 			}//if(rememberMeCookie != null) {
 			
-		}else {
-			log.info("not a first request");
-		}//if-else
-			
+		}//if(WebUtils.getCookie(request, "JSESSIONID") == null)
+		
 		return true;
 	}//preHandle
 	
