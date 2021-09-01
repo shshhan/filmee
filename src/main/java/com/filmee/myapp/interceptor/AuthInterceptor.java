@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.filmee.myapp.controller.MainController;
@@ -28,8 +29,11 @@ public class AuthInterceptor
 	public static final String requestURIKey = "__REQUEST_URI__";
 	public static final String queryStringKey = "__QUERYSTRING__";
 	
+	public static boolean result = true;
+	
 	@Setter(onMethod_= @Autowired)
 	private LoginService service;
+	
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -89,14 +93,32 @@ public class AuthInterceptor
 			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
 			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
 		
-			response.sendRedirect("/main/loginRequired");	//메인의 로그인 modal로 Redirect
-			log.info("Redirected to /main/loginRequired");
-
+//			response.sendRedirect("/main/loginRequired");	//메인의 로그인 modal로 Redirect
+//			log.info("Redirected to /main/loginRequired");
+			
+			AuthInterceptor.result = false;
 		}//if-elseIf-else
 		
-		// 위 if-elseIf-else문 중 else일 때만 여기까지 도달.
 		return false;		//기존 요청이 컨트롤러로 전달되지 못함.
 		
+		// 위 if-elseIf-else문 중 else일 때만 여기까지 도달.
+		
+	}
+
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+		
+		if(AuthInterceptor.result) {
+			 
+		}
+
+		
+
 	}//preHandle
+	
+	
+	
+	
 	
 }//end class

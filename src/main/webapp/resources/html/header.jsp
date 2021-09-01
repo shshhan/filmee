@@ -154,10 +154,22 @@
                                 case 3:
                                     location.reload();
 
+                                    var originalRequestURI = "${__REQUEST_URI__}";
+
+                                    if(originalRequestURI.length > 0){
+                                        var originalQueryString = "${__QUERYSTRING__}";
+
+                                        var uri = 
+                                        originalRequestURI + ( originalQueryString != null && !"".equals(originalQueryString) ? "?"+originalQueryString : "" );
+                                        
+                                        console.log("uri :", uri);
+
+                                        location.href=uri;
+                                    }
                                     break;
                             }//switch-case
 
-                        }///success
+                        }, //success
 
                     });//ajax
 			    });//onclick .login_submit_btn
