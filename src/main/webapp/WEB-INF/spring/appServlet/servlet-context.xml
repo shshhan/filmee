@@ -30,6 +30,12 @@
 		view-name="main/main"
 		status-code="200" 
 	/>
+	
+	<view-controller 
+		path="/main/loginRequired"
+		view-name="main/loginRequired"
+		status-code="200" 
+	/>
 						
 	<view-controller 
 		path = "/main/forgotPw"
@@ -71,6 +77,7 @@
 		</interceptor>
 		
 		<interceptor>
+			<!--  board/list는 테스트용도. 로그인이 돼있어야만 접근할 수 있는 페이지는 여기에 넣어주세요. -->
 			<mapping path="/board/list" />			
 					
 			<beans:ref bean="authInterceptor" />
@@ -92,7 +99,8 @@
 			<exclude-mapping path="/main/emailAuthorized" />	
 			<exclude-mapping path="/main/forgotPwPost" />
 			
-			<!--  테스트용도 /// 제외경로 : AuthInterceptor Path -->
+			<!-- 제외경로 : AuthInterceptor Path -->
+			<!--  board/list는 테스트용도. -->
 			<exclude-mapping path="/board/list" />	
 						 
 			<beans:ref bean="autoLoginInterceptor" />

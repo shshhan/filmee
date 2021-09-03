@@ -19,17 +19,11 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 public class LogoutInterceptor 
 	implements HandlerInterceptor {
-	
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
-		log.debug("preHandle(request, response, handler) invoked.");
 
-		HttpSession session = request.getSession();
-		
-		//Session scope에서 로그인정보 삭제
-		session.removeAttribute(MainController.loginKey);
-		log.info(">>>>> LoginKey removed. >>>>>");
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+		log.debug("postHandle(request, response, {}, {}) invoked", handler, modelAndView);
 		
 		// RememberMe 쿠키 삭제
 		Cookie rememberMeCookie = 
@@ -41,7 +35,14 @@ public class LogoutInterceptor
 			response.addCookie(rememberMeCookie);
 			log.info(">>>>> RememberMeCookie removed. >>>>>");
 		}//if
-		return true;
-	}//preHandle
-
+		
+		HttpSession session = request.getSession();
+		
+		//Session scope에서 로그인정보 삭제
+		session.invalidate();
+		log.info(">>>>> Session invalidated. >>>>>");
+		log.info(">>>>> LoginKey removed. >>>>>");
+		
+	}//postHandle
+		
 }//end class

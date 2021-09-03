@@ -1,13 +1,11 @@
 package com.filmee.myapp.interceptor;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.filmee.myapp.controller.MainController;
 import com.filmee.myapp.domain.UserVO;
@@ -26,7 +24,7 @@ public class LoginInterceptor
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		log.debug("preHandle(request, response, handler) invoked.");
-
+	
 		//Session Scope에서 기존 로그인 정보 획득
 		HttpSession session = request.getSession();
 		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);	
@@ -42,32 +40,57 @@ public class LoginInterceptor
 	}//preHandle
 	
 
-	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-			ModelAndView modelAndView) throws Exception {
-		log.debug("postHandle(request, response, handler, {}) invoked.", modelAndView);
+//	@Override
+//	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+//			ModelAndView modelAndView) throws Exception {
+//		log.debug("postHandle(request, response, handler, {}) invoked.", modelAndView);
+//		
+//		HttpSession session = request.getSession();
+//		
+//		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
+//		session.removeAttribute(AuthInterceptor.requestURIKey);
+//		session.removeAttribute(AuthInterceptor.queryStringKey);
+//		
+//	}//postHandle
+
+
+//	@Override
+//	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+//			throws Exception {
+//		log.debug("afterCompletion(request, response, handler, {}) invoked.", ex);
+//		
+//		HttpSession session = request.getSession();
+//
+//		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
+//		session.removeAttribute(AuthInterceptor.requestURIKey);
+//		session.removeAttribute(AuthInterceptor.queryStringKey);
+//	
+//	}//afterCompletion
+	
+	
+	
 		
-		//MainController의 loginPost에서 Session Scope에 추가해둔 로그인 정보 획득
-		HttpSession session = request.getSession();
-		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);
+//		//MainController의 loginPost에서 Session Scope에 추가해둔 로그인 정보 획득
+//		HttpSession session = request.getSession();
+//		UserVO user = (UserVO)session.getAttribute(MainController.loginKey);
+//
+//		log.info("request.getParameter(\"rememberMe\") : {}, {}", request.getParameter("rememberMe"), request.getParameter("rememberMe").getClass().getName());
+//		if( user != null && request.getParameter("rememberMe").equals("on")){	//자동로그인 체크 후 로그인 성공했으면		
+//			Cookie rememberMeCookie = 		 ///현재 sessionId를 값으로 갖는 RememberMe 쿠키 생성
+//				new Cookie(LoginInterceptor.rememberMeKey, session.getId());
+//			
+//			rememberMeCookie.setMaxAge(60*60*24*7);		//쿠키 유효기간 7일
+//			rememberMeCookie.setPath("/");				//쿠키 경로 : 모든 경로
+//			
+//			response.addCookie(rememberMeCookie);		//응답문서에 쿠키 추가
+//			log.info(">>>>> RememberMeCookie added in Response. >>>>>");
+//		}//if
+//				
+//		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
+//		session.removeAttribute(AuthInterceptor.requestURIKey);
+//		session.removeAttribute(AuthInterceptor.queryStringKey);
+//
 
-		log.info("request.getParameter(\"rememberMe\") : {}, {}", request.getParameter("rememberMe"), request.getParameter("rememberMe").getClass().getName());
-		if( user != null && request.getParameter("rememberMe").equals("on")){	//자동로그인 체크 후 로그인 성공했으면		
-			Cookie rememberMeCookie = 		 ///현재 sessionId를 값으로 갖는 RememberMe 쿠키 생성
-				new Cookie(LoginInterceptor.rememberMeKey, session.getId());
-			
-			rememberMeCookie.setMaxAge(60*60*24*7);		//쿠키 유효기간 7일
-			rememberMeCookie.setPath("/");				//쿠키 경로 : 모든 경로
-			
-			response.addCookie(rememberMeCookie);		//응답문서에 쿠키 추가
-			log.info(">>>>> RememberMeCookie added in Response. >>>>>");
-		}//if
-				
-		//Session Scope에 등록된 기존 URI 및 QueryString 삭제
-		session.removeAttribute(AuthInterceptor.requestURIKey);
-		session.removeAttribute(AuthInterceptor.queryStringKey);
-
-	}//postHandle
 
 
 }//end class

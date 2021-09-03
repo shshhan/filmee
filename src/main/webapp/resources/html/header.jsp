@@ -23,6 +23,33 @@
         
         <script>
 
+	      //====== 쿠키 ======
+	
+	        function getCookie(key){
+	        	let cookieKey = key + "=";
+	        	let result = "";
+	        	const cookieArr = document.cookie.split(";");   //cookie를 가져와서 ;를 단위로 나눠 배열로 저장
+	
+	        	for(let i =0; i<cookieArr.length; i++){ //각 쿠키의 길이만큼 순회
+	        		if(cookieArr[i][0] === " "){        //쿠키의 첫문자가 공백이라면
+	        			cookieArr[i] = cookieArr[i].substring(1);   //공백을 제외한 값을 다시 저장
+	        		}//if
+	
+	        		if(cookieArr[i].indexOf(cookieKey) === 0){  //쿠키를 순회하며 내가 지정한 쿠키의 이름으로 시작하는 쿠키 검색
+	        			result = cookieArr[i].slice(cookieKey.length, cookieArr[i].length); //쿠키의 값만 result 변수에 저장
+	        			console.log("Cookie : ", cookieKey+result);
+	
+	        			return result; //내가 찾고자 했던 쿠키의 값을 반환
+	        		}//if
+	        	}//for
+	
+	        }//getCookie
+	
+	        function deleteCookie(name){
+	        	document.cookie = name + "=;expires= Thu, 02 Sep 2021 00:00:10 GMT;domain=localhost;path=/;"
+	        }//deleteCookie
+	        
+	        
             $(function() {
                 console.log('jq started.');
         
@@ -34,37 +61,12 @@
 
                 //전달된 message가 있으면 alert
                 switch("${message}"){
-                    //====== 로그인 관련 ======
-
-                    //로그인 필요시
-                    case 'login_required' :              
-                        $("#login").modal("show");
-                        break;
-                    
-                    //로그인 실패시
-                    case 'no_info' :
-                        $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
-                        $("#alert_modal").modal("show");
-                        
-                        //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                        var myModalEl = document.getElementById('alert_modal');
-                        myModalEl.addEventListener('hidden.bs.modal',function(){
-                            $("#login").modal("show");
-                        });
-                        break;
-                    
-                    //회원가입 후 이메일 인증을 하지 않고 로그인 시
-                    case 'email_unauthorized' :
-                        $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
-                        $("#alert_modal").modal("show");
-                        break;
-
                     //====== 회원가입 관련 ======
 
                     //회원가입 버튼을 누를 시
-                    case 'join' :
-                        $("#join").modal("show");   
-                        break;
+                    // case 'join' :
+                    //     $("#join").modal("show");   
+                    //     break;
 
                     //회원가입을 마쳤을 시
                     case 'just_joinned' :
@@ -109,69 +111,98 @@
                         break;
 
                     default :
-                }	//switch-case            
-                
-                $("#logout_a").on('click', function(e){
-                	console.log("logout_a clicked.");
-
-                    var url = window.location.href;
-                    // console.log("url :", url);
-
-                    location.href = "/main/logout?url="+url;
-                    
-                });//logout_a clikced
-
+                };	//switch-case
+                               
                 $(".login_submit_btn").on('click', function(){
-                    console.log("SIGN IN btn clicked.");
+                    console.log("SIGN in btn clicked.");
 
-                    var formData = $("#login_form").serialize();
-                    console.log("formData : {}", formData);
+                    let formData = $("#login_form").serialize();
+                    console.log("formData :", formData);
 
                     $.ajax({
-                    	async: false,
+                    	async : true,
                         data : formData,
                         type : 'post',
                         url : "/main/loginPost",
                         dataType : 'json',
                         success : function(data){
                             console.log("data :", data);
+                            console.log("cookieValue:",data.cookieValue);
+                            console.log("data.loginNum:",data.loginNum);
+                            console.log("data.isRememberMe:", data.isRememberMe);
                             
-                            switch(data){
-                                case 1 :
+                            let uriCookie = getCookie("__ORIGINAL_REQUEST_URI__");
+                            console.log("uriCookie :", uriCookie);
+
+                            let alertModalEl = document.getElementById('alert_modal');
+
+                            switch(data.loginNum){
+                                case '1' :
+                                	console.log("longinNum : 1");
                                     $("#login").modal("hide");
 
                                     $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
                                     $("#alert_modal").modal("show");
 
-                                    var alertModalEl = document.getElementById('alert_modal');
                                     alertModalEl.addEventListener('hidden.bs.modal',function(){
                                         $("#login").modal("show");
                                     });
-
+                            
                                     break;
                                     
-                                case 2:
+                                case '2':
+                                	console.log("longinNum : 2");
+
                                     $("#login").modal("hide");
 
                                     $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
                                     $("#alert_modal").modal("show");
+                           
+                                    
+                                    if(uriCookie != null){      //
+                                        alertModalEl.addEventListener('hidden.bs.modal',function(){
+                                            deleteCookie("__ORIGINAL_REQUEST_URI__");
+                                            history.go(-1);
+                                        });//modal close listener
+                                    }//ifk
 
                                     break;
 
-                                case 3:
-                                    // var originalRequestURI = "${__REQUEST_URI__}";
+                                case '3':
+                                	console.log("longinNum : 3");
 
-                                    // if(originalRequestURI.length > 0){
-                                    //     var originalQueryString = "${__QUERYSTRING__}";
-
-                                    //     var uri = 
-                                    //     originalRequestURI + ( (originalQueryString != null) && ( !(originalQueryString==="") ) ? "?"+originalQueryString : "" );
+                                	if(data.isRememberMe == 'true'){    //RemeberMe 체크하고 로그인 했을 시
                                         
-                                    //     console.log("uri :", uri);
+                                        //RemberMe 쿠키의 이름과 값, 유효기간 설정
+                                        let rememberMeCookie = 
+                                        "__REMEMBER_ME__=" + data.cookieValue + ";expires=" + data.rememberAge;
+                                        
+                                        //만든 설정대로 쿠키 생성
+                                        document.cookie = rememberMeCookie;
+                                    }//if
+                                    
+                                    if(uriCookie != null){
+                                        location.href=uriCookie;
+                                    } else{
+                                        location.reload();
+                                    }//if-else
+                                    // //Session Scope에서 기존 URI 획득 (로그인이 필요한 URI로 요청이 들어와 AuthInterceptor를 거친 경우)                                                    
+                                    // var originalRequestURI = "${__REQUEST_URI__}";
+									// console.log("originalRequestURI :", originalRequestURI);
+                                    
+                                    // if(originalRequestURI.length > 0){      //기존 URI가 있었다면 쿼리스트링까지 획득
+                                    //     var originalQueryString = "${__QUERYSTRING__}";
+    								// 	console.log("originalQueryString :", originalQueryString);
 
-                                    //     location.href=uri;
-                                    // }else{
-                                    //     location.reload();
+                                    //      //쿼리 스트링이 null이나 공백이 아니라면 URI+QueryString으로 Redirect
+                                    //     var uri = 
+                                    //     originalRequestURI + ( (originalQueryString != null) && ( !(originalQueryString==="") ) ? "?"+originalQueryString : "" );  
+                                        
+                                    //     // console.log("uri :", uri);
+
+                                    //     location.href=uri;  
+                                    // }else{          //기존 URI가 없었다면 main으로 Redirect	(로그인 버튼으로 직접 요청이 들어온 경우)
+                                    //    location.reload();
                                     // }//if-else
 
                                     break;
@@ -283,7 +314,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
-                        <a class="nav-link memberHeadermenu" id="logout_a" aria-current="page" href="#" style='display: none'>Logout</a>
+                        <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
@@ -387,11 +418,6 @@
                         <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val())">
                     	<p id='email_message'></p>
                     </div>
-                    <!-- <div class="input-group mb-3">
-                        <label for="email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com" aria-label="name@example.com" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">check</button>
-                        </div> -->
                     <div class="mb-3">
                         <label for="password" class="form-label"><b>password</b></label>
                         <input type="password" class="form-control" id="join_password" name="password" placeholder="password" oninput="javascript:checkPw()" autocomplete="new-password">

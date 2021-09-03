@@ -1,6 +1,8 @@
 package com.filmee.myapp.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,50 +41,43 @@ public class MainController {
 		
 	public static final String loginKey = "__LOGIN__";
 	
-	//View-Controller : main, forgotPw
+	//View-Controller : main, loginRequired, forgotPw
 	
 	//====== 로그인 관련 ======
 	
 	//header.jsp의 로그아웃을 누를시
 	@GetMapping("logout")
-	public String logout(@RequestParam("url") String url) {
-		log.debug("logout({}) invoked.", url);
+	public String logout() {
+		log.debug("logout() invoked.");
 		
-		return "redirect:"+url;	//QueryString으로 받은 기존 URL주소로 Redirect
+		return "redirect:/main";	//Interceptor에서 세션 비활성화 및 RememberMe 쿠키 삭제 후 메인으로 Redirect
 	}//logout
-	
-	//비로그인 상태에서 로그인 상태에서만 접근 가능한 요청을 보낼 시 AuthInterceptor에서 Redirect
-	@GetMapping("loginRequired")
-	public String loginRequired(RedirectAttributes rttrs) {
-		log.debug("login(rttrs) invoked.");
-		
-		rttrs.addFlashAttribute("message", "login_required");	
-		
-		return "redirect:/main"; // 메인으로 Redirect 후 loginModal 띄움
-	}//login
 	
 	//login modal에서 sign in 버튼 클릭 시
 	@ResponseBody
 	@PostMapping("loginPost")
-	public Integer loginPost(UserDTO dto, HttpSession session) throws Exception {
+	public Map<String, String> loginPost(UserDTO dto, HttpSession session) throws Exception {
 		log.debug("loginPost({}, {}) invoked.", dto, session);
 			
 		UserVO user = this.loginService.login(dto);		//회원 정보 확인
 		log.info("user : {}", user);
 			
+		Map<String, String> resultMap = new HashMap<>();
+		
+		
 		if(user == null) {		//로그인 정보가 없다면
 			log.info("return 1");
-			return 1;
-						
+			resultMap.put("loginNum", "1");
+								
 		} else if ( !user.getAuthCode().equals("authorized") ) {	//이메일 인증을 하지 않은 유저가 로그인을 시도했다면
 			log.info("return 2");
-			return 2;
+			resultMap.put("loginNum", "2");
 			
 		} else {	//이메일 인증까지 마친 유저가 로그인을 시도했다면
 			log.info("return 3");
 
 			session.setAttribute(MainController.loginKey, user);
-			log.info(">>>>> LoginKey on SessionScope. >>>>>");
+			log.info(">>>>> LoginKey added on SessionScope. >>>>>");
 
 			if(dto.isRememberMe()) {	//자동로그인 체크 했으면 DB에 쿠키정보 저장
 				String rememberCookie = session.getId();
@@ -94,36 +89,21 @@ public class MainController {
 				//DB에 sessionId(RememberMe 쿠키의 값)와 유효기간(RememberMe 쿠키의 유효기간) 저장
 				this.loginService.setUserRememberMe(email, rememberCookie, rememberAge);	
 				
+				resultMap.put("isRememberMe", "true");
+				resultMap.put("cookieValue", rememberCookie);
+				resultMap.put("rememberAge", rememberAge.toString());
+				
 			}//if(dto.isRememberMe())
 			
-			return 3;
+			resultMap.put("loginNum", "3");
 			
 		}//if-elseIf-else
 			
+		return resultMap;
 		//LoginInterceptor의 postHandle 메서드에서 이후 로직 처리(RememberMe 쿠키 생성 및 전송)
 		
 	}//loginPost
 	
-	//LoginInterceptor에서 Model에 추가된 로그인 정보를 못찾았을 시 Redirect
-	@GetMapping("loginNoInfo")
-	public String loginNoInfo(RedirectAttributes rttrs) {
-		log.debug("loginNoInfo({}) invoked.", rttrs);
-		
-		rttrs.addFlashAttribute("message", "no_info");
-	
-		return "redirect:/main";	//메인으로 Redirect 후 메세지와 함께 loginModal 띄움
-	}//loginNoInfo
-	
-	//LoginInterceptor에서 Model 추가된 로그인 정보가 이메일 인증을 안했을 시 Redirect 
-	@GetMapping("loginUnauthorized")
-	public String loginUnauthorized(RedirectAttributes rttrs) {
-		log.debug("loginUnauthorized({}) invoked.", rttrs);
-		
-		rttrs.addFlashAttribute("message", "email_unauthorized");
-		
-		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
-	}//loginUnauthorized
-
 	//====== 회원가입 관련 ======
 	
 	//header.jsp의 join modal에서 이메일 중복검사 시

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
 import com.filmee.myapp.controller.MainController;
@@ -59,7 +58,7 @@ public class AuthInterceptor
 			if(user != null) {		//쿠키 정보와 일치하는 회원 정보가 있다면
 				session.setAttribute(MainController.loginKey, user);	//Session Scope에 로그인 정보 추가
 				
-				log.info(">>>>> LoginKey on SessionScope. >>>>>");
+				log.info(">>>>> LoginKey added on SessionScope. >>>>>");
 
 				//새로운 세션으로 접속 시 rememberMeCookie 갱신
 				String sessionId = session.getId();		//현재 SessionId 획득
@@ -87,10 +86,25 @@ public class AuthInterceptor
 			String originalRequestURI = request.getRequestURI();
 			String originalQueryString = request.getQueryString();
 		
-			//URI & QueryString을 Session Scope에 바인딩
-			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
-			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
-		
+//			//URI & QueryString을 Session Scope에 바인딩
+//			session.setAttribute(AuthInterceptor.requestURIKey, originalRequestURI);
+//			session.setAttribute(AuthInterceptor.queryStringKey, originalQueryString);
+
+			
+			originalRequestURI += 
+					( (originalQueryString != null) && ( !(originalQueryString.equals("")) ) ?
+							"?"+originalQueryString : "" );
+			
+			log.info("originalRequestURI : {}", originalRequestURI);
+			
+			Cookie uriCookie = 
+					new Cookie("__ORIGINAL_REQUEST_URI__", originalRequestURI);
+			
+			uriCookie.setMaxAge(60); //쿠키 유효기간 1분
+			uriCookie.setPath("/");
+			
+			response.addCookie(uriCookie);
+			
 			response.sendRedirect("/main/loginRequired");	//메인의 로그인 modal로 Redirect
 			log.info("Redirected to /main/loginRequired");
 			

@@ -1,4 +1,4 @@
-//이메일 양식 유효성 검사
+//====== 이메일 양식 유효성 검사 ======
 function isEmail(email) {
 	// console.log("isEamil invoked.");
 
@@ -63,7 +63,7 @@ function checkEmail(email){
 			isSignUpBtnValid();
 		}//success
 	});//ajax
-};//checkEmail
+}//checkEmail
 
 function checkPw(){
 	// console.log("checkPw invoked.");
@@ -82,7 +82,7 @@ function checkPw(){
 		$("#pw_message").text("✅☑✔");
 	}//if-elseif-else
 	isSignUpBtnValid();
-};//checkPw
+}//checkPw
 
 function checkNickname(){
 	// console.log("checkNickname invoked.");
@@ -114,4 +114,4 @@ function checkNickname(){
 			isSignUpBtnValid();
 		}//success
 	});//ajax
-};//checkNickname
+}//checkNickname

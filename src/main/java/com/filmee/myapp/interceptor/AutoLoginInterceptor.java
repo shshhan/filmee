@@ -42,17 +42,17 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
 			if(rememberMeCookie != null) {	//RememberMe 쿠키가 있으면
 				String rememberMe = rememberMeCookie.getValue();
 				
-				//Session Scope에서 로그인 정보 획득
 				HttpSession session = request.getSession();
+				
+				//일치하는 쿠키값을 가진 유저를 검색
 				UserVO user = this.service.findUserWithCookie(rememberMe);
 				
-				if(user != null) {	//로그인 정보가 있다면
+				if(user != null) {	//쿠키 정보가 등록된 유저를 찾으면
 					//로그인 처리
 					session.setAttribute(MainController.loginKey, user);
 					log.info(">>>>> LoginKey on SessionScope. >>>>>");
 	
-					
-					String sessionId = session.getId();		//햔재 SessionId 획득
+					String sessionId = session.getId();		//현재 SessionId 획득
 					
 					this.service.setUserRememberMe(
 							user.getEmail(),
