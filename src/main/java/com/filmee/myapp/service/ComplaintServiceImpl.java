@@ -5,13 +5,16 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.filmee.myapp.domain.ComCriteria;
 import com.filmee.myapp.domain.ComplaintVO;
+import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.mapper.ComplaintMapper;
 
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
@@ -23,7 +26,9 @@ public class ComplaintServiceImpl
 
 	//매개변수가 하나라 자동으로 주입
 	private ComplaintMapper mapper;
-
+	
+	@Setter(onMethod_=@Autowired)
+	private MailSendService mailService;
 	
 		@Override
 		public void afterPropertiesSet() throws Exception {		
@@ -43,13 +48,13 @@ public class ComplaintServiceImpl
 	
 
 		@Override
-	   public boolean register(ComplaintVO compl) {
+	   public boolean register(ComplaintVO compl){
 	      log.debug("register({}) invoked.", compl);
 	      
 	      Objects.requireNonNull(this.mapper);
 	      
 	      int affectedLines = mapper.insert(compl);
-	      
+//	      mapper.userSelect(compl.getWriter());
 	      return (affectedLines == 1);
 	      }//register
 
@@ -78,21 +83,30 @@ public class ComplaintServiceImpl
 
 	
 		@Override
-		public boolean temporary(ComplaintVO complaint) {
-		      log.debug("temporary({}) invoked.",complaint);
+		public boolean temporary(ComplaintVO compl) {
+		      log.debug("temporary({}) invoked.",compl);
 		      
 		      Objects.requireNonNull(this.mapper);
-		      
-			return (this.mapper.update(complaint)==1);
+//		      mapper.userSelect(compl.getWriter());
+			return (this.mapper.update(compl)==1);
 		}
 
 		@Override
-		public boolean completion(ComplaintVO complaint) {
+		public boolean completion(ComplaintVO complaint,UserVO user) {
 		      log.debug("completion({}) invoked.",complaint);
 
 			   Objects.requireNonNull(this.mapper);
-			      
-			return (this.mapper.endUpdate(complaint)==1);
+			   
+				String email = user.getEmail();
+				String content = complaint.getContent();
+				log.info("===================================================");
+				log.info("\t+email:{}",email);
+				log.info("\t+content:{}",content);
+				log.info("===================================================");
+				this.mailService.sendComplaintMail(email, content);
+
+
+			return (this.mapper.updateEnd(complaint)==1);
 		}//completion
 
 

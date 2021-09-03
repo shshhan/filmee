@@ -11,4 +11,5 @@ public interface MailSendService {
 
 	public abstract void sendTempPwMail(String email, String tempPw);
 	
+	public abstract void sendComplaintMail(String email, String content);
 }//end interface

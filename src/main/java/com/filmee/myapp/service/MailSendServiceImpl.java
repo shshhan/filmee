@@ -75,7 +75,7 @@ public class MailSendServiceImpl implements MailSendService {
 		
 	}//sendAuthMail
 
-	//비밀번호 재설정 링크 발송
+	//임시 비밀번호 발송ㄴ
 	@Override
 	public void sendTempPwMail(String email, String tempPw){
 		log.debug("sendTempPwMail({}) invoked.", email);
@@ -101,6 +101,28 @@ public class MailSendServiceImpl implements MailSendService {
 			e.printStackTrace();
 		}//try-catch
 
+	}
+	
+	//complaint 의 completion 메일 답변보내기
+	@Override
+	public void sendComplaintMail(String email, String content) {
+		log.debug("sendComplaintMail({},{}) invoked.", email,content);
+		try {
+			MailUtils sendMail = new MailUtils(mailSender);
+			sendMail.setSubject("FilMEE 요청답신");
+			sendMail.setText(
+					new StringBuffer()
+							.append(content)
+				            .toString());
+            sendMail.setFrom("shawnshhan@gmail.com", "FilMee");
+            sendMail.setTo(email);
+            sendMail.send();
+			
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}//try-catch
 	}//sendResetPwMail
 	
 }//end class

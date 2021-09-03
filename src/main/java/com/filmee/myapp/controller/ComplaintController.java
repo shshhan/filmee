@@ -17,7 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.filmee.myapp.domain.ComCriteria;
 import com.filmee.myapp.domain.ComPageDTO;
 import com.filmee.myapp.domain.ComplaintVO;
+import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.ComplaintService;
+import com.filmee.myapp.service.LoginService;
+import com.filmee.myapp.service.MailSendService;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +33,13 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class ComplaintController
    implements InitializingBean{
-
+	
+	@Setter(onMethod_=@Autowired)
+	private LoginService loginService;
+	
+	@Setter(onMethod_= @Autowired)
+	private MailSendService mailSend;
+	
    @Setter(onMethod_= @Autowired)
    private ComplaintService service;
    
@@ -52,10 +61,11 @@ public class ComplaintController
 	   
 	   
 	   boolean isRegister = this.service.register(complaint);
+//	   rttrs.addAttribute("writer",userVO.getUserId());
 		if(isRegister) {	//요청 성공일 때
 			rttrs.addAttribute("result", "success");
 		}//if
-//     return "/complaint/register";
+//     return "/complaint/register";x
      return "redirect:/complaint/register";
    }//regeister
    
@@ -72,12 +82,14 @@ public class ComplaintController
 		
 		List<ComplaintVO> complaint = this.service.getList();
 		
+		
+		
 		assert complaint != null;
 		
 		complaint.forEach(log::info);
 		
 		model.addAttribute("list", complaint);
-		return "complaint/mgr";
+		return "complaint/comList";
 	}//list
 
 
@@ -99,11 +111,11 @@ public class ComplaintController
 		model.addAttribute("list", complaint);
 		model.addAttribute("pageMaker", pageDTO);
 		
-		return "complaint/mgr";
+		return "complaint/comList";
 	}//listPerPAge
 	
-	@GetMapping( "get" )
-	public void get(
+	@GetMapping( {"get","temporary","completion"} )
+	public String get(
 			@ModelAttribute("cri") ComCriteria cri,
 			@RequestParam("compno") Integer compno, 
 			Model model
@@ -117,6 +129,7 @@ public class ComplaintController
 		log.info("\t+ board : {}", complaint);
 		
 		model.addAttribute("complaint", complaint);
+		return "complaint/comGet";
 	}//get
 	
 	@PostMapping("remove")
@@ -133,7 +146,7 @@ public class ComplaintController
 		rttrs.addAttribute("amount", cri.getAmount());
 		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
 		
-		return "redirect:/complaint/mgr";
+		return "redirect:/complaint/listPerPage";
 	}//remove
 	
 
@@ -149,6 +162,7 @@ public class ComplaintController
 		
 		boolean isTemporary = this.service.temporary(complaint);
 		
+		
 		if(isTemporary) {
 			rttrs.addAttribute("result", "success");
 		}//if
@@ -158,29 +172,32 @@ public class ComplaintController
 		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
 
 
-		return "redirect:complaint/mgr";
+		return "redirect:/complaint/listPerPage";
 	}
 	
 	@PostMapping("completion")
 	public String completion(
 			@ModelAttribute("cri") ComCriteria cri,
 			ComplaintVO complaint,
-			RedirectAttributes rttrs
-			) {
+			RedirectAttributes rttrs,
+			UserVO user
+			) throws Exception {
 		log.debug("completion({}, {}, {}) invoked.", cri, complaint, rttrs);
+
+		boolean isCompletion = this.service.completion(complaint, user);
+
 		
-		boolean isCompletion = this.service.temporary(complaint);
-		
-		if(isCompletion) {
-			rttrs.addAttribute("result", "success");
-		}//if
+				if(isCompletion) {
+					rttrs.addAttribute("result", "success");
+				}//if
 		
 		rttrs.addAttribute("currPage", cri.getCurrPage());
 		rttrs.addAttribute("amount", cri.getAmount());
 		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
 
 
-		return "redirect:/complaint/mgr";
+//		return "redirect:/complaint/listPerPage";
+		return "redirect:/complaint/listPerPage";
 	}
    
 

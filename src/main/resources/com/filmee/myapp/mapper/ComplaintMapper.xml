@@ -9,10 +9,19 @@
 	    <insert id="insert">
 	        
 	        INSERT INTO fm_complaint (code, content,writer)
-	        VALUES(#{code},#{content},2)
+	        VALUES(#{code},#{content},#{writer})
 	
 	    </insert>
-
+		
+		<select id="userSelect" resultType="com.filmee.myapp.domain.UserVO">
+			<![CDATA[ 
+				SELECT a.writer, b.user_id, b.email, b.nickname
+				FROM fm_complaint a, fm_user b
+				WHERE a.writer = b.user_id 
+				AND a.writer=#{writer}
+			]]>
+		</select>
+		
 	    <insert id="insertSelectKey">
 	        <selectKey keyProperty="compno" order="BEFORE" resultType="int">
 	            SELECT ISEQ$$_101551.nextval FROM dual
@@ -63,7 +72,7 @@
                 <choose>
                 
                     <when test="type eq 'T'.toString()">
-                      title LIKE '%'||#{keyword}||'%'
+                      code LIKE '%'||#{keyword}||'%'
                     </when>   
                     
                     <when test="type eq 'C'.toString()">
@@ -73,6 +82,28 @@
                     <when test="type eq 'W'.toString()">
                        writer LIKE '%'||#{keyword}||'%'
                     </when>  
+                    
+                    <when test="category eq '0'.toString()">
+	                	code='0'
+	                </when>
+	                
+                    <when test="category eq '1'.toString()">
+                		code='1'
+	                </when>
+	                                
+	                <when test="category eq '2'.toString()">
+	                	code='2'
+	                </when>
+	                                
+	                <when test="category eq '3'.toString()">
+	                	code='3'
+	                </when>
+	                                
+	                <when test="category eq '4'.toString()">
+	                	code='4'
+	                </when>
+	                
+	                
                     
                 </choose>   
             </where>
@@ -92,7 +123,7 @@
 	        ]]>
 	    </update>
 	    
-	    <update id="update_end">
+	    <update id="updateEnd">
 	        <![CDATA[ 
 	            UPDATE fm_complaint
 	            SET

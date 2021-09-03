@@ -48,4 +48,18 @@
 	<!-- 서블릿에서는 확장자패턴으로 했지만 directory pattern 으로 / 설정해두면 모든 요청이 이쪽으로 들어온다. 
 			=> DispatcherServlet이 모든 요청을 받는다. -->
 
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<servlet-name>appServlet</servlet-name>
+	</filter-mapping>
+
 </web-app>

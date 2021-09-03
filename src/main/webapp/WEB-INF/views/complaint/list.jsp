@@ -26,33 +26,91 @@
         a, a:link, a:visited{
             cursor : pointer;
         }
-        #contauner{
+        
+        
+        #container{
+            display: flex;
+            flex-flow: column nowrap;
 
+            justify-content: center;
         }
-        table{
+        #sort{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #com_table table{
             width: 100%;
             white-space: nowrap;
-            border: 2px solid black;
+            
+            border-collapse: collapse;
+            text-align : center;
+        }
+
+        #com_table th{
+            padding: 10px;
+            border-bottom: 3px solid black ;
+        }
+
+        #com_table td{
+            padding: 10px;
+            border-bottom: 1px solid black ;
 
             text-align : center;
         }
-        #thead{
-            margin-bottom: 10px;
-            border-width: 90%;
-            border-bottom: 2px solid black ;
+        #com_code_td{
+            width: 280px;
         }
+
         #caption{
 
             font-size: 16px;
             width: 100%;
-            border: 2px solid black;
-            margin-bottom: 10px;
+            height: 40px;
+            border: 2px solid rgba(0, 0, 0, 0.411);
+            
+            margin-bottom: 10px ;
+            text-align: center;
+            padding-top:auto; padding-bottom:auto;
+
 
         }
-        tr{
-            width: 100%;
-            margin-top: 3px;
+        
+        #pagination{
+            width : 95%;
+            margin : 0 auto;
         }
+
+        #pagination ul {
+            float : right ;
+        }
+
+        #pagination li{
+            float : left;
+            
+            width : 30px;
+            height : 30px;
+
+            border-left : 1px solid #C2DBFE;
+    
+            text-align: center;
+            list-style : none;
+            line-height: 30px;
+
+        }
+
+        .prev, .next {
+            width : 70px!important;
+
+            color : white!important;
+            background-color: #C2DBFE!important;
+        }
+
+        .currPage {
+            font-weight : bold;
+            background-color: #f0adce96;
+        
     </style>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -83,14 +141,14 @@
                 // (즉, form 태그)가 저장됨
                 var paginationForm = $('#paginationForm');
 
-                paginationForm.attr('action', '/board/listPerPage');
+                paginationForm.attr('action', '/complaint/listPerPage');
                 paginationForm.attr('method', 'GET');
 
-                paginationForm.find('input[name=currPage]').val($(this).attr('href') );
+                paginationForm.find('input[name=currPage]').val($(this).attr('href'));
                 //paginationForm에서 name 속성의 값이 currPage인 input태그를 찾아라
                 //이벤트 타겟의 속성 중 href의 값을 해당 input 태그에 값으로 넣어준다.
-                paginationForm.find('input[name=amount]').val( '${pageMaker.cri.amount}' );
-                paginationForm.find('input[name=pagesPerPage]').val( '${pageMaker.cri.pagesPerPage}' );
+                paginationForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
+                paginationForm.find('input[name=pagesPerPage]').val('${pageMaker.cri.pagesPerPage}');
 
                 paginationForm.submit();
             });//onclick a.prev, a.next
@@ -103,26 +161,45 @@
 
         
     <div id="container">
-        <table>
-            <caption id="caption">
-                <b>요청관리</b>
-            </caption>
+       
+        <div id="caption">
+            <b>요청관리</b>
+        </div>
+        <div id="sort">
+            <div>
+               <span>&#10003</span> &#10072;<span>&#10003</span> &#10072;<span>&#10003</span>
+            </div> 
 
-
-            <thead id="thead">
+            <div>
+                <select name="sortCode" id="select">
+                    <option value="1">버그리포트</option>
+                    <option value="2">영화 수정</option>
+                    <option value="3">영화 추가</option>
+                    <option value="4">기타</option>
+                </select>
+            </div>   
+        </div>
+        <table id="com_table">
+           
+            
+            <thead>
                 <tr>
-                    <th>요청번호</th>
-                    <th>요청사항</th>
-                    <th>요청회원</th>
-                    <th>작성날자</th>
-                    <th>수정된날짜</th>
+                    <th>번호</th>
+                    <th>요청 사항</th>
+                    <th>회원</th>
+                    <th>작성 날자</th>
+                    <th>수정된 날짜</th>
                 </tr>
                 
             </thead>
                 <c:forEach items="${list}" var="complaint">
                     <tr>
-                        <th><c:out value="${complaint.compno}"/></th>
-                        <th>
+                        <td>
+                            
+                            <c:out value="${complaint.compno}"/>
+                        </td>
+                        <td id="com_code_td">
+
                             <a href="/complaint/get?compno=${complaint.compno}">
                                 <c:choose>
                                     <c:when test="${complaint.code == 1}">
@@ -139,20 +216,33 @@
                                     </c:otherwise>
                                 </c:choose>
                             </a>
-                        </th>
-                        <th><c:out value="${complaint.writer}"/></th>
+                        </td>
+                        <td><c:out value="${complaint.writer}"/></td>
                         <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.insert_ts}"/></td>
-                        <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.check_ts}"/></td>
+
+                        <c:choose>
+                            <c:when test="${complaint.complete_ts != null}">
+                                <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.complete_ts}"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.check_ts}"/></td>
+                            </c:otherwise>
+                        </c:choose>
+
 
                     </tr>
                 </c:forEach>
                 
-            <tbody>
-
+            <tbody> 	
+		
             </tbody>
         </table>
+        
 
-        <div id="pagination">
+        
+    </div>
+    
+    <div id="pagination">
             <form id="paginationForm">
                 <!-- 어느 화면에서든, 게시판 목록 페이지로 이동시, 반드시 아래 3개의 기준 전송파라미터를 전송시키기위해 hidden 값으로 설정 -->
                 <input type="hidden" name="currPage">
@@ -175,7 +265,7 @@
                         <li class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}">
                             <a 
                                 class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}"
-                                href="/board/listPerPage?currPage=${pageNum}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">
+                                href="/complaint/listPerPage?currPage=${pageNum}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">
                                 ${pageNum}
                             </a>
                         </li>
@@ -189,7 +279,6 @@
             </form>
             
         </div>
-    </div>
 
     </body>
     </html>

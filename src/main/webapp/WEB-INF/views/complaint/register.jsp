@@ -22,7 +22,7 @@
                 flex-flow: column nowrap;
                 justify-content: left;
                 position: absolute;
-                z-index: -2;
+                z-index: 1100;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
@@ -102,13 +102,19 @@
 
                 console.clear();
 
+                var result = '<c:out value="${result}" />';
+                
+                if(result.length > 0){
+                    alert(result);
+                }//if
+                
                 $("#comp_close").click(function(){
                     $("#popup").hide("compl");
                 });//#hide
 
                 $("#compl").click(function(){
                     $("#popup").show("slow");
-                    $("#popup").add("z-index=2")
+                    $("#popup").add("z-index=1100")
                 });
            
 
@@ -124,6 +130,7 @@
 
         <div id="popup"> 
             <form action="/complaint/register" method="POST">
+            <input type="hidden" name="writer" value="${__LOGIN__.userId}">
                 <div id="comp_close">닫기</div>
 
                 <select name="code" id="select">
@@ -142,7 +149,7 @@
                 <button id="comp_submit" type="submit" value="result">보내기</button>
             </form>
         </div>
-        
+
       
     </body>
 </html>
