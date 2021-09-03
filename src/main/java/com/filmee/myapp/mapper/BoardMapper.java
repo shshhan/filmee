@@ -10,7 +10,7 @@ import com.filmee.myapp.domain.LiketoVO;
 
 public interface BoardMapper {
 	
-	public abstract List<BoardVO> getList(Criteria cri); 	//메인 list 가져오기
+	public abstract List<BoardUserVO> getList(Criteria cri); 	//메인 list 가져오기
 	
 	public abstract BoardUserVO select(Integer bno);			//상세조회
 	

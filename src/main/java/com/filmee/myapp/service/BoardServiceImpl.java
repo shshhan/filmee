@@ -30,7 +30,7 @@ public class BoardServiceImpl
 
 
 	@Override
-	public List<BoardVO> getList(Criteria cri) {
+	public List<BoardUserVO> getList(Criteria cri) {
 		log.debug("getList({},{}) invoked.",cri);
 		Objects.requireNonNull(this.mapper);
 		
@@ -72,7 +72,7 @@ public class BoardServiceImpl
 	}//remove
  
 	@Override
-	public int getTotal(Criteria cri) {
+	public int getTotal(Criteria cri) { 
 		log.debug("getTotal({}) invoked.",cri);
 		Objects.requireNonNull(this.mapper);
 		Objects.requireNonNull(cri);

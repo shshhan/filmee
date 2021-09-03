@@ -117,7 +117,10 @@
                         </tr>
                         <tr>
                             <td><label for="writer">작성자</label></td>
-                            <td><input type="text"  class="form-control" name="writer" value="${board.writer}" readonly></td>
+                            <td>
+                                <input type="text" class="form-control" value="${board.nickname}">
+                                <input type="hidden"  class="form-control" name="writer" value="${board.writer}" readonly>
+                            </td>
                         </tr>
 
 					</tbody>

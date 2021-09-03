@@ -23,18 +23,31 @@
     <script>
    
     </script>
-    <script>
-
-    
+    <script>    
     	$(function(){
             console.log("========= COMMENT JS =======")
     		var bnoValue='<c:out value="${board.bno}"/>';
-            var nickname='<c:out value="${board.nickname}"/>'
-            var replyUL=$(".chat");            
+            var nickname='<c:out value="${__LOGIN__.nickname}"/>'
+            var replyUL=$(".chat");    
+            var boardwriter='<c:out value="${board.writer}"/>'        
+            console.log("nick:",nickname)
+            console.log("userid:","${__LOGIN__.userId}")
+            console.log("writer:",boardwriter);
+            if("${__LOGIN__.userId}"==boardwriter){
+                $("#delete").show();
+                $("#modifyBtn").show();
+            } else{
+                $("#delete").hide();
+                $("#modifyBtn").hide();
+                if("${__LOGIN__}"==""){
+                    $("#addReplyBtn").hide()
+                    $("#report").hide()
+                }//if
+            }//if-else
 
             showList(1);
             function showList(page){
-                console.log("showList !")
+                console.log("showList ! : nick:",nickname)
                 replyService.getList({bno:bnoValue,page:page||1},function(list){
                     if(page== -1){
                         pageNum=Math.ceil(replyCnt/10.0);
@@ -47,15 +60,19 @@
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
                         str+="<li class='left clearfix' data-bcno='"+list[i].bcno+"'>";
-                        str+="  <div><div class='header'><strong class='primary-font'>["+list[i].nickname+"]</strong>";
-                        str+="      <samll class='pull-right text-muted' id='commentTs'>작성 "+replyService.displayTime(list[i].insert_ts)+" <c:if test='"+list[i].update_ts+"'><br>수정 "+replyService.displayTime(list[i].update_ts)+"</c:if>"+"</small></div>";
-                        str+="      <p>"+list[i].content+"</p></div></li><hr>";
+                        str+="  <div>";
+                        str+="       <div class='header'><a href='/mypage/main'><img class='rounded-circle' src='/resources/img/common.jpg' width='30px' height='30px'></a>";
+                        str+="            <strong class='primary-font'>"+list[i].nickname+"</strong>";
+                        str+="            <samll class='pull-right text-muted' id='commentTs'>등록 "+replyService.displayTime(list[i].insert_ts)+" <c:if test='"+list[i].update_ts+"'><br>수정 "+replyService.displayTime(list[i].update_ts)+"</c:if>"+"</small>";
+                        str+="             </div>"
+                        str+="            <p id='replycontent'>"+list[i].content+"</p></div></li><li><div><button type='button' id='report'> <img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</button></div></li><hr>";
                     }
+
                     replyUL.html(str);
                 })//end function
             }//showList
-
-            var modal = $(".modal");
+            
+            var modal = $(".modal"); 
 
             var modalInputReply=modal.find("input[name='content']");
             var modalInputReplyer=modal.find("input[name='nickname']");
@@ -71,14 +88,14 @@
                 modalinputReplyDate.closest("div").hide();
                 modal.find("button[id!='modalCloseBtn']").hide();
                 modalRegisterBtn.show();
+                replyComment.readOnly=false;
                 $("#createComment").modal("show");
             })//onclick addReplyBtn
-
             modalRegisterBtn.on("click",function(e){
                 var reply={
                     content:modalInputReply.val(),
                     bno:bnoValue,
-                    writer:1
+                    writer:"${__LOGIN__.userId}"
                 };
                 replyService.add(reply,function(result){
                     alert(result); 
@@ -88,13 +105,12 @@
                     showList(1);
                 })
             })//modalRegisterBtn
-
             $(".chat").css('cursor','pointer')
             $(".chat").on("click","li",function(e){
                 console.log(" >> chat clicked.");
                 bcno=$(this).data("bcno");
                 console.log(".chat bcno:"+bcno);
-               
+
                 replyService.get(bcno, function(reply){
                     console.log(reply);
                     modalInputReply.val(reply.content);
@@ -103,14 +119,20 @@
                     modal.data("bcno",reply.bcno);
 
                     modal.find("button[id!='modalCloseBtn']");
-                    modalModBtn.show();
-                    modalRemoveBtn.show();
+
+                    if("${__LOGIN__.userId}"==reply.writer){
+                        modalModBtn.show();
+                        modalRemoveBtn.show();
+                        replyComment.readOnly=false;
+                    }else{
+                        replyComment.readOnly=true;
+                        modalModBtn.hide();
+                        modalRemoveBtn.hide();
+                    }
                     modalRegisterBtn.hide();
                     $("#createComment").modal("show");
                 })
             })
-
-
             modalModBtn.on("click",function(e){
                 console.log("modalModBtn Clicked");
             	var reply2={
@@ -134,7 +156,10 @@
 				})
 			})
 
+            $("#report").on("click",function(e){
+                $("#reportmodal").modal("show");
 
+            })
     	})//jq
 
 
@@ -228,6 +253,10 @@
             background-color: #fcfcfc96; 
             border-radius: 30px;
         }
+        #replycontent{
+            width: 80%;
+            margin-left: 30px;
+        }
 
         button {
             margin-left: 20px;
@@ -287,6 +316,9 @@
             float: right;
             font-size: 16px;
         }
+        #report{
+            float: right;
+        }
     </style>
 
 </head>
@@ -329,7 +361,7 @@
             
             <div id="count">
                 <ul>
-                    <li><button type="button">신고</li>
+                    <li><button type="button" id="report"><img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</li>
                     <!-- <li><button type="button"><img id="emptyheart" src="/resources/img/emptyheart.png">${board.like_cnt}</li> -->
                     <li>조회수 ${board.view_cnt}</li>
                 </ul>
@@ -370,7 +402,6 @@
                 <button type="button" id="delete" class="btn btn-outline-dark">삭제</button>
                 <button type="button" id="listBtn" class="btn btn-outline-dark">목록</button>
             </div>
-
             <div>
             	<c:if test="${file.fname!=null}">
 	            	<p>&nbsp</p>
@@ -407,8 +438,8 @@
                 </div>
             </div>
 
-              <!-- Modal -->
-              <div class="modal fade" id="createComment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- Modal -->
+            <div class="modal fade" id="createComment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -418,14 +449,15 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="content">내용</label>
-                            <input class="form-control" name='content' value='content'>
+                            <input id="replyComment" class="form-control" name='content' value='content'>
                         </div>      
                         <div class="form-group">
-                            <input type="hidden" class="form-control" name='writer'>
+                            <input type="hidden" class="form-control" name='writer' >
                         </div>
                         <div class="form-group">
                             <input class="form-control" name='insert_ts' value='2018-01-01 13:13'>
                         </div>
+
                     </div>
                     <div class="modal-footer">
                       <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -437,6 +469,36 @@
                 </div>
               </div>
 
+            <!-- Modal -->
+            <div class="modal fade" id="reportmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="reportcontent">내용</label>
+                            <input id="reportcontent" class="form-control" name='reportcontent' value=''>
+                        </div>      
+                        <div class="form-group">
+                            신고자 <input type="text" class="form-control" name='reportwriter' value="${__LOGIN__.userId}" readonly>
+                        </div>
+                        <div class="form-group">
+                            신고일시<input class="form-control" name='insert_ts' value='2018-01-01 13:13' readonly>
+                        </div>
+                        <div class="form-group">
+                            신고대상<input type="hidden" class="form-control" name="reporttarget" value="Board_${board.bno}" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                      <button id='modalRegisterBtn' type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
 
 		</form>
     </div>

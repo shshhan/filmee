@@ -63,7 +63,7 @@ public class BoardController {
 		log.debug("list({},{}) invoked.",cri,model);
 		Objects.requireNonNull(service);
 
-		List<BoardVO> list = this.service.getList(cri);
+		List<BoardUserVO> list = this.service.getList(cri);
 		
 		BoardPageDTO page = new BoardPageDTO(cri, this.service.getTotal(cri));
 		model.addAttribute("list",list);
@@ -253,7 +253,7 @@ public class BoardController {
 		rttrs.addAttribute("amount",cri.getAmount());
 		rttrs.addAttribute("pagesPerPage",cri.getPagesPerPage());
 		
-		return "redirect:/board/list";
+		return "redirect:/board/get";
 	}//remove
 
 	//==============================================================
