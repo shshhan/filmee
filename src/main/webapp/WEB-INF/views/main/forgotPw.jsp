@@ -64,7 +64,7 @@
 	<%@include file="/resources/html/header.jsp" %>
 		<div class="container" style="width: 600px;">
 			<div class="row justify-content-center">
-				<form class="row g-3" action="/main/newPassword" method="POST">
+				<form class="row g-3" action="/mypage/newPassword" method="POST">
 					<fieldset>
 						<div class="mb-3">
 							<label for="forgot_pw_email" class="form-label"><b>Email</b></label>

@@ -117,11 +117,11 @@ public class LoginServiceImpl
 		dto.setSalt(salt);
 				
 		if(this.mapper.updatePassword(dto) == 1) {	//임시비밀번호가 DB에 성공적으로 저장됐으면
-			if(isFromForgotPw) {	//비밀번호 변경 요청이었을 경우
+			if(isFromForgotPw) {	//비밀번호 찾기 요청이었을 경우
 				this.mailService.sendTempPwMail(dto.getEmail(),password);	//이메일로 임시 비밀번호 발송
 
 				return 1;
-			} else {	//비밀번호 찾기 요청이었을 경우
+			} else {	//비밀번호 변경 요청이었을 경우
 				return 2;
 			}//if-else
 		}else {			//DB 저장에 실패했다면

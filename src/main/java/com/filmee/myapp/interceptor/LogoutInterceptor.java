@@ -24,7 +24,7 @@ public class LogoutInterceptor
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		log.debug("postHandle(request, response, {}, {}) invoked", handler, modelAndView);
-		
+
 		// RememberMe 쿠키 삭제
 		Cookie rememberMeCookie = 
 				WebUtils.getCookie(request, LoginInterceptor.rememberMeKey);

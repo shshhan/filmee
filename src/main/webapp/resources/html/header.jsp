@@ -157,8 +157,7 @@
 
                                     $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
                                     $("#alert_modal").modal("show");
-                           
-                                    
+                                                               
                                     if(uriCookie != null){      //
                                         alertModalEl.addEventListener('hidden.bs.modal',function(){
                                             deleteCookie("__ORIGINAL_REQUEST_URI__");
@@ -175,7 +174,7 @@
                                         
                                         //RemberMe 쿠키의 이름과 값, 유효기간 설정
                                         let rememberMeCookie = 
-                                        "__REMEMBER_ME__=" + data.cookieValue + ";expires=" + data.rememberAge;
+                                        "__REMEMBER_ME__=" + data.cookieValue + ";expires=" + data.rememberAge + ";path=/";
                                         
                                         //만든 설정대로 쿠키 생성
                                         document.cookie = rememberMeCookie;
@@ -186,24 +185,6 @@
                                     } else{
                                         location.reload();
                                     }//if-else
-                                    // //Session Scope에서 기존 URI 획득 (로그인이 필요한 URI로 요청이 들어와 AuthInterceptor를 거친 경우)                                                    
-                                    // var originalRequestURI = "${__REQUEST_URI__}";
-									// console.log("originalRequestURI :", originalRequestURI);
-                                    
-                                    // if(originalRequestURI.length > 0){      //기존 URI가 있었다면 쿼리스트링까지 획득
-                                    //     var originalQueryString = "${__QUERYSTRING__}";
-    								// 	console.log("originalQueryString :", originalQueryString);
-
-                                    //      //쿼리 스트링이 null이나 공백이 아니라면 URI+QueryString으로 Redirect
-                                    //     var uri = 
-                                    //     originalRequestURI + ( (originalQueryString != null) && ( !(originalQueryString==="") ) ? "?"+originalQueryString : "" );  
-                                        
-                                    //     // console.log("uri :", uri);
-
-                                    //     location.href=uri;  
-                                    // }else{          //기존 URI가 없었다면 main으로 Redirect	(로그인 버튼으로 직접 요청이 들어온 경우)
-                                    //    location.reload();
-                                    // }//if-else
 
                                     break;
                             }//switch-case
@@ -415,7 +396,7 @@
                 <form action="/main/joinPost" method="POST">
                     <div class="mb-3">
                         <label for="join_email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val())">
+                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val))">
                     	<p id='email_message'></p>
                     </div>
                     <div class="mb-3">

@@ -337,7 +337,7 @@ public class MypageController {
 				return "redirect:/mypage/main";	//마이페이지로 Redirect 후 메세지 띄움
 				
 			default:
-				log.info(">>>>> result : 2 >>>>>>");
+				log.info(">>>>> result : 3 >>>>>>");
 				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
 		}//switch-case
 	
