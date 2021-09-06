@@ -68,13 +68,4 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 		return this.mapper.delete(bcno);
 	}//remove
 
-//	@Override
-//	public List<BoardCommentVO> getList(Criteria cri, Integer bno) {
-//		log.debug(" >> getList({},{}) invoked.", cri,bno);
-//		Objects.requireNonNull(this.mapper);
-//		
-//		return this.mapper.getListWithPaging(cri, bno);
-//	}
-
-
 }//end class

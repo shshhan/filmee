@@ -25,8 +25,6 @@ public interface BoardMapper {
 	public abstract int viewCnt(Integer bno);	//조회수
 	
 	public abstract void commentCnt(Integer bno, Integer amount);	//댓글 수
-	
-	
-	
+		
 	
 }//end interface 

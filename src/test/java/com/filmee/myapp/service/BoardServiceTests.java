@@ -15,6 +15,7 @@ import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
+import com.filmee.myapp.domain.LiketoVO;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -125,5 +126,14 @@ public class BoardServiceTests {
 	}//testFileFind
 	
 
+	@Test
+	public void likeInssert() {
+		
+		LiketoVO like = new LiketoVO(null, 401, 531, null);
+		this.service.likeInsert(like);
+		
+		int affecteLines=this.service.likeInsert(like);
+		log.info(">>>>> like SUCCESS !" + affecteLines);
+	}
 	
 }//end class
