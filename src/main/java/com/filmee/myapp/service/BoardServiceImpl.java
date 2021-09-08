@@ -10,10 +10,8 @@ import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
-import com.filmee.myapp.domain.LiketoVO;
 import com.filmee.myapp.mapper.BoardMapper;
 import com.filmee.myapp.mapper.FileMapper;
-import com.filmee.myapp.mapper.LiketoMapper;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +25,6 @@ public class BoardServiceImpl
 	
 	@Autowired private BoardMapper mapper;
 	@Autowired private FileMapper fmapper; 
-	@Autowired private LiketoMapper lmapper;
 
 
 	@Override
@@ -102,34 +99,6 @@ public class BoardServiceImpl
 		return list;
 	}
 	
-	//---- LIKE ----//
 
-	@Override
-	public int likeInsert(LiketoVO likeVO) {
-		log.debug("likeInsert({}) invoked.", likeVO);
-		Objects.requireNonNull(this.lmapper);
-		
-		this.lmapper.likeInsert(likeVO);
-		
-		return 0;
-	}
-
-	@Override
-	public int unlike(Integer userId, Integer bno) {
-		log.debug("unlike({},{}) invoked.", userId,bno);
-		Objects.requireNonNull(this.lmapper);
-		
-		return this.lmapper.unlike(userId,bno);
-	}
-
-	@Override
-	public int likeCount(Integer bno) {
-		log.debug("likeCount({}) invoked.", bno);
-		Objects.requireNonNull(this.lmapper);
-		
-		return this.lmapper.likeCount(bno);
-	}//fileDetail
-
-	
 
 }//end class

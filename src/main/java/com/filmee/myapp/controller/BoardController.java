@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,9 +40,11 @@ import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
+import com.filmee.myapp.domain.HeartVO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.BoardCommentService;
 import com.filmee.myapp.service.BoardService;
+import com.filmee.myapp.service.HeartService;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -55,6 +58,7 @@ public class BoardController {
 
 	@Autowired private BoardService service;
 	@Autowired private BoardCommentService cService;
+	@Autowired private HeartService hService;
 	
 	//게시글 전체 목록조회
 	@GetMapping("list")
@@ -75,10 +79,12 @@ public class BoardController {
 	@GetMapping({"get","modify"})
 	public void get(
 			@ModelAttribute("cri") Criteria cri, 
-			@RequestParam("bno") Integer bno, 
+			@RequestParam(value="bno") Integer bno,
+			@SessionAttribute("__LOGIN__") UserVO user,
 			FileVO fileVO,
+			HeartVO heart,
 			Model model
-		) {
+			) {
 		log.debug("================================================================================");
 		log.debug("get({},{},{},{},{})invoked.",cri,bno,fileVO,model);
 		Objects.requireNonNull(service);
@@ -86,7 +92,23 @@ public class BoardController {
 		BoardUserVO board = this.service.get(bno);
 		fileVO = this.service.fileDetail(bno);
 		List<BoardCommentUserVO> comment = this.cService.getList(bno);
-	
+		
+		if(user!=null) {
+			heart.setBno(bno);
+			heart.setUserid(user.getUserId());
+			if(this.hService.check(bno, user.getUserId())==null) {
+				int aLine = this.hService.heartInsert(heart);
+				log.info(">>>>>>> heartInsert : "+heart);
+				log.info(">>>>>>> Result : "+aLine);
+				heart=this.hService.check(bno, user.getUserId());
+				model.addAttribute("heart", heart);			
+			} else {
+				heart=this.hService.check(bno, user.getUserId());
+				model.addAttribute("heart", heart);			
+			}
+		}
+		
+			
 		log.info("\t+ board:{}",board);
 		model.addAttribute("board",board);
 		model.addAttribute("file", fileVO);
@@ -181,12 +203,13 @@ public class BoardController {
 		return "redirect:/board/list";
 	}//modify
 	
-	//게시글작성 & 파일업로드
+	//게시글작성화면
 	@GetMapping("register")
 	public void register(@ModelAttribute("cri")Criteria cri) {
 		log.debug("GetMapping register({}) invoked.",cri);
 	}//register
 	
+	//게시글작성 & 파일업로드
 	@PostMapping(path = "register", consumes = {"multipart/form-data"})
 	public String register(@ModelAttribute("cri")Criteria cri,  BoardVO board, RedirectAttributes rttrs,
 			@RequestPart MultipartFile files) throws IllegalStateException, IOException {
@@ -255,12 +278,13 @@ public class BoardController {
 		
 		return "redirect:/board/get";
 	}//remove
-
-	//==============================================================
-	// 댓글처리영역
-	//==============================================================
 	
-	//------- 등 록 --------------------
+
+	//===========//
+	// 댓글처리영역  //
+	//===========//
+	
+	//------- 등 록 -------//
 	@PostMapping(
 			value="replies/new",
 			consumes="application/json",			//JSON 데이터사용
@@ -273,7 +297,7 @@ public class BoardController {
 				new ResponseEntity<>("success",HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//create
 	
-	//------- 목록조회 --------------------
+	//------- 목록조회 -------//
 	@GetMapping(
 			value="replies/pages/{bno}/{page}",
 			produces= {
@@ -289,7 +313,7 @@ public class BoardController {
 		return new ResponseEntity<>(this.cService.getList(bno), HttpStatus.OK);
 	}//getList
 
-	//------- 상세조회 --------------------
+	//------- 상세조회 -------//
 	@GetMapping(
 			value="replies/{bcno}",
 			produces= {
@@ -302,7 +326,7 @@ public class BoardController {
 		return new ResponseEntity<>(this.cService.get(bcno), HttpStatus.OK);
 	}//get
 
-	//------- 삭제 --------------------
+	//------- 삭제 -------//
 	@PostMapping(
 			value="replies/{bcno}",
 			produces= {
@@ -315,7 +339,7 @@ public class BoardController {
 				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//remove
 
-	//------- 수정 --------------------
+	//------- 수정 -------//
 	@RequestMapping(
 			method= {RequestMethod.PUT, RequestMethod.PATCH},
 			value="replies/{bcno}",
@@ -332,6 +356,51 @@ public class BoardController {
 		return this.cService.modify(vo) == 1 ?
 				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//modify
-
 	
+	
+	//===========//
+	// 	* 좋아요   //
+	//===========//
+	
+	// 좋아요
+	@PostMapping("like/{bno}/{userid}")
+	public ResponseEntity<String> likeIt( 
+			@PathVariable("bno") int bno,
+			@PathVariable("userid") int userid
+		){
+		log.debug("likeIt({},{}) invoked.", bno,userid);
+		
+		int aLine = this.hService.heartCheck(bno, userid);
+		
+		return aLine == 1 ?
+				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}//likeIt
+	
+	//좋아요 취소
+	@PostMapping("unlike/{bno}/{userid}")
+	public ResponseEntity<String> unLike(
+			@PathVariable("bno") int bno,
+			@PathVariable("userid") int userid
+			){
+		log.debug("unLike({},{}) invoked.", bno,userid);
+		
+		int aLine = this.hService.heartUncheck(bno, userid);
+		
+		return aLine == 1 ?
+				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}//unLike
+
+	@GetMapping("like/check")
+	public HeartVO likeCheck(			
+			@RequestParam(value="bno") Integer bno,
+			@SessionAttribute("__LOGIN__") UserVO user,
+			Model model) {
+		log.debug(">> likeCheck invoked.");
+		
+		HeartVO vo = this.hService.check(bno, user.getUserId());
+		model.addAttribute("heart",vo);
+		
+		return vo;
+	}//likeCheck
+
 }//end class

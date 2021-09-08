@@ -139,4 +139,10 @@
       WHERE bno=#{bno}
     </update>
 
+    <update id="heartCnt" parameterType="int">
+      UPDATE fm_board 
+      SET like_cnt = like_cnt + #{amount}
+      WHERE bno=#{bno}
+    </update>
+    
 </mapper>

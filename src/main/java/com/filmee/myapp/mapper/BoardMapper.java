@@ -1,12 +1,10 @@
 package com.filmee.myapp.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
-import com.filmee.myapp.domain.LiketoVO;
 
 public interface BoardMapper {
 	
@@ -24,7 +22,8 @@ public interface BoardMapper {
 	
 	public abstract int viewCnt(Integer bno);	//조회수
 	
-	public abstract void commentCnt(Integer bno, Integer amount);	//댓글 수
-		
+	public abstract void commentCnt(Integer bno, Integer amount);	//댓글 수 +-
 	
+	public abstract void heartCnt(Integer bno, Integer amount);	//좋아요 수 +-
+
 }//end interface 

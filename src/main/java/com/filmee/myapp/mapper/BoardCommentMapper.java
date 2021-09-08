@@ -20,4 +20,4 @@ public interface BoardCommentMapper {
 	
 	public abstract int update(BoardCommentVO comment);	//댓글 수정
 				
-}//end interface 
+}//end interface

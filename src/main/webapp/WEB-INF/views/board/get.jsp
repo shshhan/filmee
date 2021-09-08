@@ -6,7 +6,7 @@
  
 
 <!DOCTYPE html>
- 
+  
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -18,21 +18,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/reply.js"></script>
+    <script src="/resources/js/like.js"></script>
 
-    
-    <script>
-   
-    </script>
     <script>    
     	$(function(){
+
             console.log("========= COMMENT JS =======")
     		var bnoValue='<c:out value="${board.bno}"/>';
-            var nickname='<c:out value="${__LOGIN__.nickname}"/>'
+            var nickname='<c:out value="${__LOGIN__.nickname}"/>' 
+            var userid='<c:out value="${__LOGIN__.userId}"/>'
             var replyUL=$(".chat");    
-            var boardwriter='<c:out value="${board.writer}"/>'        
+            var boardwriter='<c:out value="${board.writer}"/>'
+
+            var modal = $(".modal"); 
+
+            var modalInputReply=modal.find("input[name='content']");
+            var modalInputReplyer=modal.find("input[name='nickname']");
+            var modalinputReplyDate=modal.find("input[name='insert_ts']");
+
+            var modalModBtn=$("#modalModBtn");
+            var modalRemoveBtn=$("#modalRemoveBtn");
+            var modalRegisterBtn=$("#modalRegisterBtn");
+
+            var likecheck="${heart.likecheck}"
+
             console.log("nick:",nickname)
-            console.log("userid:","${__LOGIN__.userId}")
+            console.log("userid:",userid);
             console.log("writer:",boardwriter);
+
             if("${__LOGIN__.userId}"==boardwriter){
                 $("#delete").show();
                 $("#modifyBtn").show();
@@ -41,9 +54,30 @@
                 $("#modifyBtn").hide();
                 if("${__LOGIN__}"==""){
                     $("#addReplyBtn").hide()
-                    $("#report").hide()
+                    $("#reportBtn").hide()
                 }//if
             }//if-else
+
+
+            console.log(">>>> LIKECHECK >>>> ",likecheck); 
+            if(likecheck==1){
+                $("#likeimg").attr("src", "/resources/img/fullheart.png");
+                $("#likeBtn").on("click",function(e){
+                    likeService.unLike(bnoValue, userid);
+                    alert("좋아요를 취소했습니다.");
+                    $("#likeimg").attr("src", "/resources/img/emptyheart.png");
+                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                })
+            }
+            if(likecheck==0){
+                $("#likeimg").attr("src", "/resources/img/emptyheart.png");
+                $("#likeBtn").on("click",function(e){
+                    likeService.likeIt(bnoValue, userid);
+                    alert("좋아요를 눌렀습니다.");
+                    $("#likeimg").attr("src", "/resources/img/fullheart.png");
+                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                })
+            }
 
             showList(1);
             function showList(page){
@@ -56,7 +90,8 @@
                     }
                     var str="";
                     if(list==null||list.length==0){
-                        return;
+                        str+="<div>아직 댓글이 없습니다.</div>"
+                        // return;
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
                         str+="<li class='left clearfix' data-bcno='"+list[i].bcno+"'>";
@@ -72,15 +107,7 @@
                 })//end function
             }//showList
             
-            var modal = $(".modal"); 
 
-            var modalInputReply=modal.find("input[name='content']");
-            var modalInputReplyer=modal.find("input[name='nickname']");
-            var modalinputReplyDate=modal.find("input[name='insert_ts']");
-
-            var modalModBtn=$("#modalModBtn");
-            var modalRemoveBtn=$("#modalRemoveBtn");
-            var modalRegisterBtn=$("#modalRegisterBtn");
 
             $("#addReplyBtn").on("click",function(e){
                 console.log("addReplyBtn")
@@ -105,7 +132,10 @@
                     showList(1);
                 })
             })//modalRegisterBtn
+
+
             $(".chat").css('cursor','pointer')
+
             $(".chat").on("click","li",function(e){
                 console.log(" >> chat clicked.");
                 bcno=$(this).data("bcno");
@@ -133,6 +163,7 @@
                     $("#createComment").modal("show");
                 })
             })
+
             modalModBtn.on("click",function(e){
                 console.log("modalModBtn Clicked");
             	var reply2={
@@ -232,25 +263,21 @@
             margin-top: 40px;
             margin-right: 20px;
         }
-        #count>ul>li{
-            float:right;
-            font-size: 20px;
-        }
         #title{
             width: 50%;
             height: 40px;
-            font-size: 20px;
+            font-size: 26px;
             padding: 10px;
             margin-bottom: 20px;
-            background-color: #fcfcfc96; 
+            background-color: #fcfcfc00; 
             border-radius: 30px;
         }
         #content{
             width: 100%;
             height: 100%;
-            font-size: 15px;
+            font-size: 19px;
             padding: 20px;
-            background-color: #fcfcfc96; 
+            background-color: #ffffff00; 
             border-radius: 30px;
         }
         #replycontent{
@@ -278,7 +305,7 @@
             cursor: pointer;
             transition: 0.5s;
         }
-        #threeBtn{
+        #threeBtn, #reportBtn{
             float: right;
         }
         #emptyheart{
@@ -287,10 +314,11 @@
         }
 
         table {
-			width:100%;
+			width:100px;
 		    text-align: center;
-		    margin: 20px ;
-		    font-size: 20px;
+		    margin-top: 10px ;
+            float: right;
+		    font-size: 30px;
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
 		  }
@@ -298,14 +326,12 @@
 		  	color: black;
 		  	font-size:15px;
 		  	padding: 10px;
-  			border-bottom: 1px solid #ddd;	
   		  }
 		  th{
 		  	font-weight: bold;
 		  	border:10px;
 		  	margin:10px;
 		  	padding:15px;
-  			border-bottom: 1px solid #ddd;
   		  }
         #commentList{
             display: inline-block;
@@ -340,9 +366,9 @@
             <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
             <input type="hidden" name="bno" value="${board.bno}">
             <input type="hidden" name="fname" value="${file.fname}">
-            <input type="hidden" name="writer" value="${board.writer}">
+            <input type="hidden" name="userId" value="${__LOGIN__.userId}">
 
-            <div>
+            <div id="boardinfo">
                 <form action="/mypage/main">
                     <ul id="userinfo">
                         <li>
@@ -354,32 +380,34 @@
                         <li>작성일 <fmt:formatDate pattern="yyyy/MM/dd" value="${board.insert_ts}"/></li>
                         <c:if test="${board.update_ts!=null}">
                         	<li>수정일 <fmt:formatDate pattern="yyyy/MM/dd" value="${board.update_ts}"/></li>
-                    	</c:if>  
+                    	</c:if> 
                     </ul>
                 </form>
             </div>
             
+            <!-- 신고  /  조회수  /  좋아요 -->
             <div id="count">
-                <ul>
-                    <li><button type="button" id="report"><img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</li>
-                    <!-- <li><button type="button"><img id="emptyheart" src="/resources/img/emptyheart.png">${board.like_cnt}</li> -->
-                    <li>조회수 ${board.view_cnt}</li>
-                </ul>
-            </div>
+                <table>
+                    <tr>
+                        <td><button id="reportBtn"><img src='/resources/img/siren.jpg' width='25px' height='25px'></button></td>
+                        <td><img src="/resources/img/eye-removebg-preview.png" alt="view" width='30px' height='30px'> </td>
+                        <td>
+                            <c:if test="${__LOGIN__==null}">
+                                <img src="/resources/img/emptyheart.png" alt="좋아요" width="30px" height="30px">
+                            </c:if>
+                            <c:if test="${__LOGIN__.userId != null}">
+                                <button id="likeBtn"><img id="likeimg" src="/resources/img/emptyheart.png" alt="좋아요" width="30px" height="30px"></button>
+                            </c:if>
 
-            <input type="hidden" id='bno' name="bno" value=''>
-            <input type="hidden" id='user_id' name="user_id" value='1'>
-            <!--  좋아요  -->
-            <div class="div1">
-                <div class="div2">
-                    <div class="div3">
-                            <a href="#" onclick="like_func();"><img id="emptyheart" src='/resources/img/emptyheart.png' id='like_img'></a>
-                        <br><span id='like_cnt' style='margin-left: 5px;'></span> Likes
-                    </div>
-                </div>
-                
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td> ${board.view_cnt}</td>
+                        <td> ${board.like_cnt}</td>
+                    </tr>
+                </table>
             </div>
-
             <div>
                 <p id="title">
                     [<c:choose>
@@ -389,8 +417,9 @@
                        <c:when test="${board.category=='R'}">추천</c:when>
                      </c:choose>] ${board.title}
                 </p>
+
             </div>
-			<hr>
+            <hr>
             <div id="content">
             	<p>
 	               &nbsp;${board.content}
@@ -495,7 +524,7 @@
                     <div class="modal-footer">
                       <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                       <button id='modalRegisterBtn' type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button>
-                    </div>
+                    </div> 
                   </div>
                 </div>
             </div>
