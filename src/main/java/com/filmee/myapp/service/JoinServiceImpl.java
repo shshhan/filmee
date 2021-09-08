@@ -35,6 +35,8 @@ public class JoinServiceImpl
 	public void afterPropertiesSet() throws Exception {
 		log.debug("afterPropertiesSet() invoked.");
 		
+		Objects.requireNonNull(this.hashUtils);
+		Objects.requireNonNull(this.mailService);
 		Objects.requireNonNull(this.mapper);
 	}//afterPropertiesSet
 	

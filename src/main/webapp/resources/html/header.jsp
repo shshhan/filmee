@@ -89,7 +89,7 @@
                         
                     //소셜로그인을 통해 회원가입시
                     case 'social_join' :
-                        $("#alert_modal p").text("소셜 회원가입완료! 간편 로그인으로 이용 가능합니다.");
+                        $("#alert_modal p").text("회원가입완료! 카카오 계정으로 로그인 가능합니다.");
                         $("#alert_modal").modal("show");
                         break;
                                                             

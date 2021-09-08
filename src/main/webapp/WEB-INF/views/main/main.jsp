@@ -152,20 +152,22 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    지금 탈퇴하면 같은 이메일로 회원가입 못함
-                    그리고 지나가다가 새똥맞음 ㅋㅋ
+                    <h5>삭제된 계정은 복구가 불가능하며, 회원님이 작성하신 게시물과 영화 리뷰를 제외한 모든 정보는 탈퇴 즉시 삭제됩니다.
+                    <strong>탈퇴 하시겠습니까?</strong></h5>
+                    <p>&nbsp;</p>
+
                     <form action="/main/deleteAccount" id="del_acc_form" method="POST">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="agree_cb">
-                            <label class="form-check-label" for="flexCheckDefault">
-                            정말로 탈퇴하시겠습니까?
+                            <label class="form-check-label" for="agree_cb">
+                            회원탈퇴에 대한 주의사항을 모두 읽었고, 이에 동의합니다.
                             </label>
                         </div>
                         <hr>
                         <div class = row align-items-center">
                             <input type="hidden" name="userId" value="${__LOGIN__.userId}">
-                            <button type="button" class="btn btn-secondary col" id="del_acc_btn" disabled>회탈ㄱ</button>
-                            <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">안할거임</button>
+                            <button type="button" class="btn btn-secondary col" id="del_acc_btn" disabled>회원탈퇴</button>
+                            <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">취소</button>
                         </div>
                     </form>
                 </div>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.filmee.myapp.domain.SearchFilmVO;
+import com.filmee.myapp.domain.SearchPeopleVO;
 import com.filmee.myapp.mapper.SearchMapper;
 
 import lombok.NoArgsConstructor;
@@ -30,6 +31,13 @@ public class SearchServiceImpl implements SearchService {
 		Objects.requireNonNull(this.mapper);
 		
 		return this.mapper.getFilmList(filmTitle);
-	} //searchFilmAutoComplete
+	}//searchFilmAutoComplete
+
+	@Override
+	public List<SearchPeopleVO> serachFilmsByPeopleName(String peopleName) {
+		log.debug("serachFilmsByPeopleName({}) invoked.", peopleName);
+		
+		return this.mapper.getFilmsWithPeople(peopleName);
+	}//searchFilmsByPeopleName
 
 } //end class
