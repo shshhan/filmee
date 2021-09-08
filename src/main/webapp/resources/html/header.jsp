@@ -13,18 +13,31 @@
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     	<title>header</title>
 
+        <!---------- BootStrap ---------->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
+        <!---------- jQuery ---------->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-    	
+        
+        <!---------- Social Login ---------->
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+        <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+        <!---------- Google Recpatch ---------->
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+        
+        <!---------- External JS ---------->
     	<script src="/resources/js/header.js"></script>
         
         <script>
 
-	      //====== 쿠키 ======
-	
+            Kakao.init('b5e0e2fa190deb08c9102e95e2a6e15b');
+            // console.log(Kakao.isInitialized());
+
+	        //====== 쿠키 ======
 	        function getCookie(key){
 	        	let cookieKey = key + "=";
 	        	let result = "";
@@ -49,6 +62,12 @@
 	        	document.cookie = name + "=;expires= Thu, 02 Sep 2021 00:00:10 GMT;domain=localhost;path=/;"
 	        }//deleteCookie
 	        
+            //====== Google Recaptcha ======
+            function onSubmit(token) {
+                console.log("token:", token);
+                document.getElementById("demo-form").submit();
+            }//onSubmit
+            
 	        
             $(function() {
                 console.log('jq started.');
@@ -61,38 +80,25 @@
 
                 //전달된 message가 있으면 alert
                 switch("${message}"){
-                    //====== 회원가입 관련 ======
 
-                    //회원가입 버튼을 누를 시
-                    // case 'join' :
-                    //     $("#join").modal("show");   
-                    //     break;
-
-                    //회원가입을 마쳤을 시
+                    //회원가입 성공시
                     case 'just_joinned' :
                         $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
                         $("#alert_modal").modal("show");
                         break;
-
-                    //회원가입 실패시
-                    case 'join_failed' :
-                        $("#alert_modal p").text("회원가입에 실패했습니다.");
+                        
+                    //소셜로그인을 통해 회원가입시
+                    case 'social_join' :
+                        $("#alert_modal p").text("소셜 회원가입완료! 간편 로그인으로 이용 가능합니다.");
                         $("#alert_modal").modal("show");
                         break;
-
-                        //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                        var myModalEl = document.getElementById('alert_modal');
-                        myModalEl.addEventListener('hidden.bs.modal',function(){
-                            $("#join").modal("show");
-                        });
-                        break;
-                    
+                                                            
                     //회원가입 후 이메일 인증까지 마쳤을 시
                     case 'join_complete' :
                         $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
                         $("#alert_modal").modal("show");
                         break;
-
+                        
                     //임시비밀번호 발송시
                     case 'temp_pw_sent' :
                         $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
@@ -101,26 +107,57 @@
                     
                     //비밀번호 찾기에서 미가입 이메일 입력시
                     case 'no_info_forgot_pw' :
-                        $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
-                        $("#alert_modal").modal("show");
+                            $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
+                            $("#alert_modal").modal("show");
                         break;
-                    
+                        
+                    //비밀번호 변경시
                     case 'pw_changed' :
                         $("#alert_modal p").text("비밀번호가 변경되었습니다.");
                         $("#alert_modal").modal("show");
                         break;
 
+                    //회원 탈퇴시
+                     case 'account_deleted' :
+                        $("#alert_modal p").text("회원탈퇴가 정상적으로 처리되었습니다.");
+                        $("#alert_modal").modal("show");
+                        break;
+                    
+                    //오류, 정보 불일치 등으로 실패시
+                    case 'task_failed' :
+                        $("#alert_modal p").text("오류 발생! 다시 시도해주세요. 이 메세지가 반복될 시 관리자에게 문의해주세요. ");
+                        $("#alert_modal").modal("show");
+                        break;
+                        
                     default :
                 };	//switch-case
-                               
+
+                //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
+                $("#close_login_open_join").on('click', function(){
+                    $("#login").modal("hide");
+                    $("#join").modal("show");   
+                });//close_login_open_join
+
+                //modal 새로 열 때 input 초기화
+                $("#login, #join, #social_join").on('show.bs.modal',function(){
+                    $(this).find('form')[0].reset();
+                });//modal hidden.bs.modal            
+
+                //social_join_modal 닫을 때 새로고침
+                $('#social_join, #join').on('hidden.bs.modal', function(){           
+                    location.reload();  // 카카오 간편로그인을 통한 회원가입, 일반회원가입 모두 시도 중에 창을 꺼버리면 checkEmail()과 isEmailChecked, isPwValid 변수의 상태가 변경되어 있기 때문에, 새로고침을 통해 위 세 항목을 초기화 시키지 않으면 새롭게 join modal을 열었을 때 않은 결과가 발생한다.
+                });//social join on hidden
+
+
+                //login modal에서 sign in 버튼 누를 시
                 $(".login_submit_btn").on('click', function(){
                     console.log("SIGN in btn clicked.");
 
                     let formData = $("#login_form").serialize();
                     console.log("formData :", formData);
-
+                    
                     $.ajax({
-                    	async : true,
+                        async : true,
                         data : formData,
                         type : 'post',
                         url : "/main/loginPost",
@@ -135,43 +172,42 @@
                             console.log("uriCookie :", uriCookie);
 
                             let alertModalEl = document.getElementById('alert_modal');
-
+                            
                             switch(data.loginNum){
                                 case '1' :
-                                	console.log("longinNum : 1");
+                                    console.log("longinNum : 1");
                                     $("#login").modal("hide");
-
+                                    
                                     $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
                                     $("#alert_modal").modal("show");
-
+                                    
                                     alertModalEl.addEventListener('hidden.bs.modal',function(){
                                         $("#login").modal("show");
                                     });
-                            
+                                    
                                     break;
                                     
                                 case '2':
-                                	console.log("longinNum : 2");
-
+                                    console.log("longinNum : 2");
+                                    
                                     $("#login").modal("hide");
 
                                     $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
                                     $("#alert_modal").modal("show");
-                                                               
+                                    
                                     if(uriCookie != null){      //
                                         alertModalEl.addEventListener('hidden.bs.modal',function(){
                                             deleteCookie("__ORIGINAL_REQUEST_URI__");
                                             history.go(-1);
                                         });//modal close listener
-                                    }//ifk
+                                    }//if
 
                                     break;
 
-                                case '3':
-                                	console.log("longinNum : 3");
-
-                                	if(data.isRememberMe == 'true'){    //RemeberMe 체크하고 로그인 했을 시
+                                    case '3':
+                                        console.log("longinNum : 3");
                                         
+                                	if(data.isRememberMe == 'true'){    //RemeberMe 체크하고 로그인 했을 시
                                         //RemberMe 쿠키의 이름과 값, 유효기간 설정
                                         let rememberMeCookie = 
                                         "__REMEMBER_ME__=" + data.cookieValue + ";expires=" + data.rememberAge + ";path=/";
@@ -185,22 +221,75 @@
                                     } else{
                                         location.reload();
                                     }//if-else
-
+                                    
                                     break;
-                            }//switch-case
-
+                                }//switch-case
+                                
                         } //success
-
+                        
                     });//ajax
 			    });//onclick .login_submit_btn
 
-                //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
-                $("#close_login_open_join").click(function(){
-                    $("#login").modal("hide");
-                    $("#join").modal("show");   
-                });//close_login_open_join
+
                 
-        
+                //login modal에서 카카오 로그인 누를 시
+                Kakao.Auth.createLoginButton({
+                    container: "#kakao_login",
+                    size : "medium",
+                    success: function(object){
+                        console.log(object);
+
+                        Kakao.API.request({
+                            url:'/v2/user/me',
+                            data : {
+                                property_keys: ["kakao_account.email"]
+                            },
+                            success: function(userData){
+                                $("#login").modal("hide");
+                                
+                                var kakao_email = "SOC.KAKAO_" + userData.kakao_account.email;
+                                
+                                console.log("isEmailExist before:", isEmailExist);
+                                checkEmail(kakao_email);    
+                                console.log("isEmailExist after:", isEmailExist);
+
+                                if(isEmailExist){
+                                    //로그인
+                                    $("#login_email").val(kakao_email);
+                                    $(".login_submit_btn").trigger("click");
+                                } else{
+                                    //회원가입
+                                    isEmailChecked = true;
+                                    isPwValid = true;
+                                    
+                                    $("#social_join_email").val(kakao_email);
+                                    $("#social_join").modal("show");
+                                }
+                            }//success
+                            
+                        });//Kakao.API.request
+                    },
+                    fail: function(error){
+                        alert('error');
+                        console.log(error);
+                    }
+                });//Kakao.Auth.lgoin
+                
+
+                
+                //logout 누를시
+                $("#logout_a").on('click', function(){
+                    if (!Kakao.Auth.getAccessToken()) {
+                        console.log('Not logged in.');
+                    }
+                    Kakao.Auth.logout(function() {
+                        console.log(Kakao.Auth.getAccessToken());
+                    });
+
+                    location.href="/main/logout";
+                });//logout on click
+
+
                 $('#header_search').on('propertychange change keyup paste input', function() {
 
                     var filmTitle = $('#header_search').val();
@@ -238,7 +327,7 @@
                 }); //propertychange change keyup paste input
 
             }); //.jq        
-
+ 
         </script>
     	
     	<style>    		
@@ -276,7 +365,21 @@
             	width: 300px;
             	height: 38px;
             }
-    		
+            
+            #forgot_password{
+            	margin-left : 125px;
+            }
+            
+            #kakao_login{
+                margin : auto;
+                /* margin-top: 27px; */
+            }
+
+            /* #kakao-login-btn{
+                width : 266px;
+                height : 40px;
+            } */
+
     	</style>
 	</head>
 	<body>
@@ -295,7 +398,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
-                        <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
+                        <a class="nav-link memberHeadermenu" id="logout_a" aria-current="page" href="#" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
@@ -328,15 +431,9 @@
     	</header>
 
     <!-- alert Modal -->
-    <!-- <div class="modal fade" id="alert_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> -->
     <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content"> 
-                <!-- <div class="modal-header"> -->
-                    <!-- <h2 class="modal-title" id="staticBackdropLabel"><B>LOGIN</B></h2> -->
-                    <!-- <p style="font-size: 15px; text-align: center;"></p> -->
-                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                <!-- </div> -->
                 <div class="modal-body">
                     <p style="font-size: 16px; text-align: center;"></p>
                 </div>
@@ -350,7 +447,7 @@
 
     <!-- login Modal -->
     <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN IN</B></h2>
@@ -360,26 +457,31 @@
                     <form id="login_form" method="POST">
                         <div class="mb-3">
                             <label for="login_email" class="form-label"><b>Email</b></label>
-                            <input type="email" class="form-control" id="login_email" name="email" placeholder="name@example.com" autocomplete="username">
+                            <input type="email" class="form-control" id="login_email" name="email" placeholder="이메일 주소" autocomplete="username">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label"><b>Password</b></label><br>
-                            <input type="password" class="form-control" id="login_password" name="password" placeholder="password" autocomplete="current-password">
-                            <div><a href="/main/forgotPw" style="color: #C2DBFE ;">Forgot Password</a></div>
+                            <input type="password" class="form-control" id="login_password" name="password" placeholder="비밀번호" autocomplete="current-password">
+                            <div id="forgot_password"><a href="/main/forgotPw">forgot password</a></div>
                         </div>
                         <div class="form-check">
-                            <label class="form-check-label" for="rememberMe">Remember me</label>
+   						    <label class="form-check-label" for="rememberMe">Remember me</label>
                             <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
                         </div>
                         <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-primary login_submit_btn">SIGN IN</button>
-                        </div>
+                            <button type="button" 
+                            class="btn btn-primary login_submit_btn g-recaptcha" data-sitekey="6Lde0E4cAAAAALC52i_2yWY1ihnWWwRKIHtrtlln"
+                            data-callback='onSubmit' 
+                            data-action='submit'>SIGN IN</button>
+                     	</div>
                     </form>
                     <p>&nbsp;</p>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" type="button" id="close_login_open_join">JOIN</button>
+                        <button type="button" class="btn btn-primary" id="close_login_open_join">JOIN</button>
+                        <p>&nbsp;</p>
+                        <div id="kakao_login"></div>
                     </div>
-                </div>
+                 </div>
             </div>
         </div>
     </div>
@@ -396,18 +498,52 @@
                 <form action="/main/joinPost" method="POST">
                     <div class="mb-3">
                         <label for="join_email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val))">
-                    	<p id='email_message'></p>
+                        <input type="email" class="form-control" id="join_email" name="email" placeholder="이메일 주소" autocomplete="username"
+                        oninput="javascript:checkEmail( $('#join_email').val() )">
+                    	<p class='input_message' id='email_message'></p>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label"><b>password</b></label>
-                        <input type="password" class="form-control" id="join_password" name="password" placeholder="password" oninput="javascript:checkPw()" autocomplete="new-password">
-                        <p id='pw_message'></p>
+                        <input type="password" class="form-control" id="join_password" name="password" placeholder="비밀번호" oninput="javascript:checkPw()" autocomplete="new-password">
+                        <p class='input_message' id='pw_message'></p>
                     </div>
                     <div class="mb-3">
                         <label for="nickname" class="form-label"><b>nickname</b></label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="John" oninput="javascript:checkNickname()">
-                        <p id='nick_message'></p>
+                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#nickname').val())">
+                        <p class='input_message nickname'></p>
+                        </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary sign_up_btn" disabled><b>SIGN UP</b></button>
+                        <!-- <button type="submit" 
+                        class="btn btn-primary sign_up_btn g-recaptcha" data-sitekey="6Lde0E4cAAAAALC52i_2yWY1ihnWWwRKIHtrtlln"
+                        data-callback='onSubmit'
+                        data-action='submit' disabled>SIGN UP</button> -->
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- socail_ join Modal -->
+    <div class="modal fade" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h2 class="modal-title" id="staticBackdropLabel"><b>SOCIAL SIGN UP</b></h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="/main/joinPost" method="POST">
+                    <div class="mb-3">
+                        <input type="hidden" name="email" id="social_join_email">
+                        <input type="hidden" name="password">
+                        <input type="hidden" name="fromWhere" id="fromWhere">
+
+                        <label for="nickname" class="form-label"><b>nickname</b></label>
+                        <input type="text" class="form-control" id="social_nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#social_nickname').val())">
+                        <p class='input_message nickname'></p>
                         </div>
                     <div class="d-grid gap-2">
                         <button class="btn btn-primary sign_up_btn" type="submit" disabled><b>SIGN UP</b></button>
@@ -419,7 +555,7 @@
     </div>
 
     <!-- new_password Modal -->
-    <div class="modal fade" id="new_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="new_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -441,12 +577,8 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-
+    </div> -->
+  
 	</body>
 
 </html>

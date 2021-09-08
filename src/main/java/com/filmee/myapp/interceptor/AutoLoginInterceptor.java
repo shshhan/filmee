@@ -37,7 +37,7 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
 			
 			//RememberMe 쿠키 획득
 			Cookie rememberMeCookie = 
-					WebUtils.getCookie(request, LoginInterceptor.rememberMeKey);
+					WebUtils.getCookie(request, MainController.rememberMeKey);
 			
 			if(rememberMeCookie != null) {	//RememberMe 쿠키가 있으면
 				String rememberMe = rememberMeCookie.getValue();
@@ -54,14 +54,14 @@ public class AutoLoginInterceptor implements HandlerInterceptor {
 	
 					String sessionId = session.getId();		//현재 SessionId 획득
 					
-					this.service.setUserRememberMe(
+					this.service.setUserRememberMe(		//DB에 자동로그인 쿠키 정보 저장
 							user.getEmail(),
 							sessionId,
 							new Date(System.currentTimeMillis() + (1000*60*60*24*7))	//유효기간 7일
 							);
 									
 					rememberMeCookie = 
-							new Cookie(LoginInterceptor.rememberMeKey, sessionId);//같은 이름의 새로운 쿠키 생성
+							new Cookie(MainController.rememberMeKey, sessionId);//같은 이름의 새로운 쿠키 생성
 					
 					rememberMeCookie.setMaxAge(60*60*24*7);		//쿠키 유효기간 7일
 					rememberMeCookie.setPath("/");				//쿠키 경로 : 모든 경로

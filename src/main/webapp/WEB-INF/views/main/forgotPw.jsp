@@ -52,7 +52,6 @@
 
 				}//if-elseIf-elseIf
 			});//onclick .fg_pw_send_btn
-
 		});//jquery
 
 	</script>
@@ -62,6 +61,8 @@
 
 <body>
 	<%@include file="/resources/html/header.jsp" %>
+
+	<div>
 		<div class="container" style="width: 600px;">
 			<div class="row justify-content-center">
 				<form class="row g-3" action="/mypage/newPassword" method="POST">
@@ -76,6 +77,10 @@
 				</form>
 			</div>
 		</div>
+	</div>
+	생각해보니 이페이지는 로그인되어있는 상태면 안보여줘야할듯
+
+
 		<%@include file="/resources/html/footer.jsp" %>
 
 </body>

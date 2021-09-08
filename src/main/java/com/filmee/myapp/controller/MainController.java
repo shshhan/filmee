@@ -33,14 +33,18 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class MainController {
 	
+	
+	public static final String loginKey = "__LOGIN__";
+	public static final String requestURIKey = "__REQUEST_URI__";
+	public static final String queryStringKey = "__QUERYSTRING__";
+	public static final String rememberMeKey = "__REMEMBER_ME__"; 
+	
 	@Setter(onMethod_=@Autowired)
 	private LoginService loginService;
 	
 	@Setter(onMethod_=@Autowired)
 	private JoinService joinService;
-		
-	public static final String loginKey = "__LOGIN__";
-	
+
 	//View-Controller : main, loginRequired, forgotPw
 	
 	//====== 로그인 관련 ======
@@ -63,8 +67,7 @@ public class MainController {
 		log.info("user : {}", user);
 			
 		Map<String, String> resultMap = new HashMap<>();
-		
-		
+			
 		if(user == null) {		//로그인 정보가 없다면
 			log.info("return 1");
 			resultMap.put("loginNum", "1");
@@ -103,7 +106,7 @@ public class MainController {
 		//LoginInterceptor의 postHandle 메서드에서 이후 로직 처리(RememberMe 쿠키 생성 및 전송)
 		
 	}//loginPost
-	
+		
 	//====== 회원가입 관련 ======
 	
 	//header.jsp의 join modal에서 이메일 중복검사 시
@@ -130,17 +133,26 @@ public class MainController {
 		return result;
 	}//checkNickname
 	
-	//join modal에서 sign up 버튼 클릭 시 
+	//join modal 혹은 최초 소셜로그인시 에서 sign up 버튼 클릭 시 
 	@PostMapping("joinPost")
 	public String joinPost(UserDTO dto, RedirectAttributes rttrs) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
-				
-		if( this.joinService.join(dto) == 1) {	// 정상 회원가입 처리됐다면
-			rttrs.addFlashAttribute("message", "just_joinned");
-		} else {								// 정상 회원가입에 실패했다면
-			rttrs.addFlashAttribute("message", "join_failed");
-		}//if-else
 		
+		if( dto.getPassword() != null && dto.getPassword().equals("") ) {	//최초 소셜 로그인시
+			if( this.joinService.joinBySocial(dto) == 1) {
+				rttrs.addFlashAttribute("message", "social_join");
+			} else {
+				rttrs.addFlashAttribute("message", "task_failed");
+			}//if-else
+			
+		}else {		//join modal에서 sign up했다면
+			if( this.joinService.join(dto) == 1) {	// 정상 회원가입 처리됐다면
+				rttrs.addFlashAttribute("message", "just_joinned");
+			} else {								// 정상 회원가입에 실패했다면
+				rttrs.addFlashAttribute("message", "task_failed");
+			}//if-else
+		}//if-else
+				
 		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
 	}//joinPost
 	
@@ -152,12 +164,30 @@ public class MainController {
 		if(this.joinService.isEmailAuthorized(email, authCode)) {	//DB에 저장된 유저의 인증키와 일치하면
 			rttrs.addFlashAttribute("message", "join_complete");
 		} else {													//유저의 인증키와 일치하지 않으면
-			rttrs.addFlashAttribute("message", "email_unauthroized");
+			rttrs.addFlashAttribute("message", "task_failed");
 		}//if-else	
 		
 		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
 	}//emailAuthroized
 		
+	@PostMapping("deleteAccount")
+	public String deleteAccount(Integer userId, RedirectAttributes rttrs) throws Exception{
+		log.debug("deleteAccount({}) invoked.", userId);
+		
+		int result = this.joinService.deleteAccount(userId);
+		
+		if(result == 1) {
+			rttrs.addFlashAttribute("message", "account_deleted");
+		}else {
+			rttrs.addFlashAttribute("message", "task_failed");			
+		}//if-else
+		
+		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
+
+	}//deleteAccount
+	
+	
+	
 }//end class
 
 

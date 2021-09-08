@@ -30,6 +30,46 @@
                         prevButton: '.back'
             });
         };
+
+        $(function(){
+            console.log('jq started');
+
+            $("#agree_cb").on('click', function(){
+                var agreeCb = $("#agree_cb").prop("checked");
+                console.log("agreeCb :", agreeCb);
+
+                if(agreeCb){
+                    $("#del_acc_btn").prop("disabled", false);
+                } else {
+                    $("#del_acc_btn").prop("disabled", true);
+                }//if-else
+
+            });//agree_cb onclick
+
+            $("#del_acc_btn").on('click', function(e){
+                e.preventDefault();     //submit 취소
+
+                if("${__LOGIN__.email}".includes("SOC.KAKAO_")){    //현재 로그인된 계정이 카카오 계정이라면
+                    Kakao.API.request({     //카카오 간편로그인 token 해제
+                        url: '/v1/user/unlink',
+                        success: function(response) {
+                            console.log(response);
+
+                            $("#del_acc_form").submit();    //DB에서 탈퇴처리
+                        },
+                        fail: function(error) {
+                            console.log(error);
+                        }
+                    });//Kakao.API,request
+
+                }else {         //현재 로그인된 계정이 일반계정이라면
+                    $("#del_acc_form").submit();    
+
+                }//if-else
+
+            });//del_acc_btn onclick
+            
+        });//jq
     </script>
     
 
@@ -97,6 +137,45 @@
                 </div>
             </div>
         </section>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del_acc_modal">
+            회원탈퇴
+        </button>
+  
+        <!-- Modal -->
+        <div class="modal fade" id="del_acc_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel"><b>DELETE ACCOUNT</b></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    지금 탈퇴하면 같은 이메일로 회원가입 못함
+                    그리고 지나가다가 새똥맞음 ㅋㅋ
+                    <form action="/main/deleteAccount" id="del_acc_form" method="POST">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="agree_cb">
+                            <label class="form-check-label" for="flexCheckDefault">
+                            정말로 탈퇴하시겠습니까?
+                            </label>
+                        </div>
+                        <hr>
+                        <div class = row align-items-center">
+                            <input type="hidden" name="userId" value="${__LOGIN__.userId}">
+                            <button type="button" class="btn btn-secondary col" id="del_acc_btn" disabled>회탈ㄱ</button>
+                            <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">안할거임</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer row align-items-center">
+                    <button type="button" class="btn btn-secondary col" id="del_acc_btn">회탈ㄱ</button>
+                    <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">안할거임</button>
+                </div> -->
+            </div>
+            </div>
+        </div>
 
     </section>  
     <%@include file="/resources/html/footer.jsp" %>

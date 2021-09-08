@@ -6,7 +6,8 @@ function isEmail(email) {
 
 	return reg.test(email);
 };//isEmail
-	
+
+
 //====== 회원가입 ======
 
 // input에 입력시 유효성을 체크할 변수
@@ -21,10 +22,8 @@ function isSignUpBtnValid(){
 	// console.log("isSignUpBtnValid invoked.");
 
 	if(isEmailChecked && isPwValid && isNickChecked){
-		// console.log("good to go");
 		$(".sign_up_btn").prop("disabled", false);
 	}else{
-		// console.log("failed");
 		$(".sign_up_btn").prop("disabled", true);
 	}//if-else
 };//isChangeButtonValid
@@ -32,7 +31,6 @@ function isSignUpBtnValid(){
 function checkEmail(email){
 	console.log("checkEmail invoked.");
 	
-	// var email = $('#join_email').val();
 	console.log("checkEmail :", email);
 
 	$.ajax({
@@ -44,7 +42,7 @@ function checkEmail(email){
 		url : "/main/checkEmail",
 		dataType:'json',
 		success : function(data){
-			// console.log("data :", data);
+			console.log("data :", data);
 			if(email.length == 0){
 				isEmailChecked = false;
 				$("#email_message").text("");
@@ -55,10 +53,11 @@ function checkEmail(email){
 				isEmailChecked = true;                
 				$("#email_message").text("✅☑✔");
 			} else if (data == '1') {
-				isEmailChecked = false;                
+				isEmailChecked = false;  
+				isEmailExist = true;              
 				$("#email_message").text("이미 가입된 이메일주소입니다.");
-				isEmailExist = true;
 			}//if-elseif-elseif-elseif
+
 			console.log("isEmailExist header.js:",isEmailExist);
 			isSignUpBtnValid();
 		}//success
@@ -84,10 +83,11 @@ function checkPw(){
 	isSignUpBtnValid();
 }//checkPw
 
-function checkNickname(){
-	// console.log("checkNickname invoked.");
+function checkNickname(nickname){
+	console.log("checkNickname invoked.");
 	
-	var nickname = $('#nickname').val();
+	console.log("checkNickname:", nickname);
+
 	$.ajax({
 		data : {
 			nickname : nickname
@@ -99,17 +99,17 @@ function checkNickname(){
 			// console.log("data :", data);
 
 			if(nickname.length == 0){
-				isNickChecked = false;
-				$("#nick_message").text("");
+				isNickChecked = false;	
+				$(".nickname").text("");
 			} else if(nickname.length < 2){
 				isNickChecked = false;
-				$("#nick_message").text("닉네임은 두글자 이상이어야 합니다.");
+				$(".nickname").text("닉네임은 두글자 이상이어야 합니다.");
 			} else if (data == '0') {
 				isNickChecked = true;
-				$("#nick_message").text("✅☑✔");     
+				$(".nickname").text("✅☑✔");     
 			} else if (data == '1') {
 				isNickChecked = false;
-				$("#nick_message").text("이미 등록된 닉네임입니다.");
+				$(".nickname").text("이미 등록된 닉네임입니다.");
 			}//if-elseif-elseif-elseif
 			isSignUpBtnValid();
 		}//success

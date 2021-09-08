@@ -45,13 +45,21 @@ public class LoginServiceImpl
 	public UserVO login(UserDTO dto) throws Exception {
 		log.debug("login({}) invoked.", dto);
 		
-		//DB에 저장된 회원의 salt를 가져와 비밀번호와 함께 hashing
-		String salt = this.getUserSalt(dto.getEmail());		//DB에 저장된 유저의 salt 획득
-		String hashedPw = hashUtils.hashing(dto.getPassword(), salt);	//유저가 입력한 비밀번호와 salt를 함께 hashing
+		UserVO user = null;
 		
-		dto.setPassword(hashedPw);	//dto 비밀번호 저장
-		
-		UserVO user = this.mapper.selectUser(dto);
+		if(dto.getEmail().contains("SOC.KAKAO_")) {
+			user = this.mapper.selectUserBySocialEmail(dto.getEmail());
+						
+		}else {
+			//DB에 저장된 회원의 salt를 가져와 비밀번호와 함께 hashing
+			String salt = this.getUserSalt(dto.getEmail());		//DB에 저장된 유저의 salt 획득
+			String hashedPw = hashUtils.hashing(dto.getPassword(), salt);	//유저가 입력한 비밀번호와 salt를 함께 hashing
+			
+			dto.setPassword(hashedPw);	//dto 비밀번호 저장
+			
+			user = this.mapper.selectUser(dto);
+			
+		}//if-else
 		
 		log.info("user : {}", user);
 

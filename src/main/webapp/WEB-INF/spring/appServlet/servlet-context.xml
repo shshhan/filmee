@@ -44,15 +44,10 @@
 		/>
 
 	<beans:bean
-		id="loginInterceptor"
-		class="com.filmee.myapp.interceptor.LoginInterceptor"
+		id="logInOutInterceptor"
+		class="com.filmee.myapp.interceptor.LogInOutInterceptor"
 		/> 
-		
-	<beans:bean
-		id="logoutInterceptor"
-		class="com.filmee.myapp.interceptor.LogoutInterceptor"
-		/>
-				
+						
 	<beans:bean
 		id="authInterceptor"
 		class="com.filmee.myapp.interceptor.AuthInterceptor"
@@ -66,14 +61,10 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/main/loginPost" />
-			
-			<beans:ref bean="loginInterceptor" />
-		</interceptor>
-	
-		<interceptor>
 			<mapping path="/main/logout" />
+			<mapping path="/main/deleteAccount" />
 			
-			<beans:ref bean="logoutInterceptor" />
+			<beans:ref bean="logInOutInterceptor" />
 		</interceptor>
 		
 		<interceptor>
@@ -88,16 +79,14 @@
 			<mapping path="/*/*" />
 			
 			<!-- 제외 경로 : 로그인, 회원가입 등 계정 관련 -->
-			<exclude-mapping path="/main/login" />	
+			<exclude-mapping path="/main/logout" />	
 			<exclude-mapping path="/main/loginPost" />	
-			<exclude-mapping path="/main/loginNoInfo" />
-			<exclude-mapping path="/main/loginUnauthorized" />	
-			<exclude-mapping path="/main/join" />	
+			<exclude-mapping path="/main/loginRequired" />
 			<exclude-mapping path="/main/checkEmail" />	
 			<exclude-mapping path="/main/checkNickname" />	
 			<exclude-mapping path="/main/joinPost" />	
 			<exclude-mapping path="/main/emailAuthorized" />	
-			<exclude-mapping path="/main/forgotPwPost" />
+			<exclude-mapping path="/main/forgotPw" />
 			
 			<!-- 제외경로 : AuthInterceptor Path -->
 			<!--  board/list는 테스트용도. -->
