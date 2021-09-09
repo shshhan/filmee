@@ -390,7 +390,7 @@ public class BoardController {
 				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//unLike
 
-	@GetMapping("like/check")
+	@PostMapping("like/check/{bno}")
 	public HeartVO likeCheck(			
 			@RequestParam(value="bno") Integer bno,
 			@SessionAttribute("__LOGIN__") UserVO user,
@@ -401,6 +401,6 @@ public class BoardController {
 		model.addAttribute("heart",vo);
 		
 		return vo;
-	}//likeCheck
+	}//likeCheckgd
 
 }//end class

@@ -40,7 +40,6 @@
             var modalRemoveBtn=$("#modalRemoveBtn");
             var modalRegisterBtn=$("#modalRegisterBtn");
 
-            var likecheck="${heart.likecheck}"
 
             console.log("nick:",nickname)
             console.log("userid:",userid);
@@ -58,24 +57,34 @@
                 }//if
             }//if-else
 
+            var likecheck="${heart.likecheck}"
 
             console.log(">>>> LIKECHECK >>>> ",likecheck); 
             if(likecheck==1){
                 $("#likeimg").attr("src", "/resources/img/fullheart.png");
                 $("#likeBtn").on("click",function(e){
+                    likeService.likeChecking(bnoValue);
                     likeService.unLike(bnoValue, userid);
                     alert("좋아요를 취소했습니다.");
                     $("#likeimg").attr("src", "/resources/img/emptyheart.png");
-                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                    
+                    console.log(">>>>>>>like check", likecheck);
+                    
+                    // location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
                 })
             }
             if(likecheck==0){
                 $("#likeimg").attr("src", "/resources/img/emptyheart.png");
                 $("#likeBtn").on("click",function(e){
+                    likeService.likeChecking(bnoValue);
                     likeService.likeIt(bnoValue, userid);
                     alert("좋아요를 눌렀습니다.");
                     $("#likeimg").attr("src", "/resources/img/fullheart.png");
-                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                    
+                    likecheck=1;
+                    console.log(">>>>>>>like check", likecheck);
+
+                    // location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
                 })
             }
 
