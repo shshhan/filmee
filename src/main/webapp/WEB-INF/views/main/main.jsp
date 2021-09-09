@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>FILMEE | FILM MEETING</title>
     <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
-    </head>
 
     <link rel="icon" href="/img/favicon_noback.ico" type="image/x-icon">
 
@@ -71,7 +70,8 @@
             
         });//jq
     </script>
-    
+
+</head>
 
 <body>
     <%@include file="/resources/html/header.jsp"  %>

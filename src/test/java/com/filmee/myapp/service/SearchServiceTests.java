@@ -37,10 +37,10 @@ public class SearchServiceTests {
 	}//setup
 	
 	@Test
-	public void testSearchFilmsByPeopleName() {
+	public void testSearchFilmsByPeopleId() {
 		log.debug("testSearchFilmsByPeopleName() invoked.");
 		
-		List<SearchPeopleVO> films = this.service.serachFilmsByPeopleName("Mark Ruffalo");
+		List<SearchPeopleVO> films = this.service.serachFilmsByPeopleId("3223");
 		
 		films.forEach((t) -> {
 			log.info(t);

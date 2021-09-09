@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 
 <!DOCTYPE html>
@@ -11,7 +12,8 @@
     	<meta charset="UTF-8">
     	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    	<title>header</title>
+        <title>FILMEE | FILM MEETING</title>
+        <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
         <!---------- BootStrap ---------->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
@@ -28,13 +30,18 @@
 
         <!---------- Google Recpatch ---------->
         <script src="https://www.google.com/recaptcha/api.js"></script>
-        
+
         <!---------- External JS ---------->
     	<script src="/resources/js/header.js"></script>
-        
-        <script>
 
-            Kakao.init('b5e0e2fa190deb08c9102e95e2a6e15b');
+        <!---------- API-KEY ---------->
+        <fmt:setBundle basename="application-API-KEY" var="API_KEY" />
+        
+
+
+        <script>
+ 
+            Kakao.init('<fmt:message key="kakao-login-key" bundle="${API_KEY}"/>');
             // console.log(Kakao.isInitialized());
 
 	        //====== 쿠키 ======
@@ -338,8 +345,8 @@
 			    margin: 0 auto;
 			    background-color: rgba(240, 230, 230, 0);
 			    font-size: 20px;
-			    font-family: 'Florencesans SC Exp';
-			}
+                font-family: 'ELAND 초이스';
+            }
 			
             #header_nav_logo {
 			    width: 200px;
@@ -388,7 +395,7 @@
             <div id='header'>
 	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                  <a class="navbar-brand" href="/main"><img id='header_nav_logo'  src='../resources/img/filmeeLogo.png'></a>
+                  <a class="navbar-brand" href="/main"><img id='header_nav_logo'  src='/resources/img/filmeeLogo.png'></a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
@@ -470,10 +477,13 @@
                         </div>
                         <div class="d-grid gap-2">
                             <button type="button" 
-                            class="btn btn-primary login_submit_btn g-recaptcha" data-sitekey="6Lde0E4cAAAAALC52i_2yWY1ihnWWwRKIHtrtlln"
+                            class="btn btn-primary login_submit_btn g-recaptcha" data-sitekey="<fmt:message key='recaptcha-key' bundle='${API_KEY}' />"
                             data-callback='onSubmit' 
                             data-action='submit'>SIGN IN</button>
                      	</div>
+                         
+
+
                     </form>
                     <p>&nbsp;</p>
                     <div class="d-grid gap-2">
@@ -488,7 +498,7 @@
 
     <!-- join Modal -->
     <div class="modal fade" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
             <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN UP</B></h2>
@@ -526,7 +536,7 @@
         </div>
     </div>
 
-    <!-- socail_ join Modal -->
+    <!-- socail_join Modal -->
     <div class="modal fade" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">

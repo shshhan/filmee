@@ -45,11 +45,11 @@ public class SearchController {
 		return listFilm;
 	} //searchFilmAutoComplete
 
-	@GetMapping("people/{peopleName}")
-	public String searchPeople(@PathVariable("peopleName") String peopleName, Model model) {
-		log.debug("searchPeople({}) invoked.", peopleName);
+	@GetMapping("people/{peopleId}")
+	public String searchPeople(@PathVariable("peopleId") String peopleId, Model model) {
+		log.debug("searchPeople({}) invoked.", peopleId);
 		
-		List<SearchPeopleVO> films = this.service.serachFilmsByPeopleName(peopleName);
+		List<SearchPeopleVO> films = this.service.serachFilmsByPeopleId(peopleId);
 		
 		films.forEach(log::info);
 		

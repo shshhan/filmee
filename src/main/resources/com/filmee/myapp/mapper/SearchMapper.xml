@@ -37,14 +37,14 @@
 	
 	<select id='getFilmsWithPeople' resultType='com.filmee.myapp.domain.SearchPeopleVO'>
 	
-		SELECT p.enname, p.profile_path, fp.credit_order, fp.character, f.original_title, 
+		SELECT p.enname, p.profile_path, fp.credit_order, fp.character, f.film_id, f.original_title, 
 			   to_char(f.release_date, 'yyyy'), f.popularity, f.poster_path
 		FROM fm_people p
 		INNER JOIN fm_film_people fp
 				ON p.people_id = fp.people_id
 		INNER JOIN fm_film f
 				ON fp.film_id = f.film_id
-		WHERE p.enname = #{peopleName}
+		WHERE p.people_id = #{peopleId}
 		order by f.release_date DESC
 	
 	</select>

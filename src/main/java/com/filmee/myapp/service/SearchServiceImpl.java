@@ -34,10 +34,10 @@ public class SearchServiceImpl implements SearchService {
 	}//searchFilmAutoComplete
 
 	@Override
-	public List<SearchPeopleVO> serachFilmsByPeopleName(String peopleName) {
-		log.debug("serachFilmsByPeopleName({}) invoked.", peopleName);
+	public List<SearchPeopleVO> serachFilmsByPeopleId(String peopleId) {
+		log.debug("serachFilmsByPeopleName({}) invoked.", peopleId);
 		
-		return this.mapper.getFilmsWithPeople(peopleName);
+		return this.mapper.getFilmsWithPeople(peopleId);
 	}//searchFilmsByPeopleName
 
 } //end class

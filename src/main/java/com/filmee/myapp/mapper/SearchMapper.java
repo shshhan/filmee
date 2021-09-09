@@ -10,6 +10,6 @@ public interface SearchMapper {
 	
 	public abstract List<SearchFilmVO> getFilmList(String filmTitle);
 	
-	public abstract List<SearchPeopleVO> getFilmsWithPeople(String peopleName);
+	public abstract List<SearchPeopleVO> getFilmsWithPeople(String peopleId);
 
 } //end interface

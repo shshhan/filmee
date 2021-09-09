@@ -10,5 +10,5 @@ public interface SearchService {
 	
 	public abstract List<SearchFilmVO> searchFilmAutoComplete(String filmTitle);
 
-	public abstract List<SearchPeopleVO> serachFilmsByPeopleName(String peopleName);
+	public abstract List<SearchPeopleVO> serachFilmsByPeopleId(String peopleId);
 } //end interface

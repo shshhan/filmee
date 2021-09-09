@@ -11,7 +11,8 @@ public class SearchPeopleVO {
 	private String profilePath;
 	private Integer creditOrder;
 	private String character;
-	private String original_title;
+	private Integer filmId; 
+	private String originalTitle;
 	private String releaseDate;
 	private Double popularity;
 	private String posterPath; 
