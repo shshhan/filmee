@@ -27,9 +27,9 @@
                     abcedferasdavazsdfzsdf
                 </p>
             </div>
-            <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
+            
             <div id="bugreport">
-                <button id="compl">의견보내기</button>
+                <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
             </div>
                                           
         </div>

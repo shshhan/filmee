@@ -112,7 +112,9 @@ public class MailSendServiceImpl implements MailSendService {
 			sendMail.setSubject("FilMEE 요청답신");
 			sendMail.setText(
 					new StringBuffer()
+							.append("<h2>")
 							.append(content)
+							.append("</h2>")
 				            .toString());
             sendMail.setFrom("shawnshhan@gmail.com", "FilMee");
             sendMail.setTo(email);

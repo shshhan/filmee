@@ -25,10 +25,13 @@ public class ComplaintServiceImpl
 	implements ComplaintService, InitializingBean,DisposableBean{
 
 	//매개변수가 하나라 자동으로 주입
+	@Setter(onMethod_=@Autowired)
 	private ComplaintMapper mapper;
 	
 	@Setter(onMethod_=@Autowired)
 	private MailSendService mailService;
+
+
 	
 		@Override
 		public void afterPropertiesSet() throws Exception {		
@@ -92,19 +95,19 @@ public class ComplaintServiceImpl
 		}
 
 		@Override
-		public boolean completion(ComplaintVO complaint,UserVO user) {
-		      log.debug("completion({}) invoked.",complaint);
+		public boolean completion(ComplaintVO complaint, Integer writer) {
+		      log.debug("completion({},{}) invoked.",complaint,writer);
 
 			   Objects.requireNonNull(this.mapper);
 			   
-				String email = user.getEmail();
-				String content = complaint.getContent();
+			   log.info("===================================================");
+			   String email = this.mapper.userSelect(writer);
 				log.info("===================================================");
 				log.info("\t+email:{}",email);
-				log.info("\t+content:{}",content);
+				log.info("\t+content:{}",complaint.getContent());
 				log.info("===================================================");
-				this.mailService.sendComplaintMail(email, content);
-
+				
+				this.mailService.sendComplaintMail(email, complaint.getContent());
 
 			return (this.mapper.updateEnd(complaint)==1);
 		}//completion

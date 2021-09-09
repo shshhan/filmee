@@ -1,5 +1,7 @@
 package com.filmee.myapp.service;
 
+import org.apache.logging.log4j.message.Message;
+
 public interface MailSendService {
 	
 	public final int EMAIL= 6;

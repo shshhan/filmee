@@ -3,6 +3,8 @@ package com.filmee.myapp.controller;
 import java.util.List;
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,17 +58,31 @@ public class ComplaintController
 
    
    @PostMapping("register")
-   public String regeister(ComplaintVO complaint,RedirectAttributes rttrs) {
+   public String register(
+		   ComplaintVO complaint,
+		   RedirectAttributes rttrs,
+		   HttpServletRequest request
+		   ) {
 	   log.debug("register({},{}) invoked", complaint,rttrs) ;
 	   
 	   
 	   boolean isRegister = this.service.register(complaint);
+	   log.info("=====================================");
+	   log.info("\t+isRegister:{}"+isRegister);
+	   log.info("=====================================");
 //	   rttrs.addAttribute("writer",userVO.getUserId());
+	   String referer = (String)request.getHeader("REFERER");
+	   
+	   
+	   log.info("=====================================");
+	   log.info("\t+referer:{}"+referer);
+	   log.info("=====================================");
+	   
 		if(isRegister) {	//요청 성공일 때
-			rttrs.addAttribute("result", "success");
+			rttrs.addFlashAttribute("comResult", "요청완료");
 		}//if
 //     return "/complaint/register";x
-     return "redirect:/complaint/register";
+     return "redirect:"+referer;
    }//regeister
    
    
@@ -76,21 +92,6 @@ public class ComplaintController
 	   
    }//regeister
 
-   @GetMapping("list")
-	public String list(Model model) {
-		log.debug("list({}) invoked.", model);
-		
-		List<ComplaintVO> complaint = this.service.getList();
-		
-		
-		
-		assert complaint != null;
-		
-		complaint.forEach(log::info);
-		
-		model.addAttribute("list", complaint);
-		return "complaint/comList";
-	}//list
 
 
    @GetMapping("listPerPage")
@@ -114,7 +115,7 @@ public class ComplaintController
 		return "complaint/comList";
 	}//listPerPAge
 	
-	@GetMapping( {"get","temporary","completion"} )
+	@GetMapping( "get" )
 	public String get(
 			@ModelAttribute("cri") ComCriteria cri,
 			@RequestParam("compno") Integer compno, 
@@ -163,9 +164,9 @@ public class ComplaintController
 		boolean isTemporary = this.service.temporary(complaint);
 		
 		
-		if(isTemporary) {
-			rttrs.addAttribute("result", "success");
-		}//if
+//		if(isTemporary) {
+//			rttrs.addAttribute("result", "success");
+//		}//if
 		
 		rttrs.addAttribute("currPage", cri.getCurrPage());
 		rttrs.addAttribute("amount", cri.getAmount());
@@ -180,11 +181,11 @@ public class ComplaintController
 			@ModelAttribute("cri") ComCriteria cri,
 			ComplaintVO complaint,
 			RedirectAttributes rttrs,
-			UserVO user
+			Integer writer
 			) throws Exception {
-		log.debug("completion({}, {}, {}) invoked.", cri, complaint, rttrs);
+		log.debug("completion({}, {}, {},{}) invoked.", cri, complaint, rttrs,writer);
 
-		boolean isCompletion = this.service.completion(complaint, user);
+		boolean isCompletion = this.service.completion( complaint, writer);
 
 		
 				if(isCompletion) {

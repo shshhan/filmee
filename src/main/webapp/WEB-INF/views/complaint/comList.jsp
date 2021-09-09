@@ -16,6 +16,7 @@
         <style>
         
             
+            
         </style>
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -36,7 +37,7 @@
     <body>
         
         <header>
-            <div id="header">header</div>
+           <%@include file="/resources/html/header.jsp" %>
         </header>
     
     
@@ -44,25 +45,23 @@
         <session  id="session">
             
             <div id="mgr_nav">
-            
+
                 <jsp:include page="mgrNav.jsp"/>
             </div>
     
             <div id="main">
                 <jsp:include page="list.jsp"/>
 
-
-            </div>
-    
-            <div id="aside">
-            	<br/>
-            </div>
+			</div>
+         
+         
             
     
         </session>
     
     <footer>
-    	<div id="footer">footer</div>
+
+      
     </footer>
         
 

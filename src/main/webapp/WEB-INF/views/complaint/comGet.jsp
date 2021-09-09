@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+    <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -14,7 +14,10 @@
         <title></title>
         <link rel="stylesheet" href="/resources/css/complaint.css">
         <style>
-        
+            #main{
+                margin-left: 200px;
+                width: 400px;
+            }
         </style>
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -35,7 +38,7 @@
     <body>
         
         <header>
-            <div id="header">header</div>
+             <%@include file="/resources/html/header.jsp" %>
         </header>
     
     
@@ -43,27 +46,21 @@
         <session  id="session">
             
             <div id="mgr_nav">
-            
+             
                 <jsp:include page="mgrNav.jsp"/>
             </div>
     
             <div id="main">
                 <jsp:include page="get.jsp"/>
 
-
-            </div>
-    
-            <div id="aside">
-            
-            </div>
-            
+			</div>
+         
     
         </session>
     
         <footer>
-        	<div id="footer">
-        	footer
-        	</div>
+
+
         </footer>
 
            

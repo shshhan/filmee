@@ -16,9 +16,9 @@ public interface ComplaintMapper {
 	
 	public abstract Integer delete(Integer compno);					//특정 요청글 삭제
 	
-	public abstract Integer update(ComplaintVO board);				//특정 요청 임시수정
+	public abstract Integer update(ComplaintVO complaint);				//특정 요청 임시수정
 
-	public abstract Integer updateEnd(ComplaintVO board);				//특정 요청 최종수정
+	public abstract Integer updateEnd(ComplaintVO complaint);				//특정 요청 최종수정
 	
 	public abstract List<ComplaintVO> getListWithPaging(ComCriteria cri);	//페이징
 	
@@ -26,5 +26,6 @@ public interface ComplaintMapper {
 	
 	public abstract int getTotalCount(ComCriteria cri);	// 게시판의 총 레코드 건수 얻기
 	
-	public abstract UserVO userSelect(Integer compno); //유저 테이블에서 이메일과 얻기
+	public abstract String userSelect(Integer writer); //유저 테이블에서 이메일과 얻기
+
 }

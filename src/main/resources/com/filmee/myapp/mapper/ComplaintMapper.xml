@@ -13,12 +13,12 @@
 	
 	    </insert>
 		
-		<select id="userSelect" resultType="com.filmee.myapp.domain.UserVO">
+		<select id="userSelect" resultType="String">
 			<![CDATA[ 
-				SELECT a.writer, b.user_id, b.email, b.nickname
-				FROM fm_complaint a, fm_user b
-				WHERE a.writer = b.user_id 
-				AND a.writer=#{writer}
+				SELECT DISTINCT email 
+				FROM fm_complaint , fm_user 
+				WHERE writer = user_id 
+				AND writer=#{writer}
 			]]>
 		</select>
 		
@@ -71,15 +71,15 @@
             <where>
                 <choose>
                 
-                    <when test="type eq 'T'.toString()">
+                    <when test="type eq 'S'.toString()">
                       code LIKE '%'||#{keyword}||'%'
                     </when>   
                     
-                    <when test="type eq 'C'.toString()">
+                    <when test="type eq 'M'.toString()">
                         content LIKE '%'||#{keyword}||'%'
                     </when>  
                     
-                    <when test="type eq 'W'.toString()">
+                    <when test="type eq 'E'.toString()">
                        writer LIKE '%'||#{keyword}||'%'
                     </when>  
                     

@@ -20,7 +20,7 @@
         fieldset,img{border:0; vertical-align:top;}
         address{font-style:normal;}
         p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
+        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration-line:none;}
 
            
             
@@ -29,18 +29,18 @@
                 font-size: 20px;
                 color:  #5f2944fd;
     
-                border-right: black solid 2px 90%;
+                border-right-sttle: black solid 2px 90%;
                 background-color: #ffffff;
                 height: 400px;
                 
+                margin-top: 50px;
                 padding: 20px 20px 0 0;
 
     
                 display: flex;
                 flex-flow: column nowrap;
                 align-items: center;
-                align-content: flex-start;
-                justify-self: start;
+                
             }
             #title{
                 height: 30px;

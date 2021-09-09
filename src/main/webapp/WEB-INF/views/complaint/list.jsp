@@ -29,6 +29,7 @@
         
         
         #container{
+            width: 898px;
             display: flex;
             flex-flow: column nowrap;
 
@@ -41,7 +42,7 @@
         }
 
         #com_table table{
-            width: 100%;
+			width: 100%;
             white-space: nowrap;
             
             border-collapse: collapse;
@@ -51,6 +52,7 @@
         #com_table th{
             padding: 10px;
             border-bottom: 3px solid black ;
+            text-align : center;
         }
 
         #com_table td{
@@ -61,6 +63,9 @@
         }
         #com_code_td{
             width: 280px;
+        }
+        .number{
+        	text-align: left;
         }
 
         #caption{
@@ -153,6 +158,7 @@
                 paginationForm.submit();
             });//onclick a.prev, a.next
 
+            
         });//jq
     </script>
 </head>
@@ -166,17 +172,19 @@
             <b>요청관리</b>
         </div>
         <div id="sort">
-            <div>
-               <span>&#10003</span> &#10072;<span>&#10003</span> &#10072;<span>&#10003</span>
+            <div id="state">
+               <span id="stateStart">&#10003</span> &#10072;<span id="stateMiddle">&#10003</span> &#10072;<span id="stateEnd">&#10003</span>
             </div> 
 
             <div>
-                <select name="sortCode" id="select">
-                    <option value="1">버그리포트</option>
-                    <option value="2">영화 수정</option>
-                    <option value="3">영화 추가</option>
-                    <option value="4">기타</option>
-                </select>
+                <form action=""></form>
+                    <select name="sortCode" id="select">
+                        <option value="1">버그리포트</option>
+                        <option value="2">영화 수정</option>
+                        <option value="3">영화 추가</option>
+                        <option value="4">기타</option>
+                    </select>
+                </form>
             </div>   
         </div>
         <table id="com_table">
@@ -184,7 +192,7 @@
             
             <thead>
                 <tr>
-                    <th>번호</th>
+                    <th class="number">번호</th>
                     <th>요청 사항</th>
                     <th>회원</th>
                     <th>작성 날자</th>
@@ -194,7 +202,7 @@
             </thead>
                 <c:forEach items="${list}" var="complaint">
                     <tr>
-                        <td>
+                        <td class="number">
                             
                             <c:out value="${complaint.compno}"/>
                         </td>

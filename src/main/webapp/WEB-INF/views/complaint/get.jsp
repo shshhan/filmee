@@ -15,14 +15,26 @@
     <title>get.jsp</title>
 
     <style>
+        body,input,textarea,select,button,table{font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-size:12px; color:#333;}
+        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
+        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
+        ul,ol{list-style:none;}
+        fieldset,img{border:0; vertical-align:top;}
+        address{font-style:normal;}
+        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
+        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
+
+        a, a:link, a:visited{
+            cursor : pointer;
+        }
+
         #container{
 
             display: flex;
             flex-flow: column nowrap;
             align-items: center;
             
-            
-			margin-left: 30px;
+            margin: auto;
 			
             background: #fff;
             border-radius: 5px;
@@ -32,25 +44,32 @@
         }
         #getHead{
             font-size: 20px;
+            
         }
-        #com_back{
-
+        #com_back_a{
+			
+            align-self:flex-start;
+            
         }
         #listBtn{
             
         }
         #getCode{
             align-items: center;
+            border: black 1px solid;
+            height: 30px;
+            font-size: 22px;
+            text-align: center;
         }
-        #getMog{
+        #getTime{
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between
             
         }
         #com_cont{
-            width: 333px;
-            height: 200px;
+            width: 400px;
+            height: 180px;
             border: 1px solid black;
             font-size: 20px;
         }
@@ -63,7 +82,7 @@
             width: 165px;
         }
         #content{
-        width: 333px;
+        width: 400px;
         font-size: 20px;
         }
     </style>
@@ -76,30 +95,13 @@
             console.clear();
             console.debug('jq started..');
 
-            
-                
-            $("#listBtn").click(function(){
-                console.log('#listBtn button clicked..');
+       
 
-                // self.location.href = "/board/list";
-                // self.location = "/board/list";
-               // location.href = "/complaint/list";
-                 location.href = "/complaint/listPerPage?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";
-                // self.location.href = "/board/list";
-
-                //location : 주소창
-                // href : 주소창의 실제 url 주소를 넣는 속성
-                // self = 윈도우객체(bom의 최상위 객체)
-                // 다 똑같음
-                
-            }); //.onclick
-            
-            
             $("#temporaryBtn").click(function(){
                 console.log('#temporaryBtn button clicked..');
                 
-                $("form").attr("action","/complaint/temporary");
-                //$("from").attr("method","POST");
+                $("#comform").attr("action","/complaint/temporary");
+               //$("comform").attr("method","POST");
                 //$("#completeBtn").attr("type","submit");
                // $("form").action="/complaint/complete";
                 
@@ -110,15 +112,9 @@
             $("#completeBtn").click(function(){
                 console.log('#completeBtn button clicked..');
 
-                $("form").attr("action","/complaint/completion");
-                //$("from").attr("method","POST");
-               // $("#completeBtn").attr("type","submit");
-               // $("form").action="/complaint/complete";
-                
-                //location.href = "/complaint/comList";
-                //location.href = "/complaint/complete?compno=${complaint.compno}
-                // location.href = "/complaint/complete?compno=${complaint.compno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";
-           });
+                $("#comform").attr("action","/complaint/completion");
+              
+            });
         })
     </script>
 
@@ -131,16 +127,18 @@
         </div>
 
         
-        <div id="com_back">
-            <div id="listBtn">&#x027F8;</div>
-        </div>
+       <br>
+        <a id="com_back_a" href="javascript:history.back();">&#x027F8;</a>
 
-        <form name="from" action="#" method="POST">
+
+        <form id="comform" name="comform" action="#" method="POST">
         <!-- <form name="from">  -->
         <input type="hidden" name="currPage" value="${cri.currPage}">
       	<input type="hidden" name="amount" value="${cri.amount}">
         <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
+		<input type="hidden" name="writer" value="${complaint.writer}">
 		<input type="hidden" name="compno" value="${complaint.compno}">
+		
         <div id="getCode">
             <c:choose>
                 <c:when test="${complaint.code == 1}">
@@ -159,7 +157,7 @@
         </div>
 
 
-        <div id="getMog">
+        <div id="getTime">
             <div>
                <Br>
             </div>
@@ -175,15 +173,10 @@
         <br>
         
         <div>
-            <textarea name="content" id="content" value="${complaint.content}" cols="40" rows="10">
-<c:out value="${complaint.content}"/>
-<c:choose>
-<c:when test="${complaint.check_ts == null}">
+            <textarea name="content" id="content" value="${complaint.content}" cols="28" rows="10">
+<c:out value="${complaint.content}"/><c:choose><c:when test="${complaint.check_ts == null}">
 답변
-</c:when>
-<c:otherwise>
-</c:otherwise>
-</c:choose>
+</c:when></c:choose>
 </textarea>
         </div>
 

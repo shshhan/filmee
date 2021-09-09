@@ -18,7 +18,7 @@ public interface ComplaintService {
 	
 	public abstract boolean temporary(ComplaintVO complaint);	//요청글 임시 수정 
 	
-	public abstract boolean completion(ComplaintVO complaint,UserVO user);	//요청글 최종 수정
+	public abstract boolean completion(ComplaintVO complaint, Integer writer);	//요청글 최종 수정
 	
 	public abstract boolean remove(Integer compno);				//요청글 삭제
 	
