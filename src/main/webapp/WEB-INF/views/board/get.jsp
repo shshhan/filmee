@@ -22,6 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/like.js"></script>
     <script src="/resources/js/reply.js"></script>
+    <script src="/resources/js/boardReport.js"></script>
 
     <script>    
     	$(function(){
@@ -106,13 +107,19 @@
                         // return;
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
+
+                        str+="      <div class='header'>";
+                        str+="          <a href='/mypage/main?user="+list[i].writer+"'><img class='rounded-circle' src='/resources/img/common.jpg' width='30px' height='30px'></a>";
+                        str+="          <strong class='primary-font'>"+list[i].nickname+"</strong>";
+                        // str+="          <button type='button' id='reportBtn'> <img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</button>";
+                        str+="          <samll class='pull-right text-muted' id='commentTs'>등록 "+replyService.displayTime(list[i].insert_ts)+" <c:if test='"+list[i].update_ts+"'><br>수정 "+replyService.displayTime(list[i].update_ts)+"</c:if>"+"</small>";
+                        str+="      </div>"
                         str+="<li class='left clearfix' data-bcno='"+list[i].bcno+"'>";
                         str+="  <div>";
-                        str+="       <div class='header'><a href='/mypage/main'><img class='rounded-circle' src='/resources/img/common.jpg' width='30px' height='30px'></a>";
-                        str+="            <strong class='primary-font'>"+list[i].nickname+"</strong>";
-                        str+="            <samll class='pull-right text-muted' id='commentTs'>등록 "+replyService.displayTime(list[i].insert_ts)+" <c:if test='"+list[i].update_ts+"'><br>수정 "+replyService.displayTime(list[i].update_ts)+"</c:if>"+"</small>";
-                        str+="             </div>"
-                        str+="            <p id='replycontent'>"+list[i].content+"</p></div></li><li><div><button type='button' id='report'> <img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</button></div></li><hr>";
+                        str+="      <p id='replycontent'>"+list[i].content+"</p>";
+                        str+="   </div>";
+                        str+="</li>";
+                        str+="<hr>";
                     }
 
                     replyUL.html(str);
@@ -146,7 +153,7 @@
             })//modalRegisterBtn
 
 
-            $(".chat").css('cursor','pointer')
+            // $("#replycontent").css('cursor','pointer')
 
             $(".chat").on("click","li",function(e){
                 console.log(" >> chat clicked.");
@@ -199,9 +206,37 @@
 				})
 			})
 
-            $("#report").on("click",function(e){
+            $("#reportBtn").on("click",function(e){
+                console.log("reportBtn clicked>>")
                 $("#reportmodal").modal("show");
 
+            })
+
+
+            var modalReportCode=modal.find("select[name='reportcode']").val();
+            var modalAccuser=modal.find("input[name='reportwriter']").val();
+            var modalTargetType=modal.find("input[name='reporttype']").val();
+            var modalTarget=modal.find("input[name='reporttarget']").val();
+            var modalSuspect=modal.find("input[name='suspect']").val();
+
+            var modalReportContent=modal.find("textarea[name='rContent']");
+
+
+            $("#modalReportBtn").on("click",function(e){
+                console.log("modalReportBtn Clicked.");
+                var reportinfo={
+                    code: modalReportCode,
+                    accuser: modalAccuser,
+                    target_type: modalTargetType,
+                    target: modalTarget,
+                    suspect: modalSuspect,
+                    content: modalReportContent.val()
+                }
+                console.log("reportinfo: ", reportinfo);
+                reportService.send(reportinfo,function(result){
+                    alert("신고가 접수되었습니다.");
+                    modal.modal("hide");
+                })
             })
     	})//jq
 
@@ -253,6 +288,11 @@
 		    margin: 0 auto;
 		    font-size: 20px;
             font-family: 'ELAND 초이스';
+            -ms-user-select: none; 
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none; 
 		}
 		#commentTs{
 			float: right;
@@ -293,8 +333,9 @@
             border-radius: 30px;
         }
         #replycontent{
-            width: 80%;
-            margin-left: 30px;
+            width: 90%;
+            margin-left: 32px;
+            margin-top: 10px;
         }
 
         button {
@@ -354,14 +395,22 @@
             float: right;
             font-size: 16px;
         }
-        #report{
+        #reportBtn{
             float: right;
+        }
+        #isDeleteTs{
+            margin-top: 300px;
+            margin-left: 400px;
         }
     </style>
 
 </head>
 <body>
-    
+    <c:choose>
+    <c:when test="${board.delete_ts!=null}">
+        <p id="isDeleteTs"><img src="/resources/img/choonsigi.jpg" alt=""><br>삭제된 게시글 입니다.</p>
+    </c:when>
+    <c:otherwise>
     <div id="container">
 
         <form action="/board/get">
@@ -387,9 +436,9 @@
                 <form action="/mypage/main">
                     <ul id="userinfo">
                         <li>
-                            <a href="/mypage/main"><img class="rounded-circle" src="/resources/img/common.jpg" alt="내사진" width="100px" height="100px"></a>
+                            <a href="/mypage/main?user=${board.writer}"><img class="rounded-circle" src="/resources/img/common.jpg" alt="내사진" width="100px" height="100px"></a>
                         </li>
-                        <li><a href="/mypage/main">${board.nickname}</a></li>
+                        <li><a href="/mypage/main?user=${board.writer}">${board.nickname}</a></li>
                     </ul>
                     <ul id="getinfo">
                         <li>작성일 <fmt:formatDate pattern="yyyy/MM/dd" value="${board.insert_ts}"/></li>
@@ -405,7 +454,7 @@
                 <table>
                     <tr>
                         <td><button id="reportBtn"><img src='/resources/img/siren.jpg' width='25px' height='25px'></button></td>
-                        <td><img src="/resources/img/eye-removebg-preview.png" alt="view" width='30px' height='30px'> </td>
+                        <td><button><img src="/resources/img/eye-removebg-preview.png" alt="view" width='30px' height='30px'></button> </td>
                         <td>
                             <c:if test="${__LOGIN__==null}">
                                 <img src="/resources/img/emptyheart.png" alt="좋아요" width="30px" height="30px">
@@ -417,7 +466,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <c:if test="${__LOGIN__.userId != null}">
+                            <td>신고</td>
+                        </c:if>
+                        <c:if test="${__LOGIN__==null}">
+                            <td> </td>
+                        </c:if>
                         <td> ${board.view_cnt}</td>
                         <td> ${board.like_cnt}</td>
                     </tr>
@@ -454,7 +508,7 @@
 	            </c:if>
             </div>
 
-            <br>
+            <br><br><br>
              <div class='row'>
                 <div class='col-lg-12'>
                     <div class="panel panel-default">
@@ -517,27 +571,40 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+                      <h5 class="modal-title" id="exampleModalLabel"><img src="/resources/img/siren.jpg" alt="" width="20px" height="20px"> 신고하기</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div>
+                            <label for="reportcode">신고유형</label>
+                            <select class="form-select" name="reportcode">
+                                <option value="1">욕설/비방</option>
+                                <option value="2">스포일러</option>
+                                <option value="3">광고</option>
+                                <option value="4">기타</option>
+                              </select>
+                              <br>
+                        </div>
+                        <div class="form-group">
+                            신고자 <input type="text" class="form-control" name="nickname" value="${__LOGIN__.nickname}" readonly>
+                            <input type="hidden" type="text" class="form-control" name='reportwriter' value="${__LOGIN__.userId}" readonly>
+                        </div>
                         <div class="form-group">
                             <label for="reportcontent">내용</label>
-                            <input id="reportcontent" class="form-control" name='reportcontent' value=''>
+                            <textarea name="rContent" class="form-control" cols="44" rows="10" placeholder="* 주의 *&#13;&#10;1. 허위신고 시 제재를 받을 수 있습니다.&#13;&#10;2. 신고는 취소할 수 없습니다."></textarea>
+                            
+                            <!-- <input id="reportcontent" class="form-control" name='reportcontent' value='내용을 입력하세요.'> -->
                         </div>      
                         <div class="form-group">
-                            신고자 <input type="text" class="form-control" name='reportwriter' value="${__LOGIN__.userId}" readonly>
-                        </div>
-                        <div class="form-group">
-                            신고일시<input class="form-control" name='insert_ts' value='2018-01-01 13:13' readonly>
-                        </div>
-                        <div class="form-group">
-                            신고대상<input type="hidden" class="form-control" name="reporttarget" value="Board_${board.bno}" readonly>
+                            <!-- 신고대상 -->
+                            <input type="hidden" type="text" class="form-control" name="reporttype" value="BNO" readonly> 
+                            <input type="hidden" type="text" class="form-control" name="reporttarget" value="${board.bno}" readonly>
+                            <input type="hidden" type="text" class="form-control" name="suspect" value="${board.writer}" readonly>                       
                         </div>
                     </div>
                     <div class="modal-footer">
                       <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                      <button id='modalRegisterBtn' type="button" class="btn btn-primary" data-bs-dismiss="modal">완료</button>
+                      <button id='modalReportBtn' type="button" class="btn btn-danger" data-bs-dismiss="modal">신고하기</button>
                     </div> 
                   </div>
                 </div>
@@ -545,6 +612,8 @@
 
 		</form>
     </div>
+    </c:otherwise>
+    </c:choose>
 </body>
 
 </html>

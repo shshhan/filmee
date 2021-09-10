@@ -101,7 +101,7 @@ public class BoardMapperTests {
 	public void testDelete() {
 		log.debug("testDelete() invoked.");
 		
-		if(this.mapper.delete(12)==1) {
+		if(this.mapper.delete(139)==1) {
 			log.info(">> delete Success. <<");
 		};
 	}//testDelete

@@ -112,7 +112,6 @@
                 <input type="hidden" name="currPage" value="${cri.currPage}">
                 <input type="hidden" name="amount" value="${cri.amount}">
                 <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
-                <!-- <input type="hidden" name="userid" value="${__LOGIN__.userId}"> -->
                 <input type="hidden" name="writer" value="${__LOGIN__.userId}">
                 <input type="hidden" name="files">
            

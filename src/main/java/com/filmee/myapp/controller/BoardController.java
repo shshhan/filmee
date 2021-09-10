@@ -41,10 +41,12 @@ import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 import com.filmee.myapp.domain.FileVO;
 import com.filmee.myapp.domain.HeartVO;
+import com.filmee.myapp.domain.ReportVO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.BoardCommentService;
 import com.filmee.myapp.service.BoardService;
 import com.filmee.myapp.service.HeartService;
+import com.filmee.myapp.service.ReportService;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -59,6 +61,7 @@ public class BoardController {
 	@Autowired private BoardService service;
 	@Autowired private BoardCommentService cService;
 	@Autowired private HeartService hService;
+	@Autowired private ReportService rService;
 	
 	//게시글 전체 목록조회
 	@GetMapping("list")
@@ -75,9 +78,29 @@ public class BoardController {
 		return "board/list";
 	}//list
 	
+	
+	//게시글 수정
+	@PostMapping("modify")
+	public String modify(@ModelAttribute("cri")Criteria cri,BoardVO board, RedirectAttributes rttrs) {
+		log.debug(" >>> modify({},{},{}) invoked.",cri,board,rttrs);
+		Objects.requireNonNull(service);
+		
+		boolean isModified = this.service.modify(board);
+
+		if(isModified) {
+			log.info(">> if> ismodified");
+			rttrs.addAttribute("result","modified");
+		}//if
+		rttrs.addAttribute("currPage",cri.getCurrPage());
+		rttrs.addAttribute("amount",cri.getAmount());
+		rttrs.addAttribute("pagesPerPage",cri.getPagesPerPage());
+		
+		return "redirect:/board/list";
+	}//modify
+	
 	//게시글 상세조회(댓글리스트 추가)
 	@GetMapping({"get","modify"})
-	public String get(
+	public void get(
 			@ModelAttribute("cri") Criteria cri, 
 			@RequestParam(value="bno") Integer bno,
 			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
@@ -108,12 +131,10 @@ public class BoardController {
 			}
 		}
 			
-		log.info("\t+ board:{}",board);
 		model.addAttribute("board",board);
 		model.addAttribute("file", fileVO);
 		model.addAttribute("comment", comment);
 		
-		return "board/get";
 	}//get
 	
 	//파일 다운로드
@@ -184,25 +205,7 @@ public class BoardController {
         }
         return "board/get";
     }
-	
-	//게시글 수정
-	@PostMapping("modify")
-	public String modify(@ModelAttribute("cri")Criteria cri,BoardVO board, RedirectAttributes rttrs) {
-		log.debug(" >>> modify({},{},{}) invoked.",cri,board,rttrs);
-		Objects.requireNonNull(service);
-		
-		boolean isModified = this.service.modify(board);
 
-		if(isModified) {
-			log.info(">> if> ismodified");
-			rttrs.addAttribute("result","modified");
-		}//if
-		rttrs.addAttribute("currPage",cri.getCurrPage());
-		rttrs.addAttribute("amount",cri.getAmount());
-		rttrs.addAttribute("pagesPerPage",cri.getPagesPerPage());
-		
-		return "redirect:/board/list";
-	}//modify
 	
 	//게시글작성화면
 	@GetMapping("register")
@@ -277,7 +280,7 @@ public class BoardController {
 		rttrs.addAttribute("amount",cri.getAmount());
 		rttrs.addAttribute("pagesPerPage",cri.getPagesPerPage());
 		
-		return "redirect:/board/get";
+		return "redirect:/board/list";
 	}//remove
 	
 
@@ -391,18 +394,36 @@ public class BoardController {
 				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//unLike
 
-	@PostMapping("like/check/{bno}")
-	public ResponseEntity<String> likeCheck(			
-			@RequestParam(value="bno") Integer bno,
-			@SessionAttribute("__LOGIN__") UserVO user,
-			Model model) {
-		log.debug(">> likeCheck invoked.");
+//	@PostMapping("like/check/{bno}")
+//	public ResponseEntity<String> likeCheck(			
+//			@RequestParam(value="bno") Integer bno,
+//			@SessionAttribute("__LOGIN__") UserVO user,
+//			Model model) {
+//		log.debug(">> likeCheck invoked.");
+//		
+//		HeartVO vo = this.hService.check(bno, user.getUserId());
+//		model.addAttribute("heart",vo);
+//		
+//		return vo != null ?
+//				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//	}//likeCheck
+	
+	
+	//======================================================
+	// * 신고처리 부분
+	
+	@PostMapping(
+			value="report",
+			consumes="application/json",
+			produces= {MediaType.TEXT_PLAIN_VALUE})
+	public ResponseEntity<String> reportRegister(@RequestBody ReportVO report) {
+		log.debug("reportRegister({},report) invoked.");
 		
-		HeartVO vo = this.hService.check(bno, user.getUserId());
-		model.addAttribute("heart",vo);
+		int aLine = this.rService.reportRegister(report);
 		
-		return vo != null ?
-				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}//likeCheckgd
+		return aLine == 1 ?
+				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);		
+	}//reportRegister
+	
 
 }//end class

@@ -73,7 +73,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                    <th scope="col" id="adminonly"> 신고 현황 </th>
+                    <th scope="col" id="adminonly"> 회원 관리 </th>
                     </tr>
                 </thead>
             </table>

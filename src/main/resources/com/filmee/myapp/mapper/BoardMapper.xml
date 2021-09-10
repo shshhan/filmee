@@ -80,7 +80,8 @@
 
     <delete id="delete">
       <![CDATA[ 
-        DELETE FROM fm_board
+        UPDATE fm_board
+        SET delete_ts=current_date
         WHERE bno=#{bno}
       ]]>
     </delete>
