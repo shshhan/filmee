@@ -9,7 +9,9 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
     <%@ include file="/resources/html/header.jsp" %>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -52,11 +54,9 @@
         }); //jq
     </script>
 
-    <!-- <link rel="stylesheet" href="/resources/css/board.css"> -->
-    <!-- <link rel="stylesheet" href="/resources/css/bootstrap.css"> -->
 
     <style>
-    body,input,textarea,select,button,table{font-family:'Florencesans SC Exp';}
+    body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
 	body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
 	h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
 	ul,ol{list-style:none;}
@@ -70,6 +70,11 @@
 		    width: 998px;
 		    margin: 0 auto;
 		    font-size: 20px;
+            -ms-user-select: none; 
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none; 
 		}
 		#category>ul{
 			text-align:center;
@@ -84,6 +89,9 @@
 		}
         #category>ul>li>a:hover{
             color: rgb(128, 208, 240);
+        }
+        #listline{
+            background-color: rgba(226, 223, 223, 0.473);
         }
 		
 		table {
@@ -108,7 +116,7 @@
   			border-bottom: 1px solid #ddd;
   		  }
   		  tbody>tr:hover {
-  		  	background-color: #C2DBFE;
+  		  	background-color: #dddddd60;
   		  }
   		  
 		  #pageNumber{
@@ -125,18 +133,19 @@
 			font-size: 30px;
 		}
 		.currPage{
-        	background-color: rgb(128, 208, 240);
+        	background-color: #C2DBFE;
         	color: white!important;
         }
         #regBtn{
             float: right;
         }
+        #boardSearchMenu{
+            float: right;
+        }
         #boardSearchMenu>li{
-            display:inline-table;
-            margin-left: 73%;
+            display: inline-block;
         }
         .board_search_box{
-            width: 100px;
             height: 25px; 
             font-size: 14px;
             line-height : normal; 
@@ -233,17 +242,19 @@
                                 <option value="C" ${("C" eq pageMaker.cri.type) ? "selected":""}>내용</option>
                                 <option value="W" ${("W" eq pageMaker.cri.type) ? "selected":""}>작성자</option>
                             </select>
-                        <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}" placeholder="SEARCH">
-                        <button class="btn btn-info" ><img id="searchimg" src="/resources/img/search.png" ></button>
+                        </li>
+                        <li>
+                            <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}" placeholder="SEARCH">
+                            <button><img id="searchimg" src="/resources/img/search.png" ></button>
+                        </li>
                         </form>
-                    </li>
                 </ul>
             </div>
 
         </div>
         <table id="boardlist">
             <thead>
-                <tr>
+                <tr id=listline>
                     <th>카테고리</th>
                     <th>글번호</th>
                     <th>작성자</th>

@@ -4,10 +4,27 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title></title>
+<style>
+    #container{
+        height: 100%;
+        float: left;
+    }
+    #allMenu{
+        display: inline-block;
+        width: 150px;
+        height: 350px;
+        text-align: center;
+    }
+    #adminonly{
+        text-align: center;
+        font-size: 40px;
+    }
+</style>
 </head>
 <body>
- <div id="allMenu">
+    <div id="container">
+        <div id="allMenu">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -34,10 +51,11 @@
                         <td><a href="/admin/request">요청현황</a></td>
                     </tr>
                     <tr>
-                        <td><a href="/admin/db">데이터베이스</a></td>
+                        <td><a href="/admin/film">영화관리</a></td>
                     </tr>
                 </tbody>
-                </table>
+            </table>
         </div>
+    </div>
 </body>
 </html>

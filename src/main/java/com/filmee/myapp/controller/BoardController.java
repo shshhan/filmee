@@ -77,10 +77,10 @@ public class BoardController {
 	
 	//게시글 상세조회(댓글리스트 추가)
 	@GetMapping({"get","modify"})
-	public void get(
+	public String get(
 			@ModelAttribute("cri") Criteria cri, 
 			@RequestParam(value="bno") Integer bno,
-			@SessionAttribute("__LOGIN__") UserVO user,
+			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
 			FileVO fileVO,
 			HeartVO heart,
 			Model model
@@ -107,12 +107,13 @@ public class BoardController {
 				model.addAttribute("heart", heart);			
 			}
 		}
-		
 			
 		log.info("\t+ board:{}",board);
 		model.addAttribute("board",board);
 		model.addAttribute("file", fileVO);
 		model.addAttribute("comment", comment);
+		
+		return "board/get";
 	}//get
 	
 	//파일 다운로드
@@ -391,7 +392,7 @@ public class BoardController {
 	}//unLike
 
 	@PostMapping("like/check/{bno}")
-	public HeartVO likeCheck(			
+	public ResponseEntity<String> likeCheck(			
 			@RequestParam(value="bno") Integer bno,
 			@SessionAttribute("__LOGIN__") UserVO user,
 			Model model) {
@@ -400,7 +401,8 @@ public class BoardController {
 		HeartVO vo = this.hService.check(bno, user.getUserId());
 		model.addAttribute("heart",vo);
 		
-		return vo;
+		return vo != null ?
+				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//likeCheckgd
 
 }//end class

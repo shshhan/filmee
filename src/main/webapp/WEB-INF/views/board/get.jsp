@@ -3,22 +3,25 @@
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
- 
+
+
 
 <!DOCTYPE html>
   
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
     <link rel="stylesheet" href="/resources/css/bootstrap.css">
     <%@ include file="/resources/html/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-    <script src="/resources/js/reply.js"></script>
     <script src="/resources/js/like.js"></script>
+    <script src="/resources/js/reply.js"></script>
 
     <script>    
     	$(function(){
@@ -63,20 +66,20 @@
             if(likecheck==1){
                 $("#likeimg").attr("src", "/resources/img/fullheart.png");
                 $("#likeBtn").on("click",function(e){
-                    likeService.likeChecking(bnoValue);
+                    // likeService.likeChecking(bnoValue);
                     likeService.unLike(bnoValue, userid);
                     alert("좋아요를 취소했습니다.");
                     $("#likeimg").attr("src", "/resources/img/emptyheart.png");
                     
                     console.log(">>>>>>>like check", likecheck);
                     
-                    // location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
                 })
             }
             if(likecheck==0){
                 $("#likeimg").attr("src", "/resources/img/emptyheart.png");
                 $("#likeBtn").on("click",function(e){
-                    likeService.likeChecking(bnoValue);
+                    // likeService.likeChecking(bnoValue);
                     likeService.likeIt(bnoValue, userid);
                     alert("좋아요를 눌렀습니다.");
                     $("#likeimg").attr("src", "/resources/img/fullheart.png");
@@ -84,7 +87,7 @@
                     likecheck=1;
                     console.log(">>>>>>>like check", likecheck);
 
-                    // location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
+                    location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
                 })
             }
 
@@ -234,7 +237,7 @@
     </script>
 
     <style>
-        body,input,textarea,select,button,table{font-family:'Florencesans SC Exp';}
+        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
         body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
         h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
         ul,ol{list-style:none;}
@@ -361,14 +364,6 @@
     
     <div id="container">
 
-        <div id="thiscategory">
-            <c:choose>
-                <c:when test="${board.category=='F'}">FREE BOARD</c:when>
-                <c:when test="${board.category=='N'}">NEWS BOARD</c:when>
-                <c:when test="${board.category=='B'}">BOASTFULNESS BOARD</c:when>
-                <c:when test="${board.category=='R'}">RECOMMENDATION BOARD</c:when>
-            </c:choose>
-        </div>
         <form action="/board/get">
             <input type="hidden" name="currPage" value="${cri.currPage}">
             <input type="hidden" name="amount" value="${cri.amount}">
@@ -376,6 +371,17 @@
             <input type="hidden" name="bno" value="${board.bno}">
             <input type="hidden" name="fname" value="${file.fname}">
             <input type="hidden" name="userId" value="${__LOGIN__.userId}">
+            <input type="hidden" name="likecheck" value="${heart.likecheck}">
+
+            
+            <div id="thiscategory">
+                <c:choose>
+                    <c:when test="${board.category=='F'}"><a href="/board/list?category=F&currPage=1&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}">FREE BOARD</a></c:when>
+                    <c:when test="${board.category=='N'}"><a href="/board/list?category=N&currPage=1&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}">NEWS BOARD</a></c:when>
+                    <c:when test="${board.category=='B'}"><a href="/board/list?category=B&currPage=1&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}">BOASTFULNESS BOARD</a></c:when>
+                    <c:when test="${board.category=='R'}"><a href="/board/list?category=R&currPage=1&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}">RECOMMENDATION BOARD</a></c:when>
+                </c:choose>
+            </div>
 
             <div id="boardinfo">
                 <form action="/mypage/main">
@@ -449,12 +455,11 @@
             </div>
 
             <br>
-     		<hr>
              <div class='row'>
                 <div class='col-lg-12'>
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i>댓글 목록
+                            <i class="fa fa-comments fa-fw"></i><strong>댓글 목록</strong>
                             <button type="button" id="addReplyBtn" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">새 댓글 쓰기</button>
                             <hr>
                             <!-- Modal -->

@@ -19,24 +19,6 @@ var likeService = (
             })//ajax
         }//newHeart
 
-        function likeChecking(bno, callback, error){
-            console.log("ajax_get");
-
-            $.ajax({
-                type:'post',
-                url:'/board/like/check/'+bno,
-                success: function(result,status, xhr){
-                    if(callback){
-                        callback(result);
-                    }
-                },
-                error: function(xhr,status,er){
-                    if(error){
-                        error(er);
-                    }//if
-                }//error
-            })//ajax
-        }//likeCehck
 
 
         function unLike(bno,userid,callback,error){
@@ -58,6 +40,24 @@ var likeService = (
         }//unLike
 
 
+        function likeChecking(bno, callback, error){
+            console.log("ajax_get");
+                // $.get("/board/get")
+            $.ajax({
+                type:'post',
+                url:'/board/like/check/'+bno,
+                success: function(result,status, xhr){
+                    if(callback){
+                        callback(result);
+                    }
+                },
+                error: function(xhr,status,er){
+                    if(error){
+                        error(er);
+                    }//if
+                }//error
+            })//ajax
+        }//likeCehck
 
         return{
             likeIt: likeIt,
