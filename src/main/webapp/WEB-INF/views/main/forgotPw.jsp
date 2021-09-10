@@ -23,10 +23,8 @@
 
 			$(".fg_pw_send_btn").on('click', function(e){
 				var email = $('#forgot_pw_email').val(); //email : 지역변수
-				// var email = $('#forgot_pw_email').val(); //email : 지역변수
 				console.log("email forgotPw: ", email);
-				
-
+			
 				if(email.length == 0){
 					e.preventDefault();		//submit 취소
 
@@ -55,7 +53,15 @@
 		});//jquery
 
 	</script>
+<style>
+	.container{
+		width:600px;
+		border-left : 1px solid lightgrey;
+		border-right : 1px solid lightgrey;
+	}
 
+
+</style>
 
 </head>
 
@@ -63,7 +69,7 @@
 	<%@include file="/resources/html/header.jsp" %>
 
 	<div>
-		<div class="container" style="width: 600px;">
+		<div class="container"">
 			<div class="row justify-content-center">
 				<form class="row g-3" action="/mypage/newPassword" method="POST">
 					<fieldset>

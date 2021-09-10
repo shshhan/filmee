@@ -139,19 +139,18 @@
                     default :
                 };	//switch-case
 
-                //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
-                $("#close_login_open_join").on('click', function(){
-                    $("#login").modal("hide");
-                    $("#join").modal("show");   
+                //login modal에서 join, forgot password 버튼 누를 시 login modal을 먼저 닫음
+                $("#close_login_open_join, #forgot_pw_a").on('click', function(){
+                    $("#login").modal("hide");  
                 });//close_login_open_join
 
                 //modal 새로 열 때 input 초기화
-                $("#login, #join, #social_join").on('show.bs.modal',function(){
+                $(".input_modal").on('show.bs.modal',function(){
                     $(this).find('form')[0].reset();
                 });//modal hidden.bs.modal            
 
                 //social_join_modal 닫을 때 새로고침
-                $('#social_join, #join').on('hidden.bs.modal', function(){           
+                $('#social_join, #join', "forgot_pw").on('hidden.bs.modal', function(){           
                     location.reload();  // 카카오 간편로그인을 통한 회원가입, 일반회원가입 모두 시도 중에 창을 꺼버리면 checkEmail()과 isEmailChecked, isPwValid 변수의 상태가 변경되어 있기 때문에, 새로고침을 통해 위 세 항목을 초기화 시키지 않으면 새롭게 join modal을 열었을 때 않은 결과가 발생한다.
                 });//social join on hidden
 
@@ -235,6 +234,7 @@
                         } //success
                         
                     });//ajax
+
 			    });//onclick .login_submit_btn
 
 
@@ -281,8 +281,7 @@
                         console.log(error);
                     }
                 });//Kakao.Auth.lgoin
-                
-
+            
                 
                 //logout 누를시
                 $("#logout_a").on('click', function(){
@@ -333,6 +332,47 @@
                     
                 }); //propertychange change keyup paste input
 
+                $(".fg_pw_send_btn").on('click', function(e){
+                    e.preventDefault();		//submit 취소
+
+                    var email = $('#forgot_pw_email').val(); //email : 지역변수
+                    console.log("email forgotPw: ", email);
+                
+                    if(email.length == 0){
+                        // e.preventDefault();		//submit 취소
+
+                        $("#fgpw_message").hide("fast");
+                        $("#fgpw_message").show("fast");
+                        $("#fgpw_message").text("이메일 주소를 입력하세요.");
+
+                    } else if(!isEmail(email)){
+                        // e.preventDefault();		//submit 취소
+
+                        $("#fgpw_message").hide("fast");
+                        $("#fgpw_message").show("fast");
+                        $("#fgpw_message").text("옳바른 이메일 형식이 아닙니다.");
+
+
+                    } else {
+                        checkEmail(email);
+
+                        if(!isEmailExist){
+                            // e.preventDefault();		//submit 취소
+                            console.log("isEmailExist:",isEmailExist);
+
+                            $("#fgpw_message").hide("fast");
+                            $("#fgpw_message").show("fast");
+                            $("#fgpw_message").text("등록된 이메일 주소가 아닙니다.");
+
+                        }else{
+                            $("#new_pw_form").submit();
+                        }//if-else
+
+                    }//if-elseIf-else
+
+                });//onclick .fg_pw_send_btn
+
+
             }); //.jq        
  
         </script>
@@ -373,8 +413,9 @@
             	height: 38px;
             }
             
-            #forgot_password{
-            	margin-left : 125px;
+            #forgot_pw_a_wrapper{
+            	font-size: 13px;
+                margin: 5px 0 0 160px;
             }
             
             #kakao_login{
@@ -386,6 +427,14 @@
                 width : 266px;
                 height : 40px;
             } */
+
+            #forgot_pw p{
+                font-size: 15px;
+            }
+
+            .wrong_info{
+                background-color: #f0adce96;
+            }
 
     	</style>
 	</head>
@@ -408,8 +457,8 @@
                         <a class="nav-link memberHeadermenu" id="logout_a" aria-current="page" href="#" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
-                        <a class="nav-link memberHeadermenu" href="#" style='display: none'>Mypage</a>
+                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" aria-current="page" href="#" style='display: inline-block'>Join</a>
+                        <a class="nav-link memberHeadermenu" href="#" aria-current="page" style='display: none'>Mypage</a>
                       </li>
                       <li class="nav-item">
                         <a class="nav-link" href="/board/list">Board</a>
@@ -453,7 +502,7 @@
 
 
     <!-- login Modal -->
-    <div class="modal fade" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade input_modal" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
@@ -469,25 +518,25 @@
                         <div class="mb-3">
                             <label for="password" class="form-label"><b>Password</b></label><br>
                             <input type="password" class="form-control" id="login_password" name="password" placeholder="비밀번호" autocomplete="current-password">
-                            <div id="forgot_password"><a href="/main/forgotPw">forgot password</a></div>
+                            <div id="forgot_pw_a_wrapper">
+                                <a href="#" id="forgot_pw_a" data-bs-toggle="modal" data-bs-target="#forgot_pw">Forgot Password</a>
+                            </div>
                         </div>
                         <div class="form-check">
-   						    <label class="form-check-label" for="rememberMe">Remember me</label>
+   						    <label class="form-check-label" for="rememberMe"><b>Remember me</b></label>
                             <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
                         </div>
                         <div class="d-grid gap-2">
                             <button type="button" 
-                            class="btn btn-primary login_submit_btn g-recaptcha" data-sitekey="<fmt:message key='recaptcha-key' bundle='${API_KEY}' />"
+                            class="btn btn-primary login_submit_btn g-recaptcha" 
+                            data-sitekey="<fmt:message key='recaptcha-key' bundle='${API_KEY}' />"
                             data-callback='onSubmit' 
                             data-action='submit'>SIGN IN</button>
                      	</div>
-                         
-
-
                     </form>
                     <p>&nbsp;</p>
                     <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary" id="close_login_open_join">JOIN</button>
+                        <button type="button" class="btn btn-primary" id="close_login_open_join" data-bs-toggle="modal" data-bs-target="#join">JOIN</button>
                         <p>&nbsp;</p>
                         <div id="kakao_login"></div>
                     </div>
@@ -497,7 +546,7 @@
     </div>
 
     <!-- join Modal -->
-    <div class="modal fade" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade input_modal" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -513,12 +562,12 @@
                     	<p class='input_message' id='email_message'></p>
                     </div>
                     <div class="mb-3">
-                        <label for="password" class="form-label"><b>password</b></label>
+                        <label for="password" class="form-label"><b>Password</b></label>
                         <input type="password" class="form-control" id="join_password" name="password" placeholder="비밀번호" oninput="javascript:checkPw()" autocomplete="new-password">
                         <p class='input_message' id='pw_message'></p>
                     </div>
                     <div class="mb-3">
-                        <label for="nickname" class="form-label"><b>nickname</b></label>
+                        <label for="nickname" class="form-label"><b>Nickname</b></label>
                         <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#nickname').val())">
                         <p class='input_message nickname'></p>
                         </div>
@@ -537,7 +586,7 @@
     </div>
 
     <!-- socail_join Modal -->
-    <div class="modal fade" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade input_modal" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -551,7 +600,7 @@
                         <input type="hidden" name="password">
                         <input type="hidden" name="fromWhere" id="fromWhere">
 
-                        <label for="nickname" class="form-label"><b>nickname</b></label>
+                        <label for="nickname" class="form-label"><b>Nickname</b></label>
                         <input type="text" class="form-control" id="social_nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#social_nickname').val())">
                         <p class='input_message nickname'></p>
                         </div>
@@ -565,7 +614,7 @@
     </div>
 
     <!-- new_password Modal -->
-    <!-- <div class="modal fade" id="new_password" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade input_modal" id="forgot_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -573,9 +622,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h2>가입 이메일 주소로 비밀번호 재설정 링크 전송.</h2>
-                    <h3>수신 이메일은 비밀번호 재설정 후 반드시 삭제</h3>
-                    <form action="#" method="POST">
+                    <p>가입 이메일 주소로 비밀번호 임시 비밀번호를 발송합니다.</p>
+                    <form action="/mypage/newPassword" method="POST" id="new_pw_form">
+                            <div class="mb-3">
+                                <label for="forgot_pw_email" class="form-label"><b>Email</b></label>
+                                <input type="email" class="form-control" id="forgot_pw_email" name="email" placeholder="가입에 사용한 이메일 주소를 입력하세요." autocomplete="username">
+                                <p class='input_message' id='fgpw_message'></p>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary fg_pw_send_btn">SEND</button>
+                            </div>
+                    </form>
+
+                    <!-- <form action="#" method="POST">
                         <div class="mb-3">
                             <label for="new_password_email" class="form-label"><b>Email</b></label>
                             <input type="email" class="form-control" id="new_password_email" name="email" placeholder="name@example.com" autocomplete="username">
@@ -583,11 +642,11 @@
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">SEND</button>
                         </div>
-                    </form>
+                    </form> -->
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
   
 	</body>
 
