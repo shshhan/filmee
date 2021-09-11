@@ -19,13 +19,14 @@ import lombok.extern.log4j.Log4j2;
 
 @Controller
 @RequestMapping("/admin/")
-public class AdminController {
+public class AdminMainController {
 	
 	@GetMapping("main")
 	public void adminMain() {
 		log.debug("adminMain");
 	}
 	
+
 	
 	
 //	//mainChart의 count수 가져오기
