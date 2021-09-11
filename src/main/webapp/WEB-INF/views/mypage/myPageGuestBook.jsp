@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myPageGuestBook</title>
+    
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -19,7 +21,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
 
-    <link rel="stylesheet" href="../resources/css/header.css">
     <link rel="stylesheet" href="../resources/css/footer.css">
     
     <script>
@@ -62,12 +63,16 @@
     </script>
 
     <style>
+    
+    	* {
+    		text-decoration-line: none !important;
+    	}
 
         #container {
             width: 998px;
             margin: 0 auto;
 
-            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
+            font-family: 'ELAND 초이스'; 
         }
 
         #mypage_top_menu {
@@ -84,30 +89,12 @@
         }
     
     </style>
+    
+    <%@ include file="/resources/html/header.jsp" %>
 
 </head>
 <body>
 
-    <header>
-        <div id="header">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <ul id="headermenu">
-                <li><a href="">LOGIN</a></li>
-                <li><a href="">CREATE ACCOUNT</a></li>
-                <li><a href="/board/list">BOARD</a></li>
-                <li>
-                    <input type="search" placeholder="Search" class="search-field" />
-                    <button type="submit" class="search-button">
-                    </button>
-                </li>
-                <li> <img id="searchimg" src="/resources/img/search.png" >
-                </li>
-            </ul>
-        </div>
-
-    </header>
 
     <section>
 
@@ -127,19 +114,19 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
+                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criG.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">Films</a>
+                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criG.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">FILMS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criG.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criG.userid}&currPage=1&amount=5&pagesPerPage=5">REVIEWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
+                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">FOLLOWS</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">GuestBook</a>
+                                <a class="nav-link active" aria-current="page" href="#">GUESTBOOK</a>
                             </li>
                         </ul>                        
                       </div>
@@ -180,8 +167,8 @@
 									<input type='hidden' name='pagesPerPage' value='${pageMaker.criG.pagesPerPage}'>
 								<tr>
 									<td>${guestbook.content}</td>								
-									<td><a class='guestbook_a' href='#'>${guestbook.nickname}</a></td>
-	                                <td><button onclick="deleteGuestbook('${guestbook.gno}')" type="button" class="btn btn-outline-danger btn-sm">del</button></td>								
+									<td><a class='guestbook_a' href='/mypage/main?userid=${guestbook.writer}'>${guestbook.nickname}</a></td>
+	                                <td><button onclick="deleteGuestbook('${guestbook.gno}')" type="button" class="btn btn-outline-danger btn-sm">Del</button></td>								
 								</tr>
 								</form>                            
                             </c:forEach>			

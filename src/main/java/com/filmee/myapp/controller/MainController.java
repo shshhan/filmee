@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,7 +28,7 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 
-@RequestMapping("/main/")
+@RequestMapping("/main")
 @Controller
 public class MainController {
 	
@@ -47,21 +46,29 @@ public class MainController {
 
 	//View-Controller : main, loginRequired, forgotPw
 	
+	
+	@GetMapping("")
+	public String main() {
+		log.debug("main() invoked");
+		
+		return "main/main";
+	} //main
+	
 	//====== 로그인 관련 ======
 	
 	//header.jsp의 로그아웃을 누를시
-	@GetMapping("logout")
+	@GetMapping("/logout")
 	public String logout() {
 		log.debug("logout() invoked.");
-		
+
 		return "redirect:/main";	//Interceptor에서 세션 비활성화 및 RememberMe 쿠키 삭제 후 메인으로 Redirect
-	}//logout
+	}
 	
-	//login modal에서 sign in 버튼 클릭 시
-	@ResponseBody
-	@PostMapping("loginPost")
+
+	//login modal에서 sign in 버튼 클릭 시 
+	@PostMapping("/loginPost")
 	public Map<String, String> loginPost(UserDTO dto, HttpSession session) throws Exception {
-		log.debug("loginPost({}, {}) invoked.", dto, session);
+		log.debug("loginPost({}, model, {}) invoked.", dto, session);
 			
 		UserVO user = this.loginService.login(dto);		//회원 정보 확인
 		log.info("user : {}", user);
@@ -106,12 +113,12 @@ public class MainController {
 		//LoginInterceptor의 postHandle 메서드에서 이후 로직 처리(RememberMe 쿠키 생성 및 전송)
 		
 	}//loginPost
-		
+				
 	//====== 회원가입 관련 ======
 	
 	//header.jsp의 join modal에서 이메일 중복검사 시
 	@ResponseBody
-	@GetMapping("checkEmail")
+	@GetMapping("/checkEmail")
 	public Integer checkEmail(String email) throws Exception {
 		log.debug("checkEmail({}) invoked.", email);
 		
@@ -123,7 +130,7 @@ public class MainController {
 	
 	//header.jsp의 join modal에서 닉네임 중복검사 시
 	@ResponseBody
-	@GetMapping("checkNickname")
+	@GetMapping("/checkNickname")
 	public Integer checkNickname(String nickname) throws Exception {
 		log.debug("checkNickname({}) invoked.", nickname);
 		
@@ -133,8 +140,9 @@ public class MainController {
 		return result;
 	}//checkNickname
 	
-	//join modal 혹은 최초 소셜로그인시 에서 sign up 버튼 클릭 시 
-	@PostMapping("joinPost")
+
+	//join modal에서 sign up 버튼 클릭 시 
+	@PostMapping("/joinPost")
 	public String joinPost(UserDTO dto, RedirectAttributes rttrs) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
 		
@@ -157,7 +165,7 @@ public class MainController {
 	}//joinPost
 	
 	//인증 이메일에서 인증하기를 눌렀을 시
-	@GetMapping("emailAuthorized")
+	@GetMapping("/emailAuthorized")
 	public String emailAuthorized(String email, String authCode, RedirectAttributes rttrs) throws Exception {
 		log.debug("emailAuthroized({}, {}) invoked.", email, authCode);
 		
@@ -170,7 +178,7 @@ public class MainController {
 		return "redirect:/main";	//메인으로 Redirect 후 메세지 띄움
 	}//emailAuthroized
 		
-	@PostMapping("deleteAccount")
+	@PostMapping("/deleteAccount")
 	public String deleteAccount(Integer userId, RedirectAttributes rttrs) throws Exception{
 		log.debug("deleteAccount({}) invoked.", userId);
 		

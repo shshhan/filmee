@@ -41,6 +41,7 @@
             Kakao.init('<fmt:message key="kakao-login-key" bundle="${API_KEY}"/>');
             console.log("API Initialized :", Kakao.isInitialized());
 
+
               $(function() {
                 console.log('jq started.');
         
@@ -99,55 +100,136 @@
 
 
                 $('#header_search').on('propertychange change keyup paste input', function() {
+                	
+                	var selected = $('#header_select').val();                
+                	
+                	if(selected == 1){
 
-                    var filmTitle = $('#header_search').val();
-                    var filmTitleComplete = {filmTitle : filmTitle};
-
-                    $.ajax({
-                        url:'/search/searchFilmAutoComplete',
-                        type:'post',
-                        data: filmTitleComplete,
-                        success : function(listFilm) { 
-                            
-                            $('#autocomplete_result_list').css('display', 'inline-block');
-                            $('#autocomplete_result_list').css('z-index', 3);
-                            
-                            $('.searchTrTemp').remove();
+	                    var filmTitle = $('#header_search').val();
+	                    var filmTitleComplete = {filmTitle : filmTitle};
+	
+	                    $.ajax({
+	                        url:'/search/searchFilmAutoComplete',
+	                        type:'post',
+	                        data: filmTitleComplete,
+	                        success : function(listFilm) { 
+	                        	
+	                            $('#autocomplete_result_list').css('display', 'inline-block');
+	                            $('#autocomplete_result_list').css('z-index', 3);
+	                            
+	                            $('.searchTrTemp').remove();
+	                    
+	                    		console.log('length :' + listFilm.length);
+	                    		
+	                    		for(var i = 0; i < listFilm.length; i++) {
+	                    			console.log('poster : ' + listFilm[i].poster);
+	                    			console.log('title : ' + listFilm[i].title);
+	                    			
+	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+	                    			
+	                    			$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
+	                            	$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
+	                    		
+	                    		} //for
+	                    		
+	                        } //success
+	                    
+	                    }); //ajax
                     
-                            console.log('length :' + listFilm.length);
-                            
-                            for(var i = 0; i < listFilm.length; i++) {
-                                console.log('poster : ' + listFilm[i].poster);
-                                console.log('title : ' + listFilm[i].title);
-                                
-                                $('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
-                                $('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
-                                
-                                $('#searchTd'+i).append("<a href='#'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
-                                $('#searchTd'+i).append("<a href='#' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
-                            
-                            } //for
-                            
-                        } //success
-                    
-                    }); //ajax
+                	} //if
+                	
+                	if(selected == 2){
+                		
+                		var nickname = $('#header_search').val();
+	                    var nicknameComplete = {nickname : nickname};
+	
+	                    $.ajax({
+	                        url:'/search/searchUserAutoComplete',
+	                        type:'post',
+	                        data: nicknameComplete,
+	                        success : function(listUser) { 
+	                        	
+	                            $('#autocomplete_result_list').css('display', 'inline-block');
+	                            $('#autocomplete_result_list').css('z-index', 3);
+	                            
+	                            $('.searchTrTemp').remove();
+	                    
+	                    		console.log('length :' + listUser.length);
+	                    		
+	                    		for(var i = 0; i < listUser.length; i++) {
+	                    			console.log('photo : ' + listUser[i].photo);
+	                    			console.log('nickname : ' + listUser[i].nickname);
+	                    			
+	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+	                    			
+	                    			$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"'><img src='../resources/img/"+listUser[i].photo+"' style='width:150px; height:100px; float: left;'></a>");
+	                            	$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"' id='searchTitle' style='float: left;'>"+listUser[i].nickname+"</a>");
+	                    		
+	                    		} //for
+	                    		
+	                        } //success
+	                    
+	                    }); //ajax
+                		
+                	} //if
                     
                 }); //propertychange change keyup paste input
+                
+	            $('#searchBtn').on('click', function(e) {
+	            	
+	            	e.preventDefault();
+	            	
+					var searchForm = $('#searchSubmit');
+					var selected = $('#header_select').val();
+					var text = $('#header_search').val();
+					
+					if(selected == 1){
+						
+		    			searchForm.attr('action', '/search/f');
+		    			searchForm.attr('method', 'GET');
+		    			
+		    			searchForm.find('input[name=searchWord]').val();
+		    			searchForm.find('input[name=currPage]').val();
+		    			searchForm.find('input[name=amount]').val();
+		    			searchForm.find('input[name=pagesPerPage]').val();		    			    			
+		    			
+		    			searchForm.submit();
+					
+					} //if
+	    			
+					if(selected == 2){
+						
+						searchForm.attr('action', '/search/u');
+		    			searchForm.attr('method', 'GET');
+		    			
+		    			searchForm.find('input[name=searchWord]').val();
+		    			searchForm.find('input[name=currPage]').val();
+		    			searchForm.find('input[name=amount]').val();
+		    			searchForm.find('input[name=pagesPerPage]').val();		    			    			
+		    			
+		    			searchForm.submit();
+						
+					} //if
+	            	
+	            	
+	            }); //click
 
             }); //.jq        
- 
+
         </script>
     	
     	<style>    		
 
-			#header{
+			#header {
 			    width: 998px;
 			    height: 150px;
 			    margin: 0 auto;
 			    background-color: rgba(240, 230, 230, 0);
 			    font-size: 20px;
-                font-family: 'ELAND 초이스';
-            }
+			    font-family: 'ELAND 초이스';
+			}
 			
             #header_nav_logo {
 			    width: 200px;
@@ -214,32 +296,32 @@
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
-                        <a class="nav-link memberHeadermenu" id="logout_a" aria-current="page" href="#" style='display: none'>Logout</a>
+                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block; font-size: 19px; font-weight: bold;'>Login</a>
+                        <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" aria-current="page" href="#" style='display: inline-block'>Join</a>
-                        <a class="nav-link memberHeadermenu" href="#" aria-current="page" style='display: none'>Mypage</a>
+                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block; font-size: 19px; font-weight: bold;'>Join</a>
+                        <a class="nav-link memberHeadermenu" href="/mypage/main?userid=${__LOGIN__.userId}" style='display: none'>Mypage</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="/board/list">Board</a>
+                        <a class="nav-link" href="/board/list" style='font-size: 19px; font-weight: bold;'>Board</a>
                       </li>                                           
                     </ul>
                     
-                    	
-                    
-                    
-                    <form class="d-flex">
+                    <form id='searchSubmit' class="d-flex">
+                    <input type='hidden' name='currPage' value='1' >
+                    <input type='hidden' name='amount' value='10' >
+                    <input type='hidden' name='pagesPerPage' value='5' >
                         <select id='header_select' class="form-select" aria-label="Default select example">                            
-                            <option value="1" selected>film</option>
-                            <option value="2">user</option>                            
+                            <option value="1" selected>Film</option>
+                            <option value="2">User</option>                            
                         </select>  
-                      	<input id='header_search' class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style='width: 300px'>
+                      	<input id='header_search' class="form-control me-2" type="search" name='searchWord' placeholder="Search" aria-label="Search" style='width: 300px'>
                       	<table id='autocomplete_result_list' class='table table-hover' style='display: none; background-color: white;'>
                           <tr id='searchTr'><th style='display: none;'></th></tr>
                                                                          
                       	</table>
-                      	<button class="btn btn-secondary" type="submit" style='width: 80px; font-size: 13px;'>Search</button>
+                      	<button id='searchBtn' class="btn btn-secondary" type="submit" style='width: 80px; font-size: 13px;'>Search</button>
                     </form>
                   </div>
                 </div>
@@ -374,33 +456,7 @@
             </div>
             </div>
         </div>
-
-        <!-- forgot_pw Modal -->
-        <!-- <div class="modal fade input_modal" id="forgot_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h2 class="modal-title" id="staticBackdropLabel"><B>FORGOT PASSWORD</B></h2>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>가입 이메일 주소로 임시 비밀번호를 발송합니다.</p>
-                        <p>&nbsp;</p>
-                        <form action="/mypage/newPassword" method="POST" id="new_pw_form">
-                                <div class="mb-3">
-                                    <label for="forgot_pw_email" class="form-label"><b>Email</b></label>
-                                    <input type="email" class="form-control" id="forgot_pw_email" name="email" placeholder="가입에 사용한 이메일 주소를 입력하세요." autocomplete="username">
-                                    <p class='input_message' id='fgpw_message'></p>
-                                </div>
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary fg_pw_send_btn">SEND</button>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-  
+          
 	</body>
 
 </html>
