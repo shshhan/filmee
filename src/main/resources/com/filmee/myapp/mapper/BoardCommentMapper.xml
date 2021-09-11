@@ -5,7 +5,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
+ 
 <mapper namespace="com.filmee.myapp.mapper.BoardCommentMapper">
 
     <insert id="insert">
@@ -18,11 +18,13 @@
         ]]>
     </insert>
 
-    <select id="list" resultType="com.filmee.myapp.domain.BoardCommentVO">
+    <select id="list" resultType="com.filmee.myapp.domain.BoardCommentUserVO">
         <![CDATA[ 
-            SELECT /*+index_desc(fm_board_comment)*/*
-            FROM fm_board_comment
-            WHERE bno=#{bno}
+            SELECT C.*, u.user_id, u.nickname
+            FROM fm_board_comment C, fm_user u
+			WHERE C.writer=u.user_id
+            AND bno=#{bno}
+            ORDER BY bcno DESC
         ]]>
     </select>
 
@@ -51,13 +53,6 @@
         ]]>
     </select>
 
-    <select id="getListWithPaging" resultType="com.filmee.myapp.domain.BoardCommentVO">
-        <![CDATA[ 
-            SELECT /*+index_desc(fm_board_comment)*/*
-            FROM fm_board_comment
-            WHERE bno=#{bno}
-        ]]>
-    </select>
     
     <select id="coCnt" resultType="int">
         <![CDATA[ 
