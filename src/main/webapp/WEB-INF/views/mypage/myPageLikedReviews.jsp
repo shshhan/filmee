@@ -23,7 +23,7 @@
 
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css'/>
     
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -309,8 +309,9 @@
 
     </section>
 
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -326,6 +327,6 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </body>
 </html>

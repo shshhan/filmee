@@ -261,7 +261,7 @@ $(function() {
 			alertModalMessaging("비밀번호를 입력하세요.");
 
 		} else {
-			let formData = $("#login_form").serialize();
+			var formData = $("#login_form").serialize();
 			console.log("formData :", formData);
 
 			$.ajax({

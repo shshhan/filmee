@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
     
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css">  -->
     
     <script>
     	
@@ -271,7 +271,7 @@
     </section>
 
 
-    <footer>
+   <!--  <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -287,6 +287,10 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer>  -->
+    
+      <%@include file="/resources/html/footer.jsp" %>
+     
+    
 </body>
 </html>
