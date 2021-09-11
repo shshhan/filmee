@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>    
-    
 
 <!DOCTYPE html>
 <html>
@@ -11,27 +7,40 @@
 <meta charset="UTF-8">
     <link rel="stylesheet" href="/resources/css/footer.css">
 
-
 </head>
 <body>
     <footer>
-        <div id="footer">
+        <hr>
+        <div class="row" id="footer">
 
-            <a href="/main">
+            <div class="col-3" id="footer_logoimg">
+                <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <div id="pageinfo">
+                </a>
+            </div>
+
+            <div class="col-6" id="footer_info">
+                <p>Team_FILMEE</p>
                 <p>
-                    서울특별시 강남구 <br> 
-                    010-9876-5432<br>
-                    abcedferasdavazsdfzsdf
+                    address : 서울 강남구 강남대로94길 20 삼오빌딩 602호<br>
+                    contact : 02-1234-5678 / team_filmee@filmee.com
+                </p>
+                <p>
+                    ⓒ2021.FILMEE All rights reserved.
                 </p>
             </div>
-            
-            <div id="bugreport">
-                <button id="compl">의견보내기</button>
-            </div>
-                                          
+
+            <div class="col-3" id="footer_buttons">
+                <div>
+                    <a href="#"">
+                        <button type="button" class="btn btn-outline-dark">TOP</button>
+                    </a>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-outline-secondary">의견보내기</button>
+                </div>
+            </div>    
+
         </div>
     </footer>  
 </body>

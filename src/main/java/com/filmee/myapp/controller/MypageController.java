@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmee.myapp.domain.ActivityVO;
@@ -382,9 +381,9 @@ public class MypageController {
 		
 		switch(result) {
 			case 1: 
-				log.info(">>>>> result : 1 >>>>>>");
+				log.info(">>>>> result : 1 >>>>>>");				
 				rttrs.addFlashAttribute("message", "temp_pw_sent");
-				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
+				return "redirect:/main";	//비밀번호 찾기로 Redirect 후 메세지 띄움
 
 			case 2:
 				log.info(">>>>> result : 2 >>>>>>");
@@ -392,7 +391,7 @@ public class MypageController {
 				return "redirect:/mypage/main";	//마이페이지로 Redirect 후 메세지 띄움
 				
 			default:
-				log.info(">>>>> result : 2 >>>>>>");
+				log.info(">>>>> result : 3 >>>>>>");
 				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
 		}//switch-case
 	

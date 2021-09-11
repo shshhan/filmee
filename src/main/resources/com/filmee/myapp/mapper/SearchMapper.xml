@@ -34,6 +34,20 @@
 		]]>
 	</select>
 	
+	
+	<select id='getFilmsWithPeople' resultType='com.filmee.myapp.domain.SearchPeopleVO'>
+	
+		SELECT p.enname, p.profile_path, fp.credit_order, fp.character, f.film_id, f.original_title, 
+			   to_char(f.release_date, 'yyyy'), f.popularity, f.poster_path
+		FROM fm_people p
+		INNER JOIN fm_film_people fp
+				ON p.people_id = fp.people_id
+		INNER JOIN fm_film f
+				ON fp.film_id = f.film_id
+		WHERE p.people_id = #{peopleId}
+		order by f.release_date DESC
+	</select>
+	
 	<select id='getUserList' resultType='com.filmee.myapp.domain.SearchUserVO'>
 		<![CDATA[			
 			SELECT user_id userid, nickname nickname, profile_photo_path photo 
@@ -217,6 +231,7 @@
 			</choose>
 			AND is_admin = 'F'
 		</where>		
+
 	</select>
 
 </mapper>
