@@ -26,17 +26,17 @@
 	</beans:bean>
 	
 	<view-controller 
-	path="/main"
-	view-name="main/main"
-	status-code="200" 
+		path="/main"
+		view-name="main/main"
+		status-code="200" 
 	/>
-				
-	<view-controller
-		path = "/main/logout"
-		view-name = "main/logout"
-		status-code = "200"
-		/>
-		
+	
+	<view-controller 
+		path="/main/loginRequired"
+		view-name="main/loginRequired"
+		status-code="200" 
+	/>
+						
 	<view-controller 
 		path = "/main/forgotPw"
 		view-name = "main/forgotPw"
@@ -44,15 +44,10 @@
 		/>
 
 	<beans:bean
-		id="loginInterceptor"
-		class="com.filmee.myapp.interceptor.LoginInterceptor"
+		id="logInOutInterceptor"
+		class="com.filmee.myapp.interceptor.LogInOutInterceptor"
 		/> 
-		
-	<beans:bean
-		id="logoutInterceptor"
-		class="com.filmee.myapp.interceptor.LogoutInterceptor"
-		/>
-				
+						
 	<beans:bean
 		id="authInterceptor"
 		class="com.filmee.myapp.interceptor.AuthInterceptor"
@@ -66,38 +61,37 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/main/loginPost" />
-			
-			<beans:ref bean="loginInterceptor" />
-		</interceptor>
-	
-		<interceptor>
 			<mapping path="/main/logout" />
+			<mapping path="/main/deleteAccount" />
 			
-			<beans:ref bean="logoutInterceptor" />
+			<beans:ref bean="logInOutInterceptor" />
 		</interceptor>
 		
 		<interceptor>
-			<mapping path="/main/useronly" />			
-			<mapping path="/main/testMyPage" />	
-					
+			<!--  로그인이 돼있어야만 접근할 수 있는 페이지는 여기에 넣어주세요. -->
+			<mapping path="/board/register" />
+			<mapping path="/board/modify" />
+			
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		
 		<interceptor>
 			<mapping path="/*" />
 			<mapping path="/*/*" />
-			<!-- 제외 경로 : 로그인 관련 + AuthInterceptor Path -->
-
-			<exclude-mapping path="/main/login" />	
+			
+			<!-- 제외 경로 : 로그인, 회원가입 등 계정 관련 -->
+			<exclude-mapping path="/main/logout" />	
 			<exclude-mapping path="/main/loginPost" />	
-			<exclude-mapping path="/main/loginNoInfo" />
-			<exclude-mapping path="/main/loginUnauthorized" />	
-			<exclude-mapping path="/main/join" />	
+			<exclude-mapping path="/main/loginRequired" />
 			<exclude-mapping path="/main/checkEmail" />	
 			<exclude-mapping path="/main/checkNickname" />	
 			<exclude-mapping path="/main/joinPost" />	
 			<exclude-mapping path="/main/emailAuthorized" />	
-			<exclude-mapping path="/main/forgotPwPost" />	
+			<exclude-mapping path="/main/forgotPw" />
+			
+			<!-- 제외경로 : AuthInterceptor Path -->
+			<exclude-mapping path="/board/register" />
+			<exclude-mapping path="/board/modify" />
 						 
 			<beans:ref bean="autoLoginInterceptor" />
 		</interceptor>
@@ -106,8 +100,8 @@
 
 
 	<context:component-scan base-package="com.filmee.myapp.controller" />
-	<context:component-scan base-package="org.zerock.myapp.interceptor" />
-	<context:component-scan base-package="org.zerock.myapp.exception" />
+	<context:component-scan base-package="com.filmee.myapp.interceptor" />
+	<context:component-scan base-package="com.filmee.myapp.exception" />
 	
 
 </beans:beans>

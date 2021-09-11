@@ -319,6 +319,33 @@ public class MypageServiceImpl
 		
 		return (this.mapper.cancelLikedReview(rno, userid) == 1);
 	} //cancelLikedReview
+
+	@Override
+	public boolean insertFollow(Integer follower, Integer followee) {
+		log.debug("insertFollow({}, {}) invoked.", follower, followee);
+		
+		Objects.requireNonNull(this.mapper);
+		
+		return (this.mapper.insertFollow(follower, followee) == 1);
+	} //insertFollow
+
+	@Override
+	public boolean deleteFollow(Integer follower, Integer followee) {
+		log.debug("deleteFollow({}, {}) invoked.", follower, followee);
+		
+		Objects.requireNonNull(this.mapper);
+		
+		return (this.mapper.deleteFollow(follower, followee) == 1);
+	} //deleteFollow
+
+	@Override
+	public int isFollowed(Integer follower, Integer followee) {
+		log.debug("isFollowed({}, {}) invoked.", follower, followee);
+		
+		Objects.requireNonNull(this.mapper);
+		
+		return this.mapper.isFollowed(follower, followee);
+	} //isFollowed
 	
 
 } //end class

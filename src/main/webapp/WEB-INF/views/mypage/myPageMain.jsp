@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myPageMain</title>
+    
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -20,10 +22,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>    
 
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css'/>
-    <link rel="stylesheet" href="../resources/css/myPageMainTest.css">
+    <!-- <link rel="stylesheet" href="../resources/css/myPageMainTest.css">  -->
     <link rel="stylesheet" href="../resources/css/layout.css">
     <link rel="stylesheet" href="../resources/css/swiper.css">
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css">  -->
     
     
     <script src="../resources/js/jquery-1.8.3.min.js"></script>
@@ -71,6 +73,28 @@
 				;;
 			} //if-else
 		} //deleteMainGuestbook
+		
+		function insertFollow(follower, followee) {
+							
+			let formObj = $('#insertFollow');
+			
+			formObj.attr("action", "/mypage/insertFollow");
+			formObj.attr("method", "POST");					
+		  
+		  	formObj.submit();
+		
+		} //insertFollow
+		
+		function deleteFollow(follower, followee) {
+			
+			let formObj = $('#deleteFollow');
+			
+			formObj.attr("action", "/mypage/deleteFollow");
+			formObj.attr("method", "POST");					
+		  
+		  	formObj.submit();
+		
+		} //deleteFollow
 	
 		//====== 비밀번호 수정 ======
 
@@ -216,6 +240,14 @@
        		margin-top: 15px;
        }
        
+       #followBtn {
+       		margin-top: 15px;
+       }
+       
+       #unfollowBtn {
+       		margin-top: 15px;
+       }
+       
        #followListBtn {
        		float: right;
        		margin-top: 15px;
@@ -354,11 +386,8 @@
 </head>
 <body>
 
-
-	
-
-    <div id='container'>        
-
+    <div id='container'>
+   
         <div id='mypage_info'>
 
             <div id='mypage_profile'>
@@ -372,18 +401,44 @@
                
                     <input id='form-control' class="form-control" type="text" value="${userVO.text}" aria-label="readonly input example" readonly>
 
-                    
-                
                 </div>
 
-
-                <button type="button" id='userRegBtn' class="btn btn-outline-success">Register</button>
-                <button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
-
-               
-               
-
-
+				<c:set var='userid' value='${cri.userid}' />
+				<c:set var='sessionUserid' value='${__LOGIN__.userId}' />
+				<c:set var='isFollowed' value='#{isFollowed}' />
+                <button type="button" id='userRegBtn' class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#new_pw" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Register</button>
+                
+		        <c:choose>
+			        <c:when test="${isFollowed eq '0'}">
+			        	<c:choose>
+			        	<c:when test="${userid eq sessionUserid}">
+			        		<button type="button" id='noneBtn' class="btn btn-outline-info" style='display: none'>None</button>
+			        		<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
+			        	</c:when>
+			        	<c:when test="${userid ne sessionUserid}">
+				        	<form action="/mypage/insertFollow" method="POST" id='insertFollow'>				        	
+				        		<input type='hidden' name='sessionUserid' value='${__LOGIN__.userId}'>
+								<input type='hidden' name='userid' value='${cri.userid}'>
+				        		<button type="button" id='followBtn' class="btn btn-outline-info" onclick="insertFollow('${cri.userid}', '${__LOGIN__.userId}')">Follow</button>
+				        		<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
+				        	</form>	
+			        	</c:when>
+			        	</c:choose>
+			        </c:when>
+			        <c:when test="${isFollowed eq '1'}">
+			        	<form action="/mypage/deleteFollow" method="POST" id='deleteFollow'>				        	
+				        	<input type='hidden' name='sessionUserid' value='${__LOGIN__.userId}'>
+							<input type='hidden' name='userid' value='${cri.userid}'>
+			        		<button type="button" id='unfollowBtn' class="btn btn-outline-danger" onclick="deleteFollow('${cri.userid}', '${__LOGIN__.userId}')">UnFollow</button>
+			        		<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
+			        	</form>
+			        </c:when>
+			        <c:when test="${isFollowed eq '2'}">
+			        	<button type="button" id='noneBtn' class="btn btn-outline-info" style='display: none'>None</button>
+			        	<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
+			        </c:when>
+		        </c:choose>
+ 
             </div>
 
             <div id='mypage_usable-statistics'>
@@ -435,7 +490,7 @@
                 <div class="fInner swiper-container">
                     <ul class="swiper-wrapper">
                 		<c:forEach items="${filmVO}" var="filmVO">
-                        	<li class="swiper-slide"><a href="#" style='background: url(https://www.themoviedb.org/t/p/original${filmVO.poster}) center center no-repeat; background-size: cover;'>
+                        	<li class="swiper-slide"><a href="/film/${filmVO.filmid}" style='background: url(https://www.themoviedb.org/t/p/original${filmVO.poster}) center center no-repeat; background-size: cover;'>
                         	<span>${filmVO.title}<br>(${filmVO.year})</span></a></li>                        
                 		</c:forEach>    
                     </ul>             
@@ -444,8 +499,8 @@
 			
                 </div>
                 <div class="button">
-                    <div class="back"><a href="#" style='background: url(../resources/img/back.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">back</span></a></div>
-                    <div class="next"><a href="#" style='background: url(../resources/img/next.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">next</span></a></div>
+                    <div class="back"><a href="#" style='background: url(../resources/img/back-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">back</span></a></div>
+                    <div class="next"><a href="#" style='background: url(../resources/img/next-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">next</span></a></div>
                 </div>
             </div>
             
@@ -469,12 +524,12 @@
 	                <div class='row'>
 	
 	                    <div class='col-6'>
-	                        <a href='#'><img src='https://www.themoviedb.org/t/p/original${reviewVO.poster}' id='film_poster'></a>
+	                        <a href='/film/${reviewVO.filmid}'><img src='https://www.themoviedb.org/t/p/original${reviewVO.poster}' id='film_poster'></a>
 	                    </div>
 	
 	                    <div class='col-6' id='mypage_button'>
 	                    
-	                    	<a href='#'  id='mypage_review_title' style='font-size: 25px;'>${reviewVO.title}</a><br>
+	                    	<a href='/film/${reviewVO.filmid}'  id='mypage_review_title' style='font-size: 25px;'>${reviewVO.title}</a><br>
 	                    	
 	                    	<div class='RatingStar'>
 	                            <div class='RatingScore'>
@@ -490,13 +545,15 @@
 	
 	                        <div class='mypage_review_content' id='mypage_review_content'>
 	
-	                            <a href='#' style='font-size: 17px'>${reviewVO.content}</a>
+	                            <a href='/film/${reviewVO.filmid}/review/${reviewVO.rno}' style='font-size: 17px'>${reviewVO.content}</a>
 	
 	                        </div>
 	                        
 	                        <input type='hidden' value='${reviewVO.rno}' name='rno'>
-	                        	                        
-	                    	<button id='reviewDelBtn' onclick="deleteMainReview('${reviewVO.rno}')" type='button' class="btn btn-outline-danger btn-sm">Del</button>                    	
+	                        
+	                        <c:set var='userid' value='${cri.userid}' />
+							<c:set var='sessionUserid' value='${__LOGIN__.userId}' />	                        
+	                    	<button id='reviewDelBtn' onclick="deleteMainReview('${reviewVO.rno}')" type='button' class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button>                    	
 	                        
 	                    </div>
 	
@@ -537,8 +594,10 @@
 									<input type='hidden' name='userid' value='${cri.userid}'>
 									<tr>
 										<td>${guestbookVO.content}</td>								
-										<td><a class='guestbook_a' href='#'>${guestbookVO.nickname}</a></td>										
-		                                <td><button onclick="deleteMainGuestbook('${guestbookVO.gno}')" type="button" class="btn btn-outline-danger btn-sm">Del</button></td>								
+										<td><a class='guestbook_a' href='/mypage/main?userid=${guestbookVO.writer}'>${guestbookVO.nickname}</a></td>
+										<c:set var='userid' value='${cri.userid}' />
+										<c:set var='sessionUserid' value='${__LOGIN__.userId}' />										
+		                                <td><button onclick="deleteMainGuestbook('${guestbookVO.gno}')" type="button" class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button></td>								
 									</tr>                            		
 								</form>
 							</c:forEach>
@@ -547,11 +606,27 @@
 												
 						<form action="/mypage/insertGuestbook" method="POST">
 							<div class="input-group">						  
-							  <textarea id='form-control' class="form-control" aria-label="With textarea" name='content'></textarea>
-							  <input type='hidden' name='userid' value='${cri.userid}'>
-							  <input type='hidden' name='owner' value='${cri.userid}'>
-							  <input type='hidden' name='writer' value='${cri.userid}'>
-							  <button type='submit' class="btn btn-info">Submit</button>
+							  <c:set var='userid' value='${cri.userid}' />
+							  <c:set var='sessionUserid' value='${__LOGIN__.userId}' />
+							  <c:choose>
+							  	  <c:when test="${userid eq sessionUserid}">
+							  
+									  <textarea id='form-control' class="form-control" aria-label="With textarea" name='content'></textarea>
+									  <input type='hidden' name='userid' value='${cri.userid}'>
+									  <input type='hidden' name='owner' value='${cri.userid}'>
+									  <input type='hidden' name='writer' value='${cri.userid}'>
+									  
+									  <button type='submit' class="btn btn-info">Submit</button>
+								  </c:when>
+								  <c:otherwise>
+									  <textarea id='form-control' class="form-control" aria-label="With textarea" name='content' readonly>방명록을 작성하려면 로그인해주세요.</textarea>
+									  <input type='hidden' name='userid' value='${cri.userid}'>
+									  <input type='hidden' name='owner' value='${cri.userid}'>
+									  <input type='hidden' name='writer' value='${cri.userid}'>
+									  
+									  <button type='submit' class="btn btn-info" disabled>Submit</button>
+								  </c:otherwise>
+							  </c:choose>
 							</div>
 						</form>					
 					</div>                               
@@ -587,57 +662,66 @@
 								
 									<tr>
 										<c:set var='type' value='${activityVO.type}' />
+										
 										<c:choose> 
 										    <c:when test="${type eq 'RV'}">
 										        <td id='activity_review_content_td'>
-										        	<a class='activity_a' href='#'>${activityVO.nickname}</a>님이 
-										        	<a class='activity_a' href='#'>${activityVO.title}</a>영화에 
-										        	<a class='activity_a' href='#' id='activity_review_content_a'>${activityVO.content}</a> 리뷰를 작성하였습니다.
+										        	<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님이 
+										        	<a class='activity_a' href='/film/${activityVO.filmid}'>${activityVO.title}</a>영화에 
+										        	<a class='activity_a' href='/film/${activityVO.filmid}/review/${activityVO.rno}' id='activity_review_content_a'>${activityVO.content}</a> 리뷰를 작성하였습니다.
 										        </td>
+										        <td>${activityVO.insertTs}</td>
 										    </c:when>
 										    <c:when test="${type eq 'FW'}">
 										        <td>
-										        	<a class='activity_a' href='#'>${activityVO.nickname}</a>님을 팔로우 하였습니다.
+										        	<a class='activity_a' href='/mypage/main?userid=${activityVO.followerid}'>${activityVO.nicknameFollower}</a>님이 
+										        	<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님을 팔로우 하였습니다.
 										        </td>
+										        <td>${activityVO.insertTs}</td>
 										    </c:when>
 										    <c:when test="${type eq 'RL'}">
 										        <td>
-										        	<a class='activity_a' href='#'>${activityVO.nickname}</a>님이									        	
-										        	<a class='activity_a' href='#' id='activity_review_content'>${activityVO.content}</a> 리뷰를 좋아합니다.									        	
+										        	<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님이									        	
+										        	<a class='activity_a' href='/film/${activityVO.reviewFilmId}/review/${activityVO.rno}' id='activity_review_content'>${activityVO.content}</a> 리뷰를 좋아합니다.									        	
 										        </td>
+										        <td>${activityVO.insertTs}</td>
 										    </c:when>
 										    <c:when test="${type eq 'GB'}">
+										    	
 										        <td>
-										        	<a class='activity_a' href='#'>${activityVO.nicknameGuestbook}</a>님이 방명록을 작성하였습니다.									        									        	
+										        	<a class='activity_a' href='/mypage/main?userid=${activityVO.writer}'>${activityVO.nicknameGuestbook}</a>님이 방명록을 작성하였습니다.									        									        	
 										        </td>
+										        <td>${activityVO.insertTs}</td>
+										        
 										    </c:when>
 										    <c:when test="${type eq 'FL'}">
 										        <c:set var='code' value='${activityVO.code}' />
 										        <c:choose>
 											        <c:when test="${code eq '1'}">
 											        	<td>
-											        		<a class='activity_a' href='#'>${activityVO.nickname}</a>님이 
-											        		<a class='activity_a' href='#'>${activityVO.title}</a>영화를 좋아합니다.
+											        		<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님이 
+											        		<a class='activity_a' href='/film/${activityVO.filmid}'>${activityVO.title}</a>영화를 좋아합니다.
 											        	</td>
+											        	<td>${activityVO.insertTs}</td>
 											        </c:when>
 											        <c:when test="${code eq '2'}">
 											        	<td>
-											        		<a class='activity_a' href='#'>${activityVO.nickname}</a>님이 
-											        		<a class='activity_a' href='#'>${activityVO.title}</a>영화를 본영화에 추가했습니다.
+											        		<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님이 
+											        		<a class='activity_a' href='/film/${activityVO.filmid}'>${activityVO.title}</a>영화를 본영화에 추가했습니다.
 											        	</td>
+											        	<td>${activityVO.insertTs}</td>
 											        </c:when>
 											        <c:when test="${code eq '3'}">
 											        	<td>
-											        		<a class='activity_a' href='#'>${activityVO.nickname}</a>님이 
-											        		<a class='activity_a' href='#'>${activityVO.title}</a>영화를 볼영화에 추가했습니다.
+											        		<a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님이 
+											        		<a class='activity_a' href='/film/${activityVO.filmid}'>${activityVO.title}</a>영화를 볼영화에 추가했습니다.
 											        	</td>
+											        	<td>${activityVO.insertTs}</td>
 											        </c:when>
 										        </c:choose>
 										    </c:when>
 										</c:choose>									
-																	
-										<td>${activityVO.insertTs}</td>
-		                                								
+											
 									</tr>
 									
 	                           	</c:forEach>			
@@ -692,8 +776,9 @@
         </div>
     </div>
     
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -709,7 +794,7 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer>  -->
 
 </body>
 </html>

@@ -50,17 +50,18 @@
     </script>
 
     <style>
-    body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-	body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-	h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-	ul,ol{list-style:none;}
-	fieldset,img{border:0; vertical-align:top;}
-	address{font-style:normal;}
-	p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-	/* a-style */
-	a{color:#333;text-decoration:none;}
-	a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-		body{
+       /* body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
+        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
+        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
+        ul,ol{list-style:none;}
+        fieldset,img{border:0; vertical-align:top;}
+        address{font-style:normal;}
+        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
+         a-style
+        a{color:#333;text-decoration:none;text-align: center;}
+        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}*/
+        
+		div:first_of_type{
             font-family: 'ELAND 초이스';
 		    width: 998px;
 		    margin: 0 auto;
@@ -89,7 +90,7 @@
             background-color: rgba(226, 223, 223, 0.473);
         }
 		
-		table {
+		#boardlist {
 			width:100%;
 		    text-align: center;
 		    margin: 20px ;
@@ -327,6 +328,6 @@
         </div>
     </div>
 
-    <!-- <%@ include file="/resources/html/footer.jsp" %> -->
+     <%@ include file="/resources/html/footer.jsp" %>
 </body>
 </html>
