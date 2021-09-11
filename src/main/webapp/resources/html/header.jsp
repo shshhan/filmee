@@ -26,149 +26,233 @@
             $(function() {
             console.log('jq started.');
        
-            //로그인 여부에 따라 보여주는 header 변경
-            if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
-                $(".strangerHeadermenu").attr("style", "display:none");
-                $(".memberHeadermenu").attr("style", "display:inline");
-            }//if
-
-            //전달된 message가 있으면 alert
-            //var message = "${message}";
-            switch("${message}"){
-                //====== 로그인 관련 ======
-
-                //로그인 필요시
-                case 'login_required' :              
-                    $("#login").modal("show");
-                    break;
-                
-                //로그인 실패시
-                case 'no_info' :
-                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
-                    $("#alert_modal").modal("show");
-                    
-                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                    var myModalEl = document.getElementById('alert_modal');
-                    myModalEl.addEventListener('hidden.bs.modal',function(){
-                        $("#login").modal("show");
-                    });
-                    break;
-                
-                //회원가입 후 이메일 인증을 하지 않고 로그인 시
-                //
-                case 'email_unauthorized' :
-                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                //====== 회원가입 관련 ======
-
-                //회원가입 버튼을 누를 시
-                case 'join' :
-                    $("#join").modal("show");   
-                    break;
-
-                //회원가입을 마쳤을 시
-                case 'just_joinned' :
-                    $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                //회원가입 실패시
-                case 'join_failed' :
-                    $("#alert_modal p").text("회원가입에 실패했습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
-                    var myModalEl = document.getElementById('alert_modal');
-                    myModalEl.addEventListener('hidden.bs.modal',function(){
-                        $("#join").modal("show");
-                    });
-                    break;
-                
-                //회원가입 후 이메일 인증까지 마쳤을 시
-                case 'join_complete' :
-                    $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                //임시비밀번호 발송시
-                case 'temp_pw_sent' :
-                    $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-                
-                //비밀번호 찾기에서 미가입 이메일 입력시
-                case 'no_info_forgot_pw' :
-                    $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-                
-                case 'pw_changed' :
-                    $("#alert_modal p").text("비밀번호가 변경되었습니다.");
-                    $("#alert_modal").modal("show");
-                    break;
-
-                default :
-            }	//switch-case
-
-            //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
-            $("#close_login_open_join").click(function(){
-                $("#login").modal("hide");
-                $("#join").modal("show");   
-            });//close_login_open_join
+	            //로그인 여부에 따라 보여주는 header 변경
+	            if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
+	                $(".strangerHeadermenu").attr("style", "display:none");
+	                $(".memberHeadermenu").attr("style", "display:inline");
+	                $(".memberHeadermenu").attr("style", "font-size:19px");
+	                $(".memberHeadermenu").attr("style", "font-weight:bold");
+	            }//if
+	
+	            //전달된 message가 있으면 alert
+	            //var message = "${message}";
+	            switch("${message}"){
+	                //====== 로그인 관련 ======
+	
+	                //로그인 필요시
+	                case 'login_required' :              
+	                    $("#login").modal("show");
+	                    break;
+	                
+	                //로그인 실패시
+	                case 'no_info' :
+	                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
+	                    $("#alert_modal").modal("show");
+	                    
+	                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
+	                    var myModalEl = document.getElementById('alert_modal');
+	                    myModalEl.addEventListener('hidden.bs.modal',function(){
+	                        $("#login").modal("show");
+	                    });
+	                    break;
+	                
+	                //회원가입 후 이메일 인증을 하지 않고 로그인 시
+	                //
+	                case 'email_unauthorized' :
+	                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	
+	                //====== 회원가입 관련 ======
+	
+	                //회원가입 버튼을 누를 시
+	                case 'join' :
+	                    $("#join").modal("show");   
+	                    break;
+	
+	                //회원가입을 마쳤을 시
+	                case 'just_joinned' :
+	                    $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	
+	                //회원가입 실패시
+	                case 'join_failed' :
+	                    $("#alert_modal p").text("회원가입에 실패했습니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	
+	                    //alert modal 닫기 버튼을 누르면 바로 login modal을 띄움
+	                    var myModalEl = document.getElementById('alert_modal');
+	                    myModalEl.addEventListener('hidden.bs.modal',function(){
+	                        $("#join").modal("show");
+	                    });
+	                    break;
+	                
+	                //회원가입 후 이메일 인증까지 마쳤을 시
+	                case 'join_complete' :
+	                    $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	
+	                //임시비밀번호 발송시
+	                case 'temp_pw_sent' :
+	                    $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	                
+	                //비밀번호 찾기에서 미가입 이메일 입력시
+	                case 'no_info_forgot_pw' :
+	                    $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	                
+	                case 'pw_changed' :
+	                    $("#alert_modal p").text("비밀번호가 변경되었습니다.");
+	                    $("#alert_modal").modal("show");
+	                    break;
+	
+	                default :
+	            }	//switch-case
+	
+	            //login modal에서 join 버튼 누를 시 login modal 닫고 join modal 띄움
+	            $("#close_login_open_join").click(function(){
+	                $("#login").modal("hide");
+	                $("#join").modal("show");   
+	            });//close_login_open_join
             
        
                 $('#header_search').on('propertychange change keyup paste input', function() {
+                	
+                	var selected = $('#header_select').val();                
+                	
+                	if(selected == 1){
 
-                    var filmTitle = $('#header_search').val();
-                    var filmTitleComplete = {filmTitle : filmTitle};
-
-                    $.ajax({
-                        url:'/search/searchFilmAutoComplete',
-                        type:'post',
-                        data: filmTitleComplete,
-                        success : function(listFilm) { 
-                        	
-                            $('#autocomplete_result_list').css('display', 'inline-block');
-                            $('#autocomplete_result_list').css('z-index', 3);
-                            
-                            $('.searchTrTemp').remove();
+	                    var filmTitle = $('#header_search').val();
+	                    var filmTitleComplete = {filmTitle : filmTitle};
+	
+	                    $.ajax({
+	                        url:'/search/searchFilmAutoComplete',
+	                        type:'post',
+	                        data: filmTitleComplete,
+	                        success : function(listFilm) { 
+	                        	
+	                            $('#autocomplete_result_list').css('display', 'inline-block');
+	                            $('#autocomplete_result_list').css('z-index', 3);
+	                            
+	                            $('.searchTrTemp').remove();
+	                    
+	                    		console.log('length :' + listFilm.length);
+	                    		
+	                    		for(var i = 0; i < listFilm.length; i++) {
+	                    			console.log('poster : ' + listFilm[i].poster);
+	                    			console.log('title : ' + listFilm[i].title);
+	                    			
+	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+	                    			
+	                    			$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
+	                            	$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
+	                    		
+	                    		} //for
+	                    		
+	                        } //success
+	                    
+	                    }); //ajax
                     
-                    		console.log('length :' + listFilm.length);
-                    		
-                    		for(var i = 0; i < listFilm.length; i++) {
-                    			console.log('poster : ' + listFilm[i].poster);
-                    			console.log('title : ' + listFilm[i].title);
-                    			
-                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
-                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
-                    			
-                    			$('#searchTd'+i).append("<a href='#'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
-                            	$('#searchTd'+i).append("<a href='#' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
-                    		
-                    		} //for
-                    		
-                        } //success
-                    
-                    }); //ajax
+                	} //if
+                	
+                	if(selected == 2){
+                		
+                		var nickname = $('#header_search').val();
+	                    var nicknameComplete = {nickname : nickname};
+	
+	                    $.ajax({
+	                        url:'/search/searchUserAutoComplete',
+	                        type:'post',
+	                        data: nicknameComplete,
+	                        success : function(listUser) { 
+	                        	
+	                            $('#autocomplete_result_list').css('display', 'inline-block');
+	                            $('#autocomplete_result_list').css('z-index', 3);
+	                            
+	                            $('.searchTrTemp').remove();
+	                    
+	                    		console.log('length :' + listUser.length);
+	                    		
+	                    		for(var i = 0; i < listUser.length; i++) {
+	                    			console.log('photo : ' + listUser[i].photo);
+	                    			console.log('nickname : ' + listUser[i].nickname);
+	                    			
+	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+	                    			
+	                    			$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"'><img src='../resources/img/"+listUser[i].photo+"' style='width:150px; height:100px; float: left;'></a>");
+	                            	$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"' id='searchTitle' style='float: left;'>"+listUser[i].nickname+"</a>");
+	                    		
+	                    		} //for
+	                    		
+	                        } //success
+	                    
+	                    }); //ajax
+                		
+                	} //if
                     
                 }); //propertychange change keyup paste input
+                
+	            $('#searchBtn').on('click', function(e) {
+	            	
+	            	e.preventDefault();
+	            	
+					var searchForm = $('#searchSubmit');
+					var selected = $('#header_select').val();
+					var text = $('#header_search').val();
+					
+					if(selected == 1){
+						
+		    			searchForm.attr('action', '/search/f');
+		    			searchForm.attr('method', 'GET');
+		    			
+		    			searchForm.find('input[name=searchWord]').val();
+		    			searchForm.find('input[name=currPage]').val();
+		    			searchForm.find('input[name=amount]').val();
+		    			searchForm.find('input[name=pagesPerPage]').val();		    			    			
+		    			
+		    			searchForm.submit();
+					
+					} //if
+	    			
+					if(selected == 2){
+						
+						searchForm.attr('action', '/search/u');
+		    			searchForm.attr('method', 'GET');
+		    			
+		    			searchForm.find('input[name=searchWord]').val();
+		    			searchForm.find('input[name=currPage]').val();
+		    			searchForm.find('input[name=amount]').val();
+		    			searchForm.find('input[name=pagesPerPage]').val();		    			    			
+		    			
+		    			searchForm.submit();
+						
+					} //if
+	            	
+	            	
+	            }); //click
 
             }); //.jq        
 
+                
         </script>
     	
     	<style>    		
 
-			#header{
+			#header {
 			    width: 998px;
 			    height: 150px;
 			    margin: 0 auto;
 			    background-color: rgba(240, 230, 230, 0);
 			    font-size: 20px;
-			    font-family: 'Florencesans SC Exp';
+			    font-family: 'ELAND 초이스';
 			}
 			
             #header_nav_logo {
@@ -213,32 +297,35 @@
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block'>Login</a>
+                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#login" aria-current="page" href="#" style='display: inline-block; font-size: 19px; font-weight: bold;'>Login</a>
                         <a class="nav-link memberHeadermenu" aria-current="page" href="/main/logout" style='display: none'>Logout</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block'>Join</a>
-                        <a class="nav-link memberHeadermenu" href="#" style='display: none'>Mypage</a>
+                        <a class="nav-link strangerHeadermenu" data-bs-toggle="modal" data-bs-target="#join" href="#" style='display: inline-block; font-size: 19px; font-weight: bold;'>Join</a>
+                        <a class="nav-link memberHeadermenu" href="/mypage/main?userid=${__LOGIN__.userId}" style='display: none'>Mypage</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="/board/list">Board</a>
+                        <a class="nav-link" href="/board/list" style='font-size: 19px; font-weight: bold;'>Board</a>
                       </li>                                           
                     </ul>
                     
                     
                     
                     
-                    <form class="d-flex">
+                    <form id='searchSubmit' class="d-flex">
+                    <input type='hidden' name='currPage' value='1' >
+                    <input type='hidden' name='amount' value='10' >
+                    <input type='hidden' name='pagesPerPage' value='5' >
                         <select id='header_select' class="form-select" aria-label="Default select example">                            
-                            <option value="1" selected>film</option>
-                            <option value="2">user</option>                            
+                            <option value="1" selected>Film</option>
+                            <option value="2">User</option>                            
                         </select>  
-                      	<input id='header_search' class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style='width: 300px'>
+                      	<input id='header_search' class="form-control me-2" type="search" name='searchWord' placeholder="Search" aria-label="Search" style='width: 300px'>
                       	<table id='autocomplete_result_list' class='table table-hover' style='display: none; background-color: white;'>
                           <tr id='searchTr'><th style='display: none;'></th></tr>
                                                                          
                       	</table>
-                      	<button class="btn btn-secondary" type="submit" style='width: 80px; font-size: 13px;'>Search</button>
+                      	<button id='searchBtn' class="btn btn-secondary" type="submit" style='width: 80px; font-size: 13px;'>Search</button>
                     </form>
                   </div>
                 </div>

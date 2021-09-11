@@ -1,6 +1,10 @@
 package com.filmee.myapp.controller;
 
+
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmee.myapp.domain.ActivityVO;
@@ -54,8 +59,27 @@ public class MypageController {
 	LoginService loginService;
 	
 	@GetMapping("main")
-	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model) {
+	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model, HttpServletRequest req) {
 		log.debug("myPageMain({}, {}) invoked", cri, model);
+		
+		HttpSession session = req.getSession();
+		
+		UserVO user = (UserVO) session.getAttribute("__LOGIN__");
+		
+		if(user == null) {
+			
+			model.addAttribute("isFollowed", 2);
+			
+		} else {
+			int follower = cri.getUserid();
+			int followee = user.getUserId();
+			
+			int isFollowed = this.service.isFollowed(follower, followee);
+			
+			model.addAttribute("isFollowed", isFollowed);
+			
+		} //if-else
+		
 				
 		MainUserVO userVO = this.service.getMainUser(cri);
 		int followers = this.service.getTotalCountMainFollowers(cri);
@@ -65,7 +89,7 @@ public class MypageController {
 		List<MainFilmVO> filmVO = this.service.getMainFilm(cri);
 		List<MainReviewVO> reviewVO = this.service.getMainReview(cri);
 		List<MainGuestbookVO> guestbookVO = this.service.getMainGuestbook(cri);
-		List<ActivityVO> activityVO = this.service.getMainActivity(cri);		
+		List<ActivityVO> activityVO = this.service.getMainActivity(cri);	
 		
 		model.addAttribute("userVO", userVO);
 		model.addAttribute("followers", followers);
@@ -76,6 +100,7 @@ public class MypageController {
 		model.addAttribute("reviewVO", reviewVO);
 		model.addAttribute("guestbookVO", guestbookVO);
 		model.addAttribute("activityVO", activityVO);
+		
 		
 		return "mypage/myPageMain";
 	} //myPageMain
@@ -212,7 +237,37 @@ public class MypageController {
 	public String insertGuestbook(@ModelAttribute("cri")CriteriaMain cri, MainGuestbookVO guestbook, RedirectAttributes rttrs) {
 		log.debug("deleteMainGuestbook({}, {}) invoked.", guestbook, rttrs);
 		
-		boolean isRemoved = this.service.insertGuestbook(guestbook);
+		boolean isInserted = this.service.insertGuestbook(guestbook);
+		
+		if(isInserted) {
+			rttrs.addFlashAttribute("result", "success");
+		} //if
+		
+		rttrs.addAttribute("userid", cri.getUserid());
+		
+		return "redirect:/mypage/main";
+	} //insertGuestbook
+	
+	@PostMapping("insertFollow")
+	public String insertFollow(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer follower, @RequestParam("sessionUserid") Integer followee , RedirectAttributes rttrs) {
+		log.debug("insertFollow({}, {}, {}) invoked.", follower, followee, rttrs);
+		
+		boolean isInserted = this.service.insertFollow(follower, followee);
+		
+		if(isInserted) {
+			rttrs.addFlashAttribute("result", "success");
+		} //if
+		
+		rttrs.addAttribute("userid", cri.getUserid());
+		
+		return "redirect:/mypage/main";
+	} //insertFollow
+	
+	@PostMapping("deleteFollow")
+	public String deleteFollow(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer follower, @RequestParam("sessionUserid") Integer followee , RedirectAttributes rttrs) {
+		log.debug("deleteFollow({}, {}, {}) invoked.", follower, followee, rttrs);
+		
+		boolean isRemoved = this.service.deleteFollow(follower, followee);
 		
 		if(isRemoved) {
 			rttrs.addFlashAttribute("result", "success");
@@ -221,7 +276,7 @@ public class MypageController {
 		rttrs.addAttribute("userid", cri.getUserid());
 		
 		return "redirect:/mypage/main";
-	} //insertGuestbook
+	} //deleteFollow
 	
 	@PostMapping("deleteFilmReaction")
 	public String deleteFilmReaction(@ModelAttribute("criFilm")CriteriaFilm criFilm, 

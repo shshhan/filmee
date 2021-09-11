@@ -4,11 +4,9 @@ import lombok.Value;
 
 
 @Value
-public class MainFilmVO {
+public class SearchFilmGenreVO {
 	
 	private Integer filmid;
-	private String poster;
-	private String title;
-	private String year;
+	private String genre;
 
 } //end class

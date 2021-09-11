@@ -30,7 +30,7 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 
-@RequestMapping("/main/")
+@RequestMapping("/main")
 @Controller
 public class MainController {
 	
@@ -48,12 +48,19 @@ public class MainController {
 	
 	public static final String loginKey = "__LOGIN__";
 	
+	@GetMapping("")
+	public String main() {
+		log.debug("main() invoked");
+		
+		return "main/main";
+	} //main
+	
 	//View-Controller : main, logout, forgotPw
 	
 	//====== 로그인 관련 ======
 	
 	//비로그인 상태에서 로그인 상태에서만 접근 가능한 요청을 보낼 시 AuthInterceptor에서 Redirect
-	@GetMapping("loginRequired")
+	@GetMapping("/loginRequired")
 	public String loginRequired(RedirectAttributes rttrs) {
 		log.debug("login(rttrs) invoked.");
 		
@@ -63,7 +70,7 @@ public class MainController {
 	}//login
 	
 	//login modal에서 sign in 버튼 클릭 시 
-	@PostMapping("loginPost")
+	@PostMapping("/loginPost")
 	public void loginPost(UserDTO dto, Model model, HttpSession session, RedirectAttributes rttrs) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
 			
@@ -90,7 +97,7 @@ public class MainController {
 	}//loginPost
 	
 	//LoginInterceptor에서 Model에 추가된 로그인 정보를 못찾았을 시 Redirect
-	@GetMapping("loginNoInfo")
+	@GetMapping("/loginNoInfo")
 	public String loginNoInfo(RedirectAttributes rttrs) {
 		log.debug("loginNoInfo({}) invoked.", rttrs);
 		
@@ -100,7 +107,7 @@ public class MainController {
 	}//loginNoInfo
 	
 	//LoginInterceptor에서 Model 추가된 로그인 정보가 이메일 인증을 안했을 시 Redirect 
-	@GetMapping("loginUnauthorized")
+	@GetMapping("/loginUnauthorized")
 	public String loginUnauthorized(RedirectAttributes rttrs) {
 		log.debug("loginUnauthorized({}) invoked.", rttrs);
 		
@@ -113,7 +120,7 @@ public class MainController {
 	
 	//header.jsp의 join modal에서 이메일 중복검사 시
 	@ResponseBody
-	@GetMapping("checkEmail")
+	@GetMapping("/checkEmail")
 	public Integer checkEmail(String email) throws Exception {
 		log.debug("checkEmail({}) invoked.", email);
 		
@@ -125,7 +132,7 @@ public class MainController {
 	
 	//header.jsp의 join modal에서 닉네임 중복검사 시
 	@ResponseBody
-	@GetMapping("checkNickname")
+	@GetMapping("/checkNickname")
 	public Integer checkNickname(String nickname) throws Exception {
 		log.debug("checkNickname({}) invoked.", nickname);
 		
@@ -136,7 +143,7 @@ public class MainController {
 	}//checkNickname
 	
 	//join modal에서 sign up 버튼 클릭 시 
-	@PostMapping("joinPost")
+	@PostMapping("/joinPost")
 	public String joinPost(UserDTO dto, RedirectAttributes rttrs) throws Exception{
 		log.debug("joinPost({}, rttrs, model) invoked.", dto);
 				
@@ -150,7 +157,7 @@ public class MainController {
 	}//joinPost
 	
 	//인증 이메일에서 인증하기를 눌렀을 시
-	@GetMapping("emailAuthorized")
+	@GetMapping("/emailAuthorized")
 	public String emailAuthorized(String email, String authCode, RedirectAttributes rttrs) throws Exception {
 		log.debug("emailAuthroized({}, {}) invoked.", email, authCode);
 		
