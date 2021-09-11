@@ -11,5 +11,6 @@ public class SearchFilmInfoVO {
 	private String character;
 	private Integer credit;
 	private String photo;
+	private Integer peopleid;
 
 } //end class

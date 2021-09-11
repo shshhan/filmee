@@ -21,11 +21,30 @@
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
 	    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
 	
-		<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css'/>
-	    
+		<link rel="stylesheet" href="../resources/css/layout.css">
+    	<link rel="stylesheet" href="../resources/css/swiper.css">	    
 	    <link rel="stylesheet" href="../resources/css/footer.css">
 	    
+	    <script src="../resources/js/jquery-1.8.3.min.js"></script>
+    	<script src="../resources/js/swiper.js"></script>
+	    
 	    <script>
+	    
+	    
+		    window.onload = function(){		    	
+		    	
+	            var swiper = new Swiper('.swiper-container', {
+	                         pagination: '.swiper-pagination',
+	                         paginationType: 'progress',
+	                         slidesPerView: 'auto',
+	                         paginationClickable: true,
+	                         spaceBetween: 0,
+	                         freeMode: true,
+	                         nextButton: '.next',
+	                         prevButton: '.prev'                         
+	                         
+	             });
+	        };
 	    
 			$(function() {
 	        
@@ -52,6 +71,10 @@
 	    
 	    <style>
 	    
+	    	* {
+	    		text-decoration: none !important;
+	    	}
+	    
 	    	#container {
 	            width: 998px;
 	            margin: 0 auto;
@@ -61,7 +84,7 @@
         	
         	#film_poster {
 	            width: 400px;
-	            height: 300px;
+	            height: 400px;
 	        }
 	        
 	        #film_title {
@@ -93,8 +116,25 @@
 	        
 	        #castDiv {
 	        	height: 200px;
-	        }	        
-	    
+	        }
+	        
+	        .peopleLink {
+	        	background: none !important;
+	        	box-shadow: none !important;
+	        }
+	        
+	        .plotLine {	        	           
+	            overflow: hidden;
+	        	text-overflow: ellipsis;
+	        	white-space: normal;
+	        	line-height: 2.0;	
+	        	text-align: left;
+	        	word-wrap: break-word;
+	        	display: -webkit-box;
+	        	-webkit-line-clamp: 7;
+	       		-webkit-box-orient: vertical;
+	        }   
+	         
 	    </style>
 	    
 	    <%@ include file="/resources/html/header.jsp" %>
@@ -105,10 +145,11 @@
 			<div id='mypage_reviews' class='container-sm'>
 	
 	                <hr>
-	                
 	                <c:forEach items="${filmList}" var="filmList">
+	                <form id='pageTest'>
 	                
 						<input type='hidden' name='searchWord' value='${pageMaker.cri.searchWord}'>
+						<input type='hidden' name='filmid' value='${filmList.filmid}'>
 						<input type='hidden' name='title' value='${filmList.title}'>
 						<input type='hidden' name='poster' value='${filmList.poster}'>
 						<input type='hidden' name='currPage' value='${pageMaker.cri.currPage}'>
@@ -116,69 +157,78 @@
 						<input type='hidden' name='pagesPerPage' value='${pageMaker.cri.pagesPerPage}'>
 		                <div class='row'>
 		
-		                    <div class='col-6' style='height: 310px'>
+		                    <div class='col-6' style='height: 420px'>
 		                        <a href='/film/${filmList.filmid}'><img src='https://www.themoviedb.org/t/p/original${filmList.poster}' id='film_poster'></a>
 		                    </div>
 		
-		                    <div class='col-6' style='height: 310px'>
+		                    <div class='col-6' style='height: 420px'>
 		                    
 		                    	<a href='/film/${filmList.filmid}'  id='film_title'>${filmList.title}</a><br>                    	
 		                    	
-		                        <hr>                                                
+		                        <hr>		                        
+		                        
+		                        <ul>
+		                        	<li style='margin-bottom: 5px;'>Year : ${filmList.year}</li>
+		                        	<li style='margin-bottom: 5px;'>Country : ${filmList.country}</li>
+		                        	<li style='margin-bottom: 5px;'>Runtime : ${filmList.runtime} min</li>
+		                        	<li style='margin-bottom: 5px;'>Genre : 
+		                        	<c:forEach items='${filmGenre}' var='filmGenre'>
+				                    <c:set var='filmid_list' value='${filmList.filmid}'/>
+				                    <c:set var='filmid_genre' value='${filmGenre.filmid}'/>
+			                        	<c:choose>
+					                    	<c:when test="${filmid_list eq filmid_genre}">
+					                        	${filmGenre.genre} /
+					                        </c:when>
+					                    </c:choose>
+				                    </c:forEach>
+		                        	</li>
+		                        	<li class='plotLine' style='margin-bottom: 5px;'>Plot : ${filmList.plot}</li>
+		                        </ul>                                                
 		
 		                    </div>
 		                    
 		                    <hr>
 		                    
-		                    <div>
-		                    	<div id='directorDiv'>
-								<h6>Director</h6>
-		                    	<ul id='film_info_director'>
-			                    	<c:forEach items='${filmInfo}' var='filmInfo'>
-			                        	<c:set var='filmid_list' value='${filmList.filmid}'/>
-			                        	<c:set var='filmid_info' value='#{filmInfo.filmid}'/>
-			                        	<c:set var='info_credit' value='#{filmInfo.credit}'/>
-			                        	<c:choose>
-								  	  		<c:when test="${filmid_list eq filmid_info}">
-								  	  			
-							  	  				<c:choose>							  	  					
-							  	  					<c:when test="${info_credit eq null}">							  	  						
-							  	  						<li class='filmInfoList'><img src='https://www.themoviedb.org/t/p/original${filmInfo.photo}' class='photo'><br>${filmInfo.name}<br>as<br>Director</li>
-							  	  					</c:when>							  	  					
-							  	  				</c:choose>					  	  									  	  			
-								  	  		</c:when> 
-			                        	</c:choose>
-			                        
-			                        </c:forEach>
-		                    	</ul>
-		                    	</div>
-		                    	<hr>
-		                    	<div id='castDiv'>
-		                    	<h6>Cast</h6>
-		                    	<ul id='film_info_cast'>
-			                    	<c:forEach items='${filmInfo}' var='filmInfo'>
-			                        	<c:set var='filmid_list' value='${filmList.filmid}'/>
-			                        	<c:set var='filmid_info' value='#{filmInfo.filmid}'/>
-			                        	<c:set var='info_credit' value='#{filmInfo.credit}'/>
-			                        	<c:choose>
-								  	  		<c:when test="${filmid_list eq filmid_info}">								  	  		
-								  	  			<c:choose>
-							  	  					<c:when test="${info_credit ne null}">							  	  						
-							  	  						<li class='filmInfoList'><img src='https://www.themoviedb.org/t/p/original${filmInfo.photo}' class='photo'><br>${filmInfo.name}<br>as<br>${filmInfo.character}</li>
-							  	  					</c:when>
-								  	  			</c:choose>							  	  			
-								  	  		</c:when> 
-			                        	</c:choose>
-			                        
-			                        </c:forEach>
-		                    	</ul>
-		                    	</div>
-		                    </div>
-		
+		                    <section class="feature">            
+            
+					          <div class="inWrap" style='height: 400px;'>            
+					
+					              <h1 class="display-6" style='font-size: 20px; font-weight: bold;'>Casts</h1>
+					
+							<hr>			
+					              <div class="fInner swiper-container">
+					                  <ul class="swiper-wrapper" style='height: 280px;'>
+							              <c:forEach items='${filmInfo}' var='filmInfo'>
+				                          <c:set var='filmid_list' value='${filmList.filmid}'/>
+				                          <c:set var='filmid_info' value='#{filmInfo.filmid}'/>
+				                          <c:set var='info_credit' value='#{filmInfo.credit}'/>
+				                          	<c:choose>
+				                          		<c:when test="${filmid_list eq filmid_info}">					              		
+					                      		<li class="swiper-slide" style='padding-bottom: 30px; margin-bottom: 30px;'>
+					                      		<a href="/search/people/${filmInfo.peopleid}" style='background: url(https://www.themoviedb.org/t/p/original${filmInfo.photo}) center center no-repeat; background-size: cover; height: 200px;' ></a>
+					                      		<span style='top: 210px; text-align: center;'><a class='peopleLink' href='/search/people/${filmInfo.peopleid}'>${filmInfo.name}<br>as<br>${filmInfo.character eq null ? 'Director' : filmInfo.character}</a></span></li>
+					                      		</c:when>
+					                      	</c:choose>	                        
+					              		  </c:forEach>
+					              		   
+					                  </ul>             
+					                  
+					                  <div class="swiper-pagination"></div>                    
+						
+					              </div>
+					              <div class="button">
+					                  <div class="back"><a href="#" style='background: url(../resources/img/back-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">back</span></a></div>
+					                  <div class="next"><a href="#" style='background: url(../resources/img/next-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">next</span></a></div>
+					              </div>
+					              
+					          </div>					          
+					          
+					      </section>
+		                  
 		                </div>
 	                
 	                	<hr>
-	                	
+	                	</form>
 	                </c:forEach>                    
 	
 			</div>

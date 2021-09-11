@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.filmee.myapp.domain.CriteriaSearch;
+import com.filmee.myapp.domain.SearchFilmGenreVO;
 import com.filmee.myapp.domain.SearchFilmInfoVO;
 import com.filmee.myapp.domain.SearchFilmVO;
 import com.filmee.myapp.domain.SearchPageDTO;
@@ -59,11 +60,13 @@ public class SearchController {
 		
 		List<SearchFilmVO> filmList = this.service.getFilmListPage(cri);
 		List<SearchFilmInfoVO> filmInfo = this.service.getFilmListInfo(cri);
+		List<SearchFilmGenreVO> filmGenre = this.service.getFilmListGenre(cri);
 		
 		SearchPageDTO pageDTO = new SearchPageDTO(cri, this.service.getTotalCountFilmSearch(cri));
 		
 		model.addAttribute("filmList", filmList);
 		model.addAttribute("filmInfo", filmInfo);
+		model.addAttribute("filmGenre", filmGenre);
 		model.addAttribute("pageMaker", pageDTO);
 		
 		return "search/searchFilmPage";		

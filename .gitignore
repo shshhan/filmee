@@ -23,3 +23,7 @@
 hs_err_pid*
 
 /target/
+
+application-API-KEY.properties
+
+MANIFEST.MF

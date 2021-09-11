@@ -386,13 +386,8 @@
 </head>
 <body>
 
-
-	
-
     <div id='container'>
-    
-    	       
-
+   
         <div id='mypage_info'>
 
             <div id='mypage_profile'>
@@ -406,8 +401,6 @@
                
                     <input id='form-control' class="form-control" type="text" value="${userVO.text}" aria-label="readonly input example" readonly>
 
-                    
-                
                 </div>
 
 				<c:set var='userid' value='${cri.userid}' />
@@ -445,9 +438,7 @@
 			        	<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
 			        </c:when>
 		        </c:choose>
-                
-                              
-           
+ 
             </div>
 
             <div id='mypage_usable-statistics'>
@@ -508,8 +499,8 @@
 			
                 </div>
                 <div class="button">
-                    <div class="back"><a href="#" style='background: url(../resources/img/back.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">back</span></a></div>
-                    <div class="next"><a href="#" style='background: url(../resources/img/next.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">next</span></a></div>
+                    <div class="back"><a href="#" style='background: url(../resources/img/back-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">back</span></a></div>
+                    <div class="next"><a href="#" style='background: url(../resources/img/next-svgrepo-com.svg) center center no-repeat; background-size: 30px 30px;'><span class="hidden">next</span></a></div>
                 </div>
             </div>
             
@@ -730,9 +721,7 @@
 										        </c:choose>
 										    </c:when>
 										</c:choose>									
-																	
-										
-		                                								
+											
 									</tr>
 									
 	                           	</c:forEach>			

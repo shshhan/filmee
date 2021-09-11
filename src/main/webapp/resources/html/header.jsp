@@ -246,7 +246,7 @@
     	
     	<style>    		
 
-			#header{
+			#header {
 			    width: 998px;
 			    height: 150px;
 			    margin: 0 auto;

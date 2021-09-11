@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.filmee.myapp.domain.CriteriaSearch;
+import com.filmee.myapp.domain.SearchFilmGenreVO;
 import com.filmee.myapp.domain.SearchFilmInfoVO;
 import com.filmee.myapp.domain.SearchFilmVO;
 import com.filmee.myapp.domain.SearchUserVO;
@@ -61,6 +62,15 @@ public class SearchServiceImpl implements SearchService {
 		
 		return this.mapper.getFilmListInfo(cri);
 	} //getFilmListInfo
+	
+	@Override
+	public List<SearchFilmGenreVO> getFilmListGenre(CriteriaSearch cri) {
+		log.debug("getFilmListGenre({}) invoked.", cri);
+		
+		Objects.requireNonNull(this.mapper);
+		
+		return this.mapper.getFilmListGenre(cri);
+	} //getFilmListGenre
 
 	@Override
 	public List<SearchUserVO> getUserListPage(CriteriaSearch cri) {
