@@ -68,9 +68,9 @@
 		</interceptor>
 		
 		<interceptor>
-			<!--  board/list는 테스트용도. 로그인이 돼있어야만 접근할 수 있는 페이지는 여기에 넣어주세요. -->
-			<mapping path="/board/list" />			
-					
+			<!--  로그인이 돼있어야만 접근할 수 있는 페이지는 여기에 넣어주세요. -->
+			<mapping path="/board/list" />
+			
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
 		
@@ -99,8 +99,8 @@
 
 
 	<context:component-scan base-package="com.filmee.myapp.controller" />
-	<context:component-scan base-package="org.zerock.myapp.interceptor" />
-	<context:component-scan base-package="org.zerock.myapp.exception" />
+	<context:component-scan base-package="com.filmee.myapp.interceptor" />
+	<context:component-scan base-package="com.filmee.myapp.exception" />
 	
 
 </beans:beans>

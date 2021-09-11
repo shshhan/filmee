@@ -13,7 +13,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>errorPage.jsp</title>
+	<title>FILMEE | FILM MEETING</title>
+	<link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 </head>
 <body>
     <h1>예외뜸 ㅋㅋ</h1>

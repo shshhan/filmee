@@ -114,9 +114,7 @@ public class LoginServiceImpl
 		
 		boolean isFromForgotPw = false;		//true : 비밀번호 변경 / false : 비밀번호 찾기
 		
-		if(password == null) {				//비밀번호 찾기에서 요청이 들어온 경우 dto에 password 값이 없다.
-//			log.info("request from forgotPw");
-			
+		if(password == null) {				//비밀번호 찾기에서 요청이 들어온 경우 dto에 password 값이 없다.		
 			isFromForgotPw =true;
 			password = this.mailService.getRandomCode(MailSendService.TEMP_PW);	//임시 비밀번호 생성
 		}//if

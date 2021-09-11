@@ -23,10 +23,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
         
-        <!---------- Social Login ---------->
+        <!---------- Social Login ---------->           
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-        <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
         <!---------- Google Recpatch ---------->
         <script src="https://www.google.com/recaptcha/api.js"></script>
@@ -40,43 +38,10 @@
 
 
         <script>
- 
             Kakao.init('<fmt:message key="kakao-login-key" bundle="${API_KEY}"/>');
-            // console.log(Kakao.isInitialized());
+            console.log("API Initialized :", Kakao.isInitialized());
 
-	        //====== 쿠키 ======
-	        function getCookie(key){
-	        	let cookieKey = key + "=";
-	        	let result = "";
-	        	const cookieArr = document.cookie.split(";");   //cookie를 가져와서 ;를 단위로 나눠 배열로 저장
-	
-	        	for(let i =0; i<cookieArr.length; i++){ //각 쿠키의 길이만큼 순회
-	        		if(cookieArr[i][0] === " "){        //쿠키의 첫문자가 공백이라면
-	        			cookieArr[i] = cookieArr[i].substring(1);   //공백을 제외한 값을 다시 저장
-	        		}//if
-	
-	        		if(cookieArr[i].indexOf(cookieKey) === 0){  //쿠키를 순회하며 내가 지정한 쿠키의 이름으로 시작하는 쿠키 검색
-	        			result = cookieArr[i].slice(cookieKey.length, cookieArr[i].length); //쿠키의 값만 result 변수에 저장
-	        			console.log("Cookie : ", cookieKey+result);
-	
-	        			return result; //내가 찾고자 했던 쿠키의 값을 반환
-	        		}//if
-	        	}//for
-	
-	        }//getCookie
-	
-	        function deleteCookie(name){
-	        	document.cookie = name + "=;expires= Thu, 02 Sep 2021 00:00:10 GMT;domain=localhost;path=/;"
-	        }//deleteCookie
-	        
-            //====== Google Recaptcha ======
-            function onSubmit(token) {
-                console.log("token:", token);
-                document.getElementById("demo-form").submit();
-            }//onSubmit
-            
-	        
-            $(function() {
+              $(function() {
                 console.log('jq started.');
         
                 //로그인 여부에 따라 보여주는 header 변경
@@ -85,215 +50,52 @@
                     $(".memberHeadermenu").attr("style", "display:inline");
                 }//if
 
+
                 //전달된 message가 있으면 alert
                 switch("${message}"){
 
                     //회원가입 성공시
                     case 'just_joinned' :
-                        $("#alert_modal p").text("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
                         break;
                         
                     //소셜로그인을 통해 회원가입시
                     case 'social_join' :
-                        $("#alert_modal p").text("회원가입완료! 카카오 계정으로 로그인 가능합니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("회원가입완료! 카카오 계정으로 로그인 가능합니다.");
                         break;
                                                             
                     //회원가입 후 이메일 인증까지 마쳤을 시
                     case 'join_complete' :
-                        $("#alert_modal p").text("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
                         break;
                         
                     //임시비밀번호 발송시
                     case 'temp_pw_sent' :
-                        $("#alert_modal p").text("임시비밀번호를 발송했습니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("임시비밀번호를 발송했습니다.");
                         break;
                     
                     //비밀번호 찾기에서 미가입 이메일 입력시
                     case 'no_info_forgot_pw' :
-                            $("#alert_modal p").text("등록되지 않은 이메일 주소입니다.");
-                            $("#alert_modal").modal("show");
+                        alertModalMessaging("등록되지 않은 이메일 주소입니다.");
                         break;
                         
                     //비밀번호 변경시
                     case 'pw_changed' :
-                        $("#alert_modal p").text("비밀번호가 변경되었습니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("비밀번호가 변경되었습니다.");
                         break;
 
                     //회원 탈퇴시
                      case 'account_deleted' :
-                        $("#alert_modal p").text("회원탈퇴가 정상적으로 처리되었습니다.");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("회원탈퇴가 정상적으로 처리되었습니다.");
                         break;
                     
                     //오류, 정보 불일치 등으로 실패시
                     case 'task_failed' :
-                        $("#alert_modal p").text("오류 발생! 다시 시도해주세요. 이 메세지가 반복될 시 관리자에게 문의해주세요. ");
-                        $("#alert_modal").modal("show");
+                        alertModalMessaging("오류 발생! 다시 시도해주세요. 이 메세지가 반복될 시 관리자에게 문의해주세요. ");
                         break;
                         
                     default :
-                };	//switch-case
-
-                //login modal에서 join, forgot password 버튼 누를 시 login modal을 먼저 닫음
-                $("#close_login_open_join, #forgot_pw_a").on('click', function(){
-                    $("#login").modal("hide");  
-                });//close_login_open_join
-
-                //modal 새로 열 때 input 초기화
-                $(".input_modal").on('show.bs.modal',function(){
-                    $(this).find('form')[0].reset();
-                });//modal hidden.bs.modal            
-
-                //social_join_modal 닫을 때 새로고침
-                $('#social_join, #join', "forgot_pw").on('hidden.bs.modal', function(){           
-                    location.reload();  // 카카오 간편로그인을 통한 회원가입, 일반회원가입 모두 시도 중에 창을 꺼버리면 checkEmail()과 isEmailChecked, isPwValid 변수의 상태가 변경되어 있기 때문에, 새로고침을 통해 위 세 항목을 초기화 시키지 않으면 새롭게 join modal을 열었을 때 않은 결과가 발생한다.
-                });//social join on hidden
-
-
-                //login modal에서 sign in 버튼 누를 시
-                $(".login_submit_btn").on('click', function(){
-                    console.log("SIGN in btn clicked.");
-
-                    let formData = $("#login_form").serialize();
-                    console.log("formData :", formData);
-                    
-                    $.ajax({
-                        async : true,
-                        data : formData,
-                        type : 'post',
-                        url : "/main/loginPost",
-                        dataType : 'json',
-                        success : function(data){
-                            console.log("data :", data);
-                            console.log("cookieValue:",data.cookieValue);
-                            console.log("data.loginNum:",data.loginNum);
-                            console.log("data.isRememberMe:", data.isRememberMe);
-                            
-                            let uriCookie = getCookie("__ORIGINAL_REQUEST_URI__");
-                            console.log("uriCookie :", uriCookie);
-
-                            let alertModalEl = document.getElementById('alert_modal');
-                            
-                            switch(data.loginNum){
-                                case '1' :
-                                    console.log("longinNum : 1");
-                                    $("#login").modal("hide");
-                                    
-                                    $("#alert_modal p").text("등록되지 않은 이메일 혹은 비밀번호입니다.");
-                                    $("#alert_modal").modal("show");
-                                    
-                                    alertModalEl.addEventListener('hidden.bs.modal',function(){
-                                        $("#login").modal("show");
-                                    });
-                                    
-                                    break;
-                                    
-                                case '2':
-                                    console.log("longinNum : 2");
-                                    
-                                    $("#login").modal("hide");
-
-                                    $("#alert_modal p").text("이메일 인증 후 로그인 가능합니다.");
-                                    $("#alert_modal").modal("show");
-                                    
-                                    if(uriCookie != null){      //
-                                        alertModalEl.addEventListener('hidden.bs.modal',function(){
-                                            deleteCookie("__ORIGINAL_REQUEST_URI__");
-                                            history.go(-1);
-                                        });//modal close listener
-                                    }//if
-
-                                    break;
-
-                                    case '3':
-                                        console.log("longinNum : 3");
-                                        
-                                	if(data.isRememberMe == 'true'){    //RemeberMe 체크하고 로그인 했을 시
-                                        //RemberMe 쿠키의 이름과 값, 유효기간 설정
-                                        let rememberMeCookie = 
-                                        "__REMEMBER_ME__=" + data.cookieValue + ";expires=" + data.rememberAge + ";path=/";
-                                        
-                                        //만든 설정대로 쿠키 생성
-                                        document.cookie = rememberMeCookie;
-                                    }//if
-                                    
-                                    if(uriCookie != null){
-                                        location.href=uriCookie;
-                                    } else{
-                                        location.reload();
-                                    }//if-else
-                                    
-                                    break;
-                                }//switch-case
-                                
-                        } //success
-                        
-                    });//ajax
-
-			    });//onclick .login_submit_btn
-
-
-                
-                //login modal에서 카카오 로그인 누를 시
-                Kakao.Auth.createLoginButton({
-                    container: "#kakao_login",
-                    size : "medium",
-                    success: function(object){
-                        console.log(object);
-
-                        Kakao.API.request({
-                            url:'/v2/user/me',
-                            data : {
-                                property_keys: ["kakao_account.email"]
-                            },
-                            success: function(userData){
-                                $("#login").modal("hide");
-                                
-                                var kakao_email = "SOC.KAKAO_" + userData.kakao_account.email;
-                                
-                                console.log("isEmailExist before:", isEmailExist);
-                                checkEmail(kakao_email);    
-                                console.log("isEmailExist after:", isEmailExist);
-
-                                if(isEmailExist){
-                                    //로그인
-                                    $("#login_email").val(kakao_email);
-                                    $(".login_submit_btn").trigger("click");
-                                } else{
-                                    //회원가입
-                                    isEmailChecked = true;
-                                    isPwValid = true;
-                                    
-                                    $("#social_join_email").val(kakao_email);
-                                    $("#social_join").modal("show");
-                                }
-                            }//success
-                            
-                        });//Kakao.API.request
-                    },
-                    fail: function(error){
-                        alert('error');
-                        console.log(error);
-                    }
-                });//Kakao.Auth.lgoin
-            
-                
-                //logout 누를시
-                $("#logout_a").on('click', function(){
-                    if (!Kakao.Auth.getAccessToken()) {
-                        console.log('Not logged in.');
-                    }
-                    Kakao.Auth.logout(function() {
-                        console.log(Kakao.Auth.getAccessToken());
-                    });
-
-                    location.href="/main/logout";
-                });//logout on click
+                }//switch-case
 
 
                 $('#header_search').on('propertychange change keyup paste input', function() {
@@ -331,47 +133,6 @@
                     }); //ajax
                     
                 }); //propertychange change keyup paste input
-
-                $(".fg_pw_send_btn").on('click', function(e){
-                    e.preventDefault();		//submit 취소
-
-                    var email = $('#forgot_pw_email').val(); //email : 지역변수
-                    console.log("email forgotPw: ", email);
-                
-                    if(email.length == 0){
-                        // e.preventDefault();		//submit 취소
-
-                        $("#fgpw_message").hide("fast");
-                        $("#fgpw_message").show("fast");
-                        $("#fgpw_message").text("이메일 주소를 입력하세요.");
-
-                    } else if(!isEmail(email)){
-                        // e.preventDefault();		//submit 취소
-
-                        $("#fgpw_message").hide("fast");
-                        $("#fgpw_message").show("fast");
-                        $("#fgpw_message").text("옳바른 이메일 형식이 아닙니다.");
-
-
-                    } else {
-                        checkEmail(email);
-
-                        if(!isEmailExist){
-                            // e.preventDefault();		//submit 취소
-                            console.log("isEmailExist:",isEmailExist);
-
-                            $("#fgpw_message").hide("fast");
-                            $("#fgpw_message").show("fast");
-                            $("#fgpw_message").text("등록된 이메일 주소가 아닙니다.");
-
-                        }else{
-                            $("#new_pw_form").submit();
-                        }//if-else
-
-                    }//if-elseIf-else
-
-                });//onclick .fg_pw_send_btn
-
 
             }); //.jq        
  
@@ -428,9 +189,9 @@
                 height : 40px;
             } */
 
-            #forgot_pw p{
+            /* #forgot_pw p{
                 font-size: 15px;
-            }
+            } */
 
             .wrong_info{
                 background-color: #f0adce96;
@@ -465,7 +226,7 @@
                       </li>                                           
                     </ul>
                     
-                    
+                    	
                     
                     
                     <form class="d-flex">
@@ -486,167 +247,159 @@
             </div>
     	</header>
 
-    <!-- alert Modal -->
-    <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content"> 
-                <div class="modal-body">
-                    <p style="font-size: 16px; text-align: center;"></p>
+        <!-- alert Modal -->
+        <div class="modal fade" id="alert_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content"> 
+                    <div class="modal-body">
+                        <p style="font-size: 16px; text-align: center;"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
-    </div>
 
 
-    <!-- login Modal -->
-    <div class="modal fade input_modal" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN IN</B></h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="login_form" method="POST">
-                        <div class="mb-3">
-                            <label for="login_email" class="form-label"><b>Email</b></label>
-                            <input type="email" class="form-control" id="login_email" name="email" placeholder="이메일 주소" autocomplete="username">
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label"><b>Password</b></label><br>
-                            <input type="password" class="form-control" id="login_password" name="password" placeholder="비밀번호" autocomplete="current-password">
-                            <div id="forgot_pw_a_wrapper">
-                                <a href="#" id="forgot_pw_a" data-bs-toggle="modal" data-bs-target="#forgot_pw">Forgot Password</a>
-                            </div>
-                        </div>
-                        <div class="form-check">
-   						    <label class="form-check-label" for="rememberMe"><b>Remember me</b></label>
-                            <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
-                        </div>
-                        <div class="d-grid gap-2">
-                            <button type="button" 
-                            class="btn btn-primary login_submit_btn g-recaptcha" 
-                            data-sitekey="<fmt:message key='recaptcha-key' bundle='${API_KEY}' />"
-                            data-callback='onSubmit' 
-                            data-action='submit'>SIGN IN</button>
-                     	</div>
-                    </form>
-                    <p>&nbsp;</p>
-                    <div class="d-grid gap-2">
-                        <button type="button" class="btn btn-primary" id="close_login_open_join" data-bs-toggle="modal" data-bs-target="#join">JOIN</button>
-                        <p>&nbsp;</p>
-                        <div id="kakao_login"></div>
+        <!-- login Modal -->
+        <div class="modal fade input_modal" id="login" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN IN</B></h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- join Modal -->
-    <div class="modal fade input_modal" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN UP</B></h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/main/joinPost" method="POST">
-                    <div class="mb-3">
-                        <label for="join_email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="join_email" name="email" placeholder="이메일 주소" autocomplete="username"
-                        oninput="javascript:checkEmail( $('#join_email').val() )">
-                    	<p class='input_message' id='email_message'></p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label"><b>Password</b></label>
-                        <input type="password" class="form-control" id="join_password" name="password" placeholder="비밀번호" oninput="javascript:checkPw()" autocomplete="new-password">
-                        <p class='input_message' id='pw_message'></p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nickname" class="form-label"><b>Nickname</b></label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#nickname').val())">
-                        <p class='input_message nickname'></p>
-                        </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary sign_up_btn" disabled><b>SIGN UP</b></button>
-                        <!-- <button type="submit" 
-                        class="btn btn-primary sign_up_btn g-recaptcha" data-sitekey="6Lde0E4cAAAAALC52i_2yWY1ihnWWwRKIHtrtlln"
-                        data-callback='onSubmit'
-                        data-action='submit' disabled>SIGN UP</button> -->
-
-                    </div>
-                </form>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- socail_join Modal -->
-    <div class="modal fade input_modal" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel"><b>SOCIAL SIGN UP</b></h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/main/joinPost" method="POST">
-                    <div class="mb-3">
-                        <input type="hidden" name="email" id="social_join_email">
-                        <input type="hidden" name="password">
-                        <input type="hidden" name="fromWhere" id="fromWhere">
-
-                        <label for="nickname" class="form-label"><b>Nickname</b></label>
-                        <input type="text" class="form-control" id="social_nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#social_nickname').val())">
-                        <p class='input_message nickname'></p>
-                        </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary sign_up_btn" type="submit" disabled><b>SIGN UP</b></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- new_password Modal -->
-    <div class="modal fade input_modal" id="forgot_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="staticBackdropLabel"><B>FORGOT PASSWORD</B></h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>가입 이메일 주소로 비밀번호 임시 비밀번호를 발송합니다.</p>
-                    <form action="/mypage/newPassword" method="POST" id="new_pw_form">
+                    <div class="modal-body">
+                        <form id="login_form" method="POST">
                             <div class="mb-3">
-                                <label for="forgot_pw_email" class="form-label"><b>Email</b></label>
-                                <input type="email" class="form-control" id="forgot_pw_email" name="email" placeholder="가입에 사용한 이메일 주소를 입력하세요." autocomplete="username">
-                                <p class='input_message' id='fgpw_message'></p>
+                                <label for="login_email" class="form-label"><b>Email</b></label>
+                                <input type="email" class="form-control" id="login_email" name="email" placeholder="이메일 주소" autocomplete="username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label"><b>Password</b></label><br>
+                                <input type="password" class="form-control" id="login_password" name="password" placeholder="비밀번호" autocomplete="current-password">
+                                <div id="forgot_pw_a_wrapper">
+                                    <a href="/main/forgotPw">Forgot Password</a>
+                                    <!-- <a href="#" id="forgot_pw_a" data-bs-toggle="modal" data-bs-target="#forgot_pw">Forgot Password</a> -->
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label" for="rememberMe"><b>Remember me</b></label>
+                                <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe">
                             </div>
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary fg_pw_send_btn">SEND</button>
+                                <button type="button" 
+                                class="btn btn-primary login_submit_btn g-recaptcha" 
+                                data-sitekey="<fmt:message key='recaptcha-key' bundle='${API_KEY}' />"
+                                data-callback='onSubmit' 
+                                data-action='submit'>SIGN IN</button>
                             </div>
-                    </form>
-
-                    <!-- <form action="#" method="POST">
-                        <div class="mb-3">
-                            <label for="new_password_email" class="form-label"><b>Email</b></label>
-                            <input type="email" class="form-control" id="new_password_email" name="email" placeholder="name@example.com" autocomplete="username">
-                        </div>
+                        </form>
+                        <p>&nbsp;</p>
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">SEND</button>
+                            <button type="button" class="btn btn-primary" id="close_login_open_join" data-bs-toggle="modal" data-bs-target="#join">JOIN</button>
+                            <p>&nbsp;</p>
+                            <div id="kakao_login"></div>
                         </div>
-                    </form> -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- join Modal -->
+        <div class="modal fade input_modal" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN UP</B></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/main/joinPost" method="POST">
+                        <div class="mb-3">
+                            <label for="join_email" class="form-label"><b>Email</b></label>
+                            <input type="email" class="form-control" id="join_email" name="email" placeholder="이메일 주소" autocomplete="username"
+                            oninput="javascript:checkEmail( $('#join_email').val() )">
+                            <p class='input_message' id='email_message'></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"><b>Password</b></label>
+                            <input type="password" class="form-control" id="join_password" name="password" placeholder="비밀번호" oninput="javascript:checkPw()" autocomplete="new-password">
+                            <p class='input_message' id='pw_message'></p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nickname" class="form-label"><b>Nickname</b></label>
+                            <input type="text" class="form-control" id="nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#nickname').val())">
+                            <p class='input_message nickname'></p>
+                            </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary sign_up_btn" disabled><b>SIGN UP</b></button>
+                            <!-- <button type="submit" 
+                            class="btn btn-primary sign_up_btn g-recaptcha" data-sitekey="6Lde0E4cAAAAALC52i_2yWY1ihnWWwRKIHtrtlln"
+                            data-callback='onSubmit'
+                            data-action='submit' disabled>SIGN UP</button> -->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- socail_join Modal -->
+        <div class="modal fade input_modal" id="social_join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h2 class="modal-title" id="staticBackdropLabel"><b>SOCIAL SIGN UP</b></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/main/joinPost" method="POST">
+                        <div class="mb-3">
+                            <input type="hidden" name="email" id="social_join_email">
+                            <input type="hidden" name="password">
+                            <input type="hidden" name="fromWhere" id="fromWhere">
+
+                            <label for="nickname" class="form-label"><b>Nickname</b></label>
+                            <input type="text" class="form-control" id="social_nickname" name="nickname" placeholder="닉네임" oninput="javascript:checkNickname($('#social_nickname').val())">
+                            <p class='input_message nickname'></p>
+                            </div>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary sign_up_btn" type="submit" disabled><b>SIGN UP</b></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- forgot_pw Modal -->
+        <!-- <div class="modal fade input_modal" id="forgot_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title" id="staticBackdropLabel"><B>FORGOT PASSWORD</B></h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>가입 이메일 주소로 임시 비밀번호를 발송합니다.</p>
+                        <p>&nbsp;</p>
+                        <form action="/mypage/newPassword" method="POST" id="new_pw_form">
+                                <div class="mb-3">
+                                    <label for="forgot_pw_email" class="form-label"><b>Email</b></label>
+                                    <input type="email" class="form-control" id="forgot_pw_email" name="email" placeholder="가입에 사용한 이메일 주소를 입력하세요." autocomplete="username">
+                                    <p class='input_message' id='fgpw_message'></p>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary fg_pw_send_btn">SEND</button>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> -->
   
 	</body>
 

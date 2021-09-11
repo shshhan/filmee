@@ -45,21 +45,3 @@
     </footer>  
 </body>
 </html>
-
-
-
-
-            <!-- <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <div id="pageinfo">
-                <p>
-                    서울특별시 강남구 <br> 
-                    010-9876-5432<br>
-                    abcedferasdavazsdfzsdf
-                </p>
-            </div>
-            
-            <div id="bugreport">
-                <button id="compl">의견보내기</button>
-            </div> -->

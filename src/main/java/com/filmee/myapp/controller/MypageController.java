@@ -2,6 +2,8 @@ package com.filmee.myapp.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -327,9 +329,9 @@ public class MypageController {
 		
 		switch(result) {
 			case 1: 
-				log.info(">>>>> result : 1 >>>>>>");
+				log.info(">>>>> result : 1 >>>>>>");				
 				rttrs.addFlashAttribute("message", "temp_pw_sent");
-				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
+				return "redirect:/main";	//비밀번호 찾기로 Redirect 후 메세지 띄움
 
 			case 2:
 				log.info(">>>>> result : 2 >>>>>>");
