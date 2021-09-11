@@ -22,10 +22,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>    
 
 	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css'/>
-    <link rel="stylesheet" href="../resources/css/myPageMainTest.css">
+    <!-- <link rel="stylesheet" href="../resources/css/myPageMainTest.css">  -->
     <link rel="stylesheet" href="../resources/css/layout.css">
     <link rel="stylesheet" href="../resources/css/swiper.css">
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css">  -->
     
     
     <script src="../resources/js/jquery-1.8.3.min.js"></script>
@@ -776,8 +776,9 @@
         </div>
     </div>
     
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -793,7 +794,7 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer>  -->
 
 </body>
 </html>

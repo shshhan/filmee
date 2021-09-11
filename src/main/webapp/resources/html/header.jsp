@@ -49,6 +49,8 @@
                 if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
                     $(".strangerHeadermenu").attr("style", "display:none");
                     $(".memberHeadermenu").attr("style", "display:inline");
+                    $(".memberHeadermenu").attr("style", "font-size:19px");
+	                $(".memberHeadermenu").attr("style", "font-weight:bold");
                 }//if
 
 
@@ -221,7 +223,6 @@
         </script>
     	
     	<style>    		
-
 			#header {
 			    width: 998px;
 			    height: 150px;
@@ -263,17 +264,7 @@
             
             #kakao_login{
                 margin : auto;
-                /* margin-top: 27px; */
             }
-
-            /* #kakao-login-btn{
-                width : 266px;
-                height : 40px;
-            } */
-
-            /* #forgot_pw p{
-                font-size: 15px;
-            } */
 
             .wrong_info{
                 background-color: #f0adce96;
@@ -363,7 +354,6 @@
                                 <input type="password" class="form-control" id="login_password" name="password" placeholder="비밀번호" autocomplete="current-password">
                                 <div id="forgot_pw_a_wrapper">
                                     <a href="/main/forgotPw">Forgot Password</a>
-                                    <!-- <a href="#" id="forgot_pw_a" data-bs-toggle="modal" data-bs-target="#forgot_pw">Forgot Password</a> -->
                                 </div>
                             </div>
                             <div class="form-check">

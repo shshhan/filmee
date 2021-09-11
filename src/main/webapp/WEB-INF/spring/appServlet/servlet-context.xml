@@ -69,7 +69,8 @@
 		
 		<interceptor>
 			<!--  로그인이 돼있어야만 접근할 수 있는 페이지는 여기에 넣어주세요. -->
-			<mapping path="/board/list" />
+			<mapping path="/board/register" />
+			<mapping path="/board/modify" />
 			
 			<beans:ref bean="authInterceptor" />
 		</interceptor>
@@ -89,8 +90,8 @@
 			<exclude-mapping path="/main/forgotPw" />
 			
 			<!-- 제외경로 : AuthInterceptor Path -->
-			<!--  board/list는 테스트용도. -->
-			<exclude-mapping path="/board/list" />	
+			<exclude-mapping path="/board/register" />
+			<exclude-mapping path="/board/modify" />
 						 
 			<beans:ref bean="autoLoginInterceptor" />
 		</interceptor>

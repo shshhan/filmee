@@ -65,7 +65,8 @@ public class MainController {
 	}
 	
 
-	//login modal에서 sign in 버튼 클릭 시 
+	//login modal에서 sign in 버튼 클릭 시
+	@ResponseBody
 	@PostMapping("/loginPost")
 	public Map<String, String> loginPost(UserDTO dto, HttpSession session) throws Exception {
 		log.debug("loginPost({}, model, {}) invoked.", dto, session);
