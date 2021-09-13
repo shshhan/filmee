@@ -12,7 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FILMEE | FILM MEETING</title>
     <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
-    <%@ include file="/resources/html/header.jsp" %>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
@@ -49,22 +48,16 @@
         })//jq
     </script>
 
-    <style>
-       /* body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-         a-style
-        a{color:#333;text-decoration:none;text-align: center;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}*/
-        
-		div:first_of_type{
+    <style>   
+        #boardListWrapper{
+            width: 998px;
+            margin: 0 auto;
+        }
+
+		#category{
             font-family: 'ELAND 초이스';
-		    width: 998px;
-		    margin: 0 auto;
+		    /*width: 998px;
+		    margin: 0 auto;*/
 		    font-size: 20px;
             -ms-user-select: none; 
             -moz-user-select: -moz-none;
@@ -81,7 +74,6 @@
 		    width: 3%;
 		    text-align: center;
 		    padding: 30px;
-		    
 		}
         #category>ul>li>a:hover{
             color: rgb(128, 208, 240);
@@ -98,27 +90,27 @@
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
 		  }
-		 td{
+        #boardlist td{
 		  	color: black;
 		  	font-size:15px;
 		  	padding: 10px;
   			border-bottom: 1px solid #ddd;	
-  		  }
-		  th{
+  		}
+        #boardlist th{
 		  	font-weight: bold;
 		  	border:10px;
 		  	margin:10px;
 		  	padding:15px;
   			border-bottom: 1px solid #ddd;
-  		  }
-  		  tbody>tr:hover {
+  		}
+  		#boardlist>tbody>tr:hover {
   		  	background-color: #dddddd60;
-  		  }
+  		}
   		  
-		  #pageNumber{
+		#pageNumber{
 		  	text-align: center;
-		  }
-		 #pageNumber>li{
+		}
+		#pageNumber>li{
 		 	display:inline-table;
 		    width: 3%;
 		    text-align: center;
@@ -155,8 +147,7 @@
             -webkit-appearance: none;
             -moz-appearance: none; 
             appearance: none;
-
-      }
+        }
         button {
             margin: 0;
             padding: 0.5rem 1rem;
@@ -201,8 +192,9 @@
     </style>
 </head>
 <body>
+    <%@ include file="/resources/html/header.jsp" %>
 
-    <div>
+    <div id="boardListWrapper">
         <div>
             <div id="category">
                 <form id="category" action="/board/list" method="GET">
