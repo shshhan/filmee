@@ -234,22 +234,19 @@ public class BoardController {
 			log.info(">> done if >> register");
 		} else {
 			this.service.register(board);
-
+			
 			String fileNameExtension=FilenameUtils.getExtension(fileName).toLowerCase();
 			File destinationFile;
 			String destinationFileName;
 			String fileUrl="C:/Temp/upload/";
 			String mimeType=files.getContentType();
 
-			do {
-	           destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
-	           destinationFile = new File(fileUrl+ destinationFileName);
-	           
-	           log.info(" ***** >>> destinationFileName : "+destinationFileName);
-	           log.info(" ***** >>> destinationFile : "+destinationFile);
-			} while (destinationFile.exists());
-	           log.info(" ***** >>> end do");
-			
+            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
+            destinationFile = new File(fileUrl+ destinationFileName);
+           
+            log.info(" ***** >>> destinationFileName : "+destinationFileName);
+            log.info(" ***** >>> destinationFile : "+destinationFile);
+		
 			destinationFile.getParentFile().mkdirs();
 			files.transferTo(destinationFile);
 			

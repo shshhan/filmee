@@ -47,6 +47,8 @@
             </thead>
 
             </table>
+            <%@include file="../admin/menu.jsp"%>
+
     </div>
     <div id=mainCalender>
         <div class="my-calendar clearfix">
@@ -82,7 +84,6 @@
     </div>
 
     <div>
-        <%@include file="../admin/menu.jsp"%>
         <div id="allMain">
 
         </div>

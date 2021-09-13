@@ -401,7 +401,7 @@
             float: right;
         }
         #isDeleteTs{
-            margin-top: 300px;
+            margin-top: 200px;
             margin-left: 400px;
         }
     </style>
@@ -411,6 +411,7 @@
     <c:choose>
     <c:when test="${board.delete_ts!=null}">
         <p id="isDeleteTs"><img src="/resources/img/choonsigi.jpg" alt=""><br>삭제된 게시글 입니다.</p>
+        <button><a>리스트로 돌아가기</a></button>
     </c:when>
     <c:otherwise>
     <div id="container">
