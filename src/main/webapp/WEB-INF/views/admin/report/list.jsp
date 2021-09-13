@@ -37,6 +37,20 @@
 
                 paginationForm.submit();
             })//onclick
+
+            $("#detailbtn").on("click", function(e){
+                console.log("detailBtn clicked.");
+                $("#detailtmodal").modal("show");
+            })
+
+            $("#modalReportBtn").on('click',function(){
+                console.log("delete clicked.");
+                if(confirm("신고요청을 처리하시겠습니까?")){
+                    return true;
+                } else{
+                	return false;
+                }//if-else
+            })//delete
         })//jq
     </script>
 
@@ -44,52 +58,65 @@
     <%@ include file="/resources/html/header.jsp" %>
 
     <style>
-        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        /* a-style */
-        a{color:#333;text-decoration:none;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
         body{
-            width: 998px;
-            margin: 0 auto;
             -ms-user-select: none; 
             -moz-user-select: -moz-none;
             -khtml-user-select: none;
             -webkit-user-select: none;
             user-select: none; 
         }
-        #admincontainer{
+        hr{
+            width: 998px;
+            margin: 0 auto;
+        }
+        /* #admincontainer{
             float: right;
             width: 840px;
+        } */
+        #container{
+        	margin-bottom: 50px;
+        }
+                
+        #menu{
+        	font-size: 40px;
+        	width: 998px;
+        	margin: 0 auto;
+        	text-align: center;
         }
 		#adminboardlist {
-			width:100%;
+			width: 998px;
+			margin: 0 auto;
 		    text-align: center;
-		    margin: 20px ;
 		    font-size: 20px;
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
+            border-bottom: 1px solid rgb(224, 224, 224);	
+
         }
 		#adminboardlist>tbody>tr>td{
 		  	color: black;
 		  	font-size:15px;
 		  	padding: 15px;
-  			border-bottom: 1px solid #ddd;	
         }
-        #adminboardlist>thead>tr>th{
-		  	font-weight: bold;
+        #listline{ 
+            background-color: #dddddd;
+            color:rgb(0, 0, 0);
+            font-weight: bold;
 		  	border:10px;
 		  	margin:10px;
 		  	padding:15px;
             font-size: 18px;
   			border-bottom: 1px solid #ddd;
-            background-color: rgb(255, 255, 255);
+  			height: 50px;
+  			line-height: 50px;
+        }
+        #adminmenuinfo{
+            width: 100px;
+            background-color: rgba(65, 105, 225, 0.185);
+            border-radius: 10px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 10px;
         }
         #adminboardlist>tbody>tr:hover {
   		  	background-color: #dddddd60;
@@ -110,6 +137,18 @@
         #pageNumber>li:hover{
             background-color: rgb(224, 224, 224);
         }
+        #detailbtn{
+            border-radius: 5px; 
+            margin-right:-4px;
+            border: 1px solid skyblue; 
+            background-color: rgba(0,0,0,0); 
+            color: skyblue; 
+            padding: 5px;
+        }
+        #detailbtn:hover{ 
+            color:rgb(221, 250, 255);
+            background-color: rgb(0, 0, 0); 
+        }
 		.prev, .next{
 			font-size: 20px;
 		}
@@ -120,39 +159,16 @@
             border-radius: 10%;
             font-size: 15px;
         }
-        .forAdmin {
-            letter-spacing: 2px;
-            text-align: center;
-            font-size: 17px;
-            color: #525252;
-            background-image: -webkit-linear-gradient(92deg, #626ca1, #515bb9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            -webkit-animation: hue 10s infinite linear;
-        }
 
-        @-webkit-keyframes hue {
-            from {
-                -webkit-filter: hue-rotate(0deg);
-            }
-            to {
-                -webkit-filter: hue-rotate(-360deg);
-            }
-        }
     </style>
 </head>
 
 <body>
-    <div>
+    <div id="container">
         <div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                    <th scope="col" id="adminonly"> 신고 현황 </th>
-                    </tr>
-                </thead>
-            </table>
+            <div id="adminmenuinfo">관리자 전용</div>
             <div id=menu>
+            	<h2>신고 현황</h2>
                 <%@include file="../menu.jsp"%>
             </div>
         </div>
@@ -162,13 +178,14 @@
                 <div>
                     <table id="adminboardlist">
                         <colgroup>
+                            <col width="8%"/>
                             <col width="10%"/>
-                            <col width="13%"/>
-                            <col width="13%"/>
-                            <col width="13%"/>
+                            <col width="12%"/>
+                            <col width="10%"/>
                             <col width="20%"/>
-                            <col width="20%"/>
-                            <col width="13%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
+                            <col width="10%"/>
                         </colgroup>
                         <thead>
                             <tr id=listline>
@@ -179,6 +196,7 @@
                                 <th>접수일</th>
                                 <th>처리일</th>
                                 <th>처리자</th>
+                                <th>확인</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -195,7 +213,6 @@
                                         </td>
                                         <td>${report.accuser}</td>
                                         <td>
-                                            <a href="/admin/report/detail?rptno=${report.rptno}&currPage=${pageMaker.cri.currPage}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">
                                                 <c:choose>
                                                     <c:when test="${report.target_type=='BNO'||report.target_type=='bno'}"><admin class="forAdmin">게시판</admin></c:when>
                                                     <c:when test="${report.target_type=='BCNO'||report.target_type=='bcno'}"><admin class="forAdmin">게시판댓글</admin></c:when>
@@ -212,6 +229,9 @@
                                             <fmt:formatDate pattern="yyyy/MM/dd" value="${report.complete_ts}"/>
                                         </td>
                                         <td>${report.mgr_id}</td>
+                                        <td>
+                                            <button type="button" id="detailbtn">상세확인</button>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -244,12 +264,54 @@
                                 <li class="next"><a class="next" href="${pageMaker.endPage+1}"> > </a></li>
                             </c:if>   
                         </ul>
-                    
                     </form>
                 </div>
             </div>
         </div>
-        
+    </div>
+    <%@ include file="/resources/html/footer.jsp" %>
+
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailtmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><img src="/resources/img/siren.jpg" alt="" width="20px" height="20px"> 신고 상세 및 처리</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="reportcode">신고유형</label>
+                        <input class="form-control" name="reportcode" id="reportcode" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                        신고자 <input class="form-control" name="nickname" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportcontent">내용</label>
+                        <textarea name="rContent" class="form-control" cols="44" rows="5" readonly></textarea>
+                        <button type="button"><a href="/board/get?bno=">신고당한 컨텐츠 확인하기</a></button>
+                    </div>      
+                    <div class="form-group">
+                        <label>신고대상</label>
+                        <input class="form-control" name="suspect" value="신고당한유저아이디" readonly> 
+                    </div>
+                    <div>
+                        <label for="mgrid">처리자</label>
+                        <input class="form-control" type="text" value="관리자아이디" readonly>
+                    </div>
+                    <div>
+                        <br>
+                        <label for="susto">회훤정지일수</label>
+                        <input type="number" min="0" max="999999" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button id='modalReportBtn' type="button" class="btn btn-danger" data-bs-dismiss="modal">처리완료</button>
+                </div> 
+            </div>
+        </div>
     </div>
 </body>
 </html>

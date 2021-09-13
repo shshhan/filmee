@@ -212,16 +212,18 @@
             })
 
 
-            var modalReportCode=modal.find("select[name='reportcode']").val();
-            var modalAccuser=modal.find("input[name='reportwriter']").val();
-            var modalTargetType=modal.find("input[name='reporttype']").val();
-            var modalTarget=modal.find("input[name='reporttarget']").val();
-            var modalSuspect=modal.find("input[name='suspect']").val();
-
-            var modalReportContent=modal.find("textarea[name='rContent']");
+      
 
 
             $("#modalReportBtn").on("click",function(e){
+            	 var modalReportCode=modal.find("#reportcode").val();
+                 console.log(modalReportCode);
+                 var modalAccuser=modal.find("input[name='reportwriter']").val();
+                 var modalTargetType=modal.find("input[name='reporttype']").val();
+                 var modalTarget=modal.find("input[name='reporttarget']").val();
+                 var modalSuspect=modal.find("input[name='suspect']").val();
+
+                 var modalReportContent=modal.find("textarea[name='rContent']");
                 console.log("modalReportBtn Clicked.");
                 var reportinfo={
                     code: modalReportCode,
@@ -387,7 +389,7 @@
             float: right;
         }
         #isDeleteTs{
-            margin-top: 300px;
+            margin-top: 200px;
             margin-left: 400px;
         }
     </style>
@@ -399,6 +401,7 @@
     <c:choose>
     <c:when test="${board.delete_ts!=null}">
         <p id="isDeleteTs"><img src="/resources/img/choonsigi.jpg" alt=""><br>삭제된 게시글 입니다.</p>
+        <button><a>리스트로 돌아가기</a></button>
     </c:when>
     <c:otherwise>
     <div id="container">
@@ -567,7 +570,7 @@
                     <div class="modal-body">
                         <div>
                             <label for="reportcode">신고유형</label>
-                            <select class="form-select" name="reportcode">
+                            <select class="form-select" name="reportcode" id='reportcode'>
                                 <option value="1">욕설/비방</option>
                                 <option value="2">스포일러</option>
                                 <option value="3">광고</option>

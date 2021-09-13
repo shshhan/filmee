@@ -17,69 +17,70 @@
     <%@ include file="/resources/html/header.jsp" %>
 
     <style>
-        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        /* a-style */
-        a{color:#333;text-decoration:none;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
         body{
-            width: 998px;
-            margin: 0 auto;
             -ms-user-select: none; 
             -moz-user-select: -moz-none;
             -khtml-user-select: none;
             -webkit-user-select: none;
             user-select: none; 
         }
-        #admincontainer{
-            float: right;
-            width: 840px;
+        hr{
+            width: 998px;
+            margin: 0 auto;
+        } #menu{
+        	font-size: 40px;
+        	width: 998px;
+        	margin: 0 auto;
+        	text-align: center;
         }
 		#adminboardlist {
-			width:100%;
+			width: 998px;
+			margin: 0 auto;
 		    text-align: center;
-		    margin: 20px ;
 		    font-size: 20px;
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
-		  }
-		#adminboardlist>td{
+            border-bottom: 1px solid rgb(224, 224, 224);	
+
+        }
+		#adminboardlist>tbody>tr>td{
 		  	color: black;
 		  	font-size:15px;
-		  	padding: 10px;
-  			border-bottom: 1px solid #ddd;	
-  		  }
-        #adminboardlist>th{
-		  	font-weight: bold;
+		  	padding: 15px;
+        }
+        #listline{ 
+            background-color: #dddddd;
+            color:rgb(0, 0, 0);
+            font-weight: bold;
 		  	border:10px;
 		  	margin:10px;
 		  	padding:15px;
+            font-size: 18px;
   			border-bottom: 1px solid #ddd;
-  		  }
+  			height: 50px;
+  			line-height: 50px;
+        }
+        #adminmenuinfo{
+            width: 100px;
+            background-color: rgba(65, 105, 225, 0.185);
+            border-radius: 10px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 10px;
+        }
         #adminboardlist>tbody>tr:hover {
   		  	background-color: #dddddd60;
-  		  }
+        }
     </style>
 </head>
 
 <body>
-    <div>
+    <div id="container">
         <div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                    <th scope="col" id="adminonly"> 회원 관리 </th>
-                    </tr>
-                </thead>
-            </table>
+            <div id="adminmenuinfo">관리자 전용</div>
             <div id=menu>
-                <%@include file="../../admin/menu.jsp"%>
+            	<h2>신고 현황</h2>
+                <%@include file="../menu.jsp"%>
             </div>
         </div>
         <div id="admincontainer">
@@ -88,27 +89,29 @@
                 <div>
                     <table id="adminboardlist">
                         <colgroup>
-                            <col width="15%"/>
-                            <col width="15%"/>
-                            <col width="15%"/>
-                            <col width="15%"/>
-                            <col width="15%"/>
-                            <col width="15%"/>
+                            <col width=""/>
+                            <col width=""/>
+                            <col width=""/>
+                            <col width=""/>
+                            <col width=""/>
                         </colgroup>
                         <thead>
                             <tr id=listline>
-                                <th>카테고리</th>
-                                <th>글번호</th>
-                                <th>작성자</th>
-                                <th>제목</th>
-                                <th>등록일</th>
-                                <th>신고 횟수</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-							<tr>
-								<td></td>
-							</tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
