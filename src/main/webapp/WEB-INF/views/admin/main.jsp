@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/resources/html/header.jsp" %>
 
 <!DOCTYPE html>
 
@@ -10,43 +9,54 @@
     <title></title>
     <link rel="stylesheet" href="/resources/css/bootstrap.css">
     <link rel="stylesheet" href="/resources/css/calender.css">
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+	<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script> -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 
     <style>
-        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        /* a-style */
-        a{color:#333;text-decoration:none;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
         body{
+            -ms-user-select: none; 
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none; 
+        }
+        hr{
             width: 998px;
             margin: 0 auto;
-            font-family: 'ELAND 초이스';
         }
+        #adminmenuinfo{
+            width: 100px;
+            background-color: rgba(65, 105, 225, 0.185);
+            border-radius: 10px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #menu{
+        	font-size: 40px;
+        	width: 998px;
+        	margin: 0 auto;
+        	text-align: center;
+        }
+
     </style>
 </head>
 <body>
+    <%@ include file="/resources/html/header.jsp" %>
+<div>
     <div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th scope="col" id="adminonly"> 관리자 전용 </th>
-                </tr>
-            </thead>
-
-            </table>
+        <div>
+            <div id="adminmenuinfo">관리자 전용</div>
+            <div id=menu>
+            	<h2>전체</h2>
+                <%@include file="menu.jsp"%>
+            </div>
+        </div>
     </div>
     <div id=mainCalender>
         <div class="my-calendar clearfix">
@@ -82,7 +92,6 @@
     </div>
 
     <div>
-        <%@include file="../admin/menu.jsp"%>
         <div id="allMain">
 
         </div>
@@ -127,6 +136,12 @@
                 </div>
 
                 <div class="stat">
+                    <span class="stat_title">신규 게시물<br><br></span>
+                    <br>
+                    <span class="value_increase" id="board_span"> 0 개</span>
+                </div>
+
+                <div class="stat">
                     <span class="stat_title">신고<br><br></span>
                     <br>
                     <span class="value_increase" id="newMember_span"> 0 건</span>
@@ -141,11 +156,8 @@
         </div>
 
     </div>
-
-    
     <script type="text/javascript">
         $(function() {
-
             $( "#testDatepicker" ).datepicker({
                 dateFormat: 'yy-mm-dd' //Input Display Format 변경
                     ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
@@ -442,6 +454,9 @@
         });
     </script>
     
-
+    
+    
+    <%@ include file="/resources/html/footer.jsp" %>
+</div>
 </body>
 </html>
