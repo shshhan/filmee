@@ -54,17 +54,13 @@
             font-weight: 400 bold;
             font-family: 'ELAND 초이스';
             line-height: 1;
-
             color: #444;
             background-color: #fff;
-
             padding: 0.3em 0.4em;
-
             border: 1px solid rgb(255, 255, 255);
             border-radius: 0.5em;
             box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
         } 
-
         .boardModifyButtons{
             margin : 10px 0px 5px 880px;
         }

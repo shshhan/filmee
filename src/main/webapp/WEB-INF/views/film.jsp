@@ -27,15 +27,19 @@
     </script>
     <title>&lrm;${filmVO.title} • FILMEE </title>
 
-		<%@include file="../../resources/html/header.jsp" %>   
+		<%@include file="/resources/html/header.jsp" %>   
 	
   
     <!-- CSS -->
     
-    <link href="../resources/css/film.css" rel="stylesheet" media="screen, projection" />
+    <link href="/resources/css/film.css" rel="stylesheet" media="screen, projection" />  
+    <script src="https://s.ltrbxd.com/static/js/main.min.ed93f370.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+<!-- 	 <script src="../../resources/js/film.js"></script>
+ 	 <script src="../../resources/js/film2.js"></script> -->
    
-    <script> 
-
+    <!-- <script> 
         if (screen.width < 768) {
             var date = new Date();
             var maxAge = 365 * 24 * 60 * 60;
@@ -48,36 +52,30 @@
                 // No cookies.  No Mobile version.
             }
         }
-
-
         var isWindows = navigator.platform.toUpperCase().indexOf('WIN') >= 0; // Detect windows platform
         if (isWindows) { document.documentElement.classList.add('is-windows'); }
-
+    </script> -->
+    
+     <script>
+        $(function () {
+            console.clear();
+            console.debug('jq started...');
+            // 리뷰의 등록, 수정, 삭제 처리 후, 리다이렉션을 통해,
+            // 게시글 목록화면으로 이동시킬 때 함께 임시박스(rttrs)로 전송시킨
+            // 처리결과를 경고창으로 출력시키자!
+      /*       var result = '<c:out value="${reviewFilmUserVO.nickname}님의 리뷰가 등록되었습니다" />';
+            if(result.length > 0) {
+                alert(result);
+            } // if */
+            $('#regBtn').click(function () {
+                console.log('onclick on #regBtn clicked...');
+/*                 location.href = "/film/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";  // GET, Request URI: /board/register */            
+                  location.href = "/film/${filmVO.film_id}/register";
+ }); // onclick
+		
+        }); // .jq
     </script>
-
-    <script src="https://s.ltrbxd.com/static/js/main.min.ed93f370.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-<!-- 	 <script src="../../resources/js/film.js"></script>
- 	 <script src="../../resources/js/film2.js"></script> -->
- 	 
-<!-- 	<script>
-	function () {
-        $("#cast-overflow").length &&
-          $("#show-cast-overflow").on("click", function () {
-            $(this).hide(), $("#cast-overflow").fadeIn();
-          })         
-      }
-	</script>
- -->
-
-
-    <script>
-        if ($.cookie("letterboxd.admin.signed.in") === person.username) {
-            successMessages.push("You are signed in as " + person.username);
-            $(function () { $("#header, #content, body").css("background", "#543"); });
-        }
-    </script>
+    
 
 	<style>
 	
@@ -106,14 +104,6 @@
           class="react-component"
           data-component-class="globals.comps.NavComponent"
         ></div>
-
-
-    <script>
-        var filmData = { id: 26711,  gwiId: 24270, releaseYear: "2010", posterURL: "/film/the-social-network/image-150/", path: "/film/the-social-network/" };
-    </script> 
-
-
-
 
     <div id="content" class="site-body -backdrop">
         <div class="content-wrap">
@@ -148,7 +138,7 @@
                             Directed by                                                   
 								<c:forEach items="${filmPeopleVOList}" var="filmPeopleVO">
 									<c:if test="${filmPeopleVO.credit_order eq null}">
-									<a href="/people/${filmPeopleVO.enname}/"><span class="prettify"> 
+									<a href="/search/people/${filmPeopleVO.people_id}/"><span class="prettify"> 
 										${filmPeopleVO.enname} </span></a>
 									</c:if>
 								</c:forEach>
@@ -184,27 +174,13 @@
                                      <c:forEach items="${filmPeopleVOList}" var="filmPeopleVO" begin="0" end="29"  varStatus="status">
 	                                     <c:if test="${filmPeopleVO.credit_order != null}">
 
-		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.people_id}"
+		                                   <a title="${filmPeopleVO.character}" href="/search/people/${filmPeopleVO.people_id}"
 		                                     class="text-slug tooltip1">${filmPeopleVO.enname}</a>
-
-		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.enname}"
-		                                     class="text-slug tooltip">${filmPeopleVO.enname}</a>
 		                                     
 
 										 </c:if>
 									</c:forEach> 
-                                        
-
-                                        <!-- 캐스트 너무 많으면 CAST-OVERFLOW : show all 클릭하면 펼쳐짐 -->
-                                        <a class="text-slug" id="show-cast-overflow" >Show All&hellip;</a>
-                                        <span id="cast-overflow" style="display:none;">
-                                            <c:forEach items="${filmPeopleVOList}" var="filmPeopleVO" begin="30"  varStatus="status">
-	                                     		<c:if test="${filmPeopleVO.credit_order != null}">
-				                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.enname}"
-				                                     class="text-slug tooltip1">${filmPeopleVO.enname}</a>
-										 		</c:if>
-											</c:forEach> 
-    									</span>
+                        
 									</p>                               
                                 </div>
                             </div>
@@ -228,19 +204,16 @@
 
                             ${filmVO.runtime}&nbsp;mins &nbsp;
 
-                            <span
-                                class="report-link has-icon icon-report hide-when-logged-out tooltip tooltip-close-on-click"
-                                title="Report this film" data-report-url="/ajax/film:26711/report-form">Report this
-                                film</span>
                         </p>
 
-
+ 
                     </section>
 
-
+			
                     <!-- 좋볼본, 리뷰, 별점 남기는 부분  -->
                     <aside class="sidebar">
                         <section id="userpanel" class="actions-panel">
+                           
                             <ul class="js-actions-panel">
 
 
@@ -288,18 +261,77 @@
                                         </div>
                                     </div>
                                 </li>
+										
 
+                               <%--  <li><a href="/film/${filmVO.film_id}/review/register" class="add-this-film">리뷰 남기기</a>
+                                </li> --%>
 
-                                <li><a href="review/register" class="add-this-film "> 리뷰 남기기 </a>
-                                </li>
+                                
+                          <!-- Button trigger modal -->
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeModal">
+		  리뷰 작성 
+		</button>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">${filmVO.title} 리뷰 작성</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		 <!-- 모달 내용 적기 -->
+		
+		        
+		        		<% 
+			Integer writer = (Integer) session.getAttribute("userId");
+					%>
+		
+		<section class="col col-13 overflow expanded">
+			 <form method="POST" action="/film/${filmVO.film_id}/review/register">
+			 	
+				<input type="hidden" name="film_id" value="${filmVO.film_id}" id="frm-film-id">
+	            <input type="hidden" name="writer" value="${__LOGIN__.userId}">
+	          
+	            
+				<fieldset>
+					
+					<div class="form-row">
+						<textarea name="content" id="frm-review" class="field" placeholder="리뷰를 작성해보세요"></textarea>
+					</div>
+					<div class="form-row clearfix">
+					
+					
+						<!-- <div class="col col-4 col-right has-topnote rate-film">
+							<label>별점</label>
+							<p class="note -topnote rating-text"></p>
+							<input id="frm-rating" name="rating" type="range" min="0" max="10" step="1" value="0" style="display: none;">
+							<div class="rateit" data-rateit-backingfld="#frm-rating" data-rateit-starwidth="13" data-rateit-starheight="26" data-rateit-resetable="true"><button id="rateit-reset-2" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-2" style="display: block;"></button><div id="rateit-range-2" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-2" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" style="width: 130px; height: 26px;" aria-readonly="false"><div class="rateit-selected" style="height: 26px; width: 0px;"></div><div class="rateit-hover" style="height:26px"></div></div></div>
+						</div> -->
 
+					
+		        	<button type="submit" class="btn btn-primary" id="diary-entry-submit-button">리뷰 등록</button>
+		        	</div>	
 
+					<div class="form-row clearfix row-last  row-sharing"></div>
+				</fieldset>
+			 </form> 
+		</section>
+								        
+								      </div>
+			
+					      
+					    </div>
+					  </div>
+					</div>
+                                
 
                             </ul> 
                         </section>
 
 
-                        <!-- 별점분포 그래프로 나타내기 - 어려우면 안할수도ㅋ -->
+                   
                         <section class="section ratings-histogram-chart">
                             <h2 class="section-heading"><a href="/film/the-social-network/ratings/" class=""
                                     title="">Ratings</a></h2>  <span class="average-rating"
@@ -358,8 +390,6 @@
 
                     </aside>
 
-                   
-
                 </div>
 
                 <div class="clear"></div>
@@ -378,12 +408,12 @@
                             <a class="avatar -a40" href="/ingridgoeswest/" > 
                             <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> 
                             <div class="film-detail-content"> <div class="attribution-block -large"> 
-                            <p class="attribution"> <a href="/ingridgoeswest/film/good-time/" class="context" title="${reviewFilmUserVO.nickname}의 리뷰"> 
+                            <p class="attribution"> <a href="/film/${reviewFilmUserVO.film_id}/review/${reviewFilmUserVO.rno}" class="context" title="${reviewFilmUserVO.nickname}의 리뷰"> 
                             Review by <strong class="name">${reviewFilmUserVO.nickname}</strong> </a> 
                             <span class="rating -green rated-10"> 
                            <!--  ★★★★★  --> ${reviewFilmUserVO.rate}
                             </span> <span class="content-metadata"> 
-                            <a href="/film/${filmVO.film_id}/${reviewVO.rno}" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> 
+                            <a href="/film/${reviewFilmUserVO.film_id}/review/${reviewFilmUserVO.rno}" class="has-icon icon-comment icon-16 comment-count">17</a> </span> </p> </div> 
                             <div class="body-text -prose collapsible-text" data-full-text-url="/s/full-text/viewing:29006694/"> 
                             <p>${reviewFilmUserVO.content} </div> 
                             <p class="like-link-target react-component -monotone" data-component-class="globals.comps.LikeLinkComponent" data-likeable-name="review" data-format="svg" > 

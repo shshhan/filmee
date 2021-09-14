@@ -49,27 +49,19 @@
     </script>
 
     <style>
-
     
     	* {
     		text-decoration-line: none !important;
     	}
-
-
         #container {
             width: 998px;
             margin: 0 auto;
-
             font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
-
             font-family: 'ELAND 초이스'; 
-
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }
-
         #mypage_mid_menu {
             font-size: 14px;
         }
@@ -77,12 +69,10 @@
         #mypage_follows {
         	position: relative;
         }
-
         #profile_photo {
             width: 150px;
             height: 100px;
         }        
-
         #cancelBtn {
         	position: absolute;
         	left: 170px;

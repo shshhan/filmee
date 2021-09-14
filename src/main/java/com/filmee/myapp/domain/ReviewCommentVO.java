@@ -2,7 +2,11 @@ package com.filmee.myapp.domain;
 
 import java.sql.Timestamp;
 
-public class ReviewCommentDTO {
+import lombok.Data;
+
+
+@Data
+public class ReviewCommentVO {
 
 	private Integer rcno; // 리뷰 댓글 번호
 	private Integer rno; // 리뷰 번호
