@@ -31,11 +31,13 @@
     
                 border-right-sttle: black solid 2px 90%;
                 background-color: #ffffff;
-                height: 400px;
+                width: 200px;
                 
+                padding: 10px;
                 margin-top: 50px;
-                padding: 20px 20px 0 0;
-
+                margin-left: 50px;
+                border: black solid 2px;
+                border-radius: 5px;
     
                 display: flex;
                 flex-flow: column nowrap;
@@ -54,12 +56,18 @@
                 border-radius: 5px;
 
             }
+
+            .nav_a{
+                text-decoration-line:none;
+            }
             #all:focus,#member:focus,#review:focus,#complaint:focus,#report:focus,#move:focus{
                 border: 2px solid black;
+                text-decoration-line:none;
             }
             
             #all:active,#member:active,#review:active,#complaint:active,#report:active,#move:active{
-                background-color: blanchedalmond;
+                background-color: rgba(156, 150, 141, 0.829);
+                text-decoration-line:none;
             }
 
          
@@ -81,7 +89,8 @@
         $(function(){
     
             console.clear();
-    
+            
+           
            
     
         });
@@ -95,22 +104,22 @@
                 <div id="title">관리자메뉴</div>
                 
                 <div class="nav" id="all">
-                    <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">전체관리</a>
+                    <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">전체관리</a>
                 </div>
                 <div class="nav" id="member">
-                    <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">회원관리</a>
+                    <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">회원관리</a>
                 </div>
                 <div class="nav" id="review">
-                    <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">리뷰관리</a>
+                    <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">리뷰관리</a>
                 </div>
                 <div class="nav" id="complaint">
-                   <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">요청관리</a>
+                   <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">요청관리</a>
                 </div>
                 <div class="nav" id="report">
-                    <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">신고관리</a>
+                    <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">신고관리</a>
                 </div>
                 <div class="nav" id="move">
-                    <a href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">영화관리</a>
+                    <a class="nav_a" href="http://desktop-mpqhsj5:8090/complaint/listPerPage?currPage=1&amount=10&pagesPerPage=10">영화관리</a>
                 </div>
         </div>
         

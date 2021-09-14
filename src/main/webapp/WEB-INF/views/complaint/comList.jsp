@@ -39,9 +39,7 @@
         <header>
            <%@include file="/resources/html/header.jsp" %>
         </header>
-    
-    
-    
+ 
         <session  id="session">
             
             <div id="mgr_nav">
@@ -54,17 +52,12 @@
 
 			</div>
          
-         
-            
-    
+
         </session>
     
     <footer>
-
-      
+   
     </footer>
-        
-
-           
+     
     </body>
     </html>

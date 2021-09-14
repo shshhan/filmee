@@ -68,7 +68,8 @@ public class ComplaintServiceTests {
 				null,
 				null,
 				null,
-				1
+				1,
+				null
 				);
       
       if(service.register(complaint)) {
@@ -97,7 +98,7 @@ public class ComplaintServiceTests {
    @Test
    public void testTemporary() {
       log.debug("testModify() invoked.");
-      
+      Integer compno = 444;
       ComplaintVO complaint = new ComplaintVO(
 				70,
 				1,
@@ -107,10 +108,11 @@ public class ComplaintServiceTests {
 				null,
 				null,
 				null,
-				1
+				1,
+				null
 				);
       
-      if(service.temporary(complaint)) {
+      if(service.temporaryUpdate(complaint)) {
          log.info("\t+ the specified complaint updated.");
          log.info("\t+ complaint : {}", complaint);
       } else {
@@ -118,18 +120,7 @@ public class ComplaintServiceTests {
       }
    } //testModify
    
-   @Test
-   public void testRemove() {
-      log.debug("testRemove() invoked.");
-      
-      if(service.remove(69)) {
-         
-         log.info("\t+ complaint remove success");         
-      } else {
-         
-         log.info("complaint remove failed");
-      } //if-else
-   } //testRemove
+
    
    @Test
    public void testGet() {

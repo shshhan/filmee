@@ -138,6 +138,7 @@ public class ComplaintControllerTests {
 		// 메일 제목, 내용
 		String subject = "제목입니당";
 		String content = "내용입니당~";
+		String content_re = "내용입니당~";
 		
 		// 보내는 사람
 		String from = "codevang@naver.com";
@@ -156,7 +157,7 @@ public class ComplaintControllerTests {
 			mailHelper.setFrom(from);	// 보내는 사람 셋팅
 			mailHelper.setTo(to);		// 받는 사람 셋팅
 			mailHelper.setSubject(subject);	// 제목 셋팅
-			mailHelper.setText(content);	// 내용 셋팅
+			mailHelper.setText(content_re);	// 내용 셋팅
 
 			// 메일 전송
 			mailSender.send(mail);

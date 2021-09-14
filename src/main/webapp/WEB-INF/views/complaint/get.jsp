@@ -27,41 +27,50 @@
         a, a:link, a:visited{
             cursor : pointer;
         }
-
+		
+	
         #container{
 
             display: flex;
             flex-flow: column nowrap;
             align-items: center;
-            
-            margin: auto;
 			
             background: #fff;
-            border-radius: 5px;
-            text-align: left;
-            padding: 20px;
-
+            
+            text-align: left;    
         }
-        #getHead{
+        #com_head{
             font-size: 20px;
             
         }
+        #com_info{
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+        }
+
         #com_back_a{
-			
-            align-self:flex-start;
+			text-decoration:none;
+            
+            
+            color: rgb(129, 117, 117);
+            font-size: 13px;
+        }
+
+        .com_info_item{
             
         }
         #listBtn{
             
         }
-        #getCode{
+        #com_code{
             align-items: center;
             border: black 1px solid;
             height: 30px;
             font-size: 22px;
             text-align: center;
         }
-        #getTime{
+        #com_time{
             display: flex;
             flex-flow: row nowrap;
             justify-content: space-between
@@ -80,11 +89,20 @@
         }
         .botBtn{
             width: 165px;
+            border: none;
+            background-color: rgba(97, 93, 88, 0.945);
+            color: white;
         }
-        #content{
+        .com_textarea{
         width: 400px;
         font-size: 20px;
         }
+        
+        #com_content{
+        	word-wrap : initial
+        }
+        
+        
     </style>
 
     <script src=https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js></script>
@@ -99,8 +117,9 @@
 
             $("#temporaryBtn").click(function(){
                 console.log('#temporaryBtn button clicked..');
+
                 
-                $("#comform").attr("action","/complaint/temporary");
+                $("#com_form").attr("action","/complaint/temporary");
                //$("comform").attr("method","POST");
                 //$("#completeBtn").attr("type","submit");
                // $("form").action="/complaint/complete";
@@ -108,11 +127,14 @@
                 //location.href = "/complaint/comList";
                 //location.href = "/complaint/complete?compno=${complaint.compno}
                 // location.href = "/complaint/complete?compno=${complaint.compno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";
+                	
+                
+                
            });
             $("#completeBtn").click(function(){
                 console.log('#completeBtn button clicked..');
 
-                $("#comform").attr("action","/complaint/completion");
+                $("#com_form").attr("action","/complaint/completion");
               
             });
         })
@@ -121,75 +143,89 @@
 
 </head>
 <body>
+	
     <div id="container">
-        <div id="getHead">
+        <div id="com_head">
             <b>요청관리</b>
         </div>
 
         
        <br>
-        <a id="com_back_a" href="javascript:history.back();">&#x027F8;</a>
-
-
-        <form id="comform" name="comform" action="#" method="POST">
-        <!-- <form name="from">  -->
-        <input type="hidden" name="currPage" value="${cri.currPage}">
-      	<input type="hidden" name="amount" value="${cri.amount}">
-        <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
-		<input type="hidden" name="writer" value="${complaint.writer}">
-		<input type="hidden" name="compno" value="${complaint.compno}">
-		
-        <div id="getCode">
-            <c:choose>
-                <c:when test="${complaint.code == 1}">
-                    서비스 개선요청
-                </c:when>
-                <c:when test="${complaint.code == 2}">
-                    영화정보 추가요청
-                </c:when>
-                <c:when test="${complaint.code == 3}">
-                    영화정보 수정요청
-                </c:when>
-                <c:otherwise>
-                    기타
-                </c:otherwise>
-            </c:choose>
-        </div>
-
-
-        <div id="getTime">
+       <div id="com_info">
+            <a class="com_info_item" id="com_back_a" href="javascript:history.back();">닫기</a>
+            <div><p>요청번호: ${complaint.compno}</p></div>
             <div>
-               <Br>
+                <c:choose>
+                    <c:when test="${complaint.send == 1 }">
+                        mail:o
+                    </c:when>
+                    <c:when test="${complaint.send == 2 }">
+                        mail:x
+                    </c:when>
+                </c:choose>
             </div>
-            <div>
-                <fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.insert_ts}"/>
-            </div>
-        </div>
 
-        <div id="com_cont">
-            <pre><c:out value="${complaint.content}"/></pre>
-        </div>
-
-        <br>
+       </div>
         
-        <div>
-            <textarea name="content" id="content" value="${complaint.content}" cols="28" rows="10">
-<c:out value="${complaint.content}"/><c:choose><c:when test="${complaint.check_ts == null}">
-답변
-</c:when></c:choose>
-</textarea>
-        </div>
 
-        <div id="botBtn">
-            <div>
-                <button type="submit" id="temporaryBtn" class="botBtn">임시저장</button>
-            
-            </div>
-            <div>
-                <button type="submit" id="completeBtn" class="botBtn">처리완료</button>
-            
-            </div>
-        </div>
+
+        <form id="com_form" name="comform" action="#" method="POST">
+	        <!-- <form name="from">  -->
+	        <input type="hidden" name="currPage" value="${cri.currPage}">
+	      	<input type="hidden" name="amount" value="${cri.amount}">
+	        <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
+			<input type="hidden" name="writer" value="${complaint.writer}">
+			<input type="hidden" name="compno" value="${complaint.compno}">
+	
+	
+			
+	        <div id="com_code">
+	            <c:choose>
+	                <c:when test="${complaint.code == 1}">
+	                    서비스 개선요청
+	                </c:when>
+	                <c:when test="${complaint.code == 2}">
+	                    영화정보 추가요청
+	                </c:when>
+	                <c:when test="${complaint.code == 3}">
+	                    영화정보 수정요청
+	                </c:when>
+	                <c:otherwise>
+	                    기타
+	                </c:otherwise>
+	            </c:choose>
+	        </div>
+	
+	
+	        <div id="com_time">
+	            <div>
+	               <Br>
+	            </div>
+	            <div>
+	                <fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.insert_ts}"/>
+	            </div>
+	        </div>
+	
+	        <div id="com_cont">
+	        	<textarea class="com_textarea" cols="28" rows="6" readonly><c:out value="${complaint.content}"/></textarea>
+	        </div>
+	
+	        <br>
+	        
+	        <div>
+	            <textarea name="content_re" class="com_textarea" cols="28" rows="8" placeholder="요청사항에 대한 답변을 입력하세요."><c:out value="${complaint.content_re}"/></textarea>
+	        </div>
+	
+	        <div id="botBtn">
+	            <div>
+	                <button type="submit" id="temporaryBtn" class="botBtn">임시저장</button>
+	            
+	            </div>
+	            <div>
+	                <button type="submit" id="completeBtn" class="botBtn">처리완료</button>
+	            
+	            </div>
+	        </div>
         </form>
         
 

@@ -1,5 +1,6 @@
 package com.filmee.myapp.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.filmee.myapp.domain.ComCriteria;
 import com.filmee.myapp.domain.ComplaintVO;
-import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.mapper.ComplaintMapper;
 
 import lombok.AllArgsConstructor;
@@ -51,16 +51,15 @@ public class ComplaintServiceImpl
 	
 
 		@Override
-	   public boolean register(ComplaintVO compl){
-	      log.debug("register({}) invoked.", compl);
+	   public boolean register(ComplaintVO complaint){
+	      log.debug("register({}) invoked.", complaint);
 	      
 	      Objects.requireNonNull(this.mapper);
 	      
-	      int affectedLines = mapper.insert(compl);
-//	      mapper.userSelect(compl.getWriter());
+	      int affectedLines = mapper.insert(complaint);
+
 	      return (affectedLines == 1);
 	      }//register
-
 
 
 		@Override
@@ -71,8 +70,7 @@ public class ComplaintServiceImpl
 			return mapper.getList();
 		}//getList
 
-
-
+		
 		@Override
 		public List<ComplaintVO> getListPerPage(ComCriteria cri) {
 		     log.debug("getListPerPage({}) invoked.",cri);
@@ -82,48 +80,58 @@ public class ComplaintServiceImpl
 		      return this.mapper.getListWithPaging(cri);
 		}//getListPerPage
 
-
-
 	
 		@Override
-		public boolean temporary(ComplaintVO compl) {
-		      log.debug("temporary({}) invoked.",compl);
+		public boolean temporaryUpdate(ComplaintVO complaint) {
+		      log.debug("temporary({}) invoked.",complaint);
 		      
 		      Objects.requireNonNull(this.mapper);
-//		      mapper.userSelect(compl.getWriter());
-			return (this.mapper.update(compl)==1);
+		      
+		      log.info("content_re :{}", complaint.getContent_re());
+		      log.info("content_re.type :{}", complaint.getContent_re().getClass().getName());
+		      
+			  ComplaintVO complaintToCheck = this.mapper.select(complaint.getCompno());
+
+		      if(complaintToCheck.getComplete_ts()!=null) {	//요청처리가 되어있었다면.
+					log.info("==================================================================");
+					log.info("\t+complaint.getComplete_ts(): {}",complaintToCheck.getComplete_ts());
+					log.info("==================================================================");
+					return false;
+				}
+		      
+			return (this.mapper.update(complaint)==1);
 		}
 
+		
 		@Override
-		public boolean completion(ComplaintVO complaint, Integer writer) {
-		      log.debug("completion({},{}) invoked.",complaint,writer);
+		public boolean completion(ComplaintVO complaint) {
+		      log.debug("completion({},{}) invoked.",complaint);
 
 			   Objects.requireNonNull(this.mapper);
 			   
-			   log.info("===================================================");
-			   String email = this.mapper.userSelect(writer);
+			   ComplaintVO complaintToCheck = this.mapper.select(complaint.getCompno());	//compno,content,content_re,getComplete_ts를 db에서 가져오기
+			   
+				if(complaintToCheck.getComplete_ts()!=null || complaintToCheck.getContent_re() == null) {	//요청처리가 되어있었다면.
+					log.info("==================================================================");
+					log.info("\t+complaint.getComplete_ts(): {}",complaintToCheck.getComplete_ts());
+					log.info("==================================================================");
+					return false;
+				}
+
+			   String email = this.mapper.userEmail(complaint.getCompno());
 				log.info("===================================================");
 				log.info("\t+email:{}",email);
-				log.info("\t+content:{}",complaint.getContent());
+				log.info("\t+content:{}",complaintToCheck.getContent());
+				log.info("\t+content:{}",complaint.getContent_re());
 				log.info("===================================================");
-				
-				this.mailService.sendComplaintMail(email, complaint.getContent());
+				if(complaintToCheck.getSend() == 1) {
+					this.mailService.sendComplaintMail(email, complaintToCheck.getContent(),complaint.getContent_re());
+				}
 
 			return (this.mapper.updateEnd(complaint)==1);
 		}//completion
 
-
-		@Override
-		public boolean remove(Integer compno) {
-		      log.debug("remove({}) invoked.",compno);
-		      
-			   Objects.requireNonNull(this.mapper);
-
-			return (this.mapper.delete(compno)==1);
-		}//remove
-
-
-
+		
 		@Override
 		public ComplaintVO get(Integer compno) {
 		      log.debug("get({}) invoked.",compno);
@@ -133,9 +141,7 @@ public class ComplaintServiceImpl
 			return complaintRead;
 		}//get
 
-
-
-
+		
 		@Override
 		public int getTotal(ComCriteria cri) {
 			log.debug("getTotal({} invoked.", cri);
@@ -148,9 +154,4 @@ public class ComplaintServiceImpl
 		}
 
 
-
-
-
-
-		
 }

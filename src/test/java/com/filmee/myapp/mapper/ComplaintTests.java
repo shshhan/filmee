@@ -96,13 +96,7 @@ public class ComplaintTests {
 		log.info("\t+complaint:"+complaint);
 	}
 
-	@Test
-	public void testDelete() {
-		log.debug("testDelete() invoked.");
-
-		int affectedLines = this.mapper.delete(65);
-		log.info("\t+affectedLines:"+affectedLines);
-	}
+	
 	@Test
 	public void testGetPagingUri() {
 		log.debug("testGetPagingUri() invoked.");
@@ -113,8 +107,8 @@ public class ComplaintTests {
 		
 //		cri.setPagesPerPage(10);
 		
-		cri.setType("C");		//검색유형 : T(제목) ,  C(내용)   ,W(작성자)
-		cri.setKeyword("content");	//검색어
+		cri.setCode("1");		//검색유형 : T(제목) ,  C(내용)   ,W(작성자)
+	
 	
 		List<ComplaintVO> list = mapper.getListWithPaging(cri);
 		list.forEach(log::info);
@@ -142,7 +136,8 @@ public class ComplaintTests {
 				null,
 				null,
 				null,
-				1
+				1,
+				null
 				);
 		int affectedLines = this.mapper.insert(newComplaint);
 		log.info("\t+affectedLines:"+affectedLines);
@@ -169,7 +164,8 @@ public class ComplaintTests {
 				null,
 				null,
 				null,
-				1
+				1,
+				null
 		);
 		int affectedLines =this.mapper.update(updateComplaint);
 

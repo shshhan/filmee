@@ -67,32 +67,15 @@ public class ComplaintController
 	   
 	   
 	   boolean isRegister = this.service.register(complaint);
-	   log.info("=====================================");
-	   log.info("\t+isRegister:{}"+isRegister);
-	   log.info("=====================================");
-//	   rttrs.addAttribute("writer",userVO.getUserId());
 	   String referer = (String)request.getHeader("REFERER");
-	   
-	   
-	   log.info("=====================================");
-	   log.info("\t+referer:{}"+referer);
-	   log.info("=====================================");
 	   
 		if(isRegister) {	//요청 성공일 때
 			rttrs.addFlashAttribute("comResult", "요청완료");
 		}//if
-//     return "/complaint/register";x
      return "redirect:"+referer;
    }//regeister
    
-   
-   @GetMapping("register")
-   public void regeister() {
-	   log.debug("register({}) invoked") ;
-	   
-   }//regeister
-
-
+  
 
    @GetMapping("listPerPage")
 	public String listPerPage(
@@ -105,7 +88,6 @@ public class ComplaintController
 		List<ComplaintVO> complaint = this.service.getListPerPage(cri);
 		
 		Objects.requireNonNull(complaint);
-		complaint.forEach(log::info);
 		
 		ComPageDTO pageDTO = new ComPageDTO(cri,this.service.getTotal(cri));
 		
@@ -127,51 +109,35 @@ public class ComplaintController
 		
 		assert complaint != null;
 		
-		log.info("\t+ board : {}", complaint);
-		
+		log.info("\t+ get : {}", complaint);
+
 		model.addAttribute("complaint", complaint);
+
 		return "complaint/comGet";
 	}//get
 	
-	@PostMapping("remove")
-	public String remove(
-			@ModelAttribute("cri") ComCriteria cri,
-			@RequestParam("compno") Integer compno,
-			RedirectAttributes rttrs
-			) {
-		log.debug("remove({}, {}, {}) invoked.", cri, compno, rttrs);
-		
-		this.service.remove(compno);
-	
-		rttrs.addAttribute("currPage", cri.getCurrPage());
-		rttrs.addAttribute("amount", cri.getAmount());
-		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
-		
-		return "redirect:/complaint/listPerPage";
-	}//remove
-	
-
-	
-	
 	@PostMapping("temporary")
-	public String temporary(
+	public String temporaryUpdate(
 			@ModelAttribute("cri") ComCriteria cri,
 			ComplaintVO complaint,
 			RedirectAttributes rttrs
 			) {
 		log.debug("temporary({}, {}, {}) invoked.", cri, complaint, rttrs);
 		
-		boolean isTemporary = this.service.temporary(complaint);
-		
-		
-//		if(isTemporary) {
-//			rttrs.addAttribute("result", "success");
-//		}//if
-		
+
+		boolean isTemporary = this.service.temporaryUpdate(complaint);
+
+
+		if(isTemporary == false) {
+			log.info("=====================================================");
+			log.info("\t+isTemporary:{}",isTemporary);
+			log.info("=====================================================");
+			rttrs.addFlashAttribute("comResult", "이미 처리된 요청사항입니다.");
+		}
+
 		rttrs.addAttribute("currPage", cri.getCurrPage());
 		rttrs.addAttribute("amount", cri.getAmount());
 		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
-
 
 		return "redirect:/complaint/listPerPage";
 	}
@@ -180,31 +146,23 @@ public class ComplaintController
 	public String completion(
 			@ModelAttribute("cri") ComCriteria cri,
 			ComplaintVO complaint,
-			RedirectAttributes rttrs,
-			Integer writer
+			RedirectAttributes rttrs
 			) throws Exception {
-		log.debug("completion({}, {}, {},{}) invoked.", cri, complaint, rttrs,writer);
+		log.debug("completion({}, {}, {},{}) invoked.", cri, complaint, rttrs);
 
-		boolean isCompletion = this.service.completion( complaint, writer);
-
-		
-				if(isCompletion) {
-					rttrs.addAttribute("result", "success");
-				}//if
-		
+		boolean isCompletion = this.service.completion( complaint);
+		log.info("=====================================================");
+		log.info("\t+isCompletion:{}",isCompletion);
+		log.info("=====================================================");
+		if(isCompletion == false) {
+			rttrs.addFlashAttribute("comResult", "이미 처리된 요청사항입니다.");
+		}
+				
 		rttrs.addAttribute("currPage", cri.getCurrPage());
 		rttrs.addAttribute("amount", cri.getAmount());
 		rttrs.addAttribute("pagesPerPage", cri.getPagesPerPage());
 
-
-//		return "redirect:/complaint/listPerPage";
 		return "redirect:/complaint/listPerPage";
 	}
-   
-
-   
-
-
-
 
 }

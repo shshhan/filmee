@@ -40,7 +40,7 @@
                 display: none;
             }
 
-            #compl{
+            #com_register_btn{
                 
                 display:  block; 
                 width: 90px;
@@ -53,6 +53,8 @@
                 line-height: 10px;
                 color: #fff;
                 border-radius: 50px;
+                
+                display: none;
             }
 
             #comp_close{
@@ -108,13 +110,15 @@
                 box-shadow: 0 0 10px rgba(0, 0, 0, 5);
                 background: #fff;
                 border-radius: 5px;
-                text-align: right;
+                text-align: center;
                 padding: 20px;
                 box-sizing: border-box;
                 text-decoration: none; 
                 
                 transition: all 0.5s;
                 display: none;
+                font-size: 18px;
+                
             }
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -153,24 +157,33 @@
     	        
                 
                 $("#compl_close").click(function(){
-                    $("#popup").hide("compl");
+                    $("#popup").hide("com_register_btn");
                 });//#hide
 
-                $("#compl").click(function(){
+                $("#com_register_btn").click(function(){
                     $("#popup").show("slow");
                     $("#popup").add("z-index=1100")
                 });
            
-
+				
+                var login="${__LOGIN__.userId}";
+                if(login.length>0){
+                	
+                	$(document).ready(function(){
+                        $("#com_register_btn").show("slow");
+                    })
+                }
+                
             });
-
+			
+            
         </script>
 
 
     </head>
     <body>
-	<p>${comResult}</p>
-        <button id="compl">요청하기</button>
+
+        <button id="com_register_btn">요청하기</button>
 		
         <div id="popup"> 
             <form action="/complaint/register" method="POST">

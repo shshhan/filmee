@@ -14,8 +14,15 @@
         <title></title>
         <link rel="stylesheet" href="/resources/css/complaint.css">
         <style>
-            #main{
+        	#main{
                 margin-left: 200px;
+        		width: 420px;
+        		padding: 10px;
+                border: black solid 2px;
+                
+        	}
+            #main-in{
+
                 width: 400px;
             }
         </style>
@@ -40,9 +47,7 @@
         <header>
              <%@include file="/resources/html/header.jsp" %>
         </header>
-    
-    
-    
+   
         <session  id="session">
             
             <div id="mgr_nav">
@@ -51,18 +56,16 @@
             </div>
     
             <div id="main">
-                <jsp:include page="get.jsp"/>
-
+            	<div id="main-in">
+                	<jsp:include page="get.jsp"/>
+				</div>
 			</div>
-         
-    
+   
         </session>
     
         <footer>
 
-
         </footer>
-
-           
+         
     </body>
     </html>

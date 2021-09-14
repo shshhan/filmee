@@ -16,11 +16,9 @@ public interface ComplaintService {
 	
 	public abstract List<ComplaintVO> getListPerPage(ComCriteria cri);
 	
-	public abstract boolean temporary(ComplaintVO complaint);	//요청글 임시 수정 
+	public abstract boolean temporaryUpdate(ComplaintVO complaint);	//요청글 임시 수정 
 	
-	public abstract boolean completion(ComplaintVO complaint, Integer writer);	//요청글 최종 수정
-	
-	public abstract boolean remove(Integer compno);				//요청글 삭제
+	public abstract boolean completion(ComplaintVO complaint);	//요청글 최종 수정
 	
 	public abstract ComplaintVO get(Integer compno);			//요청 게시글 상세조회
 	
