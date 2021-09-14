@@ -97,7 +97,6 @@
 		} //deleteFollow
 	
 		//====== 비밀번호 수정 ======
-
         // input에 입력시 유효성을 체크할 변수
         var isCurrentPwChecked = false;
         var isNewPwValid = false;
@@ -113,11 +112,9 @@
                 $(".new_pw_submit_btn").prop("disabled", true);
             }//if-else
         }//isChangeBtnValid
-
         //현재 비밀번호 검증
         function checkCurrentPw(){
             var currentPw = $('#current_pw').val();
-
             $.ajax({
                 data : {
                     email : '${__LOGIN__.email}',
@@ -144,14 +141,11 @@
                 }//success
             });//ajax
         };//checkCurrentPw
-
         //새비밀번호의 유효성 검증과 비밀번호 확인
         function confirmNewPw(){
             var newPw = $('#new_pw_input').val();
             npLeng=newPw.length;
-
             var confirmPw = $('#confirm_pw_input').val();
-
             if(npLeng==0){
                 isNewPwValid = false;
                 $("#new_pw_message").text("");
@@ -165,7 +159,6 @@
                 $("#new_pw_message").text("✅☑✔👌🙆🏻‍♂🙆🏻‍♀🙆‍♀");
                 // $("#new_pw_input").css("background-color", "#C2DBFE");
             }//if-elseif-else
-
             if(confirmPw.length == 0){
                 isNewPwConfirmed = false;
                 $("#confirm_pw_message").text("");
@@ -184,7 +177,6 @@
             }//if- elseif -else
             isChangeBtnValid();
         };//pwConfirm
-
     </script>
 
     <style>
@@ -192,50 +184,40 @@
     	* {
     		text-decoration-line: none !important;
     	}
-
         #container {
             width: 998px;
             margin: 0 auto;
-
+            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
             font-family: 'ELAND 초이스'; 
         }
-
         #mypage_info {
             width: 100%;
             height: 300px;            
         }
-
         #mypage_profile {
             width: 50%;
             height: 300px;           
-
             padding-left: 10px;
             padding-right: 10px;
             
             float: left;
         }
-
         #mypage_usable-statistics {
             width: 50%;
             height: 300px;          
             
             float: right;
         }
-
         #img-thumbnail {
             width: 230px;
             height: 160px;
-
             float: left;
         }
-
         #form-control {
             width: 230px;
             height: 160px;
-
             float: right;
         }
-
        #userRegBtn {
        		margin-top: 15px;
        }
@@ -252,25 +234,21 @@
        		float: right;
        		margin-top: 15px;
        }       
-
         #follower_count {
             width: 45%;
             height: 45%;
             float: left;
         }
-
         #following_count {
             width: 45%;
             height: 45%;
             float: right;
         }
-
         #watched_film_count {
             width: 45%;
             height: 45%;
             float: left;
         }
-
         #my_review_count {
             width: 45%;
             height: 45%;
@@ -281,10 +259,8 @@
         #mypage_usable-statistics li {
             text-align: center;
             line-height: 40px;
-
             font-size: 20px;
         }
-
         .inWrap {
             padding-left: 10px;
             padding-right: 10px;
@@ -323,13 +299,11 @@
             font-family: 'Font Awesome 5 free';
             font-weight: 900;
         }
-
         #mypage_review_content {             
             overflow: hidden;
         	text-overflow: ellipsis;
         	white-space: normal;
         	line-height: 1.2;
-
         	text-align: left;
         	word-wrap: break-word;
         	display: -webkit-box;
@@ -340,7 +314,6 @@
         #mypage_button {
         	position: relative
         }
-
         #reviewDelBtn {
         	position: absolute;
         	bottom: 10px;
@@ -378,7 +351,6 @@
         
         
         
-
     </style>
 	
 	<%@ include file="/resources/html/header.jsp" %>
@@ -391,7 +363,11 @@
         <div id='mypage_info'>
 
             <div id='mypage_profile'>
+
+                <h1 class="display-6">Profile</h1>            
+
                 <h1 class="display-6">PROFILE</h1>            
+
                 
                 <hr>
                 
@@ -402,7 +378,6 @@
                     <input id='form-control' class="form-control" type="text" value="${userVO.text}" aria-label="readonly input example" readonly>
 
                 </div>
-
 				<c:set var='userid' value='${cri.userid}' />
 				<c:set var='sessionUserid' value='${__LOGIN__.userId}' />
 				<c:set var='isFollowed' value='#{isFollowed}' />
@@ -438,7 +413,6 @@
 			        	<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
 			        </c:when>
 		        </c:choose>
- 
             </div>
 
             <div id='mypage_usable-statistics'>
@@ -448,28 +422,44 @@
 	
                 <div id='follower_count'>
                     <ul>
+
+                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>follower</a></li>
+
                         <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Follower</a></li>
+
                         <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followers}</a></li>
                     </ul>
                 </div>
 
                 <div id='following_count'>
                     <ul>
+
+                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>following</a></li>
+
                         <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Following</a></li>
+
                         <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followees}</a></li>
                     </ul>
                 </div>
 
                 <div id='watched_film_count'>
                     <ul>
+
+                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>watched</a></li>
+
                         <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>Watched</a></li>
+
                         <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>${films}</a></li>
                     </ul>
                 </div>
 
                 <div id='my_review_count'>
                     <ul>
+
+                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>review</a></li>
+
                         <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>MyReviews</a></li>
+
                         <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>${reviews}</a></li>
                     </ul>
                 </div>
@@ -554,7 +544,7 @@
 	                        <c:set var='userid' value='${cri.userid}' />
 							<c:set var='sessionUserid' value='${__LOGIN__.userId}' />	                        
 	                    	<button id='reviewDelBtn' onclick="deleteMainReview('${reviewVO.rno}')" type='button' class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button>                    	
-	                        
+                     
 	                    </div>
 	
 	                </div>
@@ -598,6 +588,7 @@
 										<c:set var='userid' value='${cri.userid}' />
 										<c:set var='sessionUserid' value='${__LOGIN__.userId}' />										
 		                                <td><button onclick="deleteMainGuestbook('${guestbookVO.gno}')" type="button" class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button></td>								
+
 									</tr>                            		
 								</form>
 							</c:forEach>
@@ -740,6 +731,9 @@
 		<hr>
 	
     </div>
+
+    
+
         
     <!-- new_pw Modal -->
     <div class="modal fade" id="new_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -775,6 +769,7 @@
             </div>
         </div>
     </div>
+
     
     <%@include file="/resources/html/footer.jsp" %>
 

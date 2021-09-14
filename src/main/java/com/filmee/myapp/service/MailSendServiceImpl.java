@@ -85,7 +85,7 @@ public class MailSendServiceImpl
 		
 	}//sendAuthMail
 
-	//비밀번호 재설정 링크 발송
+	//임시 비밀번호 발송ㄴ
 	@Override
 	public void sendTempPwMail(String email, String tempPw){
 		log.debug("sendTempPwMail({}) invoked.", email);
@@ -112,5 +112,47 @@ public class MailSendServiceImpl
 		}//try-catch
 
 	}//sendTempPwMail
+
 	
+	//complaint 의 completion 메일 답변보내기
+	@Override
+	public void sendComplaintMail(String email, String content,String content_re) {
+		log.debug("sendComplaintMail({},{},{}) invoked.", email,content,content_re);
+		try {
+			MailUtils sendMail = new MailUtils(mailSender);
+			sendMail.setSubject("FILMEE 요청사항에 대한 답변");
+			sendMail.setText(
+					new StringBuffer()
+							.append("<h1>")
+							.append("고객님 요청에 대한 답변 내용입니다.")
+							.append("</h1>")
+							
+							.append("<h2>")
+							.append("[요청사항]")
+							.append("</h2>")
+							
+							.append("<h3>")
+							.append(content)
+							.append("</h3>")
+							.append("<hr>")
+							
+							.append("<h2>")
+							.append("[답변]")
+							.append("</h2>")
+							
+							.append("<h3>")
+							.append(content_re)
+							.append("</h3>")
+				            .toString());
+            sendMail.setFrom("shawnshhan@gmail.com", "FilMee");
+            sendMail.setTo(email);
+            sendMail.send();
+			
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}//try-catch
+	}//sendResetPwMail
+		
 }//end class

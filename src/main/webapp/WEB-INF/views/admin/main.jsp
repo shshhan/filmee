@@ -158,7 +158,6 @@
     </div>
     <script type="text/javascript">
         $(function() {
-
             $( "#testDatepicker" ).datepicker({
                 dateFormat: 'yy-mm-dd' //Input Display Format 변경
                     ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
