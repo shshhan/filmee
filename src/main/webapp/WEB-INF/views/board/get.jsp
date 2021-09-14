@@ -52,6 +52,14 @@
                     $("#reportBtn").hide()
                 }//if
             }//if-else
+
+            //관리자일 경우 관리자 권한버튼 보임
+            if("${__LOGIN__.isAdmin=='T'}"){
+                $("#admindeleteBtn").show();
+            } else{
+                $("#admindeleteBtn").hide();
+            }
+
             var likecheck="${heart.likecheck}"
             console.log(">>>> LIKECHECK >>>> ",likecheck); 
             if(likecheck==1){
@@ -219,7 +227,9 @@
                 console.log(" >>> modifyBtn clicked");
                 location.href="/board/modify?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
             })//onclick
-            $("#delete").on('click',function(){
+
+            $("#delete, #admindeleteBtn").on('click',function(){
+
                 console.log("delete clicked.");
                 if(confirm("게시글을 삭제하시겠습니까?")){
                     let formobj=$('form');
@@ -230,6 +240,7 @@
                 	return false;
                 }//if-else
             })//delete
+            
             
         })//js
     </script>
@@ -445,6 +456,7 @@
             </div>
             <hr>
             <div id="threeBtn">
+                <button type="button" id="admindeleteBtn" class="btn btn-danger">관리자 권한 삭제</button>
                 <button type="button" id="modifyBtn" class="btn btn-outline-dark">수정</button>
                 <button type="button" id="delete" class="btn btn-outline-dark">삭제</button>
                 <button type="button" id="listBtn" class="btn btn-outline-dark">목록</button>

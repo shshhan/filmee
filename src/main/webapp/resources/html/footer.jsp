@@ -88,6 +88,8 @@
                 </div>
             </div>    
         </div>
-    </footer>  
+    </footer>
+    <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
+    
 </body>
 </html>
