@@ -16,7 +16,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
 
     <script>
-
         $(function(){
             console.clear();
             console.log("jq started");
@@ -38,20 +37,54 @@
                 paginationForm.submit();
             })//onclick
 
-            $("#detailbtn").on("click", function(e){
-                console.log("detailBtn clicked.");
-                $("#detailtmodal").modal("show");
-            })
 
+        })//jq
+        function reportComplete(rptno, mgr_id,callback,error){
+            $.ajax({
+                type:'post',
+                url:'/admin/report/complete/'+rptno+"/"+mgr_id,
+                success: function(result, status, xhr){
+                    if(callback){
+                        callback(result);
+                    }//if
+                }, //success
+                error: function(xhr,status,er){
+                    if(error){
+                        error(er);
+                    }//of
+                }//error
+            })//ajax
+        }//reportComplete
+
+        function detail(rptno, code, accuser, content, suspect){
+            var detail=$('#detailmodal')
+            console.log("detail>> " + rptno);            
+
+            $('#reportcode').attr("value", code);
+            $('#reportaccuser').attr("value", accuser);
+            $('#reportcontent').attr("value", content);
+            $('#reportsuspect').attr("value", suspect);
+
+            $(detail).modal("show");
+
+            var mgrid="${__LOGIN__.userId}"
             $("#modalReportBtn").on('click',function(){
-                console.log("delete clicked.");
+                console.log("complete clicked.");
                 if(confirm("신고요청을 처리하시겠습니까?")){
-                    return true;
+  
+                    reportComplete(rptno, mgrid, function(result){
+                        $('#detailmodal').modal("hide");
+                        let formobj=$('form');
+                            formobj.attr('action','/admin/report/list');
+                            formobj.attr('method','get');
+                            formobj.submit();
+                    })
+
                 } else{
                 	return false;
                 }//if-else
-            })//delete
-        })//jq
+            })//
+        }
     </script>
 
 
@@ -200,7 +233,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${list}" var="report">
+                            <c:forEach items="${list}" var="report" varStatus="vs">
                                     <tr>
                                         <td>${report.rptno}</td>
                                         <td>
@@ -213,13 +246,12 @@
                                         </td>
                                         <td>${report.accuser}</td>
                                         <td>
-                                                <c:choose>
-                                                    <c:when test="${report.target_type=='BNO'||report.target_type=='bno'}"><admin class="forAdmin">게시판</admin></c:when>
-                                                    <c:when test="${report.target_type=='BCNO'||report.target_type=='bcno'}"><admin class="forAdmin">게시판댓글</admin></c:when>
-                                                    <c:when test="${report.target_type=='RNO'||report.target_type=='rno'}"><admin class="forAdmin">리뷰</admin></c:when>
-                                                    <c:when test="${report.target_type=='RCNO'||report.target_type=='rcno'}"><admin class="forAdmin">리뷰댓글</admin></c:when>
-                                                </c:choose>
-                                            </a>
+                                            <c:choose>
+                                                <c:when test="${report.target_type=='BNO'||report.target_type=='bno'}"><admin class="forAdmin">게시판</admin></c:when>
+                                                <c:when test="${report.target_type=='BCNO'||report.target_type=='bcno'}"><admin class="forAdmin">게시판댓글</admin></c:when>
+                                                <c:when test="${report.target_type=='RNO'||report.target_type=='rno'}"><admin class="forAdmin">리뷰</admin></c:when>
+                                                <c:when test="${report.target_type=='RCNO'||report.target_type=='rcno'}"><admin class="forAdmin">리뷰댓글</admin></c:when>
+                                            </c:choose>
                                         </td>
                                         <td><fmt:formatDate pattern="yyyy/MM/dd" value="${report.insert_ts}"/></td>
                                         <td>
@@ -230,7 +262,7 @@
                                         </td>
                                         <td>${report.mgr_id}</td>
                                         <td>
-                                            <button type="button" id="detailbtn">상세확인</button>
+                                            <button onclick="detail('${report.rptno}', '${report.code}', '${report.accuser}', '${report.content}', '${report.suspect}')" type="button" id='detailbtn'>상세확인</button>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -272,7 +304,7 @@
     <%@ include file="/resources/html/footer.jsp" %>
 
     <!-- Detail Modal -->
-    <div class="modal fade" id="detailtmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="detailmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -282,27 +314,27 @@
                 <div class="modal-body">
                     <div>
                         <label for="reportcode">신고유형</label>
-                        <input class="form-control" name="reportcode" id="reportcode" value="" readonly>
+                        <input class="form-control" name="reportcode" id="reportcode" value="${report.code}" readonly>
                     </div>
                     <div class="form-group">
-                        신고자 <input class="form-control" name="nickname" value="" readonly>
+                        신고자 <input class="form-control" name="nickname" id="reportaccuser" value="${report.accuser}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="reportcontent">내용</label>
-                        <textarea name="rContent" class="form-control" cols="44" rows="5" readonly></textarea>
+                        <input name="rContent" class="form-control" cols="44" rows="5" id="reportcontent" value="${report.content}" readonly>
                         <button type="button"><a href="/board/get?bno=">신고당한 컨텐츠 확인하기</a></button>
                     </div>      
                     <div class="form-group">
                         <label>신고대상</label>
-                        <input class="form-control" name="suspect" value="신고당한유저아이디" readonly> 
+                        <input class="form-control" name="suspect" id="reportsuspect" value="신고당한유저아이디" readonly> 
                     </div>
                     <div>
                         <label for="mgrid">처리자</label>
-                        <input class="form-control" type="text" value="관리자아이디" readonly>
+                        <input class="form-control" type="text" id="mgrid" value="${__LOGIN__.nickname}" readonly>
                     </div>
                     <div>
                         <br>
-                        <label for="susto">회훤정지일수</label>
+                        <label for="susto">회원정지일수</label>
                         <input type="number" min="0" max="999999" required>
                     </div>
                 </div>

@@ -391,20 +391,6 @@ public class BoardController {
 				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}//unLike
 
-//	@PostMapping("like/check/{bno}")
-//	public ResponseEntity<String> likeCheck(			
-//			@RequestParam(value="bno") Integer bno,
-//			@SessionAttribute("__LOGIN__") UserVO user,
-//			Model model) {
-//		log.debug(">> likeCheck invoked.");
-//		
-//		HeartVO vo = this.hService.check(bno, user.getUserId());
-//		model.addAttribute("heart",vo);
-//		
-//		return vo != null ?
-//				new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//	}//likeCheck
-	
 	
 	//======================================================
 	// * 신고처리 부분
