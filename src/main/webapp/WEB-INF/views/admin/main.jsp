@@ -51,8 +51,7 @@
     margin: 0 auto;
 }
 .my-calendar {
-    margin: 0 auto!important;
-	display: inline-block;
+	margin: 0 auto;
 	width: 700px;
 	padding: 20px 20px 10px;
 	text-align: center;
@@ -65,7 +64,7 @@
 	margin-top: 36px;
 	width: 42%;
 	padding: 46px 0 26px;
-	background: #ddd;
+	background: rgba(104, 167, 226, 0.192);
     float: left;
 }
 
@@ -190,7 +189,7 @@
 
 #content {
 	/* float: left; */
-	padding:50px 50px;
+	/* padding:50px 50px; */
 	margin: 0 auto;
 	padding-bottom: 40px;
 	background: #fff;
@@ -382,9 +381,9 @@ font-weight: 700;
 }
 
 .box_stat {
-	position: relative;
+	/* position: relative; */
+    margin: 0 auto;
 	margin-top: 20px;
-	width: 900px;
 	height: 170px;
 	box-sizing: border-box;
 	border: 1px solid #e2e2e2;
@@ -407,22 +406,17 @@ font-weight: 700;
     width: 220px;
     height: 40px;
     border-radius: 5px;
-    /* float: left; */
-    margin-left: 10px;
-    margin-top: 10px;
     text-align: center;
     font-size: 20px;
+    margin-top: 20px;
 }
 .avatar.avatar-xl{
+    margin: 0;
     border-radius: 50%;
-    width: 55px;
+    width: 998px;
     height: 55px;
-    margin-left: 410px;
-    margin-bottom: 20px;
-    margin-left: 370px;
+    margin: 50px;
     text-align: center;
-    margin-top: -8px;
-    /* float: left; */
 }
 div.avatar.avatar-xl > img.calendar{
 	width: 50px;
@@ -478,16 +472,11 @@ div.avatar.avatar-xl > img.calendar{
         <!-- // .my-calendar -->
     </div>
 
-    <div>
-        <div id="allMain">
-
-        </div>
-        
-    
+    <div>    
         <div text-align="center">
             <div class="avatar avatar-xl">
                 <img class="calendar" src="/resources/img/calender-2389150_1280.png" alt="CAL">
-                <input type="text" class="testDatePicker" id="testDatepicker" placeholder="조회 날짜를 선택하세요.">
+                <!-- <input type="text" class="testDatePicker" id="testDatepicker" placeholder="조회 날짜를 선택하세요."> -->
                 <a class="input-button" title="toggle" data-toggle>
                     <i class="icon-calendar"></i></a>
             </div>
@@ -507,64 +496,43 @@ div.avatar.avatar-xl > img.calendar{
                 <span class="stat_collect_dt"></span>
             </div>
 
-            <!-- 일 기준 -->
+            <!-- =================  Today Total  ================-->
             <div class="box_stat" id="statBox">
 
                 <div class="stat">
                     <span class="stat_title">신규가입자<br><br></span>
                     <br>
-                    <span class="value_increase" id="inquire_span">0 명</span>
+                    <span class="value_increase" id="inquire_span">${total.useridno} 명</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">신규 리뷰<br><br></span>
                     <br>
-                    <span class="value_increase" id="report_span"> 0 개</span>
+                    <span class="value_increase" id="report_span">${total.countrno} 개</span>
                 </div>
 
                 <div class="stat">
-                    <span class="stat_title">신규 게시물<br><br></span>
+                    <span class="stat_title">신규게시물<br><br></span>
                     <br>
-                    <span class="value_increase" id="board_span"> 0 개</span>
+                    <span class="value_increase" id="board_span">${total.countbno} 개</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">신고<br><br></span>
                     <br>
-                    <span class="value_increase" id="newMember_span"> 0 건</span>
+                    <span class="value_increase" id="newMember_span">${total.countrptno} 건</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">요청사항<br><br></span>
                     <br>
-                    <span class="value_increase" id="saleBoard_span"> 0 건</span>
+                    <span class="value_increase" id="saleBoard_span">${total.compno} 건</span>
                 </div>
             </div>
         </div>
 
     </div>
-    <script type="text/javascript">
-        $(function() {
-            $( "#testDatepicker" ).datepicker({
-                dateFormat: 'yy-mm-dd' //Input Display Format 변경
-                    ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-                    ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-                    ,changeYear: true //콤보박스에서 년 선택 가능
-                    ,changeMonth: true //콤보박스에서 월 선택 가능                
-                    //,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시
-                    //,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-                    //,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-                    ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-                    ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
-                    ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
-                    ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-                    ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-                    ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
-                    ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-                    ,maxDate: "0M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)         
-            });
-        });
-    </script>
+
 
     <!--달력생성-->
     <script type="text/javascript">
@@ -705,23 +673,23 @@ div.avatar.avatar-xl > img.calendar{
             $('.stat_collect_dt').html(year+"."+month+"."+date+" 기준");
             $('.stat_date').html(year+"."+month+"."+date+" 기준");
             
-            $.ajax({
-                url:'/jaju/manager/getManagerMainCount',
-                type:'post',
-                dataType:'json',
-                success:function(data){
-                    console.log("mainChart에 대한 모든정보" + JSON.stringify(data));
-                    //만약 모든 정보 가져오는 걸 성공했다면 html로 하나씩 넣어주기. 
+            // $.ajax({
+            //     url:'/jaju/manager/getManagerMainCount',
+            //     type:'post',
+            //     dataType:'json',
+            //     success:function(data){
+            //         console.log("mainChart에 대한 모든정보" + JSON.stringify(data));
+            //         //만약 모든 정보 가져오는 걸 성공했다면 html로 하나씩 넣어주기. 
                     
-                    $('#inquire_span').html(data.inquire_db+'건');
-                    $('#report_span').html(data.report_db+'건');
-                    $('#newMember_span').html(data.newMember_db+'건');
-                    $('#saleBoard_span').html(data.saleReport_db+'건');
+            //         $('#inquire_span').html(data.inquire_db+'건');
+            //         $('#report_span').html(data.report_db+'건');
+            //         $('#newMember_span').html(data.newMember_db+'건');
+            //         $('#saleBoard_span').html(data.saleReport_db+'건');
         
-                },error:function(err){
-                    console.log("mainChartJSP에 오류 발생" + err);
-                }
-            });//ajax
+            //     },error:function(err){
+            //         console.log("mainChartJSP에 오류 발생" + err);
+            //     }
+            // });//ajax
         });
         function getFormatDate(date){
             var year = date.getFullYear();              //yyyy
@@ -752,7 +720,7 @@ div.avatar.avatar-xl > img.calendar{
             if(confirm(date+" 일자로 조회하시겠습니까?")){
             
             $.ajax({
-                url:'/jaju/manager/getCalenderInfo',
+                // url:'/jaju/manager/getCalenderInfo',
                 data: {'date': date },
                 type:'post',
                 dataType:'json',
@@ -809,7 +777,7 @@ div.avatar.avatar-xl > img.calendar{
             $('.cal-table td.today').css("color","#333");
         
             $.ajax({
-                url:'/jaju/manager/getDatePickerInfo',
+                // url:'/jaju/manager/getDatePickerInfo',
                 data: {'date': date },
                 type:'post',
                 dataType:'json',
