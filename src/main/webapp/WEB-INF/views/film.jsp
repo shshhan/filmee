@@ -36,25 +36,9 @@
     <script src="https://s.ltrbxd.com/static/js/main.min.ed93f370.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-<!-- 	 <script src="../../resources/js/film.js"></script>
- 	 <script src="../../resources/js/film2.js"></script> -->
-   
-    <!-- <script> 
-        if (screen.width < 768) {
-            var date = new Date();
-            var maxAge = 365 * 24 * 60 * 60;
-            date.setTime(date.getTime() + maxAge * 1000);
-            var expires = '; expires=' + date.toUTCString();
-            document.cookie = "useMobileSite=yes" + expires + "; path=/; maxAge=" + maxAge;
-            if (document.cookie && document.cookie.indexOf("useMobileSite=yes") >= 0) {
-                window.location.reload(true);
-            } else {
-                // No cookies.  No Mobile version.
-            }
-        }
-        var isWindows = navigator.platform.toUpperCase().indexOf('WIN') >= 0; // Detect windows platform
-        if (isWindows) { document.documentElement.classList.add('is-windows'); }
-    </script> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+    
+
     
      <script>
         $(function () {
@@ -71,11 +55,13 @@
                 console.log('onclick on #regBtn clicked...');
 /*                 location.href = "/film/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";  // GET, Request URI: /board/register */            
                   location.href = "/film/${filmVO.film_id}/register";
- }); // onclick
-		
+ 			}); // onclick
+ 
+   
+        	
         }); // .jq
     </script>
-    
+
 
 	<style>
 	
@@ -83,8 +69,62 @@
 			font-family: 'ELAND 초이스';
 		}
 		
+    #diary-entry-submit-button{
+    
+	    float: right;
+	    margin-right: 50px;
+    }
+
+	#starbox{
+		float:left;
+		
+		}		
+	.star-rating {
+	  display: flex;
+	  flex-direction: row-reverse;
+	  font-size: 2.25rem;
+	  line-height: 2.5rem;
+	  justify-content: space-around;
+	  padding: 0 0.2em;
+	  text-align: center;
+	  width: 5em;
+	}
+	 
+	.star-rating input {
+	  display: none;
+	}
+	 
+	.star-rating label {
+	  -webkit-text-fill-color: transparent; /* Will override color (regardless of order) */
+	  -webkit-text-stroke-width: 2.3px;
+	  -webkit-text-stroke-color: #2b2a29;
+	  cursor: pointer;
+	}
+	 
+	.star-rating :checked ~ label {
+	  -webkit-text-fill-color: gold;
+	}
+	 
+	.star-rating label:hover,
+	.star-rating label:hover ~ label {
+	  -webkit-text-fill-color: #fff58c;
+	}
 	
+	
+	#frm-review{
+	height: 400px;
+	width: 400px;
+	}
 	</style>
+	
+	
+<!-- 	별점관련
+ -->	
+
+
+
+
+
 
 </head>
 
@@ -277,7 +317,7 @@
 		  <div class="modal-dialog">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="exampleModalLabel">${filmVO.title} 리뷰 작성</h5>
+		        <h5 class="modal-title" id="exampleModalLabel"><b>FILMEE</b></h5>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
@@ -301,14 +341,24 @@
 						<textarea name="content" id="frm-review" class="field" placeholder="리뷰를 작성해보세요"></textarea>
 					</div>
 					<div class="form-row clearfix">
-					
-					
-						<!-- <div class="col col-4 col-right has-topnote rate-film">
-							<label>별점</label>
-							<p class="note -topnote rating-text"></p>
-							<input id="frm-rating" name="rating" type="range" min="0" max="10" step="1" value="0" style="display: none;">
-							<div class="rateit" data-rateit-backingfld="#frm-rating" data-rateit-starwidth="13" data-rateit-starheight="26" data-rateit-resetable="true"><button id="rateit-reset-2" class="rateit-reset" aria-label="reset rating" aria-controls="rateit-range-2" style="display: block;"></button><div id="rateit-range-2" class="rateit-range" tabindex="0" role="slider" aria-label="rating" aria-owns="rateit-reset-2" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" style="width: 130px; height: 26px;" aria-readonly="false"><div class="rateit-selected" style="height: 26px; width: 0px;"></div><div class="rateit-hover" style="height:26px"></div></div></div>
-						</div> -->
+
+				<!-- 여기에 별넣기 -->
+				 <div id = "starbox">
+				 <div class="star-rating space-x-4 mx-auto">
+					<input type="radio" id="5-stars" name="rating" value="5" v-model="ratings"/>
+					<label for="5-stars" class="star pr-4">★</label>
+					<input type="radio" id="4-stars" name="rating" value="4" v-model="ratings"/>
+					<label for="4-stars" class="star">★</label>
+					<input type="radio" id="3-stars" name="rating" value="3" v-model="ratings"/>
+					<label for="3-stars" class="star">★</label>
+					<input type="radio" id="2-stars" name="rating" value="2" v-model="ratings"/>
+					<label for="2-stars" class="star">★</label>
+					<input type="radio" id="1-star" name="rating" value="1" v-model="ratings" />
+					<label for="1-star" class="star">★</label>
+				</div>
+				 
+				 </div>
+				
 
 					
 		        	<button type="submit" class="btn btn-primary" id="diary-entry-submit-button">리뷰 등록</button>
@@ -319,7 +369,7 @@
 			 </form> 
 		</section>
 								        
-								      </div>
+		</div>
 			
 					      
 					    </div>
