@@ -200,11 +200,6 @@ public class FilmController {
 	} //deleteMyReview
 	
 	
-
-	
-	
-	
-	
 	@PostMapping("review/modify")
 	public String modify(
 			@ModelAttribute("cri") CriteriaFilmReview criFR,
