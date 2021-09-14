@@ -86,6 +86,7 @@
                       break;
                   default :
               }//switch-case
+              
               $('#header_search').on('propertychange change keyup paste input', function() {
                 var selected = $('#header_select').val();                
                 if(selected == 1){
