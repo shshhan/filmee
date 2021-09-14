@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
 
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -67,14 +67,12 @@
     	* {
     		text-decoration-line: none !important;
     	}
-
         #container {
             width: 998px;
             margin: 0 auto;
-
+            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
             font-family: 'ELAND 초이스'; 
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }
@@ -89,11 +87,35 @@
         }
     
     </style>
+
     
     <%@ include file="/resources/html/header.jsp" %>
 
+
 </head>
 <body>
+
+
+    <header>
+        <div id="header">
+            <a href="/main">
+                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
+            </a>
+            <ul id="headermenu">
+                <li><a href="">LOGIN</a></li>
+                <li><a href="">CREATE ACCOUNT</a></li>
+                <li><a href="/board/list">BOARD</a></li>
+                <li>
+                    <input type="search" placeholder="Search" class="search-field" />
+                    <button type="submit" class="search-button">
+                    </button>
+                </li>
+                <li> <img id="searchimg" src="/resources/img/search.png" >
+                </li>
+            </ul>
+        </div>
+
+    </header>
 
 
     <section>
@@ -114,6 +136,21 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
+
+                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criG.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">Films</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criG.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">GuestBook</a>
+
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
@@ -127,6 +164,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">GUESTBOOK</a>
+
                             </li>
                         </ul>                        
                       </div>
@@ -169,8 +207,10 @@
 									<input type='hidden' name='pagesPerPage' value='${pageMaker.criG.pagesPerPage}'>
 								<tr>									
 									<td>${guestbook.content}</td>								
+
 									<td><a class='guestbook_a' href='/mypage/main?userid=${guestbook.writer}'>${guestbook.nickname}</a></td>							  
 	                                <td><button onclick="deleteGuestbook('${guestbook.gno}')" type="button" class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button></td>						
+
 
 								</tr>
 								</form>                            
@@ -224,8 +264,9 @@
 
     </section>
 
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -241,6 +282,6 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </body>
 </html>
