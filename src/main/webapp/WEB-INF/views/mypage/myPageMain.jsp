@@ -799,7 +799,8 @@
 					</div>
 			        <div class="input-group input-group-sm mb-3">
 					  <span class="input-group-text" id="inputGroup-sizing-lg">Nickname</span>
-					  <input type="text" class="form-control" name='nickname' value='${userVO.nickname}' aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+					  <input type="text" class="form-control" name='nickname' id='registerNickname' value='${userVO.nickname}' aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" oninput="checkNickname($('#registerNickname').val())">
+					  <p id='nick_message'></p>
 					</div>
 			        <button type="submit" id='submitBtn' class="btn btn-outline-info" style='float:right;'>Submit</button>
 			        </form>         

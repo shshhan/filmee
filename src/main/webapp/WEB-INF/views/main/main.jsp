@@ -23,14 +23,14 @@
     <link rel="stylesheet" href="/resources/css/swiper.css">
     <link rel="stylesheet" href="/resources/css/main.css">
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/jquery-1.8.3.min.js"></script>
     <script src="/resources/js/swiper.js"></script>
     
     <script>
 
-    	window.onload = function(){
+       window.onload = function(){
             var swiper = new Swiper('.swiper-container', {
                         pagination: '.swiper-pagination',
                         paginationType: 'progress',
@@ -42,7 +42,7 @@
                         prevButton: '.back'
             });
             
-		
+      
         };
 
         $(function(){
@@ -79,43 +79,43 @@
 
     <style>
     
-    	#container {
-    		width: 998px;
-    		margin: 0 auto;
-    		
-    		font-family: 'ELAND 초이스';
-    	}
-    	
-    	#mainFilm {
-    		position: relative;
-    	}
-    	
-    	#mainPosterUl {
-    		position: relative;
-    		
-    		height: 300px;
-    	}
-    	
-    	.filmPosterList {
-    		float: left;
-    		
-    		margin: 5px;    		
-    	}
-    	
-    	#hoverPost {
-    		z-index: 8;
-    		position:absolute; 
-    		top:20px; 
-    		left:22px;
-    	}
-    	
-    	.hoverEventList {
-    		width:160px; 
-    		height:250px; 
-    		border:1px solid black;
-    		
-    		float:left;
-    	}
+       #container {
+          width: 998px;
+          margin: 0 auto;
+          
+          font-family: 'ELAND 초이스';
+       }
+       
+       #mainFilm {
+          position: relative;
+       }
+       
+       #mainPosterUl {
+          position: relative;
+          
+          height: 300px;
+       }
+       
+       .filmPosterList {
+          float: left;
+          
+          margin: 5px;          
+       }
+       
+       #hoverPost {
+          z-index: 8;
+          position:absolute; 
+          top:20px; 
+          left:22px;
+       }
+       
+       .hoverEventList {
+          width:160px; 
+          height:250px; 
+          border:1px solid black;
+          
+          float:left;
+       }
     
     </style>
 
@@ -146,22 +146,22 @@
         
         <div id='mainFilm' style='height:300px;'>
         
-        	<ul id='mainPosterUl'>
-        		<li class="filmPosterList" style='margin-left: 8px;'><img src='../resources/img/fitem01.jpg' ></li>    			
+           <ul id='mainPosterUl'>
+              <li class="filmPosterList" style='margin-left: 8px;'><img src='../resources/img/fitem01.jpg' ></li>             
 
-        		<li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-        		<li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-        		<li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-        		<li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-        	</ul>
-        	
-        	<ul id='hoverPost'>
-        		<li class='hoverEventList'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        	</ul>
+              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
+              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
+              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
+              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
+           </ul>
+           
+           <ul id='hoverPost'>
+              <li class='hoverEventList'></li>
+              <li class='hoverEventList' style='margin-left: 38px;'></li>
+              <li class='hoverEventList' style='margin-left: 38px;'></li>
+              <li class='hoverEventList' style='margin-left: 38px;'></li>
+              <li class='hoverEventList' style='margin-left: 38px;'></li>
+           </ul>
         
         </div>
         
