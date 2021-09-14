@@ -18,7 +18,6 @@
         /* a-style */
         a{color:#333;text-decoration:none;text-align: center;}
         a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
 		#footer{
 		    width: 998px;
 		    height : 130px;
@@ -88,8 +87,9 @@
                     <button type="button" class="btn btn-outline-secondary">의견보내기</button>
                 </div>
             </div>    
-
         </div>
-    </footer>  
+    </footer>
+    <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
+    
 </body>
 </html>

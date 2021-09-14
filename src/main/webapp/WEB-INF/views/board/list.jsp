@@ -16,33 +16,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script>
-
         $(function(){
             console.clear();
             console.log("jq started");
-
             $('#regBtn').click(function(){
                 console.log("regBtn clicked !!");
                 location.href="/board/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";//cri를 사용하기위해 controller에서 ModelAttribute하였음
             })//.click
-
             $('a.prev,a.next').on('click', function(e){
                 console.debug("on clicked for NEXT or PREV");
                 console.log('\t+this:',this);
                 e.preventDefault(); //Event에 의한 선택된 요소의 기본 동작을 금지
-
                 //Rvalue선택자에 의해서 선택된 요소. 즉 form태그가 저장됨.
                 var paginationForm = $('#paginationForm');
-
                 paginationForm.attr('action', '/board/listPerPage');
                 paginationForm.attr('method', 'GET');
-
                 paginationForm.find('input[name=currPage]').val($(this).attr('href'));
                 paginationForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
                 paginationForm.find('input[name=pagesPerPage]').val('${pageMaker.cri.pagesPerPage}');
                 paginationForm.find('input[name=type]').val('${pageMaker.cri.type}');
                 paginationForm.find('input[name=keyword]').val('${pageMaker.cri.keyword}');
-
                 paginationForm.submit();
             })//onclick
         })//jq
@@ -53,7 +46,6 @@
             width: 998px;
             margin: 0 auto;
         }
-
 		#category{
             font-family: 'ELAND 초이스';
 		    font-size: 20px;
@@ -149,20 +141,16 @@
         button {
             margin: 0;
             padding: 0.5rem 1rem;
-
             background-color: white;
             font-family: "ELAND 초이스";
             font-size: 1rem;
             font-weight: 400;
             text-align: center;
             text-decoration: none;
-
             display: inline-block;
             width: auto;
-
             border: none;
             border-radius: 4px;
-
             /* box-shadow: 0 4px 6px -1px rgba(169, 235, 255, 0.781), 0 2px 4px -1px rgba(125, 160, 212, 0.425); */
             cursor: pointer;
             transition: 0.5s;
@@ -172,13 +160,10 @@
             font-weight: 400;
             font-family: 'ELAND 초이스';
             line-height: 1;
-
             color: #444;
             background-color: #fff;
-
             padding: 0.3em 0.4em;
             margin: 0;
-
             border: 1px solid rgb(255, 255, 255);
             border-radius: 0.5em;
             box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
@@ -186,7 +171,6 @@
         #searchimg{
             width: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -319,5 +303,6 @@
     </div>
 
      <%@ include file="/resources/html/footer.jsp" %>
+
 </body>
 </html>

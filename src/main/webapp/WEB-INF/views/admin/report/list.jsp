@@ -73,18 +73,15 @@
                 if(confirm("신고요청을 처리하시겠습니까?")){
   
                     reportComplete(rptno, mgrid, function(result){
-                        $('#detailmodal').modal("hide");
-                        let formobj=$('form');
-                            formobj.attr('action','/admin/report/list');
-                            formobj.attr('method','get');
-                            formobj.submit();
-                    })
-
+	                    $("#detailmodal").on('hidden.bs.modal', function(){           
+		                    location.reload();  
+	                    });//social join on hidden
+                    })//reportComplete
                 } else{
                 	return false;
                 }//if-else
-            })//
-        }
+            })//modalreportbtn
+        }//detail
     </script>
 
 
@@ -102,10 +99,7 @@
             width: 998px;
             margin: 0 auto;
         }
-        /* #admincontainer{
-            float: right;
-            width: 840px;
-        } */
+
         #container{
         	margin-bottom: 50px;
         }
@@ -182,6 +176,11 @@
             color:rgb(221, 250, 255);
             background-color: rgb(0, 0, 0); 
         }
+        .forAdmin:hover{
+            font-size: 17px;
+            font-weight: bold;
+            color: cornflowerblue;
+        }
 		.prev, .next{
 			font-size: 20px;
 		}
@@ -216,7 +215,7 @@
                             <col width="12%"/>
                             <col width="10%"/>
                             <col width="20%"/>
-                            <col width="10%"/>
+                            <col width="20%"/>
                             <col width="10%"/>
                             <col width="10%"/>
                         </colgroup>
@@ -247,20 +246,20 @@
                                         <td>${report.accuser}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${report.target_type=='BNO'||report.target_type=='bno'}"><admin class="forAdmin">게시판</admin></c:when>
+                                                <c:when test="${report.target_type=='BNO'||report.target_type=='bno'}"><admin class="forAdmin"><a href="/board/get?bno=${report.target}">게시판</a></admin></c:when>
                                                 <c:when test="${report.target_type=='BCNO'||report.target_type=='bcno'}"><admin class="forAdmin">게시판댓글</admin></c:when>
-                                                <c:when test="${report.target_type=='RNO'||report.target_type=='rno'}"><admin class="forAdmin">리뷰</admin></c:when>
+                                                <c:when test="${report.target_type=='RNO'||report.target_type=='rno'}"><admin class="forAdmin"><a href="">리뷰</a></admin></c:when>
                                                 <c:when test="${report.target_type=='RCNO'||report.target_type=='rcno'}"><admin class="forAdmin">리뷰댓글</admin></c:when>
                                             </c:choose>
                                         </td>
-                                        <td><fmt:formatDate pattern="yyyy/MM/dd" value="${report.insert_ts}"/></td>
+                                        <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss" value="${report.insert_ts}"/></td>
                                         <td>
                                             <c:if test="${report.complete_ts==null}">
                                                 <beforeCom id="beforeComplete">처리전</beforeCom>
                                             </c:if>
-                                            <fmt:formatDate pattern="yyyy/MM/dd" value="${report.complete_ts}"/>
+                                            <fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss" value="${report.complete_ts}"/>
                                         </td>
-                                        <td>${report.mgr_id}</td>
+                                        <td>${report.nickname}(${report.mgr_id})</td>
                                         <td>
                                             <button onclick="detail('${report.rptno}', '${report.code}', '${report.accuser}', '${report.content}', '${report.suspect}')" type="button" id='detailbtn'>상세확인</button>
                                         </td>
@@ -322,14 +321,13 @@
                     <div class="form-group">
                         <label for="reportcontent">내용</label>
                         <input name="rContent" class="form-control" cols="44" rows="5" id="reportcontent" value="${report.content}" readonly>
-                        <button type="button"><a href="/board/get?bno=">신고당한 컨텐츠 확인하기</a></button>
                     </div>      
                     <div class="form-group">
                         <label>신고대상</label>
                         <input class="form-control" name="suspect" id="reportsuspect" value="신고당한유저아이디" readonly> 
                     </div>
                     <div>
-                        <label for="mgrid">처리자</label>
+                        <label for="mgrid">현재 처리할 관리자</label>
                         <input class="form-control" type="text" id="mgrid" value="${__LOGIN__.nickname}" readonly>
                     </div>
                     <div>

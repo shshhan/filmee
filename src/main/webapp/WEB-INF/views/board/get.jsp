@@ -25,29 +25,22 @@
 
     <script>    
     	$(function(){
-
             console.log("========= COMMENT JS =======")
     		var bnoValue='<c:out value="${board.bno}"/>';
             var nickname='<c:out value="${__LOGIN__.nickname}"/>' 
             var userid='<c:out value="${__LOGIN__.userId}"/>'
             var replyUL=$(".chat");    
             var boardwriter='<c:out value="${board.writer}"/>'
-
             var modal = $(".modal"); 
-
             var modalInputReply=modal.find("input[name='content']");
             var modalInputReplyer=modal.find("input[name='nickname']");
             var modalinputReplyDate=modal.find("input[name='insert_ts']");
-
             var modalModBtn=$("#modalModBtn");
             var modalRemoveBtn=$("#modalRemoveBtn");
             var modalRegisterBtn=$("#modalRegisterBtn");
-
-
             console.log("nick:",nickname)
             console.log("userid:",userid);
             console.log("writer:",boardwriter);
-
             if("${__LOGIN__.userId}"==boardwriter){
                 $("#delete").show();
                 $("#modifyBtn").show();
@@ -60,8 +53,14 @@
                 }//if
             }//if-else
 
-            var likecheck="${heart.likecheck}"
+            //관리자일 경우 관리자 권한버튼 보임
+            if("${__LOGIN__.isAdmin=='T'}"){
+                $("#admindeleteBtn").show();
+            } else{
+                $("#admindeleteBtn").hide();
+            }
 
+            var likecheck="${heart.likecheck}"
             console.log(">>>> LIKECHECK >>>> ",likecheck); 
             if(likecheck==1){
                 $("#likeimg").attr("src", "/resources/img/fullheart.png");
@@ -86,11 +85,9 @@
                     
                     likecheck=1;
                     console.log(">>>>>>>like check", likecheck);
-
                     location.href="/board/get?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
                 })
             }
-
             showList(1);
             function showList(page){
                 console.log("showList ! : nick:",nickname)
@@ -106,7 +103,6 @@
                         // return;
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
-
                         str+="      <div class='header'>";
                         str+="          <a href='/mypage/main?userid="+list[i].writer+"'><img class='rounded-circle' src='/resources/img/common.jpg' width='30px' height='30px'></a>";
                         str+="          <strong class='primary-font'>"+list[i].nickname+"</strong>";
@@ -120,13 +116,10 @@
                         str+="</li>";
                         str+="<hr>";
                     }
-
                     replyUL.html(str);
                 })//end function
             }//showList
             
-
-
             $("#addReplyBtn").on("click",function(e){
                 console.log("addReplyBtn")
                 modal.find("input").val("");
@@ -144,30 +137,23 @@
                 };
                 replyService.add(reply,function(result){
                     alert(result); 
-
                     modal.find("input").val("");
                     modal.modal("hide");
                     showList(1);
                 })
             })//modalRegisterBtn
-
-
             // $("#replycontent").css('cursor','pointer')
-
             $(".chat").on("click","li",function(e){
                 console.log(" >> chat clicked.");
                 bcno=$(this).data("bcno");
                 console.log(".chat bcno:"+bcno);
-
                 replyService.get(bcno, function(reply){
                     console.log(reply);
                     modalInputReply.val(reply.content);
                     modalInputReplyer.val(reply.nickname).attr("readonly","readonly");
                     modalinputReplyDate.val(replyService.displayTime(reply.update_ts)).attr("readonly","readonly").hide();
                     modal.data("bcno",reply.bcno);
-
                     modal.find("button[id!='modalCloseBtn']");
-
                     if("${__LOGIN__.userId}"==reply.writer){
                         modalModBtn.show();
                         modalRemoveBtn.show();
@@ -181,7 +167,6 @@
                     $("#createComment").modal("show");
                 })
             })
-
             modalModBtn.on("click",function(e){
                 console.log("modalModBtn Clicked");
             	var reply2={
@@ -195,7 +180,6 @@
 					showList(1);
 				})
             })
-
 			modalRemoveBtn.on("click",function(e){
                 console.log("removeBtn clicked >> bcno:" +bcno);
 				replyService.remove(bcno, function(result){
@@ -204,17 +188,11 @@
 					showList(1);
 				})
 			})
-
             $("#reportBtn").on("click",function(e){
                 console.log("reportBtn clicked>>")
                 $("#reportmodal").modal("show");
-
             })
-
-
       
-
-
             $("#modalReportBtn").on("click",function(e){
             	 var modalReportCode=modal.find("#reportcode").val();
                  console.log(modalReportCode);
@@ -222,7 +200,6 @@
                  var modalTargetType=modal.find("input[name='reporttype']").val();
                  var modalTarget=modal.find("input[name='reporttarget']").val();
                  var modalSuspect=modal.find("input[name='suspect']").val();
-
                  var modalReportContent=modal.find("textarea[name='rContent']");
                 console.log("modalReportBtn Clicked.");
                 var reportinfo={
@@ -240,23 +217,19 @@
                 })
             })
     	})//jq
-
-
-
         $(function(){
             console.debug('>>> jq started.');
-
             $("#listBtn").on('click',function(){
                 console.log(" >>> listBtn button clicked");
                 location.href="/board/list?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
             }) //on click
-
             $("#modifyBtn").on('click',function(){
                 console.log(" >>> modifyBtn clicked");
                 location.href="/board/modify?bno=${board.bno}&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"
             })//onclick
 
-            $("#delete").on('click',function(){
+            $("#delete, #admindeleteBtn").on('click',function(){
+
                 console.log("delete clicked.");
                 if(confirm("게시글을 삭제하시겠습니까?")){
                     let formobj=$('form');
@@ -268,8 +241,8 @@
                 }//if-else
             })//delete
             
+            
         })//js
-
     </script>
 
     <style>
@@ -327,23 +300,18 @@
             margin-left: 32px;
             margin-top: 10px;
         }
-
         button {
             margin-left: 20px;
-
             background-color: white;
             font-family: "ELAND 초이스";
             font-size: 20px;
             font-weight: 400;
             text-align: center;
             text-decoration: none;
-
             display: inline-block;
             width: auto;
-
             border: none;
             border-radius: 4px;
-
             /* box-shadow: 0 4px 6px -1px rgba(169, 235, 255, 0.781), 0 2px 4px -1px rgba(125, 160, 212, 0.425); */
             cursor: pointer;
             transition: 0.5s;
@@ -355,7 +323,6 @@
             width: 20px;
             height: 20px;
         }
-
         table {
 			width:100px;
 		    text-align: center;
@@ -489,6 +456,7 @@
             </div>
             <hr>
             <div id="threeBtn">
+                <button type="button" id="admindeleteBtn" class="btn btn-danger">관리자 권한 삭제</button>
                 <button type="button" id="modifyBtn" class="btn btn-outline-dark">수정</button>
                 <button type="button" id="delete" class="btn btn-outline-dark">삭제</button>
                 <button type="button" id="listBtn" class="btn btn-outline-dark">목록</button>

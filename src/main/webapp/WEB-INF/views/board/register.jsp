@@ -23,7 +23,6 @@
             $("#listBtn").click(function(){
             	console.log(this)
                 console.log("listBtn Clicked");
-
 				if(confirm("작성 중이던 글이 있습니다. 정말 취소하시겠습니까?")){
 	                location.href="/board/list?category=&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"					
 				} else{
@@ -32,8 +31,6 @@
             })//listbtn
            
         })//jq
-
-
         function fn_addtoBoard(){
             var title=$("#title")
             var content=$("#content")
@@ -72,13 +69,10 @@
             font-weight: 400;
             font-family: 'ELAND 초이스';
             line-height: 1;
-
             color: #444;
             background-color: #fff;
-
             padding: 0.3em 0.4em;
             margin: 0;
-
             border: 1px solid rgb(255, 255, 255);
             border-radius: 0.5em;
             box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);

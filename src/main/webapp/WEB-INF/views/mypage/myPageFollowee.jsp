@@ -20,8 +20,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-
-    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -49,27 +47,19 @@
     </script>
 
     <style>
-
     
     	* {
     		text-decoration-line: none !important;
     	}
-
-
         #container {
             width: 998px;
             margin: 0 auto;
-
             font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
-
             font-family: 'ELAND 초이스'; 
-
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }
-
         #mypage_mid_menu {
             font-size: 14px;
         }
@@ -77,12 +67,10 @@
         #mypage_follows {
         	position: relative;
         }
-
         #profile_photo {
             width: 150px;
             height: 100px;
         }        
-
         #cancelBtn {
         	position: absolute;
         	left: 170px;
@@ -96,35 +84,13 @@
     </style>
 
     
-    <%@ include file="/resources/html/header.jsp" %>
 
 </head>
 <body>
 
+    <%@ include file="/resources/html/header.jsp" %>
 
-    <header>
-        <div id="header">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <ul id="headermenu">
-                <li><a href="">LOGIN</a></li>
-                <li><a href="">CREATE ACCOUNT</a></li>
-                <li><a href="/board/list">BOARD</a></li>
-                <li>
-                    <input type="search" placeholder="Search" class="search-field" />
-                    <button type="submit" class="search-button">
-                    </button>
-                </li>
-                <li> <img id="searchimg" src="/resources/img/search.png" >
-                </li>
-            </ul>
-        </div>
-
-    </header>
-
-
-    <section>
+   <section>
 
         <div id='container'>
 
@@ -142,21 +108,6 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
-
-                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criF.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">Films</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criF.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Follows</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">GuestBook</a>
-
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
@@ -170,7 +121,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criF.userid}&currPage=1&amount=10&pagesPerPage=5">GUESTBOOK</a>
-
                             </li>
                         </ul>                        
                       </div>
@@ -198,39 +148,39 @@
             </div>
             
              <hr> 
-			
-			<c:forEach items="${followees}" var="followees">
+         
+         <c:forEach items="${followees}" var="followees">
 
-	            <div id='mypage_follows' class='container-sm'>                        
-	
-	            <div>
-	                <a href='/mypage/main?userid=${followees.userid}'><img src='../resources/img/${followees.photo}' id='profile_photo'></a>
-	            </div>                                            
-	
-	            <div class='mypage_follow_nickname'>
-	                <a href='/mypage/main?userid=${followees.userid}' style='font-size: 17px'>${followees.nickname}</a>
-	            </div>
-	                     
-	                         
-	             
-	             <hr>
-	
-	            </div>
+               <div id='mypage_follows' class='container-sm'>                        
+   
+               <div>
+                   <a href='/mypage/main?userid=${followees.userid}'><img src='../resources/img/${followees.photo}' id='profile_photo'></a>
+               </div>                                            
+   
+               <div class='mypage_follow_nickname'>
+                   <a href='/mypage/main?userid=${followees.userid}' style='font-size: 17px'>${followees.nickname}</a>
+               </div>
+                        
+                            
+                
+                <hr>
+   
+               </div>
             
-			</c:forEach>            
+         </c:forEach>            
 
             <div id='section_pagination'>
                 
                 <form id='form_pagination'>
-                	<input type='hidden' name='userid'>
+                   <input type='hidden' name='userid'>
                     <input type='hidden' name='currPage'>
                     <input type='hidden' name='amount'>
-                    <input type='hidden' name='pagesPerPage'>                    					
+                    <input type='hidden' name='pagesPerPage'>                                   
                     
                     <nav aria-label="Page navigation example">
                       <ul class="pagination">
                           <c:if test='${pageMaker.prev}'>
-                            <li class="page-item">						    
+                            <li class="page-item">                      
                               <a id='prev' class="page-link" href='${pageMaker.startPage - 1}' aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
@@ -238,12 +188,12 @@
                         </c:if>
                         
                         <c:forEach begin='${pageMaker.startPage}' end='${pageMaker.endPage}' var='pageNum'>
-						    <li class="${pageMaker.criF.currPage == pageNum ? 'page-item active' : 'page-item'}">
-						    	<a class="page-link" href="/mypage/followee?userid=${pageMaker.criF.userid}&currPage=${pageNum}&amount=${pageMaker.criF.amount}&pagesPerPage=${pageMaker.criF.pagesPerPage}">${pageNum}</a>
-						    </li>
-						</c:forEach>
+                      <li class="${pageMaker.criF.currPage == pageNum ? 'page-item active' : 'page-item'}">
+                         <a class="page-link" href="/mypage/followee?userid=${pageMaker.criF.userid}&currPage=${pageNum}&amount=${pageMaker.criF.amount}&pagesPerPage=${pageMaker.criF.pagesPerPage}">${pageNum}</a>
+                      </li>
+                  </c:forEach>
 
-                        <c:if test='${pageMaker.next}'>	
+                        <c:if test='${pageMaker.next}'>   
                             <li class="page-item">
                               <a id='next' class="page-link" href='${pageMaker.endPage + 1}' aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
@@ -261,22 +211,5 @@
 
     <%@include file="/resources/html/footer.jsp" %>
 
-    <!-- <footer>
-        <div id="footer">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <div id="pageinfo">
-                <p>
-                    서울특별시 강남구 <br> 
-                    010-9876-5432<br>
-                    abcedferasdavazsdfzsdf
-                </p>
-            </div>
-            <div id="bugreport">
-                <button>의견보내기</button>
-            </div>
-        </div>
-    </footer> -->
 </body>
 </html>

@@ -389,4 +389,3 @@ $(function() {
 	});//logout on click
 
 });//jq
-      
