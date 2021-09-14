@@ -1,6 +1,5 @@
 package com.filmee.myapp.mapper;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.junit.Before;
@@ -11,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.filmee.myapp.domain.BoardCommentVO;
-import com.filmee.myapp.domain.Criteria;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,14 +35,22 @@ public class BoardCommentMapperTests {
 		Objects.requireNonNull(this.mapper);
 	}//setup
 	
+	
+	@Test
+	public void testList() {
+		log.debug("testList() invoked.");
+		
+		this.mapper.list(396);
+	}
+	
 	@Test
 	public void testInsert() {
 		log.debug("testInsert() invoked.");
 		
 		BoardCommentVO comment = new BoardCommentVO(
 				null, 
-				171, 
-				1, 
+				396, 
+				401, 
 				" 댓글 테스트클래스에서 왔습니디ㅏㅇ", 
 				null,
 				null, 
@@ -85,13 +91,13 @@ public class BoardCommentMapperTests {
 		this.mapper.read(11);
 	}//testRead
 
-	@Test
-	public void testGetListWithPaging() {
-		log.debug("testGetListWithPaging() invoked.");
-		Criteria cri = new Criteria();
-		List<BoardCommentVO> list = this.mapper.getListWithPaging(cri, 171);
-		
-		list.forEach(log::info);
-		
-	}//testGetListWithPaging
+//	@Test
+//	public void testGetListWithPaging() {
+//		log.debug("testGetListWithPaging() invoked.");
+//		Criteria cri = new Criteria();
+//		List<BoardCommentVO> list = this.mapper.getListWithPaging(cri, 171);
+//		
+//		list.forEach(log::info);
+//		
+//	}//testGetListWithPaging
 }//end class

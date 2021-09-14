@@ -49,7 +49,7 @@
 	
 	<select id='getMainFilm' resultType='com.filmee.myapp.domain.MainFilmVO'>
 		<![CDATA[			
-			SELECT B.poster_path poster, B.original_title title, to_char(B.release_date, 'YYYY') year
+			SELECT B.film_id filmid, B.poster_path poster, B.original_title title, to_char(B.release_date, 'YYYY') year
 			FROM fm_film_reaction A
 			LEFT OUTER JOIN fm_film B ON A.film_id = B.film_id
 			WHERE A.code = 1
@@ -60,7 +60,7 @@
 	
 	<select id='getMainReview' resultType='com.filmee.myapp.domain.MainReviewVO'>
 		<![CDATA[			
-			SELECT A.rno rno, B.poster_path poster, A.content content, A.rate rate, B.original_title title, A.rate * 20 width, A.insert_ts insert_ts 
+			SELECT B.film_id filmid, A.rno rno, B.poster_path poster, A.content content, A.rate rate, B.original_title title, A.rate * 20 width, A.insert_ts insert_ts 
 			FROM fm_review A
 			LEFT OUTER JOIN fm_film B ON A.film_id = B.film_id
 			WHERE A.writer = #{userid}
@@ -84,7 +84,9 @@
 	
 	<select id='getMainActivity' resultType='com.filmee.myapp.domain.ActivityVO'>
 		<![CDATA[			
-			SELECT A.user_id userid, A.follower follower, E.nickname nicknameFollower, C.nickname nickname, D.content content, A.type type, A.code code, A.insert_ts insert_ts, B.original_title title, G.nickname nicknameGuestbook 
+			SELECT A.user_id userid, A.follower follower, E.nickname nicknameFollower, C.nickname nickname, D.content content,
+				   A.type type, A.code code, A.insert_ts insert_ts, B.original_title title, G.nickname nicknameGuestbook, F.owner owner,
+				   A.film_id filmid, A.rno rno, C.user_id followerid, F.writer writer, D.film_id reviewFilmId 
 			FROM fm_activity A
 			LEFT OUTER JOIN fm_film B ON A.film_id = B.film_id
 			LEFT OUTER JOIN fm_user C ON A.follower = C.user_id
@@ -94,6 +96,8 @@
 			LEFT OUTER JOIN fm_user G ON F.writer = G.user_id
 			WHERE A.user_id = #{userid}
 			OR A.user_id IN ( SELECT follower user_id FROM fm_follow WHERE followee = #{userid})
+			AND A.book_owner IS NULL
+			OR A.book_owner = #{userid}
 			ORDER BY A.insert_ts DESC
 			OFFSET 0 ROWS
 			FETCH NEXT 8 ROWS ONLY
@@ -128,6 +132,38 @@
     		VALUES (#{owner}, #{writer}, #{content})
     	]]>
     </insert>
+    
+    <insert id="insertFollow">
+    	<![CDATA[
+    		INSERT INTO fm_follow (follower, followee)
+			VALUES (#{userid}, #{sessionUserid})
+    	]]>
+    </insert>
+    
+    <delete id="deleteFollow">
+    	{
+	    	CALL
+	        DECLARE
+	        BEGIN
+				DELETE FROM fm_follow
+				WHERE follower = #{userid}
+				AND	  followee = #{sessionUserid};				
+	            
+	            DELETE FROM fm_activity
+				WHERE follower = #{userid}
+				AND	  user_id = #{sessionUserid};				
+	        END
+    	}
+    </delete>
+    
+    <select id='isFollowed' resultType='int'>
+		<![CDATA[
+			SELECT count(*)
+			FROM fm_follow
+			WHERE follower = #{userid}
+			AND followee = #{sessionUserid}
+		]]>		
+	</select>
 
 	<select id='getFilmReactionList' resultType='com.filmee.myapp.domain.FilmReactionVO'>
 		<![CDATA[			
@@ -275,7 +311,9 @@
 	
 	<select id='getActivityList' resultType='com.filmee.myapp.domain.ActivityVO'>		
 		<![CDATA[
-			SELECT A.user_id userid, A.follower follower, E.nickname nicknameFollower, C.nickname nickname, D.content content, A.type type, A.code code, A.insert_ts insert_ts, B.original_title title, G.nickname nicknameGuestbook 
+			SELECT A.user_id userid, A.follower follower, E.nickname nicknameFollower, C.nickname nickname, D.content content,
+				   A.type type, A.code code, A.insert_ts insert_ts, B.original_title title, G.nickname nicknameGuestbook, F.owner owner,
+				   A.film_id filmid, A.rno rno, C.user_id followerid, F.writer writer, D.film_id reviewFilmId 
 			FROM fm_activity A
 			LEFT OUTER JOIN fm_film B ON A.film_id = B.film_id
 			LEFT OUTER JOIN fm_user C ON A.follower = C.user_id
@@ -285,6 +323,8 @@
 			LEFT OUTER JOIN fm_user G ON F.writer = G.user_id
 			WHERE A.user_id = #{userid}
 			OR A.user_id IN ( SELECT follower user_id FROM fm_follow WHERE followee = #{userid})
+			AND A.book_owner IS NULL
+			OR A.book_owner = #{userid}
 			ORDER BY A.insert_ts DESC
 			OFFSET (#{currPage} - 1) * #{amount} ROWS
 			FETCH NEXT #{amount} ROWS ONLY
@@ -338,8 +378,19 @@
 		<![CDATA[
 			SELECT count(*) FROM fm_activity
 			WHERE user_id = #{userid}
-			OR user_id IN ( SELECT follower user_id FROM fm_follow WHERE followee = #{userid})			
+			OR user_id IN ( SELECT follower user_id FROM fm_follow WHERE followee = #{userid})
+			AND book_owner IS NULL
+			OR book_owner = #{userid}			
 		]]>		
 	</select>
+	
+	<update id='updateUserProfilePhoto'>
+		<![CDATA[
+			UPDATE fm_user 
+			SET profile_photo_path = #{fileName},
+			profile_text = #{profileText}
+			WHERE user_id = #{userid}			
+		]]>	
+	</update>
 	
 </mapper>

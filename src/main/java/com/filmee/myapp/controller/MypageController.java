@@ -1,6 +1,12 @@
 package com.filmee.myapp.controller;
 
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
+
+
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,9 +44,12 @@ import com.filmee.myapp.domain.MainReviewVO;
 import com.filmee.myapp.domain.MainUserVO;
 import com.filmee.myapp.domain.MyPageDTO;
 import com.filmee.myapp.domain.MypageReviewVO;
+
+
 import com.filmee.myapp.domain.UserDTO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.LoginService;
+
 import com.filmee.myapp.service.MypageService;
 
 import lombok.NoArgsConstructor;
@@ -50,12 +66,34 @@ public class MypageController {
 	@Autowired
 	MypageService service;
 	
+
+
 	@Autowired
 	LoginService loginService;
 	
+
 	@GetMapping("main")
-	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model) {
+	public String myPageMain(@ModelAttribute("cri")CriteriaMain cri, Model model, HttpServletRequest req) {
 		log.debug("myPageMain({}, {}) invoked", cri, model);
+		
+		HttpSession session = req.getSession();
+		
+		UserVO user = (UserVO) session.getAttribute("__LOGIN__");
+		
+		if(user == null) {
+			
+			model.addAttribute("isFollowed", 2);
+			
+		} else {
+			int follower = cri.getUserid();
+			int followee = user.getUserId();
+			
+			int isFollowed = this.service.isFollowed(follower, followee);
+			
+			model.addAttribute("isFollowed", isFollowed);
+			
+		} //if-else
+		
 				
 		MainUserVO userVO = this.service.getMainUser(cri);
 		int followers = this.service.getTotalCountMainFollowers(cri);
@@ -65,7 +103,7 @@ public class MypageController {
 		List<MainFilmVO> filmVO = this.service.getMainFilm(cri);
 		List<MainReviewVO> reviewVO = this.service.getMainReview(cri);
 		List<MainGuestbookVO> guestbookVO = this.service.getMainGuestbook(cri);
-		List<ActivityVO> activityVO = this.service.getMainActivity(cri);		
+		List<ActivityVO> activityVO = this.service.getMainActivity(cri);	
 		
 		model.addAttribute("userVO", userVO);
 		model.addAttribute("followers", followers);
@@ -76,6 +114,7 @@ public class MypageController {
 		model.addAttribute("reviewVO", reviewVO);
 		model.addAttribute("guestbookVO", guestbookVO);
 		model.addAttribute("activityVO", activityVO);
+		
 		
 		return "mypage/myPageMain";
 	} //myPageMain
@@ -212,7 +251,37 @@ public class MypageController {
 	public String insertGuestbook(@ModelAttribute("cri")CriteriaMain cri, MainGuestbookVO guestbook, RedirectAttributes rttrs) {
 		log.debug("deleteMainGuestbook({}, {}) invoked.", guestbook, rttrs);
 		
-		boolean isRemoved = this.service.insertGuestbook(guestbook);
+		boolean isInserted = this.service.insertGuestbook(guestbook);
+		
+		if(isInserted) {
+			rttrs.addFlashAttribute("result", "success");
+		} //if
+		
+		rttrs.addAttribute("userid", cri.getUserid());
+		
+		return "redirect:/mypage/main";
+	} //insertGuestbook
+	
+	@PostMapping("insertFollow")
+	public String insertFollow(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer follower, @RequestParam("sessionUserid") Integer followee , RedirectAttributes rttrs) {
+		log.debug("insertFollow({}, {}, {}) invoked.", follower, followee, rttrs);
+		
+		boolean isInserted = this.service.insertFollow(follower, followee);
+		
+		if(isInserted) {
+			rttrs.addFlashAttribute("result", "success");
+		} //if
+		
+		rttrs.addAttribute("userid", cri.getUserid());
+		
+		return "redirect:/mypage/main";
+	} //insertFollow
+	
+	@PostMapping("deleteFollow")
+	public String deleteFollow(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer follower, @RequestParam("sessionUserid") Integer followee , RedirectAttributes rttrs) {
+		log.debug("deleteFollow({}, {}, {}) invoked.", follower, followee, rttrs);
+		
+		boolean isRemoved = this.service.deleteFollow(follower, followee);
 		
 		if(isRemoved) {
 			rttrs.addFlashAttribute("result", "success");
@@ -221,7 +290,7 @@ public class MypageController {
 		rttrs.addAttribute("userid", cri.getUserid());
 		
 		return "redirect:/mypage/main";
-	} //insertGuestbook
+	} //deleteFollow
 	
 	@PostMapping("deleteFilmReaction")
 	public String deleteFilmReaction(@ModelAttribute("criFilm")CriteriaFilm criFilm, 
@@ -315,6 +384,25 @@ public class MypageController {
 		
 		return "redirect:/mypage/likedreviews";
 	} //deleteMyReview
+
+
+	
+	
+	@PostMapping(path = "registerUserProfile", consumes = {"multipart/form-data"})
+	public String registerUserProfile(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer userid, @RequestParam("profileText") String profileText, @RequestPart MultipartFile file, RedirectAttributes rttrs)
+			throws IllegalStateException, IOException {
+		log.debug("registerUserProfile({}, {}, {}, {}) invoked.", file, userid, profileText, rttrs);
+		
+		boolean isUpdated = this.service.updateUserProfilePhoto(file, profileText, cri);
+		
+		if(isUpdated) {
+			rttrs.addFlashAttribute("result", "success");
+		} //if
+		
+		rttrs.addAttribute("userid", cri.getUserid());
+		
+		return "redirect:/mypage/main";
+	} //registerUserProfile
 	
 	
 	//forgotPw.jsp 혹은 xxxx.jsp(마이페이지)에 심어놓은 new-pw modal에서 submit 시
@@ -327,9 +415,9 @@ public class MypageController {
 		
 		switch(result) {
 			case 1: 
-				log.info(">>>>> result : 1 >>>>>>");
+				log.info(">>>>> result : 1 >>>>>>");				
 				rttrs.addFlashAttribute("message", "temp_pw_sent");
-				return "redirect:/main/forgotPw";	//비밀번호 찾기로 Redirect 후 메세지 띄움
+				return "redirect:/main";	//비밀번호 찾기로 Redirect 후 메세지 띄움
 
 			case 2:
 				log.info(">>>>> result : 2 >>>>>>");
@@ -337,7 +425,7 @@ public class MypageController {
 				return "redirect:/mypage/main";	//마이페이지로 Redirect 후 메세지 띄움
 				
 			default:
-				log.info(">>>>> result : 2 >>>>>>");
+				log.info(">>>>> result : 3 >>>>>>");
 				return "redirect:/main/exception";	//다 안되면 Exception 페이지로 이동
 		}//switch-case
 	
@@ -357,5 +445,6 @@ public class MypageController {
 		}//if-else
 
 	}//checkCurrentPw
+
 
 } //end class
