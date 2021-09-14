@@ -18,40 +18,29 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
 	<script>
-
 		$(function(){
 			$(".fg_pw_send_btn").on('click', function(e){
 				e.preventDefault();		//submit 취소
-
 				let email = $('#forgot_pw_email').val(); //email : 지역변수
 				console.log("email forgotPw: ", email);
 			
 				if(email.length == 0){
 					alertModalMessaging("이메일 주소를 입력하세요.");
-
 				} else if(!isEmail(email)){
 					alertModalMessaging("옳바른 이메일 형식이 아닙니다.");
-
 				} else {
 					checkEmail(email);
-
 					if(!isEmailExist){
 						console.log("isEmailExist:",isEmailExist);
-
 						alertModalMessaging("등록된 이메일 주소가 아닙니다.");
 					} else {
 						$("#fgpw_form").submit();
 					}
-
 				}//if-elseIf-elseIf
-
 			});//onclick .fg_pw_send_btn
-
 		});//jquery
-
 	</script>
 	<style>
-
 		#container{
 			width: 400px;
 			height: 600px;
@@ -61,16 +50,13 @@
 		#fgpw_title{
 			margin-top: 30px;
 		}
-
 		#fgpw_title p{
 			font-size: 25px;
 			text-align: center;
 		}
-
 		#fgpw_description{
 			margin : 20px 0 30px 50px;
 		}
-
 		#fgpw_description p{
 			font-size : 15px;
 		}
@@ -80,17 +66,14 @@
 			height: 100%;
 			margin : 0 auto;
 		}
-
 		form{
 			margin-top: 50px;
 		}
-
 		form p{
 			font-size: 15px;
 			margin: 0 auto;
 			text-align: center;
 		}
-
 	</style>
 
 </head>

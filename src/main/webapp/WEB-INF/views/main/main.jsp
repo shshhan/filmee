@@ -23,11 +23,13 @@
     <link rel="stylesheet" href="/resources/css/swiper.css">
     <link rel="stylesheet" href="/resources/css/main.css">
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/jquery-1.8.3.min.js"></script>
     <script src="/resources/js/swiper.js"></script>
     
     <script>
-        
+
     	window.onload = function(){
             var swiper = new Swiper('.swiper-container', {
                         pagination: '.swiper-pagination',
@@ -39,44 +41,37 @@
                         nextButton: '.next',
                         prevButton: '.back'
             });
+            
+		
         };
 
         $(function(){
             console.log('jq started');
-
             $("#agree_cb").on('click', function(){
                 var agreeCb = $("#agree_cb").prop("checked");
                 console.log("agreeCb :", agreeCb);
-
                 if(agreeCb){
                     $("#del_acc_btn").prop("disabled", false);
                 } else {
                     $("#del_acc_btn").prop("disabled", true);
                 }//if-else
-
             });//agree_cb onclick
-
             $("#del_acc_btn").on('click', function(e){
                 e.preventDefault();     //submit 취소
-
                 if("${__LOGIN__.email}".includes("SOC.KAKAO_")){    //현재 로그인된 계정이 카카오 계정이라면
                     Kakao.API.request({     //카카오 간편로그인 token 해제
                         url: '/v1/user/unlink',
                         success: function(response) {
                             console.log(response);
-
                             $("#del_acc_form").submit();    //DB에서 탈퇴처리
                         },
                         fail: function(error) {
                             console.log(error);
                         }
                     });//Kakao.API,request
-
                 }else {         //현재 로그인된 계정이 일반계정이라면
                     $("#del_acc_form").submit();    
-
                 }//if-else
-
             });//del_acc_btn onclick
             
         });//jq
@@ -131,7 +126,7 @@
 
     <div id="container">
             
- 
+        
         <div id="mainback">
             <img class="img-fluid" src="/resources/img/common.jpg" alt="mainbackimg" width="998">
     
@@ -212,6 +207,5 @@
         </div>
     </div>  
     <%@include file="/resources/html/footer.jsp" %>
-      
 </body>
 </html>

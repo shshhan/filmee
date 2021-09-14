@@ -17,36 +17,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
 	<script>
-
 		$(function(){
 			console.log("jq started");
-
 			$( document ).ready(function() {	//dom이 모두 준비되면
 				
 				$("#alert_modal p").text("로그인이 필요합니다.");
 				$("#alert_modal").modal("show");
-
 				var alertModalEl = document.getElementById('alert_modal');
-
 				alertModalEl.addEventListener('hidden.bs.modal', function(){
 			
 					$("#login").modal("show");
-
 					$("#login .btn-close").on('click', function(){
 						location.reload();
 						history.go(-1);
 					});
-
 				});//alertModal eventListener
-
 			});//document.ready
-
 			$(window).unload(function(){
 				deleteCookie("__ORIGINAL_REQUEST_URI__");
 			});
-
 		});//jquery
-
 	</script>
 
 

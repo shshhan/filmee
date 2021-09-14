@@ -1,8 +1,41 @@
+<<<<<<< HEAD
+body,input,textarea,select,button,table{font-family:'Florencesans SC Exp'; font-size:12px; color:#333;}
+body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
+h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
+ul,ol{list-style:none;}
+fieldset,img{border:0; vertical-align:top;}
+address{font-style:normal;}
+p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
+/* a-style */
+a{color:#333;text-decoration:none;}
+a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
+=======
+>>>>>>> b0276caad4151a0383b18c2dd8e12c1ac4a59640
 
 /* ======================== footer =============================== */
 
 #footer{
     width: 998px;
+<<<<<<< HEAD
+    height: 150px;
+    margin: 0 auto;
+    bottom: 0;
+}
+#pageinfo{
+    float: right;
+    margin: 0 20px;
+    text-align: right;
+}
+#bugreport{
+    clear: both;
+    float: right;
+}
+
+#logoimg{
+    width: 200px;
+    margin: 0;
+}
+=======
     height : 130px;
     margin: 0 auto;
 }
@@ -33,3 +66,4 @@
 #footer_buttons div:nth-of-type(2){
     margin-top: 20px;
 }
+>>>>>>> b0276caad4151a0383b18c2dd8e12c1ac4a59640
