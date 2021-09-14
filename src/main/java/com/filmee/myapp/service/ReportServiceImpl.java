@@ -5,8 +5,10 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.filmee.myapp.domain.CriteriaReport;
+import com.filmee.myapp.domain.PunishDTO;
 import com.filmee.myapp.domain.ReportVO;
 import com.filmee.myapp.mapper.ReportMapper;
 
@@ -40,13 +42,22 @@ public class ReportServiceImpl implements ReportService {
 	}//getList
 
 
+	@Transactional	//두개의 DML문장을 트랜잭션처리
 	@Override
-	public int complete(Integer rptno, Integer mgr_id) {
-		log.debug(" SERVICE >> complete({}) invoked.", rptno);
+	public int complete(PunishDTO dto) {
+		log.debug(" SERVICE >> complete({}) invoked.", dto);
 		Objects.requireNonNull(this.mapper);
 		
-		return this.mapper.complete(rptno,mgr_id);
-	}
+		int aLine1 = this.mapper.complete(dto);
+		int aLine2 = this.mapper.updateUserSus(dto);
+		
+		if((aLine1 == 1) && (aLine1 == aLine2)) {
+			return 1;
+		} else {
+			return 2;
+		}//if-else
+				
+	}//complete
 
 	@Override
 	public int getTotal(CriteriaReport cri) {

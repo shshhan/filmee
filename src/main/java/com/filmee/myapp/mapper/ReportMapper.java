@@ -3,6 +3,7 @@ package com.filmee.myapp.mapper;
 import java.util.List;
 
 import com.filmee.myapp.domain.CriteriaReport;
+import com.filmee.myapp.domain.PunishDTO;
 import com.filmee.myapp.domain.ReportVO;
 
 public interface ReportMapper {
@@ -14,9 +15,11 @@ public interface ReportMapper {
 	public abstract List<ReportVO> getList(CriteriaReport cri);
 	
 	//신고처리
-	public abstract int complete(Integer rptno, Integer mgr_id);
+	public abstract int complete(PunishDTO dto);
+	public abstract int updateUserSus(PunishDTO dto);
 	
 	//전체 신고물 수
 	public abstract int getTotal(CriteriaReport cri);
+	
 	
 }//end class

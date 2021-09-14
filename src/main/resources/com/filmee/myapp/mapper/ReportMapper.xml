@@ -28,8 +28,18 @@
 
     <update id="complete">
         UPDATE fm_report
-        SET complete_ts=current_date, mgr_id=#{mgr_id}
+        SET complete_ts=current_date, 
+        	mgr_id=#{mgrId},
+        	sus_period=#{susPeriod}
         WHERE rptno=#{rptno}
+    </update>
+
+    <update id="updateUserSus">
+        UPDATE fm_user
+        SET sus_from=current_date,
+        	sus_to=current_date + #{susPeriod},
+        	sus_reason=#{rptno}
+        WHERE user_id=#{suspect}
     </update>
     
 </mapper>

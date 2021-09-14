@@ -23,5 +23,6 @@ public class ReportVO {
 	private Date complete_ts;		//처리일
 	private Integer mgr_id;			//처리관리자ID
 	private String nickname;		//처리관리자닉네임
+	private Integer sus_period;		//활동정지기간
 	
 }
