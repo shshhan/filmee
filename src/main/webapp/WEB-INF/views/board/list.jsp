@@ -56,8 +56,6 @@
 
 		#category{
             font-family: 'ELAND 초이스';
-		    /*width: 998px;
-		    margin: 0 auto;*/
 		    font-size: 20px;
             -ms-user-select: none; 
             -moz-user-select: -moz-none;
