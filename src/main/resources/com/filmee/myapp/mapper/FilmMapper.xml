@@ -83,8 +83,11 @@
    </select>
    
    <delete id="delete">
-      DELETE FROM FM_REVIEW
-   	  WHERE RNO = #{RNO}
+     UPDATE fm_review
+     SET       
+        delete_ts = current_date
+    WHERE
+        rno = #{rno}
    </delete>
    
    <update id="update">
