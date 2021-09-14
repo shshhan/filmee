@@ -63,16 +63,22 @@
     </script>
 
     <style>
+
     
     	* {
     		text-decoration-line: none !important;
     	}
 
+
         #container {
             width: 998px;
             margin: 0 auto;
 
+
+            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
+
             font-family: 'ELAND 초이스'; 
+
         }
 
         #mypage_top_menu {
@@ -89,11 +95,35 @@
         }
     
     </style>
+
     
     <%@ include file="/resources/html/header.jsp" %>
 
+
 </head>
 <body>
+
+
+    <header>
+        <div id="header">
+            <a href="/main">
+                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
+            </a>
+            <ul id="headermenu">
+                <li><a href="">LOGIN</a></li>
+                <li><a href="">CREATE ACCOUNT</a></li>
+                <li><a href="/board/list">BOARD</a></li>
+                <li>
+                    <input type="search" placeholder="Search" class="search-field" />
+                    <button type="submit" class="search-button">
+                    </button>
+                </li>
+                <li> <img id="searchimg" src="/resources/img/search.png" >
+                </li>
+            </ul>
+        </div>
+
+    </header>
 
 
     <section>
@@ -114,6 +144,21 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
+
+                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/films?userid=${pageMaker.criG.userid}&code=1&currPage=1&amount=5&pagesPerPage=5">Films</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criG.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">GuestBook</a>
+
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criG.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
@@ -127,6 +172,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="#">GUESTBOOK</a>
+
                             </li>
                         </ul>                        
                       </div>
@@ -169,6 +215,7 @@
 									<td>${guestbook.content}</td>								
 									<td><a class='guestbook_a' href='/mypage/main?userid=${guestbook.writer}'>${guestbook.nickname}</a></td>
 	                                <td><button onclick="deleteGuestbook('${guestbook.gno}')" type="button" class="btn btn-outline-danger btn-sm">Del</button></td>								
+
 								</tr>
 								</form>                            
                             </c:forEach>			

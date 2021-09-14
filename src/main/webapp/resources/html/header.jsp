@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+
+
+
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -22,7 +25,7 @@
         <!---------- jQuery ---------->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-        
+
         <!---------- Social Login ---------->           
         <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
@@ -30,158 +33,155 @@
         <script src="https://www.google.com/recaptcha/api.js"></script>
 
         <!---------- External JS ---------->
-    	<script src="/resources/js/header.js"></script>
+    	  <script src="/resources/js/header.js"></script>
 
         <!---------- API-KEY ---------->
         <fmt:setBundle basename="application-API-KEY" var="API_KEY" />
         
-
-
         <script>
             Kakao.init('<fmt:message key="kakao-login-key" bundle="${API_KEY}"/>');
             console.log("API Initialized :", Kakao.isInitialized());
 
+            $(function() {
+              console.log('jq started.');
 
-              $(function() {
-                console.log('jq started.');
-        
-                //로그인 여부에 따라 보여주는 header 변경
-                if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
-                    $(".strangerHeadermenu").attr("style", "display:none");
-                    $(".memberHeadermenu").attr("style", "display:inline");
-                    $(".memberHeadermenu").attr("style", "font-size:19px");
-	                $(".memberHeadermenu").attr("style", "font-weight:bold");
-                }//if
-
-
-                //전달된 message가 있으면 alert
-                switch("${message}"){
-
-                    //회원가입 성공시
-                    case 'just_joinned' :
-                        alertModalMessaging("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
-                        break;
-                        
-                    //소셜로그인을 통해 회원가입시
-                    case 'social_join' :
-                        alertModalMessaging("회원가입완료! 카카오 계정으로 로그인 가능합니다.");
-                        break;
-                                                            
-                    //회원가입 후 이메일 인증까지 마쳤을 시
-                    case 'join_complete' :
-                        alertModalMessaging("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
-                        break;
-                        
-                    //임시비밀번호 발송시
-                    case 'temp_pw_sent' :
-                        alertModalMessaging("임시비밀번호를 발송했습니다.");
-                        break;
-                    
-                    //비밀번호 찾기에서 미가입 이메일 입력시
-                    case 'no_info_forgot_pw' :
-                        alertModalMessaging("등록되지 않은 이메일 주소입니다.");
-                        break;
-                        
-                    //비밀번호 변경시
-                    case 'pw_changed' :
-                        alertModalMessaging("비밀번호가 변경되었습니다.");
-                        break;
-
-                    //회원 탈퇴시
-                     case 'account_deleted' :
-                        alertModalMessaging("회원탈퇴가 정상적으로 처리되었습니다.");
-                        break;
-                    
-                    //오류, 정보 불일치 등으로 실패시
-                    case 'task_failed' :
-                        alertModalMessaging("오류 발생! 다시 시도해주세요. 이 메세지가 반복될 시 관리자에게 문의해주세요. ");
-                        break;
-                        
-                    default :
-                }//switch-case
+              //로그인 여부에 따라 보여주는 header 변경
+              if("${__LOGIN__}".length > 0){	//로그인 돼있을 경우
+                  $(".strangerHeadermenu").attr("style", "display:none");
+                  $(".memberHeadermenu").attr("style", "display:inline");
+                  $(".memberHeadermenu").attr("style", "font-size:19px");
+                $(".memberHeadermenu").attr("style", "font-weight:bold");
+              }//if
 
 
-                $('#header_search').on('propertychange change keyup paste input', function() {
+              //전달된 message가 있으면 alert
+              switch("${message}"){
+
+                  //회원가입 성공시
+                  case 'just_joinned' :
+                      alertModalMessaging("회원가입완료! 이메일 인증 완료 후 로그인 가능합니다.");
+                      break;
+
+                  //소셜로그인을 통해 회원가입시
+                  case 'social_join' :
+                      alertModalMessaging("회원가입완료! 카카오 계정으로 로그인 가능합니다.");
+                      break;
+
+                  //회원가입 후 이메일 인증까지 마쳤을 시
+                  case 'join_complete' :
+                      alertModalMessaging("이메일 인증이 완료되었습니다. 로그인 가능합니다.");
+                      break;
+
+                  //임시비밀번호 발송시
+                  case 'temp_pw_sent' :
+                      alertModalMessaging("임시비밀번호를 발송했습니다.");
+                      break;
+
+                  //비밀번호 찾기에서 미가입 이메일 입력시
+                  case 'no_info_forgot_pw' :
+                      alertModalMessaging("등록되지 않은 이메일 주소입니다.");
+                      break;
+
+                  //비밀번호 변경시
+                  case 'pw_changed' :
+                      alertModalMessaging("비밀번호가 변경되었습니다.");
+                      break;
+
+                  //회원 탈퇴시
+                   case 'account_deleted' :
+                      alertModalMessaging("회원탈퇴가 정상적으로 처리되었습니다.");
+                      break;
+
+                  //오류, 정보 불일치 등으로 실패시
+                  case 'task_failed' :
+                      alertModalMessaging("오류 발생! 다시 시도해주세요. 이 메세지가 반복될 시 관리자에게 문의해주세요. ");
+                      break;
+
+                  default :
+              }//switch-case
+
+
+              $('#header_search').on('propertychange change keyup paste input', function() {
+
+                var selected = $('#header_select').val();                
+
+                if(selected == 1){
+
+                    var filmTitle = $('#header_search').val();
+                    var filmTitleComplete = {filmTitle : filmTitle};
+
+                    $.ajax({
+                        url:'/search/searchFilmAutoComplete',
+                        type:'post',
+                        data: filmTitleComplete,
+                        success : function(listFilm) { 
+
+                            $('#autocomplete_result_list').css('display', 'inline-block');
+                            $('#autocomplete_result_list').css('z-index', 3);
+
+                            $('.searchTrTemp').remove();
+
+                        console.log('length :' + listFilm.length);
+
+                        for(var i = 0; i < listFilm.length; i++) {
+                          console.log('poster : ' + listFilm[i].poster);
+                          console.log('title : ' + listFilm[i].title);
+
+                          $('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+                          $('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+
+                          $('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
+                              $('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
+
+                        } //for
+
+                        } //success
+
+                    }); //ajax
+
+                } //if
                 	
-                	var selected = $('#header_select').val();                
-                	
-                	if(selected == 1){
+                if(selected == 2){
 
-	                    var filmTitle = $('#header_search').val();
-	                    var filmTitleComplete = {filmTitle : filmTitle};
-	
-	                    $.ajax({
-	                        url:'/search/searchFilmAutoComplete',
-	                        type:'post',
-	                        data: filmTitleComplete,
-	                        success : function(listFilm) { 
-	                        	
-	                            $('#autocomplete_result_list').css('display', 'inline-block');
-	                            $('#autocomplete_result_list').css('z-index', 3);
-	                            
-	                            $('.searchTrTemp').remove();
-	                    
-	                    		console.log('length :' + listFilm.length);
-	                    		
-	                    		for(var i = 0; i < listFilm.length; i++) {
-	                    			console.log('poster : ' + listFilm[i].poster);
-	                    			console.log('title : ' + listFilm[i].title);
-	                    			
-	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
-	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
-	                    			
-	                    			$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"'><img src='https://www.themoviedb.org/t/p/original"+listFilm[i].poster+"' style='width:150px; height:100px; float: left;'></a>");
-	                            	$('#searchTd'+i).append("<a href='/film/"+listFilm[i].filmid+"' id='searchTitle' style='float: left;'>"+listFilm[i].title+"</a>");
-	                    		
-	                    		} //for
-	                    		
-	                        } //success
-	                    
-	                    }); //ajax
-                    
-                	} //if
-                	
-                	if(selected == 2){
-                		
-                		var nickname = $('#header_search').val();
-	                    var nicknameComplete = {nickname : nickname};
-	
-	                    $.ajax({
-	                        url:'/search/searchUserAutoComplete',
-	                        type:'post',
-	                        data: nicknameComplete,
-	                        success : function(listUser) { 
-	                        	
-	                            $('#autocomplete_result_list').css('display', 'inline-block');
-	                            $('#autocomplete_result_list').css('z-index', 3);
-	                            
-	                            $('.searchTrTemp').remove();
-	                    
-	                    		console.log('length :' + listUser.length);
-	                    		
-	                    		for(var i = 0; i < listUser.length; i++) {
-	                    			console.log('photo : ' + listUser[i].photo);
-	                    			console.log('nickname : ' + listUser[i].nickname);
-	                    			
-	                    			$('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
-	                    			$('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
-	                    			
-	                    			$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"'><img src='../resources/img/"+listUser[i].photo+"' style='width:150px; height:100px; float: left;'></a>");
-	                            	$('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"' id='searchTitle' style='float: left;'>"+listUser[i].nickname+"</a>");
-	                    		
-	                    		} //for
-	                    		
-	                        } //success
-	                    
-	                    }); //ajax
-                		
-                	} //if
-                    
-                }); //propertychange change keyup paste input
+                  var nickname = $('#header_search').val();
+                    var nicknameComplete = {nickname : nickname};
+
+                    $.ajax({
+                        url:'/search/searchUserAutoComplete',
+                        type:'post',
+                        data: nicknameComplete,
+                        success : function(listUser) { 
+
+                            $('#autocomplete_result_list').css('display', 'inline-block');
+                            $('#autocomplete_result_list').css('z-index', 3);
+
+                            $('.searchTrTemp').remove();
+
+                        console.log('length :' + listUser.length);
+
+                        for(var i = 0; i < listUser.length; i++) {
+                          console.log('photo : ' + listUser[i].photo);
+                          console.log('nickname : ' + listUser[i].nickname);
+
+                          $('#searchTr').append("<tr class='searchTrTemp' id='searchTr"+i+"'>");
+                          $('#searchTr'+i).append("<td class='searchTd' id='searchTd"+i+"' style='width: 300px'>");                    			
+
+                          $('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"'><img src='../resources/img/"+listUser[i].photo+"' style='width:150px; height:100px; float: left;'></a>");
+                              $('#searchTd'+i).append("<a href='/mypage/main?userid="+listUser[i].userid+"' id='searchTitle' style='float: left;'>"+listUser[i].nickname+"</a>");
+
+                        } //for
+
+                        } //success
+
+                    }); //ajax
+
+                } //if
+
+              }); //propertychange change keyup paste input
                 
-	            $('#searchBtn').on('click', function(e) {
-	            	
-	            	e.preventDefault();
+            $('#searchBtn').on('click', function(e) {
+
+              e.preventDefault();
 	            	
 					var searchForm = $('#searchSubmit');
 					var selected = $('#header_select').val();
@@ -282,8 +282,6 @@
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
-                  
-                  
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                       <li class="nav-item">
@@ -298,7 +296,7 @@
                         <a class="nav-link" href="/board/list" style='font-size: 19px; font-weight: bold;'>Board</a>
                       </li>                                           
                     </ul>
-                    
+
                     <form id='searchSubmit' class="d-flex">
                     <input type='hidden' name='currPage' value='1' >
                     <input type='hidden' name='amount' value='10' >
@@ -445,8 +443,7 @@
                 </div>
             </div>
             </div>
-        </div>
-          
+        </div>         
 	</body>
 
 </html>

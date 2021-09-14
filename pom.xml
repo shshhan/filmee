@@ -222,6 +222,8 @@
 		    <groupId>org.springframework.security</groupId>
 		    <artifactId>spring-security-core</artifactId>
 		    <version>${org.springsecurity-version}</version>
+
+
 		</dependency>
 		
 		<!-- spring-context-support -->
@@ -229,7 +231,9 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework-version}</version>
+
 		</dependency>
+		
 
 		<!-- ================== Testing ================== -->
 
@@ -299,6 +303,8 @@
 		    <artifactId>javax.mail</artifactId>
 		    <version>1.6.2</version>
 		</dependency>
+
+
 
 		<!-- ====================== Misc ==================== -->
 		
