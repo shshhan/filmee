@@ -23,11 +23,13 @@
     <link rel="stylesheet" href="/resources/css/swiper.css">
     <link rel="stylesheet" href="/resources/css/main.css">
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/jquery-1.8.3.min.js"></script>
     <script src="/resources/js/swiper.js"></script>
     
     <script>
-        
+
     	window.onload = function(){
             var swiper = new Swiper('.swiper-container', {
                         pagination: '.swiper-pagination',
@@ -39,7 +41,10 @@
                         nextButton: '.next',
                         prevButton: '.back'
             });
+            
+		
         };
+
         $(function(){
             console.log('jq started');
             $("#agree_cb").on('click', function(){
@@ -121,7 +126,7 @@
 
     <div id="container">
             
- 
+        
         <div id="mainback">
             <img class="img-fluid" src="/resources/img/common.jpg" alt="mainbackimg" width="998">
     
@@ -202,6 +207,5 @@
         </div>
     </div>  
     <%@include file="/resources/html/footer.jsp" %>
-      
 </body>
 </html>
