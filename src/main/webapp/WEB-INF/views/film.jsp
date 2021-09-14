@@ -112,8 +112,8 @@
 	
 	
 	#frm-review{
-	height: 400px;
-	width: 400px;
+	height: 350px;
+	width: 350px;
 	}
 	</style>
 	
@@ -283,34 +283,29 @@
                                         data-action="/film/the-social-network/add-to-watchlist/">Watchlist</a></li>
 
                                 <li class="-row-clear panel-rate js-panel-rate">
-                                    <span class="rateit-label js-rateit-label">Rate</span>
-                                    <input id="frm-sidebar-rating" data-film-id="26711" class="panel-rateit-field"
-                                        type="range" min="0" max="10" step="1" value="0" style="display: none;">
-                                    <div class="rateit panel-rateit instant-rating" data-film-id="26711"
-                                        data-rate-action="/film/the-social-network/rate/"
-                                        data-rateit-backingfld="#frm-sidebar-rating" data-rateit-starwidth="18"
-                                        data-rateit-starheight="32" data-rateit-resetable="false"><button
-                                            id="rateit-reset-2" class="rateit-reset" aria-label="reset rating"
-                                            aria-controls="rateit-range-2" style="display: none;"></button>
-                                        <div id="rateit-range-2" class="rateit-range" tabindex="0" role="slider"
-                                            aria-label="rating" aria-owns="rateit-reset-2" aria-valuemin="0"
-                                            aria-valuemax="10" aria-valuenow="0" aria-readonly="false"
-                                            style="width: 180px; height: 32px;">
-                                            <div class="rateit-selected" style="height: 32px; width: 0px;"></div>
-                                            <div class="rateit-hover" style="height:32px"></div>
-                                        </div>
-                                    </div>
+                                    <span class="rateit-label js-rateit-label">   </span>
+                                   				 <div id = "starbox">
+						 <div class="star-rating space-x-4 mx-auto">
+							<input type="radio" id="5-stars" name="rating" value="5" v-model="ratings"/>
+							<label for="5-stars" class="star pr-4">★</label>
+							<input type="radio" id="4-stars" name="rating" value="4" v-model="ratings"/>
+							<label for="4-stars" class="star">★</label>
+							<input type="radio" id="3-stars" name="rating" value="3" v-model="ratings"/>
+							<label for="3-stars" class="star">★</label>
+							<input type="radio" id="2-stars" name="rating" value="2" v-model="ratings"/>
+							<label for="2-stars" class="star">★</label>
+							<input type="radio" id="1-star" name="rating" value="1" v-model="ratings" />
+							<label for="1-star" class="star">★</label>
+						</div>
+				 
+				 		</div>
                                 </li>
-										
-
-                               <%--  <li><a href="/film/${filmVO.film_id}/review/register" class="add-this-film">리뷰 남기기</a>
-                                </li> --%>
-
+							
                                 
                           <!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeModal">
-		  리뷰 작성 
-		</button>
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeModal">
+				  리뷰 작성 
+				</button>
 		
 		<!-- Modal -->
 		<div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
