@@ -52,25 +52,16 @@
     </script>
 
     <style>
-
-
     
     	* {
     		text-decoration-line: none !important;
     	}
-
-
         #container {
             width: 998px;
             margin: 0 auto;
-
-
             font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
-
             font-family: 'ELAND 초이스'; 
-
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }

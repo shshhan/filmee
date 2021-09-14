@@ -29,7 +29,6 @@
         /* a-style */
         a{color:#333;text-decoration:none;}
         a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
         body{
             width: 998px;
             margin: 0 auto;
@@ -146,7 +145,6 @@
     
     <script type="text/javascript">
         $(function() {
-
             $( "#testDatepicker" ).datepicker({
                 dateFormat: 'yy-mm-dd' //Input Display Format 변경
                     ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시

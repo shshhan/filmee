@@ -68,32 +68,22 @@
     </script>
 
     <style>
-
     
     	* {
     		text-decoration-line: none !important;
     	}
-
-
         #container {
             width: 998px;
             margin: 0 auto;
-
-
             font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
-
             font-family: 'ELAND 초이스'; 
-
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }
-
         #mypage_mid_menu {
             font-size: 14px;
         }
-
         #film_poster {
             width: 400px;
             height: 300px;
@@ -128,13 +118,11 @@
             font-family: 'Font Awesome 5 free';
             font-weight: 900;
         }
-
         #mypage_review_content {             
             overflow: hidden;
         	text-overflow: ellipsis;
         	white-space: normal;
         	line-height: 1.2;
-
         	text-align: left;
         	word-wrap: break-word;
         	display: -webkit-box;
@@ -145,7 +133,6 @@
         #mypage_button {
         	position: relative
         }
-
         #delBtn {
         	position: absolute;
         	bottom: 10px;
