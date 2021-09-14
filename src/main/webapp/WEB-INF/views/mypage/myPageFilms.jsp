@@ -20,11 +20,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-
-
-    <link rel="stylesheet" href="../resources/css/header.css">
-
-    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -121,37 +116,13 @@
 
 
 </head>
+
 <body>
 
-    <header>
-        <div id="header">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <ul id="headermenu">
-                <li><a href="">LOGIN</a></li>
-                <li><a href="">CREATE ACCOUNT</a></li>
-                <li><a href="/board/list">BOARD</a></li>
-                <li>
-                    <input type="search" placeholder="Search" class="search-field" />
-                    <button type="submit" class="search-button">
-                    </button>
-                </li>
-                <li> <img id="searchimg" src="/resources/img/search.png" >
-                </li>
-            </ul>
-        </div>
 
-    </header>
-
-    
     <%@ include file="/resources/html/header.jsp" %>
 
-</head>
-<body>
-
-
-    <section>
+     <section>
 
         <div id='container'>
 
@@ -169,21 +140,6 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
-
-                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Films</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criFilm.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">GuestBook</a>
-
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
@@ -197,7 +153,6 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">GUESTBOOK</a>
-
                             </li>
                         </ul>                        
                       </div>
@@ -213,17 +168,6 @@
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-
-                      <a class="${pageMaker.criFilm.code == 1 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=1&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">favorite</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a class="${pageMaker.criFilm.code == 2 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=2&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">watched</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                        <a class="${pageMaker.criFilm.code == 3 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=3&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">want watch</a>
-
                       <a class="${pageMaker.criFilm.code == 1 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=1&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">Favorite</a>
                     </li>
                     
@@ -233,7 +177,6 @@
                     
                     <li class="nav-item">
                         <a class="${pageMaker.criFilm.code == 3 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=3&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">WishToWatch</a>
-
                       </li>
                   </ul>
 
@@ -242,41 +185,40 @@
             <div id='mypage_myfilms' class='container-sm'>
 
                 <hr>
-				
-				<c:forEach items="${films}" var="films">
-				<form action="/mypage/deleteFilmReaction" method="POST" id='form_${films.userid}_${films.filmid}_${films.code}'>
-				<input type='hidden' name='userid' value='${pageMaker.criFilm.userid}'>
-				<input type='hidden' name='filmid' value='${films.filmid}'>
-				<input type='hidden' name='code' value='${films.code}' >
-				<input type='hidden' name='currPage' value='${pageMaker.criFilm.currPage}'>
-				<input type='hidden' name='amount' value='${pageMaker.criFilm.amount}'>
-				<input type='hidden' name='pagesPerPage' value='${pageMaker.criFilm.pagesPerPage}'>
-	                <div class='row'>
-	
-	                    <div class='col-6'>
-	                        <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
-	                    </div>
-	
-	                    <div class='col-6' id='mypage_button'>
-	                        <a href='/film/${films.filmid}'  id='mypage_film_title'>${films.title}</a><br>
-	                        
-	                        <hr>
-	
-	                        <div class='mypage_film_content' id='mypage_film_content'>
-
-	                            <a href='/film/${films.filmid}' style='font-size: 17px; color: black;'>${films.plot}</a>	
-	
-	                        </div>
-	                            
-	                        <button id='delBtn' onclick="deleteFilmReaction('${films.userid}', ${films.filmid}, ${films.code})" type="button" class="btn btn-outline-danger btn-sm">Del</button>
-
-	                    </div>
-	
-	                </div>
-	                
-	                <hr>
-	                </form>
-				</c:forEach>                                  
+            
+            <c:forEach items="${films}" var="films">
+            <form action="/mypage/deleteFilmReaction" method="POST" id='form_${films.userid}_${films.filmid}_${films.code}'>
+            <input type='hidden' name='userid' value='${pageMaker.criFilm.userid}'>
+            <input type='hidden' name='filmid' value='${films.filmid}'>
+            <input type='hidden' name='code' value='${films.code}' >
+            <input type='hidden' name='currPage' value='${pageMaker.criFilm.currPage}'>
+            <input type='hidden' name='amount' value='${pageMaker.criFilm.amount}'>
+            <input type='hidden' name='pagesPerPage' value='${pageMaker.criFilm.pagesPerPage}'>
+                   <div class='row'>
+   
+                       <div class='col-6'>
+                           <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
+                       </div>
+   
+                       <div class='col-6' id='mypage_button'>
+                           <a href='/film/${films.filmid}'  id='mypage_film_title'>${films.title}</a><br>
+                           
+                           <hr>
+   
+                           <div class='mypage_film_content' id='mypage_film_content'>
+   
+                               <a href='/film/${films.filmid}' style='font-size: 17px; color: black;'>${films.plot}</a>   
+   
+                           </div>
+                               
+                           <button id='delBtn' onclick="deleteFilmReaction('${films.userid}', ${films.filmid}, ${films.code})" type="button" class="btn btn-outline-danger btn-sm">Del</button>
+                       </div>
+   
+                   </div>
+                   
+                   <hr>
+                   </form>
+            </c:forEach>                                  
 
             </div>
 
@@ -285,7 +227,7 @@
                 <hr>
 
                 <form id='form_pagination'>
-                    <input type='hidden' name='userid'>						
+                    <input type='hidden' name='userid'>                  
                     <input type='hidden' name='code'>
                     <input type='hidden' name='currPage'>
                     <input type='hidden' name='amount'>
@@ -294,7 +236,7 @@
                     <nav aria-label="Page navigation example">
                       <ul class="pagination">
                           <c:if test='${pageMaker.prev}'>
-                            <li class="page-item">						    
+                            <li class="page-item">                      
                               <a id='prev' class="page-link" href='${pageMaker.startPage - 1}' aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                               </a>
@@ -302,12 +244,12 @@
                         </c:if>
                         
                         <c:forEach begin='${pageMaker.startPage}' end='${pageMaker.endPage}' var='pageNum'>
-						    <li class="${pageMaker.criFilm.currPage == pageNum ? 'page-item active' : 'page-item'}">
-						    	<a class="page-link" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=${pageMaker.criFilm.code}&currPage=${pageNum}&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">${pageNum}</a>
-						    </li>
-						</c:forEach>
+                      <li class="${pageMaker.criFilm.currPage == pageNum ? 'page-item active' : 'page-item'}">
+                         <a class="page-link" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=${pageMaker.criFilm.code}&currPage=${pageNum}&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">${pageNum}</a>
+                      </li>
+                  </c:forEach>
 
-                        <c:if test='${pageMaker.next}'>	
+                        <c:if test='${pageMaker.next}'>   
                             <li class="page-item">
                               <a id='next' class="page-link" href='${pageMaker.endPage + 1}' aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
@@ -325,24 +267,5 @@
 
     <%@include file="/resources/html/footer.jsp" %>
 
-    <!-- <footer>
-        
-        <footer>
-        <div id="footer">
-            <a href="/main">
-                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
-            </a>
-            <div id="pageinfo">
-                <p>
-                    서울특별시 강남구 <br> 
-                    010-9876-5432<br>
-                    abcedferasdavazsdfzsdf
-                </p>
-            </div>
-            <div id="bugreport">
-                <button>의견보내기</button>
-            </div>
-        </div>
-    </footer> -->
 </body>
 </html>
