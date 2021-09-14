@@ -58,9 +58,17 @@
 
         function detail(rptno, code, accuser, content, suspect){
             var detail=$('#detailmodal')
-            console.log("detail>> " + rptno);            
+            console.log("detail>> " + rptno); 
+            if(code==1){
+                $('#reportcode').attr("value", "욕설/비방");
+            } else if (code==2){
+                $('#reportcode').attr("value", "스포일러");
+            } else if (code==3){
+                $('#reportcode').attr("value", "광고");
+            } else{
+                $('#reportcode').attr("value", "기타");
+            }
 
-            $('#reportcode').attr("value", code);
             $('#reportaccuser').attr("value", accuser);
             $('#reportcontent').attr("value", content);
             $('#reportsuspect').attr("value", suspect);
@@ -320,7 +328,7 @@
                     </div>
                     <div class="form-group">
                         <label for="reportcontent">내용</label>
-                        <input name="rContent" class="form-control" cols="44" rows="5" id="reportcontent" value="${report.content}" readonly>
+                        <input type="text" name="rContent" class="form-control" cols="44" rows="5" id="reportcontent" value="${report.content}" readonly>
                     </div>      
                     <div class="form-group">
                         <label>신고대상</label>

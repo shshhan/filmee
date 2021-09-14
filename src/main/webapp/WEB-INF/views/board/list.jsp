@@ -57,25 +57,29 @@
 		}
 		#category>ul{
 			text-align:center;
+            height: 100px;
 		}
 		#category>ul>li{
+            font-size: 25px ;
 			text-align: center;
 		    display:inline-table;
-		    width: 3%;
+		    width: 18%;
 		    text-align: center;
 		    padding: 30px;
 		}
         #category>ul>li>a:hover{
-            color: rgb(128, 208, 240);
+            font-size: 29px;
+            color: rgba(0, 0, 0, 0.616);
+            font-weight: bold;
         }
         #listline{
-            background-color: rgba(226, 223, 223, 0.473);
+            background-color: rgba(218, 218, 218, 0.26);
+            font-size: 17px;
         }
 		
 		#boardlist {
 			width:100%;
 		    text-align: center;
-		    margin: 20px ;
 		    font-size: 20px;
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
@@ -94,7 +98,7 @@
   			border-bottom: 1px solid #ddd;
   		}
   		#boardlist>tbody>tr:hover {
-  		  	background-color: #dddddd60;
+  		  	background-color: #e2e2e260;
   		}
   		  
 		#pageNumber{
@@ -118,6 +122,9 @@
         }
         #regBtn{
             float: right;
+        }
+        #boardSearch{
+            height: 60px;
         }
         #boardSearchMenu{
             float: right;
@@ -171,6 +178,11 @@
         #searchimg{
             width: 20px;
         }
+        #menulist{
+            background-image: url("/resources/img/popcorn.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
     </style>
 </head>
 <body>
@@ -190,12 +202,12 @@
                     <input type="hidden" name="writer" value="${board.writer}">
 
                     <hr>
-                    <ul>
+                    <ul id="menulist">
                         <li><a href="/board/list?&currPage=${pageMaker.cri.currPage}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">ALL</a></li>
                         <li><a href="/board/list?category=F&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">FREE</a></li>
                         <li><a href="/board/list?category=N&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">NEWS</a></li>
-                        <li><a href="/board/list?category=B&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">BOASTFULNESS</a></li>
-                        <li><a href="/board/list?category=R&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">RECOMMENDATION</a></li>
+                        <li><a href="/board/list?category=R&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">MY PICK</a></li>
+                        <li><a href="/board/list?category=B&currPage=1&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">ATTEND</a></li>
                     </ul>
                     <hr>
                     
@@ -217,7 +229,7 @@
                         </li>
                         <li>
                             <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}" placeholder="SEARCH">
-                            <button><img id="searchimg" src="/resources/img/search.png" ></button>
+                            <button><img id="searchimg" src="/resources/img/search.png"></button>
                         </li>
                         </form>
                 </ul>
@@ -225,12 +237,21 @@
 
         </div>
         <table id="boardlist">
+            <colgroup>
+                <col width="10%"/>
+                <col width="10%"/>
+                <col width="34%"/>
+                <col width="10%"/>
+                <col width="10%"/>
+                <col width="8%"/>
+                <col width="8%"/>
+            </colgroup>
             <thead>
                 <tr id=listline>
                     <th>카테고리</th>
                     <th>글번호</th>
-                    <th>작성자</th>
                     <th>제목</th>
+                    <th>작성자</th>
                     <th>등록일</th>
                     <th>좋아요</th>
                     <th>조회수</th>
@@ -244,7 +265,7 @@
                                 <c:choose>
                                     <c:when test="${board.category=='F'}">자유</c:when>
                                     <c:when test="${board.category=='N'}">소식</c:when>
-                                    <c:when test="${board.category=='B'}">자랑</c:when>
+                                    <c:when test="${board.category=='B'}">출석</c:when>
                                     <c:when test="${board.category=='R'}">추천</c:when>
                                 </c:choose>
                             </td>
