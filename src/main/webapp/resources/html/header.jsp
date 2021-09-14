@@ -417,7 +417,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="nickname" class="form-label"><b>nickname</b></label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" placeholder="John" oninput="javascript:checkNickname()">
+                        <input type="text" class="form-control" id="join_nickname" name="nickname" placeholder="John" oninput="checkNickname($('#join_nickname').val())">
                         <p id='nick_message'></p>
                         </div>
                     <div class="d-grid gap-2">

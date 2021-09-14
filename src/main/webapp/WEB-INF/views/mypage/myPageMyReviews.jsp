@@ -88,7 +88,7 @@
 
         #film_poster {
             width: 400px;
-            height: 300px;
+            
         }
         
         #mypage_review_title {

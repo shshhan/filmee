@@ -377,15 +377,25 @@ public class MypageController {
 	
 	
 	@PostMapping(path = "registerUserProfile", consumes = {"multipart/form-data"})
-	public String registerUserProfile(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer userid, @RequestParam("profileText") String profileText, @RequestPart MultipartFile file, RedirectAttributes rttrs)
+	public String registerUserProfile(@ModelAttribute("cri")CriteriaMain cri, @RequestParam("userid") Integer userid, @RequestParam("profileText") String profileText, @RequestPart MultipartFile file, @RequestParam("nickname") String nickname, RedirectAttributes rttrs)
 			throws IllegalStateException, IOException {
-		log.debug("registerUserProfile({}, {}, {}, {}) invoked.", file, userid, profileText, rttrs);
+		log.debug("registerUserProfile({}, {}, {}, {}, {}) invoked.", file, userid, profileText, nickname, rttrs);
 		
-		boolean isUpdated = this.service.updateUserProfilePhoto(file, profileText, cri);
+		if(file.getSize() != 0) {
+			boolean isUpdated = this.service.updateUserProfilePhoto(file, profileText, nickname, cri);
+			
+			if(isUpdated) {
+				rttrs.addFlashAttribute("result", "success");
+			} //if			
+		} else {
+			
+			boolean isUpdated = this.service.updateUserProfile(profileText, nickname, cri);
+			
+			if(isUpdated) {
+				rttrs.addFlashAttribute("result", "success");
+			} //if
+		} //if-else
 		
-		if(isUpdated) {
-			rttrs.addFlashAttribute("result", "success");
-		} //if
 		
 		rttrs.addAttribute("userid", cri.getUserid());
 		

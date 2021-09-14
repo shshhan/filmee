@@ -84,10 +84,12 @@ function checkPw(){
 	isSignUpBtnValid();
 };//checkPw
 
-function checkNickname(){
+function checkNickname(nickname){
 	// console.log("checkNickname invoked.");
 	
-	var nickname = $('#nickname').val();
+	//var nickname = $('.nickname').val();
+	console.log("checkNickname :", nickname);
+	
 	$.ajax({
 		data : {
 			nickname : nickname

@@ -197,12 +197,7 @@
 	        	   var reader = new FileReader();
 	        	   reader.onload = function(e) {
 	        	      $preview.attr("src", e.target.result);
-	        	   };
-	        	   
-	        	  /*  $preview[0].onerror = function() {
-	        	      $file.val(null);
-	        	      $preview.attr("src", "https://lh3.googleusercontent.com/proxy/R-A1fKbE6rbSnQSnECvrSghtWMBJTn6nvyGr1Chn4fqSbL_f2R5rfYhQ3oRSTZIELNtOpowx48OPDuVzhwDjIDyE7W_MYyWknX8");
-	        	   }; */
+	        	   };	        	 
 	        	   
 	        	   reader.readAsDataURL($file[0].files[0]);
 	        	});
@@ -237,6 +232,10 @@
             padding-right: 10px;
             
             float: left;
+        }
+        
+        #userProfileRegBtn {
+        	margin-top: 15px;
         }
 
         #mypage_usable-statistics {
@@ -320,7 +319,7 @@
         
         #film_poster {
             width: 400px;
-            height: 300px;
+            
         }
         
          .inner-star::before {
@@ -467,35 +466,35 @@
             </div>
 
             <div id='mypage_usable-statistics'>
-                <h1 class="display-6">Usable-Statistics</h1>
+                <h1 class="display-6">User-Statistics</h1>
 
 				<hr>
 	
                 <div id='follower_count'>
                     <ul>
-                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Follower</a></li>
-                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followers}</a></li>
+                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5' style='color: black;'>Follower</a></li>
+                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5' style='color: black;'>${followers}</a></li>
                     </ul>
                 </div>
 
                 <div id='following_count'>
                     <ul>
-                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Following</a></li>
-                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followees}</a></li>
+                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5' style='color: black;'>Following</a></li>
+                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5' style='color: black;'>${followees}</a></li>
                     </ul>
                 </div>
 
                 <div id='watched_film_count'>
                     <ul>
-                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>Watched</a></li>
-                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>${films}</a></li>
+                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5' style='color: black;'>Watched</a></li>
+                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5' style='color: black;'>${films}</a></li>
                     </ul>
                 </div>
 
                 <div id='my_review_count'>
                     <ul>
-                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>MyReviews</a></li>
-                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>${reviews}</a></li>
+                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5' style='color: black;'>MyReviews</a></li>
+                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5' style='color: black;'>${reviews}</a></li>
                     </ul>
                 </div>
             </div>
@@ -570,7 +569,7 @@
 	
 	                        <div class='mypage_review_content' id='mypage_review_content'>
 	
-	                            <a href='/film/${reviewVO.filmid}/review/${reviewVO.rno}' style='font-size: 17px'>${reviewVO.content}</a>
+	                            <a href='/film/${reviewVO.filmid}/review/${reviewVO.rno}' style='font-size: 17px; color: black;'>${reviewVO.content}</a>
 	
 	                        </div>
 	                        
@@ -803,7 +802,7 @@
     
     <!-- registerUserProfile -->
     <div class="modal fade" id="registerProfile" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal">	<!-- ////modal-sm은 모달의 크기를 작게 해주는 명령어. 필요없으면 지우면 됨 -->
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 class="modal-title" id="staticBackdropLabel"><B>REGISTER PROFILE</B></h2>
@@ -817,6 +816,10 @@
 			        <div class="mb-3">
 					  <label for="formFile" class="form-label"></label>
 					  <input class="form-control" type="file" id="profilePhoto" name="file">
+					</div>
+			        <div class="input-group input-group-sm mb-3">
+					  <span class="input-group-text" id="inputGroup-sizing-lg">Nickname</span>
+					  <input type="text" class="form-control" name='nickname' value='${userVO.nickname}' aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
 					</div>
 			        <button type="submit" id='submitBtn' class="btn btn-outline-info" style='float:right;'>Submit</button>
 			        </form>         
