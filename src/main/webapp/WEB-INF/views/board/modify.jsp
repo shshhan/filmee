@@ -65,7 +65,7 @@
             box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
         } 
 
-        #boardModifyButtons{
+        .boardModifyButtons{
             margin : 10px 0px 5px 880px;
         }
     </style>
@@ -122,7 +122,7 @@
 
 					</tbody>
 				</table>
-                <div id="boardModifyButtons">
+                <div class="boardModifyButtons">
                     <button type="submit" class="btn btn-primary" onclick="goWrite(this.form)">완료</button>
                     <button type="button" id="listBtn" class="btn btn-primary" >취소</button>
                 </div>
