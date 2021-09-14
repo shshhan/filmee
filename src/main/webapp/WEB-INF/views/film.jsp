@@ -40,7 +40,6 @@
  	 <script src="../../resources/js/film2.js"></script> -->
    
     <!-- <script> 
-
         if (screen.width < 768) {
             var date = new Date();
             var maxAge = 365 * 24 * 60 * 60;
@@ -53,19 +52,14 @@
                 // No cookies.  No Mobile version.
             }
         }
-
-
         var isWindows = navigator.platform.toUpperCase().indexOf('WIN') >= 0; // Detect windows platform
         if (isWindows) { document.documentElement.classList.add('is-windows'); }
-
     </script> -->
     
      <script>
-
         $(function () {
             console.clear();
             console.debug('jq started...');
-
             // 리뷰의 등록, 수정, 삭제 처리 후, 리다이렉션을 통해,
             // 게시글 목록화면으로 이동시킬 때 함께 임시박스(rttrs)로 전송시킨
             // 처리결과를 경고창으로 출력시키자!
@@ -73,18 +67,13 @@
             if(result.length > 0) {
                 alert(result);
             } // if */
-
             $('#regBtn').click(function () {
                 console.log('onclick on #regBtn clicked...');
-
 /*                 location.href = "/film/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";  // GET, Request URI: /board/register */            
                   location.href = "/film/${filmVO.film_id}/register";
-
  }); // onclick
-
 		
         }); // .jq
-
     </script>
     
 
@@ -149,7 +138,7 @@
                             Directed by                                                   
 								<c:forEach items="${filmPeopleVOList}" var="filmPeopleVO">
 									<c:if test="${filmPeopleVO.credit_order eq null}">
-									<a href="/people/${filmPeopleVO.enname}/"><span class="prettify"> 
+									<a href="/search/people/${filmPeopleVO.people_id}/"><span class="prettify"> 
 										${filmPeopleVO.enname} </span></a>
 									</c:if>
 								</c:forEach>
@@ -185,7 +174,7 @@
                                      <c:forEach items="${filmPeopleVOList}" var="filmPeopleVO" begin="0" end="29"  varStatus="status">
 	                                     <c:if test="${filmPeopleVO.credit_order != null}">
 
-		                                   <a title="${filmPeopleVO.character}" href="/people/${filmPeopleVO.people_id}"
+		                                   <a title="${filmPeopleVO.character}" href="/search/people/${filmPeopleVO.people_id}"
 		                                     class="text-slug tooltip1">${filmPeopleVO.enname}</a>
 		                                     
 
@@ -400,8 +389,6 @@
                         </section>
 
                     </aside>
-
-                   
 
                 </div>
 

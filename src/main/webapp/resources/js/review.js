@@ -1,13 +1,13 @@
 var action = '';
 var url = '';
 var type = '';
-var bno = 0;
+var rno = 0;
 
 $(document).ready(function(){
 
 	// 새 글 쓰기 버튼 클릭
 	$("#writeBtn").click(function(){
-		action="/review/register.jsp"
+		action="/film/register.jsp"
 		type = 'get'
 		$("#modal-title").text("리뷰 작성");
 		$("#myModal").modal();
@@ -16,9 +16,9 @@ $(document).ready(function(){
 	
 	// 수정하기 버튼 클릭
 	$("button[name='modify']").click(function(){
-		action='modify';
+		url : '/film/review/modify/' + rno
 		type = 'PUT';
-		bno = this.value;
+		rno = this.value;
 
 		// content 담기
 		var row = $(this).parent().parent().parent();
@@ -36,9 +36,10 @@ $(document).ready(function(){
 	});	
 	// 삭제하기 버튼 클릭
 	$("button[name='delete']").click(function(){
-		bno = this.value;
+		rno = this.value;
 		$.ajax({
-			url : '/board/' + bno,
+			/*url : '/film/remove' + rno,*/
+			url : '/film/remove',
 			type : 'DELETE',
 		});
 		location.reload();
@@ -48,14 +49,14 @@ $(document).ready(function(){
 	$("#modalSubmit").click(function(){
 		
 		if(action == 'create'){
-			bno = 0;
-			url = '/board';
+			rno = 0;
+			url = '/film';
 		}else if(action == 'modify'){
-			url = '/board';
+			url = '/film';
 		}
 
 		var data = {
-			"bno" : bno,
+			"rno" : rno,
 			"userName" : $("#userName").val(),
 			"contents" : $("#contents").val()
 		};

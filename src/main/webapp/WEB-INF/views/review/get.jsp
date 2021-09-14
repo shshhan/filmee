@@ -29,9 +29,9 @@ pageEncoding="UTF-8" %>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-    <script src="/resources/js/like.js"></script>
-    <script src="/resources/js/reply.js"></script>
-    <script src="/resources/js/boardReport.js"></script>
+    <script src="/resources/js/reviewLike.js"></script>
+    <script src="/resources/js/reviewReply.js"></script>
+    <script src="/resources/js/reviewReport.js"></script>
     
     
     <script>    
@@ -236,9 +236,9 @@ pageEncoding="UTF-8" %>
             })//onclick
             $("#delete").on('click',function(){
                 console.log("delete clicked.");
-                if(confirm("게시글을 삭제하시겠습니까?")){
+                if(confirm("리뷰를 삭제하시겠습니까?")){
                     let formobj=$('form');
-                    formobj.attr('action','/review/remove');
+                    formobj.attr('action','/film/review/remove');
                     formobj.attr('method','post');
                     formobj.submit();
                 } else{
@@ -494,7 +494,7 @@ pageEncoding="UTF-8" %>
       </div>
    
 		<!-- 여기부터 현아꺼 참고한거 -->
-		<form action="/board/get">
+		<form action="/film/get">
             <input type="hidden" name="rno" value="${reviewFilmUserVO.rno}">
             <input type="hidden" name="userId" value="${__LOGIN__.userId}">
             <input type="hidden" name="likecheck" value="${reviewVO.likecheck}">
@@ -503,7 +503,6 @@ pageEncoding="UTF-8" %>
                 <table>
                     <tr>
                         <td><button id="reportBtn"><img src='/resources/img/siren.jpg' width='25px' height='25px'></button></td>
-                        <td><button><img src="/resources/img/eye-removebg-preview.png" alt="view" width='30px' height='30px'></button> </td>
                         <td>
                             <c:if test="${__LOGIN__==null}">
                                 <img src="/resources/img/emptyheart.png" alt="좋아요" width="30px" height="30px">

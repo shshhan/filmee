@@ -24,8 +24,8 @@ public interface FilmService {
 	public abstract int remove(Integer rno);	// 특정 리뷰 삭제
 	public abstract int modify(ReviewDTO review);	// 특정 리뷰 수정
 	
-	public abstract List<ReviewFilmUserVO> getListWithPaging(CriteriaFilmReview cri);	// 페이징처리된 리뷰 목록조회
-	public abstract int getTotalCount(Integer film_id, CriteriaFilmReview cri);	// 영화당 리뷰 갯수 얻기  
+	public abstract List<ReviewFilmUserVO> getListWithPaging(CriteriaFilmReview criFR);	// 페이징처리된 리뷰 목록조회
+	public abstract int getTotalCount(Integer film_id, CriteriaFilmReview criFR);	// 영화당 리뷰 갯수 얻기  
 	
 	//-----------------------------------------------------------//
 	

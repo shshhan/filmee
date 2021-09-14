@@ -13,12 +13,11 @@ import lombok.extern.log4j.Log4j2;
 @Data
 public class CriteriaFilmReview {
 	
-	private int film_id;
-	
 	private int currPage = 1;		// 현재 보고자 하는 페이지 번호
 	private int amount = 10;		// 한 페이지당 보여줄 레코드 건수
 	private int pagesPerPage = 5;	// 각 페이지 아래에 보여줄 페이지번호의 갯수
 
+	private int film_id;
 	
 	
 	public String getPagingUri() {

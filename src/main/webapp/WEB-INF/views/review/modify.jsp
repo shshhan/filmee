@@ -12,9 +12,7 @@
     <title>리뷰등록페이지</title>
 
     <style>
-
  
-
     </style>
     
     <link href="/resources/css/letterboxd.css" rel="stylesheet" media="screen, projection" />
@@ -23,14 +21,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
 
     <script>
-
         $(function () {
             console.clear();
             console.debug('jq started...');
             
             $('#diary-entry-submit-button').click(function () {
                 console.log('onclick for #listBtn clicked...');
-
                 // GET, Request URI: /film/${filmVO.film_id}
                 location.href = '/film/${filmVO.film_id}';  // 아니면 마이페이지-리뷰로 이동
             }); // onclick for #diary-entry-submit-button

@@ -16,7 +16,7 @@ public class ReviewFilmUserVO {
 	private Timestamp update_ts;
 	private Timestamp delete_ts;
 //	private Timestamp watched_date;
-	private Character is_spoiled;
+//	private Character is_spoiled;
 	private Integer like_cnt;
 	
 	
