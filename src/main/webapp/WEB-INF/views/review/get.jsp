@@ -44,13 +44,13 @@ pageEncoding="UTF-8" %>
             var reviewwriter='<c:out value="${reviewFilmUserVO.writer}"/>'
             var modal = $(".modal"); 
             var modalInputReply=modal.find("input[name='content']");
-            var modalInputReplyer=modal.find("input[name='nickname']");
+            var modalInputReplyer=modal.find("input[name='writer']");
             var modalinputReplyDate=modal.find("input[name='insert_ts']");
             var modalModBtn=$("#modalModBtn");
             var modalRemoveBtn=$("#modalRemoveBtn");
             var modalRegisterBtn=$("#modalRegisterBtn");
             
-            console.log("nick:",nickname)
+         
             console.log("userid:",userid);
             console.log("writer:",writer);
             if("${__LOGIN__.userId}"==writer){
@@ -167,6 +167,7 @@ pageEncoding="UTF-8" %>
                         modalModBtn.show();
                         modalRemoveBtn.show();
                         replyComment.readOnly=false;
+                        
                     }else{
                         replyComment.readOnly=true;
                         modalModBtn.hide();
@@ -415,7 +416,6 @@ pageEncoding="UTF-8" %>
 
               <div
                 class="js-csi"
-                data-src="/csi/film/tenet/availability/?esiAllowUser=true&amp;esiAllowCountry=true"
                 data-on-load="csi-availability"
               ></div>
             </div>
@@ -426,7 +426,7 @@ pageEncoding="UTF-8" %>
                   <div class="person-summary -inline">
                     <a class="avatar -a24" href="/${reviewFilmUserVO.writer}/">
                       <img
-                        src="https://secure.gravatar.com/avatar/ca5aabe664b120591b1d12557f735a9d?rating=PG&amp;size=48&amp;border=&amp;default=https%3A%2F%2Fs.ltrbxd.com%2Fstatic%2Fimg%2Favatar48.7a758b1e.png"
+                        src="회원프로필사진"
                         alt="${reviewFilmUserVO.writer}"
                         width="24"
                         height="24"
@@ -583,7 +583,7 @@ pageEncoding="UTF-8" %>
                             <input type="hidden" class="form-control" name='writer' >
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name='insert_ts' value='2018-01-01 13:13'>
+                            <input class="form-control" name='insert_ts' value='current_date'>
                         </div>
 
                     </div>
@@ -629,6 +629,7 @@ pageEncoding="UTF-8" %>
                         <div class="form-group">
                             <!-- 신고대상 -->
                             <input type="hidden" type="text" class="form-control" name="reporttype" value="rno" readonly> 
+                            <input type="hidden" type="text" class="form-control" name="reporttarget" value="${ReviewFilmUserVO.film_id}" readonly>
                             <input type="hidden" type="text" class="form-control" name="reporttarget" value="${ReviewFilmUserVO.rno}" readonly>
                             <input type="hidden" type="text" class="form-control" name="suspect" value="${ReviewFilmUserVO.writer}" readonly>                       
                         </div>
