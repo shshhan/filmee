@@ -187,6 +187,7 @@
         #container {
             width: 998px;
             margin: 0 auto;
+            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
             font-family: 'ELAND 초이스'; 
         }
         #mypage_info {
@@ -362,7 +363,11 @@
         <div id='mypage_info'>
 
             <div id='mypage_profile'>
+
+                <h1 class="display-6">Profile</h1>            
+
                 <h1 class="display-6">PROFILE</h1>            
+
                 
                 <hr>
                 
@@ -373,7 +378,6 @@
                     <input id='form-control' class="form-control" type="text" value="${userVO.text}" aria-label="readonly input example" readonly>
 
                 </div>
-
 				<c:set var='userid' value='${cri.userid}' />
 				<c:set var='sessionUserid' value='${__LOGIN__.userId}' />
 				<c:set var='isFollowed' value='#{isFollowed}' />
@@ -409,7 +413,6 @@
 			        	<button type="button" id='followListBtn' class="btn btn-outline-info" onclick="location.href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'">FollowList</button>
 			        </c:when>
 		        </c:choose>
- 
             </div>
 
             <div id='mypage_usable-statistics'>
@@ -419,28 +422,44 @@
 	
                 <div id='follower_count'>
                     <ul>
+
+                        <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>follower</a></li>
+
                         <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Follower</a></li>
+
                         <li><a href='/mypage/follower?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followers}</a></li>
                     </ul>
                 </div>
 
                 <div id='following_count'>
                     <ul>
+
+                        <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>following</a></li>
+
                         <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>Following</a></li>
+
                         <li><a href='/mypage/followee?userid=${cri.userid}&currPage=1&amount=10&pagesPerPage=5'>${followees}</a></li>
                     </ul>
                 </div>
 
                 <div id='watched_film_count'>
                     <ul>
+
+                        <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>watched</a></li>
+
                         <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>Watched</a></li>
+
                         <li><a href='/mypage/films?userid=${cri.userid}&code=2&currPage=1&amount=5&pagesPerPage=5'>${films}</a></li>
                     </ul>
                 </div>
 
                 <div id='my_review_count'>
                     <ul>
+
+                        <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>review</a></li>
+
                         <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>MyReviews</a></li>
+
                         <li><a href='/mypage/myreviews?userid=${cri.userid}&currPage=1&amount=5&pagesPerPage=5'>${reviews}</a></li>
                     </ul>
                 </div>
@@ -525,7 +544,7 @@
 	                        <c:set var='userid' value='${cri.userid}' />
 							<c:set var='sessionUserid' value='${__LOGIN__.userId}' />	                        
 	                    	<button id='reviewDelBtn' onclick="deleteMainReview('${reviewVO.rno}')" type='button' class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button>                    	
-	                        
+                     
 	                    </div>
 	
 	                </div>
@@ -569,6 +588,7 @@
 										<c:set var='userid' value='${cri.userid}' />
 										<c:set var='sessionUserid' value='${__LOGIN__.userId}' />										
 		                                <td><button onclick="deleteMainGuestbook('${guestbookVO.gno}')" type="button" class="btn btn-outline-danger btn-sm" style="${sessionUserid eq userid ? 'display:inline' : 'display:none'}">Del</button></td>								
+
 									</tr>                            		
 								</form>
 							</c:forEach>
@@ -711,6 +731,9 @@
 		<hr>
 	
     </div>
+
+    
+
         
     <!-- new_pw Modal -->
     <div class="modal fade" id="new_pw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -746,6 +769,7 @@
             </div>
         </div>
     </div>
+
     
     <%@include file="/resources/html/footer.jsp" %>
 

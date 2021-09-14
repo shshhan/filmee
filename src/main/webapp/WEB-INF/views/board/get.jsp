@@ -15,7 +15,6 @@
     <title>FILMEE | FILM MEETING</title>
     <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
     <link rel="stylesheet" href="/resources/css/bootstrap.css">
-    <%@ include file="/resources/html/header.jsp" %>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -185,13 +184,15 @@
                 console.log("reportBtn clicked>>")
                 $("#reportmodal").modal("show");
             })
-            var modalReportCode=modal.find("select[name='reportcode']").val();
-            var modalAccuser=modal.find("input[name='reportwriter']").val();
-            var modalTargetType=modal.find("input[name='reporttype']").val();
-            var modalTarget=modal.find("input[name='reporttarget']").val();
-            var modalSuspect=modal.find("input[name='suspect']").val();
-            var modalReportContent=modal.find("textarea[name='rContent']");
+      
             $("#modalReportBtn").on("click",function(e){
+            	 var modalReportCode=modal.find("#reportcode").val();
+                 console.log(modalReportCode);
+                 var modalAccuser=modal.find("input[name='reportwriter']").val();
+                 var modalTargetType=modal.find("input[name='reporttype']").val();
+                 var modalTarget=modal.find("input[name='reporttarget']").val();
+                 var modalSuspect=modal.find("input[name='suspect']").val();
+                 var modalReportContent=modal.find("textarea[name='rContent']");
                 console.log("modalReportBtn Clicked.");
                 var reportinfo={
                     code: modalReportCode,
@@ -234,17 +235,7 @@
     </script>
 
     <style>
-        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        /* a-style */
-        a{color:#333;text-decoration:none;text-align: center;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-        body{
+        #boardGetWrapper{
 		    width: 998px;
 		    margin: 0 auto;
 		    font-size: 20px;
@@ -354,16 +345,19 @@
             float: right;
         }
         #isDeleteTs{
-            margin-top: 300px;
+            margin-top: 200px;
             margin-left: 400px;
         }
     </style>
 
 </head>
 <body>
+    <%@ include file="/resources/html/header.jsp" %>
+    <div id="boardGetWrapper">
     <c:choose>
     <c:when test="${board.delete_ts!=null}">
         <p id="isDeleteTs"><img src="/resources/img/choonsigi.jpg" alt=""><br>삭제된 게시글 입니다.</p>
+        <button><a>리스트로 돌아가기</a></button>
     </c:when>
     <c:otherwise>
     <div id="container">
@@ -532,7 +526,7 @@
                     <div class="modal-body">
                         <div>
                             <label for="reportcode">신고유형</label>
-                            <select class="form-select" name="reportcode">
+                            <select class="form-select" name="reportcode" id='reportcode'>
                                 <option value="1">욕설/비방</option>
                                 <option value="2">스포일러</option>
                                 <option value="3">광고</option>
@@ -569,6 +563,9 @@
     </div>
     </c:otherwise>
     </c:choose>
+    </div>
+    <%@ include file="/resources/html/footer.jsp" %>
+
 </body>
 
 </html>
