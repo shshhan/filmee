@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.filmee.myapp.domain.BoardUserVO;
 import com.filmee.myapp.domain.BoardVO;
 import com.filmee.myapp.domain.Criteria;
 
@@ -37,7 +38,7 @@ public class BoardMapperTests {
 	public void testGetList() {
 		log.debug("testGetList() invoked.");
 		Criteria cri = new Criteria();
-		List<BoardVO> board = this.mapper.getList(cri);
+		List<BoardUserVO> board = this.mapper.getList(cri);
 		board.forEach(log::info);
 	}//testGetList 
 	
@@ -45,8 +46,8 @@ public class BoardMapperTests {
 	public void testSelect() {
 		log.debug("testSelect() invoked.");
 		
-		BoardVO board = this.mapper.select(10);
-		log.info("select: {}",board);
+		BoardUserVO bu = this.mapper.select(396);
+		log.info("select: {}",bu);
 	}//testSelect
 	
 	@Test
@@ -100,7 +101,7 @@ public class BoardMapperTests {
 	public void testDelete() {
 		log.debug("testDelete() invoked.");
 		
-		if(this.mapper.delete(12)==1) {
+		if(this.mapper.delete(139)==1) {
 			log.info(">> delete Success. <<");
 		};
 	}//testDelete

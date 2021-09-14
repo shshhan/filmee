@@ -9,18 +9,20 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet"> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-	migrate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script>
         $(function(){
             console.log("jq started");
             $("#listBtn").on('click',function(){
             	console.log(this)
                 console.log("listBtn Clicked");
-				if(confirm("작성 중이던 글이 있습니다. 정말 취소하시겠습니까?"){
+				if(confirm("작성 중이던 글이 있습니다. 정말 취소하시겠습니까?")){
 	                location.href="/board/list?category=&currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}"					
 				} else{
 					false;
@@ -29,18 +31,7 @@
         })
     </script>
     <style>
-        body,input,textarea,select,button,table{font-family:'Florencesans SC Exp';}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        /* a-style */
-        a{color:#333;text-decoration:none;}
-        a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-    
-        body{
+        #boardModifyWrapper{
             width: 998px;
             margin: 0 auto;
             font-size: 20px;
@@ -56,9 +47,9 @@
         table{
         	font-family: 'ELAND 초이스';
         }
-            select {
+        select {
             width: 250px;
-    		float: left;
+            float: left;
             font-size: 16px;
             font-weight: 400 bold;
             font-family: 'ELAND 초이스';
@@ -72,11 +63,17 @@
             border: 1px solid rgb(255, 255, 255);
             border-radius: 0.5em;
             box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+        } 
+
+        .boardModifyButtons{
+            margin : 10px 0px 5px 880px;
         }
     </style>
 </head>
 <body>
-    <div>
+    <%@ include file="/resources/html/header.jsp" %>
+
+    <div id="boardModifyWrapper">
         <form action="/board/modify" method="POST">
             <input type="hidden" name="currPage" value="${cri.currPage}">
             <input type="hidden" name="amount" value="${cri.amount}">
@@ -117,16 +114,23 @@
                         </tr>
                         <tr>
                             <td><label for="writer">작성자</label></td>
-                            <td><input type="text"  class="form-control" name="writer" value="${board.writer}" readonly></td>
+                            <td>
+                                <input type="text" class="form-control" value="${board.nickname}">
+                                <input type="hidden"  class="form-control" name="writer" value="${board.writer}" readonly>
+                            </td>
                         </tr>
 
 					</tbody>
 				</table>
-                <button type="submit" class="btn btn-primary pull-right" onclick="goWrite(this.form)">완료</button>
-				
-                <button type="button" id="listBtn"  class="btn btn-primary pull-right" >취소</button>
+                <div class="boardModifyButtons">
+                    <button type="submit" class="btn btn-primary" onclick="goWrite(this.form)">완료</button>
+                    <button type="button" id="listBtn" class="btn btn-primary" >취소</button>
+                </div>
             </div>
         </form>
     </div>
+
+    <%@ include file="/resources/html/footer.jsp" %>
+
 </body>
 </html>

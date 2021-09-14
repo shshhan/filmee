@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mypageFollow</title>
+    
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -19,11 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
 
-
-    <link rel="stylesheet" href="../resources/css/header.css">
-
-
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -206,11 +204,11 @@
 	            <div id='mypage_follows' class='container-sm'>                        
 	
 	            <div>
-	                <a href='#'><img src='../resources/img/${followees.photo}' id='profile_photo'></a>
+	                <a href='/mypage/main?userid=${followees.userid}'><img src='../resources/img/${followees.photo}' id='profile_photo'></a>
 	            </div>                                            
 	
 	            <div class='mypage_follow_nickname'>
-	                <a href='#' style='font-size: 17px'>${followees.nickname}</a>
+	                <a href='/mypage/main?userid=${followees.userid}' style='font-size: 17px'>${followees.nickname}</a>
 	            </div>
 	                     
 	                         
@@ -261,8 +259,9 @@
 
     </section>
 
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -278,6 +277,6 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </body>
 </html>

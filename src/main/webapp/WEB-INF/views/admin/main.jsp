@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/resources/html/header.jsp" %>
 
 <!DOCTYPE html>
 
@@ -18,7 +19,7 @@
 	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 
     <style>
-        /* body,input,textarea,select,button,table{font-family:'ELAND 초이스';} */
+        body,input,textarea,select,button,table{font-family:'ELAND 초이스';}
         body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
         h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
         ul,ol{list-style:none;}
@@ -32,18 +33,7 @@
         body{
             width: 998px;
             margin: 0 auto;
-            font-size: 20px;
             font-family: 'ELAND 초이스';
-        }
-        #allMenu{
-            display: inline-block;
-            width: 150px;
-            text-align: center;
-
-        }
-        #adminonly{
-            text-align: center;
-            font-size: 40px;
         }
     </style>
 </head>
@@ -57,6 +47,8 @@
             </thead>
 
             </table>
+            <%@include file="../admin/menu.jsp"%>
+
     </div>
     <div id=mainCalender>
         <div class="my-calendar clearfix">
@@ -92,7 +84,6 @@
     </div>
 
     <div>
-        <%@include file="../admin/menu.jsp"%>
         <div id="allMain">
 
         </div>
@@ -100,7 +91,7 @@
     
         <div align="center">
             <div class="avatar avatar-xl">
-                <img class="calendar" src="/resources/img/calender-2389150_1280.png" alt="calendar">
+                <img class="calendar" src="/resources/img/calender-2389150_1280.png" alt="CAL">
             </div>
             <input type="text" class="testDatePicker" id="testDatepicker" placeholder="조회 날짜를 선택하세요.">
             <a class="input-button" title="toggle" data-toggle>
@@ -121,29 +112,31 @@
                 <span class="stat_collect_dt"></span>
             </div>
 
+            <!-- 일 기준 -->
             <div class="box_stat" id="statBox">
 
                 <div class="stat">
                     <span class="stat_title">신규가입자<br><br></span>
+                    <br>
                     <span class="value_increase" id="inquire_span">0 명</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">신규 리뷰<br><br></span>
-                    <span class="value_increase" id="report_span">0 개</span>
+                    <br>
+                    <span class="value_increase" id="report_span"> 0 개</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">신고<br><br></span>
                     <br>
-                    <span class="value_increase" id="newMember_span"> 0건</span>
-
+                    <span class="value_increase" id="newMember_span"> 0 건</span>
                 </div>
 
                 <div class="stat">
                     <span class="stat_title">요청사항<br><br></span>
                     <br>
-                    <span class="value_increase" id="saleBoard_span">0 건</span>
+                    <span class="value_increase" id="saleBoard_span"> 0 건</span>
                 </div>
             </div>
         </div>
@@ -153,9 +146,7 @@
     
     <script type="text/javascript">
         $(function() {
-            
-            $('#managerMainCalender').addClass('on');
-        
+
             $( "#testDatepicker" ).datepicker({
                 dateFormat: 'yy-mm-dd' //Input Display Format 변경
                     ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시

@@ -11,7 +11,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myPageActivityLog</title>
+    
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
@@ -22,9 +24,7 @@
 
     <link rel="stylesheet" href="../resources/css/header.css">
 
-    
-
-    <link rel="stylesheet" href="../resources/css/footer.css">
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css">  -->
     
     <script>
     	
@@ -210,56 +210,67 @@
 							<c:forEach items="${activity}" var="activity">
 								<tr>
 									<c:set var='type' value='${activity.type}' />
+								
 									<c:choose> 
 									    <c:when test="${type eq 'RV'}">
 									        <td id='activity_review_content_td'>
-									        	<a class='activity_a' href='#'>${activity.nickname}</a>님이 
-									        	<a class='activity_a' href='#'>${activity.title}</a>영화에 
-									        	<a class='activity_a' href='#' id='activity_review_content_a'>${activity.content}</a> 리뷰를 작성하였습니다.
+									        	<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nickname}</a>님이 
+									        	<a class='activity_a' href='/film/${activity.filmid}'>${activity.title}</a>영화에 
+									        	<a class='activity_a' href='/film/${activity.filmid}/review/${activity.rno}' id='activity_review_content_a'>${activity.content}</a> 리뷰를 작성하였습니다.
 									        </td>
+									        <td>${activity.insertTs}</td>
 									    </c:when>
 									    <c:when test="${type eq 'FW'}">
 									        <td>
-									        	<a class='activity_a' href='#'>${activity.nickname}</a>님을 팔로우 하였습니다.
+									        	<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nicknameFollower}</a>님이 
+									        	<a class='activity_a' href='/mypage/main?userid=${activity.followerid}'>${activity.nickname}</a>님을 팔로우 하였습니다.
 									        </td>
+									        <td>${activity.insertTs}</td>
 									    </c:when>
 									    <c:when test="${type eq 'RL'}">
 									        <td>
-									        	<a class='activity_a' href='#'>${activity.nickname}</a>님이									        	
-									        	<a class='activity_a' href='#' id='activity_review_content'>${activity.content}</a> 리뷰를 좋아합니다.									        	
+									        	<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nickname}</a>님이									        	
+									        	<a class='activity_a' href='/film/${activity.reviewFilmId}/review/${activity.rno}' id='activity_review_content'>${activity.content}</a> 리뷰를 좋아합니다.									        	
 									        </td>
+									        <td>${activity.insertTs}</td>
 									    </c:when>
 									    <c:when test="${type eq 'GB'}">
-										        <td>
-										        	<a class='activity_a' href='#'>${activity.nicknameGuestbook}</a>님이 방명록을 작성하였습니다.									        									        	
-										        </td>
+									    	
+									        <td>
+									        	<a class='activity_a' href='/mypage/main?userid=${activity.writer}'>${activity.nicknameGuestbook}</a>님이 방명록을 작성하였습니다.									        									        	
+									        </td>
+									        <td>${activity.insertTs}</td>
+										    
 										</c:when>
 									    <c:when test="${type eq 'FL'}">
 									        <c:set var='code' value='${activity.code}' />
 									        <c:choose>
 										        <c:when test="${code eq '1'}">
 										        	<td>
-										        		<a class='activity_a' href='#'>${activity.nickname}</a>님이 
-										        		<a class='activity_a' href='#'>${activity.title}</a>영화를 좋아합니다.
+										        		<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nickname}</a>님이 
+										        		<a class='activity_a' href='/film/${activity.filmid}'>${activity.title}</a>영화를 좋아합니다.
 										        	</td>
+										        	<td>${activity.insertTs}</td>
 										        </c:when>
 										        <c:when test="${code eq '2'}">
 										        	<td>
-										        		<a class='activity_a' href='#'>${activity.nickname}</a>님이 
-										        		<a class='activity_a' href='#'>${activity.title}</a>영화를 본영화에 추가했습니다.
+										        		<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nickname}</a>님이 
+										        		<a class='activity_a' href='/film/${activity.filmid}'>${activity.title}</a>영화를 본영화에 추가했습니다.
 										        	</td>
+										        	<td>${activity.insertTs}</td>
 										        </c:when>
 										        <c:when test="${code eq '3'}">
 										        	<td>
-										        		<a class='activity_a' href='#'>${activity.nickname}</a>님이 
-										        		<a class='activity_a' href='#'>${activity.title}</a>영화를 볼영화에 추가했습니다.
+										        		<a class='activity_a' href='/mypage/main?userid=${activity.userid}'>${activity.nickname}</a>님이 
+										        		<a class='activity_a' href='/film/${activity.filmid}'>${activity.title}</a>영화를 볼영화에 추가했습니다.
 										        	</td>
+										        	<td>${activity.insertTs}</td>
 										        </c:when>
 									        </c:choose>
 									    </c:when>
 									</c:choose>									
 																
-									<td>${activity.insertTs}</td>
+									
 	                                								
 								</tr>
                            	</c:forEach>			
@@ -312,7 +323,7 @@
     </section>
 
 
-    <footer>
+   <!--  <footer>
         <div id="footer">
             <a href="/main">
                 <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
@@ -328,6 +339,10 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer>  -->
+    
+      <%@include file="/resources/html/footer.jsp" %>
+     
+    
 </body>
 </html>

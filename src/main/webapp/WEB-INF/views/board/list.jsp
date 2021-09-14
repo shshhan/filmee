@@ -9,33 +9,33 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <%@ include file="/resources/html/header.jsp" %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-
     <script>
 
-        $(function() {
+        $(function(){
             console.clear();
             console.log("jq started");
 
-            $('#regBtn').click(function() {
+            $('#regBtn').click(function(){
                 console.log("regBtn clicked !!");
                 location.href="/board/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";//cri를 사용하기위해 controller에서 ModelAttribute하였음
-            }); //.click
+            })//.click
 
-            $('a.prev, a.next').on('click', function(e) {
+            $('a.prev,a.next').on('click', function(e){
                 console.debug("on clicked for NEXT or PREV");
-                e.preventDefault(); 
-                
+                console.log('\t+this:',this);
+                e.preventDefault(); //Event에 의한 선택된 요소의 기본 동작을 금지
+
+                //Rvalue선택자에 의해서 선택된 요소. 즉 form태그가 저장됨.
                 var paginationForm = $('#paginationForm');
 
-                paginationForm.attr('action', '/board/list');
+                paginationForm.attr('action', '/board/listPerPage');
                 paginationForm.attr('method', 'GET');
-                
-                console.log($(this));
 
                 paginationForm.find('input[name=currPage]').val($(this).attr('href'));
                 paginationForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
@@ -44,28 +44,24 @@
                 paginationForm.find('input[name=keyword]').val('${pageMaker.cri.keyword}');
 
                 paginationForm.submit();
-            }); //onclick
-        }); //jq
+            })//onclick
+        })//jq
     </script>
 
-    <!-- <link rel="stylesheet" href="/resources/css/board.css"> -->
-    <!-- <link rel="stylesheet" href="/resources/css/bootstrap.css"> -->
+    <style>   
+        #boardListWrapper{
+            width: 998px;
+            margin: 0 auto;
+        }
 
-    <style>
-    body,input,textarea,select,button,table{font-family:'Florencesans SC Exp';}
-	body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-	h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-	ul,ol{list-style:none;}
-	fieldset,img{border:0; vertical-align:top;}
-	address{font-style:normal;}
-	p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-	/* a-style */
-	a{color:#333;text-decoration:none;}
-	a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-		body{
-		    width: 998px;
-		    margin: 0 auto;
+		#category{
+            font-family: 'ELAND 초이스';
 		    font-size: 20px;
+            -ms-user-select: none; 
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none; 
 		}
 		#category>ul{
 			text-align:center;
@@ -76,13 +72,15 @@
 		    width: 3%;
 		    text-align: center;
 		    padding: 30px;
-		    
 		}
         #category>ul>li>a:hover{
             color: rgb(128, 208, 240);
         }
+        #listline{
+            background-color: rgba(226, 223, 223, 0.473);
+        }
 		
-		table {
+		#boardlist {
 			width:100%;
 		    text-align: center;
 		    margin: 20px ;
@@ -90,27 +88,27 @@
             font-family: 'ELAND 초이스';
   			border-collapse: collapse;
 		  }
-		 td{
+        #boardlist td{
 		  	color: black;
 		  	font-size:15px;
 		  	padding: 10px;
   			border-bottom: 1px solid #ddd;	
-  		  }
-		  th{
+  		}
+        #boardlist th{
 		  	font-weight: bold;
 		  	border:10px;
 		  	margin:10px;
 		  	padding:15px;
   			border-bottom: 1px solid #ddd;
-  		  }
-  		  tbody>tr:hover {
-  		  	background-color: #C2DBFE;
-  		  }
+  		}
+  		#boardlist>tbody>tr:hover {
+  		  	background-color: #dddddd60;
+  		}
   		  
-		  #pageNumber{
+		#pageNumber{
 		  	text-align: center;
-		  }
-		 #pageNumber>li{
+		}
+		#pageNumber>li{
 		 	display:inline-table;
 		    width: 3%;
 		    text-align: center;
@@ -121,30 +119,33 @@
 			font-size: 30px;
 		}
 		.currPage{
-        	background-color: rgb(128, 208, 240);
-        	color: white!important;
+        	background-color: #dadada8f;
+        	color: rgb(110, 110, 110)!important;
+            border-radius: 10%;
+            font-size: 15px;
         }
         #regBtn{
             float: right;
         }
+        #boardSearchMenu{
+            float: right;
+        }
         #boardSearchMenu>li{
-            display:inline-table;
-            margin-left: 73%;
+            display: inline-block;
         }
         .board_search_box{
-            width: 100px;
             height: 25px; 
+            font-size: 14px;
             line-height : normal; 
             padding: 0.3em 0.4em;
             margin: 0;
-             border: none;
-             border-radius: 4px;
-             outline-style: none; 
+            border: none;
+            border-radius: 4px;
+            outline-style: none; 
             -webkit-appearance: none;
             -moz-appearance: none; 
             appearance: none;
-
-      }
+        }
         button {
             margin: 0;
             padding: 0.5rem 1rem;
@@ -189,8 +190,9 @@
     </style>
 </head>
 <body>
+    <%@ include file="/resources/html/header.jsp" %>
 
-    <div>
+    <div id="boardListWrapper">
         <div>
             <div id="category">
                 <form id="category" action="/board/list" method="GET">
@@ -201,6 +203,8 @@
                     <input type="hidden" name="keyword">
                     <input type="hidden" name="category">
                     <input type="hidden" name="bno" value="${board.bno}">
+                    <input type="hidden" name="writer" value="${board.writer}">
+
                     <hr>
                     <ul>
                         <li><a href="/board/list?&currPage=${pageMaker.cri.currPage}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">ALL</a></li>
@@ -220,23 +224,25 @@
                             <input type="hidden" name="currPage" value="1">
                             <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
                             <input type="hidden" name="pagesPerPage" value="${pageMaker.cri.pagesPerPage}">
-                            
+                             
                             <select name="type" class="form-select">
                                 <option value="T" ${("T" eq pageMaker.cri.type) ? "selected":""}>제목</option>
                                 <option value="C" ${("C" eq pageMaker.cri.type) ? "selected":""}>내용</option>
                                 <option value="W" ${("W" eq pageMaker.cri.type) ? "selected":""}>작성자</option>
                             </select>
-                        <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}">
-                        <button class="btn btn-info" ><img id="searchimg" src="/resources/img/search.png" ></button>
+                        </li>
+                        <li>
+                            <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}" placeholder="SEARCH">
+                            <button><img id="searchimg" src="/resources/img/search.png" ></button>
+                        </li>
                         </form>
-                    </li>
                 </ul>
             </div>
 
         </div>
         <table id="boardlist">
             <thead>
-                <tr>
+                <tr id=listline>
                     <th>카테고리</th>
                     <th>글번호</th>
                     <th>작성자</th>
@@ -248,29 +254,33 @@
             </thead>
             <tbody>
                 <c:forEach items="${list}" var="board">
-                    <tr>
-                        <td>
-                            <c:choose>
-                                <c:when test="${board.category=='F'}">자유</c:when>
-                                <c:when test="${board.category=='N'}">소식</c:when>
-                                <c:when test="${board.category=='B'}">자랑</c:when>
-                                <c:when test="${board.category=='R'}">추천</c:when>
-                            </c:choose>
-                        </td>
-                        <td>${board.bno}</td>
-                        <td>${board.writer}</td>
-                        <td><a href="/board/get?bno=${board.bno}&currPage=${pageMaker.cri.currPage}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">${board.title} </a> [<c:out value="${board.commentCnt}"/>]</td>
-                        <td><fmt:formatDate pattern="yyyy/MM/dd" value="${board.insert_ts}"/></td>
-                        <td>${board.like_cnt}</td>
-                        <td>${board.view_cnt}</td>
-                    </tr>
+                    <c:if test="${board.delete_ts==null}">
+                        <tr>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${board.category=='F'}">자유</c:when>
+                                    <c:when test="${board.category=='N'}">소식</c:when>
+                                    <c:when test="${board.category=='B'}">자랑</c:when>
+                                    <c:when test="${board.category=='R'}">추천</c:when>
+                                </c:choose>
+                            </td>
+                            <td>${board.bno}</td>
+                            <td>${board.nickname}</td>
+                            <td><a href="/board/get?bno=${board.bno}&currPage=${pageMaker.cri.currPage}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}">${board.title} </a> [<c:out value="${board.commentCnt}"/>]</td>
+                            <td><fmt:formatDate pattern="yyyy/MM/dd" value="${board.insert_ts}"/></td>
+                            <td>${board.like_cnt}</td>
+                            <td>${board.view_cnt}</td>
+                        </tr>
+                    </c:if> 
                 </c:forEach>
             </tbody>
         </table>
 
         <p>&nbsp;</p>
         <div>
-            <button id="regBtn" class="btn btn-info" type="button">글쓰기</button>
+            <c:if test="${__LOGIN__!=null}">
+                <button id="regBtn" class="btn btn-outline-dark" type="button">글쓰기</button>
+            </c:if>
         </div>
 
         <div id="pagination">
@@ -298,7 +308,6 @@
                             </a>    
                         </li>
                     </c:forEach>
- 
                     <c:if test="${pageMaker.next}">
                         <li class="next"><a class="next" href="${pageMaker.endPage+1}"> > </a></li>
                     </c:if>   
@@ -309,5 +318,6 @@
         </div>
     </div>
 
+     <%@ include file="/resources/html/footer.jsp" %>
 </body>
 </html>
