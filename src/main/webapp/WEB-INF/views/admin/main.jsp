@@ -8,8 +8,8 @@
     <meta charset="UTF-8" name="viewport" content="width=device=width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="/resources/css/bootstrap.css">
-    <link rel="stylesheet" href="/resources/css/calender.css">
-	<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="/resources/css/calender.css"> -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -24,11 +24,7 @@
             -khtml-user-select: none;
             -webkit-user-select: none;
             user-select: none; 
-        }
-        hr{
-            width: 998px;
-            margin: 0 auto;
-        }
+        }  
         #adminmenuinfo{
             width: 100px;
             background-color: rgba(65, 105, 225, 0.185);
@@ -43,12 +39,403 @@
         	margin: 0 auto;
         	text-align: center;
         }
+/* =========================================================== */
+.clearfix:after {
+	content: '';
+	display: inline-block;
+    width: 990px;
+}
+/* ======== Calendar ======== */
+#mainCalender{
+    width: 998px;
+    margin: 0 auto;
+}
+.my-calendar {
+    margin: 0 auto!important;
+	display: inline-block;
+	width: 700px;
+	padding: 20px 20px 10px;
+	text-align: center;
+	font-weight: 800;
+	border: 1px solid #ddd;
+}
+
+.my-calendar .clicked-date {
+	border-radius: 25px;
+	margin-top: 36px;
+	width: 42%;
+	padding: 46px 0 26px;
+	background: #ddd;
+    float: left;
+}
+
+.my-calendar .calendar-box {
+	width: 58%;
+	padding-left: 30px;
+    float: right;
+}
+
+.clicked-date .cal-day {
+	font-size: 24px;
+}
+
+.clicked-date .cal-date {
+	font-size: 130px;
+}
+
+.ctr-box {
+	padding: 0 16px;
+	margin-bottom: 20px;
+	font-size: 20px;
+}
+
+.ctr-box .btn-cal {
+	position: relative;
+	/* float: left; */
+	width: 25px;
+	height: 25px;
+	margin-top: 5px;
+	font-size: 16px;
+	cursor: pointer;
+	border: none;
+	background: none;
+}
+
+.ctr-box .btn-cal:after {
+	content: '<';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	line-height: 25px;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.ctr-box .btn-cal.next {
+	float: right;
+}
+
+.ctr-box .btn-cal.next:after {
+	content: '>';
+}
+
+.cal-table {
+	width: 100%;
+}
+
+.cal-table th {
+	width: 14.2857%;
+	padding-bottom: 5px;
+	font-size: 16px;
+	font-weight: 900;
+}
+
+.cal-table td {
+	padding: 3px 0;
+	height: 50px;
+	font-size: 15px;
+	vertical-align: middle;
+}
+
+.cal-table td.day {
+	position: relative;
+	cursor: pointer;
+}
+
+.cal-table td.today {
+	background: #ffd255;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.cal-table td.day-active {
+	background: #ff8585;
+	border-radius: 50%;
+	color: #fff;
+}
+
+.cal-table td.has-event:after {
+	content: '';
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 4px;
+	background: #FFC107;
+}
+#chart_div {
+	display: inline-block;
+}
+
+#container {
+	margin: 0 auto;
+}
+
+#piechart {
+	width: 900px;
+	height: 500px;
+}
+
+#overlay {
+	position: absolute;
+	width: 80px;
+	height: 80px;
+	top: 110px;
+	left: 110px;
+	border-radius: 40px;
+}
+
+#content {
+	/* float: left; */
+	padding:50px 50px;
+	margin: 0 auto;
+	padding-bottom: 40px;
+	background: #fff;
+	width: 840px;
+}
+
+#cafeAdmin #content {
+	color: #444;
+}
+
+.adm_home {
+    width: 800px;
+	margin: 0 auto;
+}
+
+.date_info {
+	position: relative;
+	width: 840px;
+	height: 19px;
+}
+
+.date_selector {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+}
+
+.next_stat_btn, .prev_stat_btn {
+	/* float: left; */
+	display: inline-block;
+	width: 10px;
+	height: 17px;
+	cursor: pointer;
+}
+
+.prev_stat_btn {
+	background: url(//t1.daumcdn.net/cafe_image/founder/2018/prevBtn.png)
+		no-repeat;
+	background-size: 10px 17px;
+}
+
+.stat_btn.end {
+	display: none;
+}
+
+.next_stat_btn {
+	position: relative;
+	left: -2px;
+	background: url(//t1.daumcdn.net/cafe_image/founder/2018/nextBtn.png)
+		no-repeat;
+	background-size: 10px 17px;
+}
+
+a {
+	font-size: inherit;
+}
+
+a, a:hover {
+	color: #000;
+}
+
+.sr_only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}
+
+.stat_date {
+	position: relative;
+	top: -2px;
+	/* float: left; */
+	display: inline-block;
+	padding: 0 14px;
+	height: 19px;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 19px;
+	vertical-align: middle;
+	color: #000;
+}
+
+.stat_collect_dt {
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 13px;
+	color: #888;
+}
+
+.stat_title {
+font-weight: 700;
+    display: inline-block;
+    /* height: 18px; */
+    font-size: 20px;
+    line-height: 1.2;
+    vertical-align: top;
+    color: #222;
+}
+
+.ico_etc_tip {
+	position: relative;
+	top: 1px;
+	left: 2px;
+	display: inline-block;
+	width: 17px;
+	height: 17px;
+	background:
+		url(//t1.daumcdn.net/cafe_image/founder/2018/ico-etc-tip@1x.png)
+		no-repeat;
+}
+
+.tip_box {
+	position: absolute;
+	display: none;
+	width: 268px;
+	padding: 18px 16px 20px;
+	margin-top: 4px;
+	border: 1px solid #565a60;
+	box-shadow: 0 2px 4px 0 rgb(0 0 0/ 10%);
+	background-color: #fff;
+}
+
+.box_tooltip_title {
+	height: 18px;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 18px;
+	color: #222;
+}
+
+.box_tooltip_contents {
+	padding-top: 8px;
+	font-size: 13px;
+	line-height: 18px;
+	color: #444;
+}
+
+.stat_value {
+	display: block;
+	width: 170px;
+	height: 34px;
+	padding-top: 2px;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 34px;
+	color: #222;
+	margin-top: 10px;
+}
+
+.stat_increase {
+	/*position: absolute;*/
+	bottom: 40px;
+	display: inline-block;
+}
+
+.ico_increase.up {
+	background:
+		url(//t1.daumcdn.net/cafe_image/founder/2018/ico-ranking-up-r@1x.png)
+		no-repeat;
+}
+
+.ico_increase {
+	position: relative;
+	top: 4px;
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+}
+
+.value_increase.up {
+	color: #ed3e49;
+}
+
+.value_increase {
+	text-align:center;
+	font-weight:700;
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	height: 18px;
+	font-size: 25px;
+	line-height: 18px;
+	vertical-align: middle;
+}
+
+.box_stat {
+	position: relative;
+	margin-top: 20px;
+	width: 900px;
+	height: 170px;
+	box-sizing: border-box;
+	border: 1px solid #e2e2e2;
+	background-color: #fafafa;
+	padding: 0 0 0 10px;
+}
+
+.box_stat .stat {
+	position: relative;
+    display: inline-block;
+    width: 19%;
+    height: 88px;
+    padding: 38px 30px;
+    vertical-align: top;
+	text-align: center;
+    /* float: left; */
+}
+
+.testDatePicker{
+    width: 220px;
+    height: 40px;
+    border-radius: 5px;
+    /* float: left; */
+    margin-left: 10px;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+.avatar.avatar-xl{
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    margin-left: 410px;
+    margin-bottom: 20px;
+    margin-left: 370px;
+    text-align: center;
+    margin-top: -8px;
+    /* float: left; */
+}
+div.avatar.avatar-xl > img.calendar{
+	width: 50px;
+	height: 50px;
+	border-radius: 0; 
+	margin-top: 13px;
+}
 
     </style>
 </head>
 <body>
     <%@ include file="/resources/html/header.jsp" %>
-<div>
+<div id="container">
     <div>
         <div>
             <div id="adminmenuinfo">관리자 전용</div>
@@ -97,13 +484,13 @@
         </div>
         
     
-        <div align="center">
+        <div text-align="center">
             <div class="avatar avatar-xl">
                 <img class="calendar" src="/resources/img/calender-2389150_1280.png" alt="CAL">
+                <input type="text" class="testDatePicker" id="testDatepicker" placeholder="조회 날짜를 선택하세요.">
+                <a class="input-button" title="toggle" data-toggle>
+                    <i class="icon-calendar"></i></a>
             </div>
-            <input type="text" class="testDatePicker" id="testDatepicker" placeholder="조회 날짜를 선택하세요.">
-            <a class="input-button" title="toggle" data-toggle>
-                <i class="icon-calendar"></i></a>
         </div>
 
         <div id="content" class="adm_home">

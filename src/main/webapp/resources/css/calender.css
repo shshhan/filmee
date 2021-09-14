@@ -2,7 +2,7 @@
 .clearfix:after {
 	content: '';
 	display: inline-block;
-    width: 700px;
+    width: 900px;
 	margin: 0 auto;
 }
 /* ======== Calendar ======== */
