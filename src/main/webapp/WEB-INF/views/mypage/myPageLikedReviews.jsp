@@ -81,7 +81,7 @@
             font-size: 14px;
         }
         #film_poster {
-            width: 400px;
+            width: 200px;
             
         }
         
@@ -218,11 +218,11 @@
                <input type='hidden' name='pagesPerPage' value='${pageMaker.criR.pagesPerPage}'>
                    <div class='row'>
    
-                       <div class='col-6'>
+                       <div class='col-3'>
                            <a href='/film/${likedReviews.filmid}'><img src='https://www.themoviedb.org/t/p/original${likedReviews.poster}' id='film_poster'></a>
                        </div>
    
-                       <div class='col-6' id='mypage_button'>
+                       <div class='col-9' id='mypage_button'>
                        
                           <a href='/film/${likedReviews.filmid}'  id='mypage_review_title'>${likedReviews.title}</a><br>
                           

@@ -79,7 +79,7 @@
             font-size: 14px;
         }
         #film_poster {
-            width: 400px;
+            width: 200px;
             
         }
         
@@ -97,7 +97,7 @@
         	text-align: left;
         	word-wrap: break-word;
         	display: -webkit-box;
-        	-webkit-line-clamp: 13 ;
+        	-webkit-line-clamp: 5 ;
        		-webkit-box-orient: vertical;  			
         }
        #mypage_button {
@@ -199,11 +199,11 @@
 				<input type='hidden' name='pagesPerPage' value='${pageMaker.criFilm.pagesPerPage}'>
 	                <div class='row'>
 	
-	                    <div class='col-6'>
+	                    <div class='col-3'>
 	                        <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
 	                    </div>
 	
-	                    <div class='col-6' id='mypage_button'>
+	                    <div class='col-9' id='mypage_button'>
 	                        <a href='/film/${films.filmid}'  id='mypage_film_title' style='color: blue; font-size: 30px;'>${films.title}</a><br>
 	                        
 	                        <hr>

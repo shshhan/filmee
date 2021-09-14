@@ -189,7 +189,7 @@ $(function() {
 	});//modal hidden.bs.modal            
 
 	//social_join_modal, join 닫을 때 새로고침
-	$("#social_join, #join, #registerProfile").on('hidden.bs.modal', function(){           
+	$("#social_join, #join").on('hidden.bs.modal', function(){           
 		location.reload();  
 		// 카카오 간편로그인을 통한 회원가입, 일반회원가입, 비밀번호 찾기 모두 시도 중에 창을 꺼버리면 checkEmail()과 isEmailChecked, isPwValid 변수의 상태가 변경되어 있기 때문에, 새로고침을 통해 위 세 항목을 초기화 시키지 않으면 새롭게 join modal을 열었을 때 않은 결과가 발생한다.
 	});//social join on hidden

@@ -86,7 +86,6 @@
                       break;
                   default :
               }//switch-case
-              
               $('#header_search').on('propertychange change keyup paste input', function() {
                 var selected = $('#header_select').val();                
                 if(selected == 1){
@@ -366,43 +365,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- join Modal -->
-    <div class="modal fade" id="join" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel"><B>SIGN UP</B></h2>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/main/joinPost" method="POST">
-                    <div class="mb-3">
-                        <label for="join_email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="join_email" name="email"placeholder="name@example.com" autocomplete="username" oninput="checkEmail($('#join_email').val())">
-                    	<p id='email_message'></p>
-                    </div>
-                    <!-- <div class="input-group mb-3">
-                        <label for="email" class="form-label"><b>Email</b></label>
-                        <input type="email" class="form-control" id="email" placeholder="name@example.com" aria-label="name@example.com" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">check</button>
-                        </div> -->
-                    <div class="mb-3">
-                        <label for="password" class="form-label"><b>password</b></label>
-                        <input type="password" class="form-control" id="join_password" name="password" placeholder="password" oninput="javascript:checkPw()" autocomplete="new-password">
-                        <p id='pw_message'></p>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nickname" class="form-label"><b>nickname</b></label>
-                        <input type="text" class="form-control" id="join_nickname" name="nickname" placeholder="John" oninput="checkNickname($('#join_nickname').val())">
-                        <p id='nick_message'></p>
-                        </div>
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary sign_up_btn" type="submit" disabled><b>SIGN UP</b></button>
-                    </div>
-                </form>
             </div>
         </div>
 

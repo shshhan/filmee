@@ -16,6 +16,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
+    
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css'/>
 
     <link rel="icon" href="/img/favicon_noback.ico" type="image/x-icon">
 
@@ -23,14 +25,14 @@
     <link rel="stylesheet" href="/resources/css/swiper.css">
     <link rel="stylesheet" href="/resources/css/main.css">
 
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
     <script src="/resources/js/jquery-1.8.3.min.js"></script>
     <script src="/resources/js/swiper.js"></script>
     
     <script>
 
-       window.onload = function(){
+    	window.onload = function(){
             var swiper = new Swiper('.swiper-container', {
                         pagination: '.swiper-pagination',
                         paginationType: 'progress',
@@ -42,80 +44,70 @@
                         prevButton: '.back'
             });
             
-      
+		
         };
 
-        $(function(){
-            console.log('jq started');
-            $("#agree_cb").on('click', function(){
-                var agreeCb = $("#agree_cb").prop("checked");
-                console.log("agreeCb :", agreeCb);
-                if(agreeCb){
-                    $("#del_acc_btn").prop("disabled", false);
-                } else {
-                    $("#del_acc_btn").prop("disabled", true);
-                }//if-else
-            });//agree_cb onclick
-            $("#del_acc_btn").on('click', function(e){
-                e.preventDefault();     //submit 취소
-                if("${__LOGIN__.email}".includes("SOC.KAKAO_")){    //현재 로그인된 계정이 카카오 계정이라면
-                    Kakao.API.request({     //카카오 간편로그인 token 해제
-                        url: '/v1/user/unlink',
-                        success: function(response) {
-                            console.log(response);
-                            $("#del_acc_form").submit();    //DB에서 탈퇴처리
-                        },
-                        fail: function(error) {
-                            console.log(error);
-                        }
-                    });//Kakao.API,request
-                }else {         //현재 로그인된 계정이 일반계정이라면
-                    $("#del_acc_form").submit();    
-                }//if-else
-            });//del_acc_btn onclick
-            
-        });//jq
+        
     </script>
 
     <style>
     
-       #container {
-          width: 998px;
-          margin: 0 auto;
-          
-          font-family: 'ELAND 초이스';
-       }
-       
-       #mainFilm {
-          position: relative;
-       }
-       
-       #mainPosterUl {
-          position: relative;
-          
-          height: 300px;
-       }
-       
-       .filmPosterList {
-          float: left;
-          
-          margin: 5px;          
-       }
-       
-       #hoverPost {
-          z-index: 8;
-          position:absolute; 
-          top:20px; 
-          left:22px;
-       }
-       
-       .hoverEventList {
-          width:160px; 
-          height:250px; 
-          border:1px solid black;
-          
-          float:left;
-       }
+     	.inner-star::before {
+            color: yellow;
+        }
+        
+        .outer-star {
+            position: relative;
+            display: inline-block;
+            color: rgb(177, 175, 175);
+        }
+        
+        .inner-star {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .outer-star::before, .inner-star::before {
+            content: '\f005 \f005 \f005 \f005 \f005';
+            font-family: 'Font Awesome 5 free';
+            font-weight: 900;
+        }
+    
+    	#container {
+    		width: 998px;
+    		margin: 0 auto;
+    		
+    		font-family: 'ELAND 초이스';
+    	}
+    	
+    	#mainFilm {
+    		position: relative;
+    	}
+    	
+    	#mainPosterUl {
+    		float: left;
+    		
+    		height: 300px;
+    	}
+    	
+    	#hoverPost {
+    		z-index: 8;
+    		position:absolute; 
+    		top:20px; 
+    		left:22px;
+    	}
+    	
+    	.hoverEventList {
+    		width:160px; 
+    		height:250px; 
+    		border:1px solid black;
+    		
+    		float:left;
+    	}
     
     </style>
 
@@ -142,69 +134,82 @@
             </p>
         </div>
         
+        <h1 class="display-6">Popular Films</h1>
+        
         <hr>
         
         <div id='mainFilm' style='height:300px;'>
-        
-           <ul id='mainPosterUl'>
-              <li class="filmPosterList" style='margin-left: 8px;'><img src='../resources/img/fitem01.jpg' ></li>             
-
-              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-              <li class="filmPosterList"><img src='../resources/img/fitem01.jpg' ></li>
-           </ul>
-           
-           <ul id='hoverPost'>
-              <li class='hoverEventList'></li>
-              <li class='hoverEventList' style='margin-left: 38px;'></li>
-              <li class='hoverEventList' style='margin-left: 38px;'></li>
-              <li class='hoverEventList' style='margin-left: 38px;'></li>
-              <li class='hoverEventList' style='margin-left: 38px;'></li>
-           </ul>
-        
+        	<c:forEach items="${films}" var="films">
+        	<ul id='mainPosterUl'>
+        		<li class="filmPosterList" style='margin-left: 8px;'><a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' style='width:190px;' ></a></li>	
+        	</ul>
+        	
+        	<ul id='hoverPost' style='display:none;'>
+        		<li class='hoverEventList'></li>
+        		<li class='hoverEventList' style='margin-left: 38px;'></li>
+        		<li class='hoverEventList' style='margin-left: 38px;'></li>
+        		<li class='hoverEventList' style='margin-left: 38px;'></li>
+        		<li class='hoverEventList' style='margin-left: 38px;'></li>
+        	</ul>
+        	</c:forEach>
         </div>
         
         <hr>
         
-        <h1 class="display-6">Recent Reviews</h1>
+        <h1 class="display-6">Popular Reviews This Week</h1>
         
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#del_acc_modal">
-            회원탈퇴
-        </button>
-  
-        <!-- del_acc_modal -->
-        <div class="modal fade" id="del_acc_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel"><b>DELETE ACCOUNT</b></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h5>삭제된 계정은 복구가 불가능하며, 회원님이 작성하신 게시물과 영화 리뷰를 제외한 모든 정보는 탈퇴 즉시 삭제됩니다.
-                    <strong>탈퇴 하시겠습니까?</strong></h5>
-                    <p>&nbsp;</p>
+        <div id='mypage_reviews' class='container-sm'>
 
-                    <form action="/main/deleteAccount" id="del_acc_form" method="POST">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="agree_cb">
-                            <label class="form-check-label" for="agree_cb">
-                            회원탈퇴에 대한 주의사항을 모두 읽었고, 이에 동의합니다.
-                            </label>
-                        </div>
-                        <hr>
-                        <div class = row align-items-center">
-                            <input type="hidden" name="userId" value="${__LOGIN__.userId}">
-                            <button type="button" class="btn btn-secondary col" id="del_acc_btn" disabled>회원탈퇴</button>
-                            <button type="button" class="btn btn-primary col" data-bs-dismiss="modal">취소</button>
-                        </div>
-                    </form>
+        <hr>
+        
+        <c:forEach items="${reviews}" var="reviews">
+     
+            <div class='row'>
+
+                <div class='col-3'>
+                    <a href='/film/${reviews.filmid}'><img src='https://www.themoviedb.org/t/p/original${reviews.poster}' id='film_poster' style='width:200px;'></a>
                 </div>
+
+                <div class='col-9' id='mypage_button'>
+                
+                   <a href='/film/${reviews.filmid}'  id='mypage_review_title' style='font-size: 25px; color: blue;'>${reviews.title}</a><br>
+                   
+                   <div class='RatingStar'>
+                      <div class='RatingScore'>
+                          <div class='outer-star'>	                                
+                          	<div class='inner-star' style='width: ${reviews.width}%'></div>
+                          </div>
+                      </div>
+                  </div>                                  
+                                      
+                    
+                  <h6>${reviews.rate} / 5</h6>
+                  
+                  <h6>${reviews.likeCnt}</h6>
+                  
+                  <h6>${reviews.commentCnt}</h6>
+                  
+                  <hr>                          
+
+                  <div class='mypage_review_content' id='mypage_review_content'>
+
+                      <a href='/film/${reviews.filmid}/review/${reviews.rno}' style='font-size: 17px; color: black;'>${reviews.content}</a>
+
+                  </div>
+                    
+                    
+                    
+                </div>
+
             </div>
-            </div>
+         
+            <hr>
+         
+         </c:forEach>                    
+
         </div>
+        
+        
     </div>  
     <%@include file="/resources/html/footer.jsp" %>
 </body>
