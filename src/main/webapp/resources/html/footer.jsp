@@ -84,7 +84,7 @@
                     </a>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-outline-secondary">의견보내기</button>
+                    <button type="button" class="btn btn-outline-secondary" id="com_register_btn">의견보내기</button>
                 </div>
             </div>    
         </div>

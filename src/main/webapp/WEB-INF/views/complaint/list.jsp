@@ -51,15 +51,23 @@
 
         #com_table th{
             padding: 10px;
-            border-bottom: 3px solid black ;
+            
             text-align : center;
         }
 
         #com_table td{
             padding: 10px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.561) ;
+            
 
             text-align : center;
+        }
+        
+        thead>tr{
+            border-bottom: 3px solid black ;
+            background-color: rgba(128, 128, 128, 0.219);
+        }
+        tbody>tr{
+            border-bottom: 1px solid rgba(0, 0, 0, 0.363) ;
         }
         #com_code_td{
             width: 450px;
@@ -294,6 +302,7 @@
                 </tr>
                 
             </thead>
+            <tbody> 
                 <c:forEach items="${list}" var="complaint">
                     <tr>
                         <td>
@@ -351,7 +360,7 @@
                     </tr>
                 </c:forEach>
                 
-            <tbody> 	
+            	
 		
             </tbody>
         </table>

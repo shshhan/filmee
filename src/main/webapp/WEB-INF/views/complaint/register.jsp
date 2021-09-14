@@ -62,7 +62,7 @@
                 text-decoration: none;
             }
 
-            #select{
+            #comp_select{
                 display: flex;
                 flex-flow: row;
                 width: 120px;
@@ -182,15 +182,13 @@
 
     </head>
     <body>
-
-        <button id="com_register_btn">요청하기</button>
 		
         <div id="popup"> 
             <form action="/complaint/register" method="POST">
             <input type="hidden" name="writer" value="${__LOGIN__.userId}">
                 <div id="compl_close">닫기</div>
 
-                <select name="code" id="select">
+                <select name="code" id="comp_select">
                     <option value="1">버그리포트</option>
                     <option value="2">영화 수정</option>
                     <option value="3">영화 추가</option>
