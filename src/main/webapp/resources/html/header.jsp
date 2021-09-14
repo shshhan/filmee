@@ -182,7 +182,6 @@
 			    width: 998px;
 			    height: 150px;
 			    margin: 0 auto;
-			    background-color: rgba(240, 230, 230, 0);
 			    font-size: 20px;
 			    font-family: 'ELAND 초이스';
 			}
@@ -227,7 +226,7 @@
 	
 		<header>
             <div id='header'>
-	        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	        <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                   <a class="navbar-brand" href="/main"><img id='header_nav_logo'  src='/resources/img/filmeeLogo.png'></a>
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
