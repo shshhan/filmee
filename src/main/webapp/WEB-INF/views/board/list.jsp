@@ -303,5 +303,6 @@
     </div>
 
      <%@ include file="/resources/html/footer.jsp" %>
+
 </body>
 </html>
