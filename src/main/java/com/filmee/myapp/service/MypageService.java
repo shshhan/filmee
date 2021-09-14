@@ -2,6 +2,8 @@ package com.filmee.myapp.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.filmee.myapp.domain.ActivityVO;
 import com.filmee.myapp.domain.CriteriaActivity;
 import com.filmee.myapp.domain.CriteriaFilm;
@@ -46,6 +48,12 @@ public interface MypageService {
 	public abstract boolean deleteMainGuestbook(Integer gno);
 	
 	public abstract boolean insertGuestbook(MainGuestbookVO guestbook);
+	
+	public abstract boolean insertFollow(Integer follower, Integer followee);
+	
+	public abstract boolean deleteFollow(Integer follower, Integer followee);
+	
+	public abstract int isFollowed(Integer follower, Integer followee);
 	
 	//------------------------------------------------------------------------------------//
 	

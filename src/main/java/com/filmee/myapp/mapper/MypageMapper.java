@@ -2,6 +2,8 @@ package com.filmee.myapp.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.filmee.myapp.domain.ActivityVO;
 import com.filmee.myapp.domain.CriteriaActivity;
 import com.filmee.myapp.domain.CriteriaFilm;
@@ -46,6 +48,12 @@ public interface MypageMapper {
 	public abstract int deleteMainGuestbook(Integer gno);
 	
 	public abstract int insertGuestbook(MainGuestbookVO guestbook);
+	
+	public abstract int insertFollow(@Param("userid")Integer follower, @Param("sessionUserid")Integer followee);
+	
+	public abstract int deleteFollow(@Param("userid")Integer follower, @Param("sessionUserid")Integer followee);
+	
+	public abstract int isFollowed(@Param("userid")Integer follower, @Param("sessionUserid")Integer followee);
 	
 	//---------------------------------------------------------------------------------//
 	

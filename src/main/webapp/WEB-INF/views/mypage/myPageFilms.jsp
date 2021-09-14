@@ -11,15 +11,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mypageFilms</title>
+    
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="/resources/img/favicon_noback.ico" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js" referrerpolicy="no-referrer"></script>
-    
-    <link rel="stylesheet" href="../resources/css/footer.css">
+
+
+    <link rel="stylesheet" href="../resources/css/header.css">
+
+    <!-- <link rel="stylesheet" href="../resources/css/footer.css"> -->
     
     <script>
     
@@ -66,22 +71,18 @@
     	* {
     		text-decoration-line: none !important;
     	}
-
         #container {
             width: 998px;
             margin: 0 auto;
-
+            font-family:'Florencesans SC Exp', 'ELAND 초이스'; 
             font-family: 'ELAND 초이스'; 
         }
-
         #mypage_top_menu {
             font-size: 16px;
         }
-
         #mypage_mid_menu {
             font-size: 14px;
         }
-
         #film_poster {
             width: 400px;
             height: 300px;
@@ -91,24 +92,20 @@
         	font-size: 23px; 
         	font-weight: bold;
         }
-
         #mypage_film_content {             
             overflow: hidden;
         	text-overflow: ellipsis;
         	white-space: normal;
         	line-height: 1.2;
-
         	text-align: left;
         	word-wrap: break-word;
         	display: -webkit-box;
         	-webkit-line-clamp: 8 ;
        		-webkit-box-orient: vertical;  			
         }
-
        #mypage_button {
         	position: relative
         }
-
        #delBtn {
         	position: absolute;
         	bottom: 10px;
@@ -121,12 +118,38 @@
        
     
     </style>
+
+
+</head>
+<body>
+
+    <header>
+        <div id="header">
+            <a href="/main">
+                <img id="logoimg" src="/resources/img/filmeeLogo.png" alt="LOGO">
+            </a>
+            <ul id="headermenu">
+                <li><a href="">LOGIN</a></li>
+                <li><a href="">CREATE ACCOUNT</a></li>
+                <li><a href="/board/list">BOARD</a></li>
+                <li>
+                    <input type="search" placeholder="Search" class="search-field" />
+                    <button type="submit" class="search-button">
+                    </button>
+                </li>
+                <li> <img id="searchimg" src="/resources/img/search.png" >
+                </li>
+            </ul>
+        </div>
+
+    </header>
+
     
     <%@ include file="/resources/html/header.jsp" %>
 
 </head>
 <body>
-    
+
 
     <section>
 
@@ -146,6 +169,21 @@
                         
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-pills" style='font-size: 20px; font-weight: bold;'>
                             <li class="nav-item">
+
+                                <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">Activity</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Films</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/myreviews?userid=${pageMaker.criFilm.userid}&currPage=1&amount=5&pagesPerPage=5">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/follower?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">Follows</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">GuestBook</a>
+
                                 <a class="nav-link" href="/mypage/activity?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">ACTIVITY</a>
                             </li>
                             <li class="nav-item">
@@ -159,6 +197,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/mypage/guestbook?userid=${pageMaker.criFilm.userid}&currPage=1&amount=10&pagesPerPage=5">GUESTBOOK</a>
+
                             </li>
                         </ul>                        
                       </div>
@@ -174,6 +213,17 @@
 
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
+
+                      <a class="${pageMaker.criFilm.code == 1 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=1&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">favorite</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                      <a class="${pageMaker.criFilm.code == 2 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=2&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">watched</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="${pageMaker.criFilm.code == 3 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=3&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">want watch</a>
+
                       <a class="${pageMaker.criFilm.code == 1 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=1&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">Favorite</a>
                     </li>
                     
@@ -183,6 +233,7 @@
                     
                     <li class="nav-item">
                         <a class="${pageMaker.criFilm.code == 3 ? 'nav-link active' : 'nav-link'}" href="/mypage/films?userid=${pageMaker.criFilm.userid}&code=3&currPage=1&amount=${pageMaker.criFilm.amount}&pagesPerPage=${pageMaker.criFilm.pagesPerPage}">WishToWatch</a>
+
                       </li>
                   </ul>
 
@@ -203,21 +254,22 @@
 	                <div class='row'>
 	
 	                    <div class='col-6'>
-	                        <a href='#'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
+	                        <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
 	                    </div>
 	
 	                    <div class='col-6' id='mypage_button'>
-	                        <a href='#'  id='mypage_film_title'>${films.title}</a><br>
+	                        <a href='/film/${films.filmid}'  id='mypage_film_title'>${films.title}</a><br>
 	                        
 	                        <hr>
 	
 	                        <div class='mypage_film_content' id='mypage_film_content'>
-	
-	                            <a href='#' style='font-size: 17px; color: black;'>${films.plot}</a>	
+
+	                            <a href='/film/${films.filmid}' style='font-size: 17px; color: black;'>${films.plot}</a>	
 	
 	                        </div>
 	                            
 	                        <button id='delBtn' onclick="deleteFilmReaction('${films.userid}', ${films.filmid}, ${films.code})" type="button" class="btn btn-outline-danger btn-sm">Del</button>
+
 	                    </div>
 	
 	                </div>
@@ -271,8 +323,9 @@
 
     </section>
 
+    <%@include file="/resources/html/footer.jsp" %>
 
-    <footer>
+    <!-- <footer>
         
         <footer>
         <div id="footer">
@@ -290,6 +343,6 @@
                 <button>의견보내기</button>
             </div>
         </div>
-    </footer>
+    </footer> -->
 </body>
 </html>

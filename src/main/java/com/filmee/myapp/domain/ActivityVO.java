@@ -18,5 +18,11 @@ public class ActivityVO {
 	private Timestamp insertTs;
 	private String title;
 	private String nicknameGuestbook;
+	private Integer owner;
+	private Integer filmid;
+	private Integer rno;
+	private Integer followerid;
+	private Integer writer;
+	private Integer reviewFilmId;
 	
 } //end class

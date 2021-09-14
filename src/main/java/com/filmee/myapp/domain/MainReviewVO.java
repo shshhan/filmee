@@ -8,6 +8,7 @@ import lombok.Value;
 @Value
 public class MainReviewVO {
 	
+	private Integer filmid;
 	private Integer rno;
 	private String poster;
 	private String content;

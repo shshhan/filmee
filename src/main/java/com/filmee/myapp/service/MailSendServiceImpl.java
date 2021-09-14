@@ -1,10 +1,12 @@
 package com.filmee.myapp.service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 import java.util.Random;
 
 import javax.mail.MessagingException;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
@@ -20,10 +22,18 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 
 @Service
-public class MailSendServiceImpl implements MailSendService {
+public class MailSendServiceImpl 
+	implements MailSendService, InitializingBean {
 
 	@Setter(onMethod_=@Autowired)
 	private JavaMailSenderImpl mailSender;
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		log.debug("afterPropertiesSet() invoked.");
+		
+		Objects.requireNonNull(this.mailSender);
+	}//afterPropertiesSet
 		
 	//인증코드 난수 생성
 	@Override
@@ -101,7 +111,8 @@ public class MailSendServiceImpl implements MailSendService {
 			e.printStackTrace();
 		}//try-catch
 
-	}
+	}//sendTempPwMail
+
 	
 	//complaint 의 completion 메일 답변보내기
 	@Override
@@ -143,5 +154,5 @@ public class MailSendServiceImpl implements MailSendService {
 			e.printStackTrace();
 		}//try-catch
 	}//sendResetPwMail
-	
+		
 }//end class

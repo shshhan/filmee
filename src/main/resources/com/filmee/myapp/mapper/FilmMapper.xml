@@ -17,9 +17,9 @@
     <select id="selectFilmPeople" resultType="com.filmee.myapp.domain.FilmPeopleVO">
     
 
- 	SELECT 
+    SELECT 
         P.ENNAME,FP.*
-    FROM FM_FILM_PEOPLE FP,  FM_PEOPLE P 
+    FROM FM_FILM_PEOPLE FP, FM_PEOPLE P 
     WHERE FP.PEOPLE_ID = P.PEOPLE_ID
     AND FP.FILM_ID = #{FILM_ID}
     ORDER BY FP.CREDIT_ORDER
@@ -32,28 +32,46 @@
 	WHERE G.FILM_ID = #{FILM_ID}
     </select>
 
-	<insert id="insert">
+<!-- 	<insert id="insert">
         INSERT INTO FM_REVIEW (film_id, writer, rate, content, watched_date, is_spoiled)
         VALUES(#{film_id}, #{writer}, #{rate}, #{content}, #{watched_date, jdbcType=VARCHAR}, #{is_spoiled})
-	</insert>
+	</insert>  -->
+	
+   	<insert id="insert">  <!-- 이거말고 url에서 값 가져오는걸로?  -->
+   <!--  	<selectKey keyProperty="film_id" order="AFTER" resultType="int">
+          SELECT film_id from fm_review where rno =#{rno} 
+        </selectKey>  -->
+        
+         <selectKey keyProperty="rno" order="BEFORE" resultType="int">
+            SELECT ISEQ$$_100784.nextval FROM dual
+        </selectKey>
+         
+
+<!-- 별점 구현하기전이라 4.5로 하드코딩함 -->
+     INSERT INTO FM_REVIEW (film_id, writer, rate, content)
+        VALUES(#{film_id}, #{writer}, 4.5, #{content}) 
+        
+
+    </insert>  
 
 
 	
 	<select id="select" resultType="com.filmee.myapp.domain.ReviewFilmUserVO">
 	
-	SELECT 
-     R.*, F.title, F.original_title, F.release_date,'YYYY', F.poster_path, u.nickname
+		SELECT 
+     R.rno, R.film_id, R.writer, R.rate,R.CONTENT, R.insert_ts, R.update_ts, R.delete_ts, R.like_cnt, F.title, F.original_title, F.release_date,'YYYY', F.poster_path, u.nickname
 	FROM fm_review R, fm_film F, fm_user u
     WHERE R.film_id = F.film_id
     AND R.writer = u.user_id
-	AND R.rno = #{RNO}
+	AND R.rno =  #{RNO}
 	
 	</select>
 	
     <select id="selectList" resultType="com.filmee.myapp.domain.ReviewFilmUserVO">   
     
    	SELECT 
-     R.*, F.title, F.original_title, F.release_date,'YYYY', F.poster_path, u.nickname
+    R.rno, R.film_id, R.writer, R.rate,R.CONTENT, R.insert_ts, R.update_ts, R.delete_ts, R.like_cnt, 
+    F.title, F.original_title, F.release_date,'YYYY', F.poster_path, u.nickname
 	FROM fm_review R, fm_film F, fm_user u
     WHERE R.film_id = F.film_id
     AND R.writer = u.user_id
@@ -75,9 +93,7 @@
         film_id = #{film_id},
         writer = #{writer},
         rate = #{rate},
-        CONTENT = #{content},
-        WATCHED_DATE = #{watched_date, jdbcType=VARCHAR},        
-        is_spoiled = #{is_spoiled},
+        CONTENT = #{content},       
         update_ts = current_date
     WHERE
         rno = #{rno}
@@ -89,8 +105,7 @@
         FROM
             (SELECT R.RNO, R.FILM_ID, R.WRITER, R.RATE,
                        R.CONTENT, R.INSERT_TS, R.UPDATE_TS, R.DELETE_TS,
-                       R.WATCHED_DATE, R.IS_SPOILED, R.LIKE_CNT,
-                       F. TITLE, F.ORIGINAL_TITLE, F. RELEASE_DATE, F.POSTER_PATH,
+                       R.LIKE_CNT,F. TITLE, F.ORIGINAL_TITLE, F. RELEASE_DATE, F.POSTER_PATH,
                        U.NICKNAME 
               FROM fm_review R, fm_film F, fm_user U 
                WHERE R.film_id = F.film_id
@@ -106,6 +121,4 @@
         FROM fm_review
         WHERE film_id =#{film_id}
     </select>
-
-
 </mapper>
