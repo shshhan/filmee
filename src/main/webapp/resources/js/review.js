@@ -16,7 +16,7 @@ $(document).ready(function(){
 	
 	// 수정하기 버튼 클릭
 	$("button[name='modify']").click(function(){
-		url : '/film/review/modify/' + rno
+		url : '/film/review/modify/m' + rno
 		type = 'PUT';
 		rno = this.value;
 

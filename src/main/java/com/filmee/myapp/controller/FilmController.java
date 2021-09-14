@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.filmee.myapp.domain.CriteriaFilmReview;
@@ -86,6 +87,7 @@ public class FilmController {
 
 	@GetMapping({"/{filmid}/review/{rno}"})  
 	public String getReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
+			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
 			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
 		log.debug("readReview({}, {}) invoked.", rno, model);
 
@@ -96,27 +98,45 @@ public class FilmController {
 		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
 		
 		
-		if(user!=null) {
-			heart.setBno(bno);
-			heart.setUserid(user.getUserId());
-			if(this.hService.check(bno, user.getUserId())==null) {
-				int aLine = this.hService.heartInsert(heart);
-				log.info(">>>>>>> heartInsert : "+heart);
-				log.info(">>>>>>> Result : "+aLine);
-				heart=this.hService.check(bno, user.getUserId());
-				model.addAttribute("heart", heart);			
-			} else {
-				heart=this.hService.check(bno, user.getUserId());
-				model.addAttribute("heart", heart);			
-			}
-		}
+//		if(user!=null) {
+//			heart.setBno(bno);
+//			heart.setUserid(user.getUserId());
+//			if(this.hService.check(bno, user.getUserId())==null) {
+//				int aLine = this.hService.heartInsert(heart);
+//				log.info(">>>>>>> heartInsert : "+heart);
+//				log.info(">>>>>>> Result : "+aLine);
+//				heart=this.hService.check(bno, user.getUserId());
+//				model.addAttribute("heart", heart);			
+//			} else {
+//				heart=this.hService.check(bno, user.getUserId());
+//				model.addAttribute("heart", heart);			
+//			}
+//		}
 		
 		
-
 		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
 		model.addAttribute("reviewCommentList", reviewCommentList);
 
 		return "review/get";
+	} // getReview
+	
+	
+	
+	
+	@GetMapping({"/{filmid}/review/m/{rno}/"})  
+	public String modifyReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
+//			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
+			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
+		log.debug("readReview({}, {}) invoked.", rno, model);
+
+		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);
+
+		assert reviewFilmUserVO != null;
+		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
+
+		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
+
+		return "review/modify";
 	} // getReview
 
 
@@ -180,20 +200,7 @@ public class FilmController {
 	} //deleteMyReview
 	
 	
-	@GetMapping({"/{filmid}/review/{rno}"})  
-	public String modifyReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
-			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
-		log.debug("readReview({}, {}) invoked.", rno, model);
 
-		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);
-
-		assert reviewFilmUserVO != null;
-		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
-
-		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
-
-		return "review/modify";
-	} // getReview
 	
 	
 	
@@ -215,7 +222,7 @@ public class FilmController {
 		rttrs.addAttribute("amount", criFR.getAmount());
 		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
 		
-		return "redirect:/film/modify";
+		return "redirect:/mypage/myreviews";
 	} //modify
 	
 	@GetMapping("listPerPage")
