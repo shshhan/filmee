@@ -37,8 +37,7 @@
 </head>
 
 <body>
-      
-      특정 리뷰의 정보를 그대로 가져와야함!!
+
     <div id="colorbox" class="" 
     style="display: block; 
     	overflow: hidden; 

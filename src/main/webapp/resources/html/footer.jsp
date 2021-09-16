@@ -19,9 +19,10 @@
         a{color:#333;text-decoration:none;text-align: center;}
         a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
 		#footer{
-		    width: 998px;
+		    /* width: 998px; */
 		    height : 130px;
 		    margin: 0 auto;
+            background: lightgray;
 		}
 		
 		
@@ -57,7 +58,6 @@
 </head>
 <body>
     <footer>
-        <hr>
         <div class="row" id="footer">
 
             <div class="col-3" id="footer_logoimg">

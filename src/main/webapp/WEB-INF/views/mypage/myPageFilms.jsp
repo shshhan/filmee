@@ -79,8 +79,8 @@
             font-size: 14px;
         }
         #film_poster {
-            width: 400px;
-            height: 300px;
+            width: 200px;
+            
         }
         
         #mypage_film_title {
@@ -91,11 +91,13 @@
             overflow: hidden;
         	text-overflow: ellipsis;
         	white-space: normal;
-        	line-height: 1.2;
+
+        	line-height: 2.0;
+
         	text-align: left;
         	word-wrap: break-word;
         	display: -webkit-box;
-        	-webkit-line-clamp: 8 ;
+        	-webkit-line-clamp: 5 ;
        		-webkit-box-orient: vertical;  			
         }
        #mypage_button {
@@ -185,40 +187,42 @@
             <div id='mypage_myfilms' class='container-sm'>
 
                 <hr>
-            
-            <c:forEach items="${films}" var="films">
-            <form action="/mypage/deleteFilmReaction" method="POST" id='form_${films.userid}_${films.filmid}_${films.code}'>
-            <input type='hidden' name='userid' value='${pageMaker.criFilm.userid}'>
-            <input type='hidden' name='filmid' value='${films.filmid}'>
-            <input type='hidden' name='code' value='${films.code}' >
-            <input type='hidden' name='currPage' value='${pageMaker.criFilm.currPage}'>
-            <input type='hidden' name='amount' value='${pageMaker.criFilm.amount}'>
-            <input type='hidden' name='pagesPerPage' value='${pageMaker.criFilm.pagesPerPage}'>
-                   <div class='row'>
-   
-                       <div class='col-6'>
-                           <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
-                       </div>
-   
-                       <div class='col-6' id='mypage_button'>
-                           <a href='/film/${films.filmid}'  id='mypage_film_title'>${films.title}</a><br>
-                           
-                           <hr>
-   
-                           <div class='mypage_film_content' id='mypage_film_content'>
-   
-                               <a href='/film/${films.filmid}' style='font-size: 17px; color: black;'>${films.plot}</a>   
-   
-                           </div>
-                               
-                           <button id='delBtn' onclick="deleteFilmReaction('${films.userid}', ${films.filmid}, ${films.code})" type="button" class="btn btn-outline-danger btn-sm">Del</button>
-                       </div>
-   
-                   </div>
-                   
-                   <hr>
-                   </form>
-            </c:forEach>                                  
+
+				
+				<c:forEach items="${films}" var="films">
+				<form action="/mypage/deleteFilmReaction" method="POST" id='form_${films.userid}_${films.filmid}_${films.code}'>
+				<input type='hidden' name='userid' value='${pageMaker.criFilm.userid}'>
+				<input type='hidden' name='filmid' value='${films.filmid}'>
+				<input type='hidden' name='code' value='${films.code}' >
+				<input type='hidden' name='currPage' value='${pageMaker.criFilm.currPage}'>
+				<input type='hidden' name='amount' value='${pageMaker.criFilm.amount}'>
+				<input type='hidden' name='pagesPerPage' value='${pageMaker.criFilm.pagesPerPage}'>
+	                <div class='row'>
+	
+	                    <div class='col-3'>
+	                        <a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' id='film_poster'></a>
+	                    </div>
+	
+	                    <div class='col-9' id='mypage_button'>
+	                        <a href='/film/${films.filmid}'  id='mypage_film_title' style='color: blue; font-size: 30px;'>${films.title}</a><br>
+	                        
+	                        <hr>
+	
+	                        <div class='mypage_film_content' id='mypage_film_content'>
+	
+	                            <a href='/film/${films.filmid}' style='font-size: 17px; color: black;'>${films.plot}</a>	
+	
+	                        </div>
+	                            
+	                        <button id='delBtn' onclick="deleteFilmReaction('${films.userid}', ${films.filmid}, ${films.code})" type="button" class="btn btn-outline-danger btn-sm">Del</button>
+	                    </div>
+	
+	                </div>
+	                
+	                <hr>
+	                </form>
+				</c:forEach>                                  
+
 
             </div>
 
