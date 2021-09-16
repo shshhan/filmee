@@ -194,25 +194,25 @@
 
             })
             
-            $("a.prev, a.next").on("click", function(e) {
-                console.debug("onclicked for a.next or a.prev...");
-                console.log('\t+ this : ', this);
+            $('a.prev, a.next').on('click', function() {
+                console.debug('onclicked for a.next or a.prev...'');
+                console.log('\t+ this :{} ', this);
 
                 //Event에 의한 선택된 요소의 기본등작을 금지(무력화)
                 e.preventDefault();
 
                 // 아래 지역변수에는 Rvalue선택자에 의해서 선택된 요소
                 // (즉, form 태그)가 저장됨
-                var paginationForm = $("#paginationForm");
+                var paginationForm = $('#paginationForm');
+                paginationForm.attr('action', '/complaint/listPerPage');
+                paginationForm.attr('method', 'GET');
                 
-                paginationForm.attr("action", "/complaint/listPerPage");
-                paginationForm.attr("method", "GET");
 
-                paginationForm.find("input[name=currPage]").val($(this).attr("href"));
+                paginationForm.find('input[name=currPage]').val($(this).attr('href'));
                 //paginationForm에서 name 속성의 값이 currPage인 input태그를 찾아라
                 //이벤트 타겟의 속성 중 href의 값을 해당 input 태그에 값으로 넣어준다.
-                paginationForm.find("input[name=amount]").val("${pageMaker.cri.amount}");
-                paginationForm.find("input[name=pagesPerPage]").val("${pageMaker.cri.pagesPerPage}");
+                paginationForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
+                paginationForm.find('input[name=pagesPerPage]').val('${pageMaker.cri.pagesPerPage}');
 
 
                 
@@ -221,7 +221,7 @@
 
             $('#searchBtn').click(function(e){
                 console.log('onclick on #searchBtn clicked..');
-                
+                console.log('\t+ this :{} ', this);
                 //Event에 의한 선택된 요소의 기본등작을 금지(무력화)
                 e.preventDefault();
 
@@ -370,7 +370,7 @@
     </div>
     <br>
     <div id="pagination">
-            <form id="paginationForm">
+            <form id="paginationForm" >
                 <!-- 어느 화면에서든, 게시판 목록 페이지로 이동시, 반드시 아래 3개의 기준 전송파라미터를 전송시키기위해 hidden 값으로 설정 -->
                 <input type="hidden" name="currPage">
                 <input type="hidden" name="amount">
@@ -378,10 +378,11 @@
                 <input type="hidden" name="code">
                 <!-- hidden 태그는 랜더링은 안하지만 서버로 value값을 전달한다. -->
                 <!-- JQuery로 value를 넣는다. -->
-
+				
                 <ul>
                     <c:if test="${pageMaker.prev}">
-                        <li class="prev"><a class="prev" href="${pageMaker.startPage-1}">Prev</a></li>
+                        <li class="prev"><a class="prev" href="/complaint/listPerPage?currPage=${pageMaker.startPage-1}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}">Prev</a></li>
+                        
                     </c:if>
 
                     <!-- begin~end까지 반복하고, 현재의 번호값은 var 속성에 넣어준다 -->
@@ -401,7 +402,7 @@
                     </c:forEach>
 
                     <c:if test="${pageMaker.next}">
-                        <li class="next"><a class="next" href="${pageMaker.endPage+1}">Next</a></li>
+                        <li class="next"><a class="next" href="/complaint/listPerPage?currPage=${pageMaker.endPage+1}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}">Next</a></li>
                     </c:if>
                 </ul>
             </form>

@@ -125,7 +125,7 @@ public class ComplaintServiceImpl
 				log.info("\t+content:{}",complaint.getContent_re());
 				log.info("===================================================");
 				if(complaintToCheck.getSend() == 1) {
-					this.mailService.sendComplaintMail(email, complaintToCheck.getContent(),complaint.getContent_re());
+					this.mailService.sendComplaintMail(email, complaintToCheck.getContent().replaceAll("\r\n","<br>"),complaint.getContent_re().replaceAll("\r\n","<br>"));
 				}
 
 			return (this.mapper.updateEnd(complaint)==1);
