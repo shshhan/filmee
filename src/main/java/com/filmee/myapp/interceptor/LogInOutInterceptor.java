@@ -18,9 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @NoArgsConstructor
 public class LogInOutInterceptor
 	implements HandlerInterceptor{
-	
-	public static final String rememberMeKey = "__REMEMBER_ME__"; 
-	
+		
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {

@@ -18,21 +18,19 @@
         <style>
             #popup{
 
-                display: flex;
-                flex-flow: column nowrap;
-                justify-content: left;
+                
                 position: fixed;
                 z-index: 1100;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
                 width: 500px;
-                height: 500px;
+                
                 box-shadow: 0 0 10px rgba(0, 0, 0, 5);
                 background: #fff;
                 border-radius: 5px;
                 text-align: right;
-                padding: 20px;
+
                 box-sizing: border-box;
                 text-decoration: none; 
                 
@@ -43,31 +41,67 @@
             #com_register_btn{
                 
                 display:  block; 
-                width: 90px;
-                height: 30px;
+                height: 38px;
                 
-                border: 1px none;
-                background: #534002e8;
+                border: 1px solid #212529;;;
+                
                 text-decoration: none;
                 text-align: center;
                 line-height: 10px;
-                color: #fff;
-                border-radius: 50px;
+                color: #212529;;
+                border-radius: 100px;
                 
                 display: none;
             }
-
-            #comp_close{
-                color:  #f0adceed;
-                text-decoration: none;
+            hr{
+            	width: 100%;
+            }
+            #com_register_btn:hover{
+            	color: white;
+                background-color: #212529;;
             }
 
-            #select{
+            #com_popup_header{
+                display: flex;
+                flex-flow: row nowrap;
+                justify-content: space-between;
+                
+            }
+            
+            .com_popup_all{
+                margin: 20px;
+            }
+
+            #compl_title{
+                font-size: 25px;
+            }
+            #compl_close{
+                margin-top: 10px;
+                
+                text-decoration: none;
+                font-size: 20px;
+            }
+            #compl_close:hover{
+                
+                border: 2px solid #0f0f0fcc;
+            }
+            #compl_close:active{
+                color: #ffffffed;;
+                background-color: #f0adceed;;
+            }
+            #com_popup_body{
+                display: flex;
+                flex-direction: column;
+                justify-items: left;
+                text-align: left;
+            }
+            
+            #comp_select{
                 display: flex;
                 flex-flow: row;
-                width: 120px;
+                width: 100%;
                 height: 40px;
-                border: 2px solid #f0adce96;
+                border: 2px solid #0f0f0fcc;
                 
             }
 
@@ -79,21 +113,30 @@
                 
                 margin-top: 5px;
                 height: 340px;
-                border: 2px solid #f0adce96;
+                border: 2px solid #cecdcd96;
             }
             #chackbox{
-                display: flex;
-                flex-flow: row;
+                text-align: left;
             }
 
             #comp_submit{
                 width: 460px;
                 margin-top: 5px;
-                color: white;
-                background-color: #f0adce96;
-                border: 2px solid #f0adce96;
+                color: rgb(0, 0, 0);
+                background-color: white;
+                border: 2px solid #000000;
             }
+            #comp_submit:hover{
 
+                background-color: rgb(93, 93, 93);
+                color: white;
+                border: 2px solid rgb(93, 93, 93);
+            }
+            #comp_submit:active{
+                background-color: #f0adce96;
+                color: white;
+                border: 2px solid #f0adce96;3);
+            }
             #comModal{
                 
                 display: flex;
@@ -120,19 +163,29 @@
                 font-size: 18px;
                 
             }
+            .com_popup_text{
+                justify-self: left;
+            }
+            #comp_code{
+                justify-self: left;
+               
+            }
+            #comp_cont{
+                justify-self: left;
+            }
+            #comp_send{
+                justify-self: left;
+            }
         </style>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
 
         <script>
      
-            $(function(){
-            	
-                
-				/* console.clear(); */
-
-                /* var comResult = "<c:out value='${comResult}'/>";
-    	        console.log("comResult:"+comResult); */
+            $(function(){               
+                 var comResult = "<c:out value='${comResult}'/>";
+    	        console.log("comResult:"+comResult);
+    	        
     	        if(comResult.length > 0){
 
 
@@ -144,13 +197,8 @@
 	    	        
 	    	        jQuery(document).ready(function() {
 	                    $('#comModal').show();
-		            });
-	    	        
-		            //닫기버튼을 누르면 모달을 숨김
-		           //  function close_pop(flag) {
-		           //      $('#comp_close').hide();
-		           // };
-		           
+		            });	    	        
+		    	           
 		            //모달을 시간이 지나면 자동으로 숨김 1000초가 1초
 		            setTimeout(function() { $('#comModal').hide();}, 2000);																												
                 }//if
@@ -167,13 +215,13 @@
            
 				
                 var login="${__LOGIN__.userId}";
-                if(login.length>0){
+                 
+				if(login.length>0){
                 	
                 	$(document).ready(function(){
                         $("#com_register_btn").show("slow");
-                    })
+                   	})
                 }
-                
             });
 			
             
@@ -182,33 +230,47 @@
 
     </head>
     <body>
-
-        <button id="com_register_btn">요청하기</button>
-		
+		<button type="button" class="btn btn-outline-secondary" id="com_register_btn">의견</button>
         <div id="popup"> 
             <form action="/complaint/register" method="POST">
-            <input type="hidden" name="writer" value="${__LOGIN__.userId}">
-                <div id="compl_close">닫기</div>
+                <input type="hidden" name="writer" value="${__LOGIN__.userId}">
 
-                <select name="code" id="select">
-                    <option value="1">버그리포트</option>
-                    <option value="2">영화 수정</option>
-                    <option value="3">영화 추가</option>
-                    <option value="4">기타</option>
-                </select>
-                <div id="comp_cont">
-                    <textarea name="content" id="comp_text" cols="54" rows="15"placeholder="내용을 입력하세요." ></textarea>
-                    
+                <div id="com_popup_header" class="com_popup_all">
+                    <div id="compl_title">요청하기</div>
+                    <button type="button" id="compl_close">X</button>
+                </div>    
+                <hr>
+                <div id="com_popup_body" class="com_popup_all">
+                    <div id="com_popup_select">
+                        <label for="code" class="com_popup_text" id="comp_code">요청유형</label>
+                        <select name="code" id="comp_select">
+                            <option value="1">버그리포트</option>
+                            <option value="2">영화 수정</option>
+                            <option value="3">영화 추가</option>
+                            <option value="4">기타</option>
+                        </select>
+                    </div>
+                    <div id="comp_cont">
+                        <label for="content" class="com_popup_text">내용</label>
+                        <textarea name="content" id="comp_text" cols="54" rows="15"placeholder="요청사항을 입력하세요." ></textarea>
+                        
+                    </div>
+                    <div id="comp_send" class="com_popup_text">
+                        <input type="checkbox" id="checkbox" name="send" value="1" checked>답변 받기
+                    </div>
+
                 </div>
-                <div id="comp_send">
-                    <input type="checkbox" id="checkbox" name="send" value="1" checked>답변 받기
+
+                <hr>
+                <div id="com_popup_footer" class="com_popup_all">
+
+                    <button id="comp_submit" type="submit" value="results">보내기</button>
                 </div>
-                <button id="comp_submit" type="submit" value="results">보내기</button>
             </form>
         </div>
 		
-      <div id="comModal">
-        <div id="comModalClo" >${comResult}</div>
-      </div>
+        <div id="comModal">
+            <div id="comModalClo" >${comResult}</div>
+        </div>
     </body>
 </html>
