@@ -1,7 +1,5 @@
 package com.filmee.myapp.service;
 
-import org.apache.logging.log4j.message.Message;
-
 public interface MailSendService {
 	
 	public final int EMAIL= 6;
@@ -14,4 +12,5 @@ public interface MailSendService {
 	public abstract void sendTempPwMail(String email, String tempPw);
 	
 	public abstract void sendComplaintMail(String email, String content,String content_re);
-}//end interface
+	
+	}//end interface
