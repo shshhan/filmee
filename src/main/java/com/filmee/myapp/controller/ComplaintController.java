@@ -94,7 +94,7 @@ public class ComplaintController
 		model.addAttribute("list", complaint);
 		model.addAttribute("pageMaker", pageDTO);
 		
-		return "complaint/comList";
+		return "complaint/list";
 	}//listPerPAge
 	
 	@GetMapping( "get" )

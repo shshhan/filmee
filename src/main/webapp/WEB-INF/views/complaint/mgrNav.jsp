@@ -88,7 +88,7 @@
         <script>
         $(function(){
     
-            console.clear();
+           
             
            
            
