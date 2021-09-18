@@ -35,11 +35,19 @@
     </update>
 
     <update id="updateUserSus">
-        UPDATE fm_user
-        SET sus_from=current_date,
-        	sus_to=current_date + #{susPeriod},
-        	sus_reason=#{rptno}
-        WHERE user_id=#{suspect}
+    	<![CDATA[ 
+			UPDATE fm_user
+			SET sus_from=current_date,
+			    sus_to=(SELECT case
+			                    WHEN sus_to is null			then current_date
+			                    WHEN sus_to > current_date 	then sus_to
+			                    WHEN sus_to <= current_date then current_date
+			                    END
+			            FROM fm_user
+			            WHERE user_id=#{suspect}) + #{susPeriod},
+			    sus_reason=#{rptno}
+			WHERE user_id=#{suspect}
+		]]>	
     </update>
     
 </mapper>

@@ -25,6 +25,8 @@ public class ReportServiceImpl implements ReportService {
 	@Setter(onMethod_=@Autowired)
 	private ReportMapper mapper;
 	
+	@Autowired private MailSendService mailService;
+	
 	@Override
 	public int reportRegister(ReportVO report) {
 		log.debug(" SERVICE >> reportRegister({}) invoked.", report);

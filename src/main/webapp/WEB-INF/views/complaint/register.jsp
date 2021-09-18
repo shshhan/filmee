@@ -129,10 +129,10 @@
             $(function(){
             	
                 
-                console.clear();
+                // console.clear();
 
                 var comResult = "<c:out value='${comResult}'/>";
-    	        console.log("comResult:"+comResult);
+    	        // console.log("comResult:"+comResult);
     	        if(comResult.length > 0){
 
 

@@ -42,21 +42,32 @@
       view-name = "main/forgotPw"
       status-code = "200"
       />
+   
+   <view-controller
+      path = "/forbidden"
+      view-name = "forbidden"
+      status-code = "200"
+      />
 
-   <beans:bean
+   	<beans:bean
       id="logInOutInterceptor"
       class="com.filmee.myapp.interceptor.LogInOutInterceptor"
       /> 
                   
-   <beans:bean
+	<beans:bean
       id="authInterceptor"
       class="com.filmee.myapp.interceptor.AuthInterceptor"
       />
 
-   <beans:bean
+	<beans:bean
       id="autoLoginInterceptor"
       class="com.filmee.myapp.interceptor.AutoLoginInterceptor"
       />      
+	
+	<beans:bean
+	  id="adminInterceptor"
+	  class="com.filmee.myapp.interceptor.AdminInterceptor"
+	  />
 
    <interceptors>
       <interceptor>
@@ -94,6 +105,12 @@
          <exclude-mapping path="/board/modify" />
                    
          <beans:ref bean="autoLoginInterceptor" />
+      </interceptor>
+      
+      <interceptor>
+      	<mapping path="/admin/**" />
+      	
+      	<beans:ref bean="adminInterceptor" />
       </interceptor>
       
    </interceptors>

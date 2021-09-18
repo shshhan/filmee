@@ -24,15 +24,10 @@
 	<select id="countUsersWithNickname" resultType = "int">
 		SELECT count(*)
 		FROM fm_user
-		WHERE nickname = trim(#{nickname})
+		WHERE REPLACE(LOWER(nickname), ' ', '') = REPLACE(LOWER(#{nickname}), ' ', '')
+		
 	</select>
 	
-	<!-- <select id="selectAuthCodeWithEmail" resultType = "string">
-		SELECT auth_code
-		FROM fm_user
-		WHERE email=#{email}
-	</select> -->
-
 	<update id="updateAuthCodeAuthorized">
 		UPDATE fm_user
 		   SET auth_code='authorized'

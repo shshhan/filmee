@@ -20,6 +20,5 @@ public interface ReportMapper {
 	
 	//전체 신고물 수
 	public abstract int getTotal(CriteriaReport cri);
-	
-	
+
 }//end class

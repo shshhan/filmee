@@ -96,7 +96,7 @@ public class MailSendServiceImpl
 			sendMail.setText(
 					new StringBuffer()
 							.append("<h1>[임시 비밀번호]</h1>")
-							.append("<h3>로그인 후 반드시 비밀번호를 변경하세요.<h3>")
+							.append("<h3>로그인 후 반드시 비밀번호를 변경하세요.</h3>")
 							.append("<h2> 임시 비밀번호 : ")
 							.append(tempPw)
 							.append("</h2>")
@@ -153,6 +153,7 @@ public class MailSendServiceImpl
 		} catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}//try-catch
+		
 	}//sendResetPwMail
 		
 }//end class

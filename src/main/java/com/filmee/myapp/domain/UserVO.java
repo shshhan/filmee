@@ -12,8 +12,8 @@ public class UserVO {
 //	private String password;
 			private String nickname;
 			private String isAdmin;
-//	private Timestamp joinTs;
-//	private Timestamp deleteTs;
+	private Timestamp joinTs;
+	private Timestamp deleteTs;
 			private String profileText;
 			private String profilePhotoPath;
 			private Timestamp susFrom;

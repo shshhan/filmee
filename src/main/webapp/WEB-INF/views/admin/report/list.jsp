@@ -37,16 +37,26 @@
                 paginationForm.submit();
             })//onclick
 
+            $("#modalReportBtn").on('click',function(){
+                console.log("complete clicked.");
+                
+                if(confirm("신고요청을 처리하시겠습니까?")){
+                    $("#user_sus_form").attr("action", "/admin/report/complete");
+                    $("#user_sus_form").submit();
+
+                    return true;
+
+                } else{
+                    return false;
+                        
+                }//if-else
+            })//modalreportbtn
 
         })//jq
         
         function detail(rptno, code, accuser, content, suspect, complete_ts, sus_period){
             var detail=$('#detailmodal')
-            console.log("detail>> " + rptno);  
-            console.log("code : ", code);
-            console.log("accuser : ", accuser);
-            console.log("complete_ts : ", complete_ts.length ==0);
-            console.log("sus_period : ", sus_period.length ==0);
+            console.log("detail>> " + rptno);
 
             if(code==1){
                 $('#reportcode').attr("value", "욕설/비방");
@@ -72,38 +82,27 @@
                 $("#sus_period").removeAttr("readonly");
                 $("#modalReportBtn").prop("disabled", false);
             }
-
-            $(detail).modal("show");
-
+            
             var mgrid="${__LOGIN__.userId}"
-
-            $("#modalReportBtn").on('click',function(){
-                console.log("complete clicked.");
-                if(confirm("신고요청을 처리하시겠습니까?")){
-                    $("#user_sus_form").attr("action", "/admin/report/complete");
-
-                    console.log("rptno :", rptno);
-                    var rptnoInput = document.createElement("input");
-                    rptnoInput.setAttribute("type", "hidden");
-                    rptnoInput.setAttribute("name", "rptno");
-                    rptnoInput.setAttribute("value", rptno);
+            
+            console.log("rptno :", rptno);
+            var rptnoInput = document.createElement("input");
+            rptnoInput.setAttribute("type", "hidden");
+            rptnoInput.setAttribute("name", "rptno");
+            rptnoInput.setAttribute("value", rptno);
+            
+            console.log("mgrId :", mgrid);
+            var mgrIdInput = document.createElement("input");
+            mgrIdInput.setAttribute("type", "hidden");
+            mgrIdInput.setAttribute("name", "mgrId");
+            mgrIdInput.setAttribute("value", mgrid);
+            
+            var susForm = document.getElementById("user_sus_form");
+            susForm.appendChild(rptnoInput);
+            susForm.appendChild(mgrIdInput);
+            
+            $(detail).modal("show");        
                     
-                    console.log("mgrId :", mgrid);
-                    var mgrIdInput = document.createElement("input");
-                    mgrIdInput.setAttribute("type", "hidden");
-                    mgrIdInput.setAttribute("name", "mgrId");
-                    mgrIdInput.setAttribute("value", mgrid);
-                    
-                    var susForm = document.getElementById("user_sus_form");
-                    susForm.appendChild(rptnoInput);
-                    susForm.appendChild(mgrIdInput);
-                    
-                    $("#user_sus_form").submit();
-
-                } else{
-                	return false;
-                }//if-else
-            })//modalreportbtn
         }//detail
     </script>
 
@@ -323,7 +322,6 @@
             </div>
         </div>
     </div>
-    <%@ include file="/resources/html/footer.jsp" %>
 
     <!-- Detail Modal -->
     <div class="modal fade" id="detailmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -368,5 +366,8 @@
             </div>
         </div>
     </div>
+
+    <%@ include file="/resources/html/footer.jsp" %>
+
 </body>
 </html>

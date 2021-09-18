@@ -37,11 +37,8 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/main")
 @Controller
 public class MainController {
-	
-	
+		
 	public static final String loginKey = "__LOGIN__";
-	public static final String requestURIKey = "__REQUEST_URI__";
-	public static final String queryStringKey = "__QUERYSTRING__";
 	public static final String rememberMeKey = "__REMEMBER_ME__"; 
 	
 	@Setter(onMethod_=@Autowired)
