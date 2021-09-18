@@ -182,10 +182,10 @@
 
         <script>
      
-            $(function(){
-
-                /* var comResult = "<c:out value='${comResult}'/>";
-    	        console.log("comResult:"+comResult); */
+            $(function(){               
+                 var comResult = "<c:out value='${comResult}'/>";
+    	        console.log("comResult:"+comResult);
+    	        
     	        if(comResult.length > 0){
 
 
@@ -197,13 +197,8 @@
 	    	        
 	    	        jQuery(document).ready(function() {
 	                    $('#comModal').show();
-		            });
-	    	        
-		            //닫기버튼을 누르면 모달을 숨김
-		           //  function close_pop(flag) {
-		           //      $('#comp_close').hide();
-		           // };
-		           
+		            });	    	        
+		    	           
 		            //모달을 시간이 지나면 자동으로 숨김 1000초가 1초
 		            setTimeout(function() { $('#comModal').hide();}, 2000);																												
                 }//if

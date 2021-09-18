@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-
-
-
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
@@ -41,6 +38,7 @@
         <script>
             Kakao.init('<fmt:message key="kakao-login-key" bundle="${API_KEY}"/>');
             console.log("API Initialized :", Kakao.isInitialized());
+
             $(function() {
               console.log('jq started.');
               //로그인 여부에 따라 보여주는 header 변경
