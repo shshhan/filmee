@@ -19,10 +19,10 @@ public class AdminServiceImpl implements AdminService {
 
 
 	@Override
-	public AdminVO totalCount(String date) {
-		log.debug(">>totalCount Service ({}) invoked.", date);
+	public AdminVO totalCount() {
+		log.debug(">>totalCount Service () invoked.");
 		
-		AdminVO total = this.mapper.totalCount(date);
+		AdminVO total = this.mapper.totalCount();
 		
 		return total;
 	}//totalCount
