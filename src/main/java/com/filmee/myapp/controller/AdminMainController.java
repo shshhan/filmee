@@ -23,10 +23,10 @@ public class AdminMainController {
 	@Autowired private AdminService aService;
 	
 	@GetMapping("/main")
-	public String adminMain(@RequestParam(value="date") String date, Model model) {
+	public String adminMain(Model model) {
 		log.debug("adminMain() invoked.");
 		
-		AdminVO total = this.aService.totalCount(date);
+		AdminVO total = this.aService.totalCount();
 		log.info(">>totalCount : "+total);
 		model.addAttribute("total", total);
 		

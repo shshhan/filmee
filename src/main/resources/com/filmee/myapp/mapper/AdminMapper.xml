@@ -9,19 +9,19 @@
     <select id="totalCount" resultType="com.filmee.myapp.domain.AdminVO">
 		SELECT (SELECT COUNT(bno)
 		        FROM fm_board
-		        WHERE to_char(insert_ts, 'yy/mm/dd')=#{date}) as countBno,
+		        WHERE to_char(insert_ts, 'yy/mm/dd')=to_char(current_date, 'yy/mm/dd')) as countbno,
 		        (SELECT COUNT(rno)
 		        FROM fm_review
-		        WHERE to_char(insert_ts, 'yy/mm/dd')=#{date}) as countRno,
+		        WHERE to_char(insert_ts, 'yy/mm/dd')=to_char(current_date, 'yy/mm/dd')) as countrno,
 		        (SELECT COUNT(rptno)
 		        FROM fm_report
-		        WHERE to_char(insert_ts, 'yy/mm/dd')=#{date}) as countRptno,
+		        WHERE to_char(insert_ts, 'yy/mm/dd')=to_char(current_date, 'yy/mm/dd')) as countrptno,
 		        (SELECT COUNT(compno)
 		        FROM fm_complaint
-		        WHERE to_char(insert_ts, 'yy/mm/dd')=#{date}) as compNO,
+		        WHERE to_char(insert_ts, 'yy/mm/dd')=to_char(current_date, 'yy/mm/dd')) as compnO,
 		        (SELECT COUNT(user_id)
 		        FROM fm_user
-		        WHERE to_char(join_ts, 'yy/mm/dd')=#{date}) as useridNO
+		        WHERE to_char(join_ts, 'yy/mm/dd')=to_char(current_date, 'yy/mm/dd')) as useridno
 		FROM DUAL
     </select>
 

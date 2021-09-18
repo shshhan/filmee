@@ -29,7 +29,7 @@ public class AdminServiceTests {
 	public void testCount() {
 		log.debug("testCount invoked.");
 		Objects.requireNonNull(this.service);
-		AdminVO admin = this.service.totalCount("21/08/23");
+		AdminVO admin = this.service.totalCount();
 		log.info("====================");
 		log.info("count:"+admin);
 		log.info("====================");

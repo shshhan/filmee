@@ -4,6 +4,6 @@ import com.filmee.myapp.domain.AdminVO;
 
 public interface AdminMapper {
 	
-	public abstract AdminVO totalCount(String date);
+	public abstract AdminVO totalCount();
 	
 }
