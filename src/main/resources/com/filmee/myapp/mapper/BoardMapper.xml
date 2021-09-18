@@ -130,7 +130,7 @@
     
     <update id="viewCnt" parameterType="int">
       UPDATE fm_board 
-      SET view_cnt = view_cnt+1
+      SET view_cnt = view_cnt+#{amount}
       where bno=#{bno}
     </update>
 
