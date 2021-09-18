@@ -46,14 +46,91 @@
             
 		
         };
+        
+        $(document).ready(function (){ 
+        	
+        	
+        	
+        	/*for(var vs = 0; vs < 5; vs++) {
+        		 console.log(vs);
+        		
+        		console.log('#filmPoster'+vs);
+        		console.log('#posterHover'+vs);
+        
+			  $('#filmPoster'+vs).hover(function(){
+				 	console.log('#filmPoster'+vs);
+	        		console.log('#posterHover'+vs);
+			       $('#filmPoster'+vs).css('border','5px solid #00e054');
+			       $('#posterHover'+vs).css("display", 'inline');
+			   }, function() {
+			   	$('#filmPoster'+vs).css('border','none');
+			   	$('#posterHover'+vs).css("display", 'none');
+			   });
+			   
+        	}  */
+			   
+		   $('#filmPoster0').hover(function(){
+		        $(this).css('border','5px solid #00e054');
+		        $('#posterHover0').css("display", 'inline');
+		    }, function() {
+		    	$(this).css('border','none');
+		    	$('#posterHover0').css("display", 'none');
+		    });
+   		    
+   		 $('#filmPoster1').hover(function(){
+		        $(this).css('border','5px solid #00e054');
+		        $('#posterHover1').css("display", 'inline');
+		    }, function() {
+		    	$(this).css('border','none');
+		    	$('#posterHover1').css("display", 'none');
+		    });
+   		 
+   		 $('#filmPoster2').hover(function(){
+		        $(this).css('border','5px solid #00e054');
+		        $('#posterHover2').css("display", 'inline');
+		    }, function() {
+		    	$(this).css('border','none');
+		    	$('#posterHover2').css("display", 'none');
+		    });
+   		 
+   		 $('#filmPoster3').hover(function(){
+		        $(this).css('border','5px solid #00e054');
+		        $('#posterHover3').css("display", 'inline');
+		    }, function() {
+		    	$(this).css('border','none');
+		    	$('#posterHover3').css("display", 'none');
+		    });
+   		 
+   		 $('#filmPoster4').hover(function(){
+		        $(this).css('border','5px solid #00e054');
+		        $('#posterHover4').css("display", 'inline');
+		    }, function() {
+		    	$(this).css('border','none');
+		    	$('#posterHover4').css("display", 'none');
+		    });
+   		  
+   		});
+
 
         
     </script>
 
     <style>
     
+    	.hoverTest {
+    		z-index: 8; 
+    		position:absolute; 
+    		top:40px; 
+    		left:28px; 
+    		width: 130px; 
+    		height: 200px; 
+    		background-color: #ffffff;
+        	background-color: rgba( 255, 255, 255, 0.5 );
+    		
+    	}
+    
      	.inner-star::before {
-            color: yellow;
+            color: pink;            
         }
         
         .outer-star {
@@ -75,6 +152,7 @@
             content: '\f005 \f005 \f005 \f005 \f005';
             font-family: 'Font Awesome 5 free';
             font-weight: 900;
+            
         }
     
     	#container {
@@ -108,6 +186,28 @@
     		
     		float:left;
     	}
+    	
+    	.mainFilmTitle {
+            letter-spacing: 2px;
+            text-align: center;
+            font-size: 17px;
+            color: #525252;
+            background-image: -webkit-linear-gradient(92deg, #626ca1, #515bb9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-animation: hue 3s infinite linear;
+        }
+    	
+    	 @-webkit-keyframes hue {
+            from {
+                -webkit-filter: hue-rotate(0deg);
+            }
+            to {
+                -webkit-filter: hue-rotate(-360deg);
+            }
+        }
+        
+        
     
     </style>
 
@@ -139,18 +239,19 @@
         <hr>
         
         <div id='mainFilm' style='height:300px;'>
-        	<c:forEach items="${films}" var="films">
+        	<c:forEach items="${films}" var="films" varStatus="vs">
         	<ul id='mainPosterUl'>
-        		<li class="filmPosterList" style='margin-left: 8px;'><a href='/film/${films.filmid}'><img src='https://www.themoviedb.org/t/p/original${films.poster}' style='width:190px;' ></a></li>	
+        		<li class="filmPosterList" style='margin-left: 8px; position: relative;'>
+	        		<a href='/film/${films.filmid}'>
+	        		<img id='filmPoster${vs.index}' class='filmPoster' src='https://www.themoviedb.org/t/p/original${films.poster}' style='width:190px; ' >
+	        		<div id='posterHover${vs.index}' class='hoverTest' style='display:none;'>
+	        			<img src='/resources/img/heartTransparent.png' style='margin-top: 60px; margin-left: 5px; height:60px;'>
+	        			<h6 style='font-weight: bold; font-size:28px;'>${vs.index}</h6>
+	        		</div>
+	        		</a>
+        		</li>        		        			
         	</ul>
         	
-        	<ul id='hoverPost' style='display:none;'>
-        		<li class='hoverEventList'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        		<li class='hoverEventList' style='margin-left: 38px;'></li>
-        	</ul>
         	</c:forEach>
         </div>
         
@@ -172,7 +273,7 @@
 
                 <div class='col-9' id='mypage_button'>
                 
-                   <a href='/film/${reviews.filmid}'  id='mypage_review_title' style='font-size: 25px; color: blue;'>${reviews.title}</a><br>
+                   <a href='/film/${reviews.filmid}' class='mainFilmTitle' id='mypage_review_title' style='font-size: 25px; color: blue;'>${reviews.title}</a><br>
                    
                    <div class='RatingStar'>
                       <div class='RatingScore'>
@@ -185,10 +286,18 @@
                     
                   <h6>${reviews.rate} / 5</h6>
                   
-                  <h6>${reviews.likeCnt}</h6>
+                  <div class='row' style='margin-top: 5px;'>
                   
-                  <h6>${reviews.commentCnt}</h6>
+                  	<div class='col-1'>
                   
+                  	<h6><a href='/film/${reviews.filmid}/review/${reviews.rno}'><img src='/resources/img/fullheart.png' style='height:25px;'>${reviews.likeCnt}</a></h6>
+                  
+                    </div>
+                    
+                    <div class='col-1'>
+                  	<h6><a href='/film/${reviews.filmid}/review/${reviews.rno}'><img src='/resources/img/reply.png' style='height:25px;'>${reviews.commentCnt}</a></h6>
+                  	</div>
+                  </div>
                   <hr>                          
 
                   <div class='mypage_review_content' id='mypage_review_content'>

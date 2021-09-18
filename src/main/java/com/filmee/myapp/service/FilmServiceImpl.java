@@ -11,6 +11,8 @@ import com.filmee.myapp.domain.FilmPeopleVO;
 import com.filmee.myapp.domain.FilmVO;
 import com.filmee.myapp.domain.ReviewDTO;
 import com.filmee.myapp.domain.ReviewFilmUserVO;
+import com.filmee.myapp.domain.ReviewHeartVO;
+import com.filmee.myapp.domain.ReviewVO;
 import com.filmee.myapp.mapper.FilmMapper;
 
 import lombok.AllArgsConstructor;
@@ -89,11 +91,11 @@ public class FilmServiceImpl implements FilmService {
 	} // remove
 
 	@Override
-	public int modify(ReviewDTO review) {
+	public int modify(ReviewVO review) {
 		log.debug("modify({}) invoked.", review);
 		
 		Objects.requireNonNull(this.mapper);
-		return this.mapper.update(review);
+		return this.mapper.modify(review);
 	} // modify
 
 	@Override
@@ -105,78 +107,77 @@ public class FilmServiceImpl implements FilmService {
 	} // getListWithPaging
 
 	@Override
-	public int getTotalCount(Integer film_id, CriteriaFilmReview cri) {
-		log.debug("getTotalCount({}, {}) invoked.", cri);
+	public int getTotalCount(Integer film_id) {
+		log.debug("getTotalCount({}, {}) invoked.", film_id);
 		
 		Objects.requireNonNull(this.mapper);
-		return this.mapper.selectTotalCount(film_id, cri);
+		return this.mapper.selectTotalCount(film_id);
 	}
 
 	
 	// 리뷰 좋아요 
 	@Override
-	public int likeInsert(ReviewFilmUserVO vo) {
+	public int heartInsert(ReviewHeartVO vo) {
 		log.info("-------------------------------------");
-		log.debug(">> likeInsert({})invoked.", vo);
+		log.debug(">> heartInsert({})invoked.", vo);
 		Objects.requireNonNull(this.mapper);
 				
-		return this.mapper.likeInsert(vo);
-	}//likeinsert
+		return this.mapper.heartInsert(vo);
+	}//heartinsert
 	
 	
 	@Override
-	public int likeCheck(Integer rno, Integer userid) {
+	public int heartCheck(Integer rno, Integer userId) {
 		log.info("-------------------------------------");
-		log.debug(">> likeCheck({},{})invoked.", rno,userid);
+		log.debug(">> heartCheck({},{})invoked.", rno,userId);
 		Objects.requireNonNull(this.mapper);
 		
-		this.mapper.likeCnt(rno, 1);
+		this.mapper.heartCntChange(rno, 1);
 		
-		return this.mapper.likeCheck(rno, userid);
-	}//likeCheck
+		return this.mapper.heartCheck(rno, userId);
+	}//heartCheck
+	
+//	@Override
+//	public int heartCheckTotal(Integer rno) {
+//		log.info("-------------------------------------");
+//		log.debug(">> heartCheckTotal({})invoked.", rno);
+//		
+//		Objects.requireNonNull(this.mapper);
+//		
+//		return this.mapper.heartCheckTotal(rno);
+//		
+//	
+//	}//heartCheckTotal
 	
 	@Override
-	public void likeCheckTotal(Integer rno) {
+	public int heartUncheck(Integer rno, Integer userId) {
 		log.info("-------------------------------------");
-		log.debug(">> likeCheckTotal({})invoked.", rno);
-		
+		log.debug(">> heartUncheck({},{})invoked.", rno,userId);
 		Objects.requireNonNull(this.mapper);
 		
-		this.mapper.likeCheckTotal(rno);
-	
-	}//likeCheckTotal
-	
-	@Override
-	public int likeUncheck(Integer rno, Integer userid) {
-		log.info("-------------------------------------");
-		log.debug(">> likeUncheck({},{})invoked.", rno,userid);
-		Objects.requireNonNull(this.mapper);
+		this.mapper.heartCntChange(rno, -1);
 		
-		this.mapper.likeCnt(rno, -1);
-		
-		return this.mapper.likeUncheck(rno, userid);
-	}//likeUncheck
+		return this.mapper.heartUncheck(rno, userId);
+	}//heartUncheck
 	
 	
 	@Override
-	public ReviewFilmUserVO check(Integer rno, Integer userid) {
+	public ReviewHeartVO check(Integer rno, Integer userId) {
 		log.info("-------------------------------------");
-		log.debug(">> check({},{})invoked.", rno,userid);
+		log.debug(">> check({},{})invoked.", rno, userId);
 		Objects.requireNonNull(this.mapper);
 		
-		return this.mapper.check(rno, userid);
-	}
+		return this.mapper.check(rno, userId);
+	} // check 
 
 
 	@Override
-	public int likeCnt(Integer rno) {
+	public int heartCnt(Integer rno) {
 		log.info("-------------------------------------");
-		log.debug(">> check({})invoked.", rno);
+		log.debug(">> heartCnt({})invoked.", rno);
 				
-		return this.mapper.likeCnt(rno);
+		return this.mapper.heartCnt(rno);
 
-	} // likeCnt
-
-
+	} // heartCnt
 
 } // end class

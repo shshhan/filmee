@@ -183,12 +183,9 @@
         <script>
      
             $(function(){
-            	
-                
-                
 
-                var comResult = "<c:out value='${comResult}'/>";
-    	        console.log("comResult:"+comResult);
+                /* var comResult = "<c:out value='${comResult}'/>";
+    	        console.log("comResult:"+comResult); */
     	        if(comResult.length > 0){
 
 
