@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -26,15 +23,14 @@ import com.filmee.myapp.domain.CriteriaReview;
 import com.filmee.myapp.domain.FilmGenreVO;
 import com.filmee.myapp.domain.FilmPeopleVO;
 import com.filmee.myapp.domain.FilmVO;
-import com.filmee.myapp.domain.ReportVO;
 import com.filmee.myapp.domain.ReviewCommentUserVO;
-import com.filmee.myapp.domain.ReviewCommentVO;
 import com.filmee.myapp.domain.ReviewDTO;
 import com.filmee.myapp.domain.ReviewFilmUserVO;
+import com.filmee.myapp.domain.ReviewHeartVO;
 import com.filmee.myapp.domain.ReviewPageDTO;
+import com.filmee.myapp.domain.ReviewVO;
 import com.filmee.myapp.domain.UserVO;
 import com.filmee.myapp.service.FilmService;
-import com.filmee.myapp.service.ReportService;
 import com.filmee.myapp.service.ReviewCommentService;
 
 import lombok.NoArgsConstructor;
@@ -50,7 +46,7 @@ public class FilmController {
 	
 	@Autowired private FilmService service;  // ReviewService에 있을 내용은 모두 FilmService에 있음 
 	@Autowired private ReviewCommentService rcService;
-	@Autowired private ReportService rService;
+//	@Autowired private ReportService rService;
 
 
 //	@GetMapping("info")
@@ -87,9 +83,10 @@ public class FilmController {
 
 	@GetMapping({"/{filmid}/review/{rno}"})  
 	public String getReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
+			ReviewHeartVO heart,
 			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
 			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
-		log.debug("readReview({}, {}) invoked.", rno, model);
+		log.debug("getReview({}, {}, {}, {}) invoked.", film_id,rno, heart, user);
 
 		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);		
 		List<ReviewCommentUserVO> reviewCommentList = this.rcService.getList(rno);
@@ -97,25 +94,29 @@ public class FilmController {
 		assert reviewFilmUserVO != null;
 		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
 		
-		
-//		if(user!=null) {
-//			heart.setBno(bno);
-//			heart.setUserid(user.getUserId());
-//			if(this.hService.check(bno, user.getUserId())==null) {
-//				int aLine = this.hService.heartInsert(heart);
-//				log.info(">>>>>>> heartInsert : "+heart);
-//				log.info(">>>>>>> Result : "+aLine);
-//				heart=this.hService.check(bno, user.getUserId());
-//				model.addAttribute("heart", heart);			
-//			} else {
-//				heart=this.hService.check(bno, user.getUserId());
-//				model.addAttribute("heart", heart);			
-//			}
-//		}
+		int heartCnt = this.service.heartCnt(rno);
+		 
+		if(user!=null) {
+			heart.setRno(rno);
+			heart.setUserId(user.getUserId());
+			if(this.service.check(rno, user.getUserId())==null) {
+				int aLine = this.service.heartInsert(heart);
+				log.info(">>>>>>> heartInsert : "+heart);
+				log.info(">>>>>>> Result : "+aLine);
+				heart=this.service.check(rno, user.getUserId());
+				model.addAttribute("heart", heart);			
+			} else {
+				heart=this.service.check(rno, user.getUserId());
+				model.addAttribute("heart", heart);			
+			}
+			
+		}
 		
 		
 		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
 		model.addAttribute("reviewCommentList", reviewCommentList);
+		model.addAttribute("heartCnt", heartCnt);
+		
 
 		return "review/get";
 	} // getReview
@@ -138,6 +139,26 @@ public class FilmController {
 
 		return "review/modify";
 	} // getReview
+	
+	@PostMapping("/{filmid}/review/m/{rno}/")
+	public String modify(
+			@ModelAttribute("cri") CriteriaFilmReview criFR,
+			ReviewVO review,
+			RedirectAttributes rttrs) {
+		log.debug("modifyReview({}, {}) invoked.", review, rttrs);
+		
+		int modifiedReview = this.service.modify(review);
+		
+		if(modifiedReview == 1) {
+			rttrs.addFlashAttribute("result", "success");
+		} // if
+//		
+//		rttrs.addAttribute("currPage", criFR.getCurrPage());
+//		rttrs.addAttribute("amount", criFR.getAmount());
+//		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
+		
+		return "redirect:/film/{filmid}/review/{rno}"; 
+	} //modify
 
 
 	@PostMapping("/{filmid}/review/register")
@@ -186,8 +207,8 @@ public class FilmController {
 
 	
 	@PostMapping("review/remove")
-	public String remove(@ModelAttribute("criR")CriteriaReview criR, Integer rno, RedirectAttributes rttrs) {
-		log.debug("remove({}, {}) invoked.", rno, rttrs);
+	public String remove(@ModelAttribute("criR")CriteriaReview criR, UserVO user, Integer rno, RedirectAttributes rttrs) {
+		log.debug("remove({}, {}, {}, {}) invoked.", criR, user, rno, rttrs);
 		
 		int removed = this.service.remove(rno);
 			
@@ -195,78 +216,82 @@ public class FilmController {
 		rttrs.addAttribute("currPage", criR.getCurrPage());
 		rttrs.addAttribute("amount", criR.getAmount());
 		rttrs.addAttribute("pagesPerPage", criR.getPagesPerPage());
-		
-		return "redirect:/mypage/myreviews";
+
+		return "redirect:/mypage/myreviews?userid="+user.getUserId()+"&currPage="+criR.getCurrPage()+"&amount="+criR.getAmount()+"&pagesPerPage="+criR.getPagesPerPage();
+
 	} //deleteMyReview
 	
 	
-	@PostMapping("review/modify")
-	public String modify(
-			@ModelAttribute("cri") CriteriaFilmReview criFR,
-			ReviewDTO review,
-			RedirectAttributes rttrs) {
-		log.debug("modifyReview({}, {}) invoked.", review, rttrs);
-		
-		int modifiedReview = this.service.modify(review);
-		
-		if(modifiedReview == 1) {
-			rttrs.addFlashAttribute("result", "success");
-		} // if
-		
-		rttrs.addAttribute("currPage", criFR.getCurrPage());
-		rttrs.addAttribute("amount", criFR.getAmount());
-		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
-		
-		return "redirect:/mypage/myreviews";
-	} //modify
+
 	
-	@GetMapping("listPerPage")
+	
+	@GetMapping("/{filmid}/reviews")
 	public String listPerPage(
-			@ModelAttribute("cri")
-			CriteriaFilmReview criFR,
-			Integer film_id,
+			@PathVariable("filmid") Integer film_id,
+			@ModelAttribute("criFR") CriteriaFilmReview criFR,
+//			ReviewFilmUserVO reviewFilmUserVO,
+			RedirectAttributes rttrs,
 			Model model
 		) {
 		log.debug("listPerPage({}) invoked.", model);
 		
-		List<ReviewFilmUserVO> reviewList = this.service.getListWithPaging(criFR);
+		List<ReviewFilmUserVO> reviewFilmUserVOList = 
+				this.service.getListWithPaging(new CriteriaFilmReview(film_id));
 		
-		Objects.requireNonNull(reviewList);
-		reviewList.forEach(log::info);
+		FilmVO filmVO = this.service.getFilmInfo(film_id);
+		int totalCount = this.service.getTotalCount(film_id);
 		
-		ReviewPageDTO pageDTO = new ReviewPageDTO(criFR, this.service.getTotalCount(film_id, criFR));
+		Objects.requireNonNull(reviewFilmUserVOList);
+//		reviewFilmUserVOList.forEach(log::info);
+//		log.info(filmVO);
 		
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("pageMaker", pageDTO);
+		ReviewPageDTO pageDTO = new ReviewPageDTO(film_id, criFR, this.service.getTotalCount(film_id));
+		rttrs.addAttribute("film_id", film_id);		
+		rttrs.addAttribute("currPage", criFR.getCurrPage());
+		rttrs.addAttribute("amount", criFR.getAmount());
+		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
 		
-		return "film/list";
+		model.addAttribute("reviewFilmUserVOList", reviewFilmUserVOList);
+		model.addAttribute("ReviewPageDTO", pageDTO);
+		model.addAttribute("filmVO",filmVO);
+		model.addAttribute("totalCount",totalCount);
+		
+		
+		
+		
+
+		
+		
+		return "review/list";
 	} // listPerPage
 	
 	
 		// 좋아요
-		@PostMapping("like/{rno}/{userid}")
+		@PostMapping("review/like/{rno}/{userid}")
 		public ResponseEntity<String> likeIt( 
 				@PathVariable("rno") int rno,
 				@PathVariable("userid") int userid
 			){
 			log.debug("likeIt({},{}) invoked.", rno,userid);
 			
-			int aLine = this.service.likeCheck(rno, userid);
+			int aLine = this.service.heartCheck(rno, userid);
+			this.service.heartCnt(rno);
 			
 			return aLine == 1 ?
 					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}//likeIt
 		
 		//좋아요 취소
-		@PostMapping("unlike/{rno}/{userid}")
+		@PostMapping("review/unlike/{rno}/{userid}")
+		
 		public ResponseEntity<String> unLike(
 				@PathVariable("rno") int rno,
 				@PathVariable("userid") int userid
 				){
 			log.debug("unLike({},{}) invoked.", rno,userid);
 			
-			int aLine = this.service.likeUncheck(rno, userid);
-			
+			int aLine = this.service.heartUncheck(rno, userid);
+			this.service.heartCnt(rno);
 			return aLine == 1 ?
 					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}//unLike
@@ -275,90 +300,92 @@ public class FilmController {
 		// 댓글처리영역  //
 		//===========//
 		
-		//------- 등 록 -------//
-		@PostMapping(
-				value="replies/new",
-				consumes="application/json",			//JSON 데이터사용
-				produces= {MediaType.TEXT_PLAIN_VALUE})
-		public ResponseEntity<String> create(@RequestBody ReviewCommentVO vo){	//@RequestBody :> JSON->BoardCommentVO
-			log.debug("create({}) invoked.",vo);
-			
-			int affectedLines = this.rcService.register(vo);
-			return affectedLines ==1 ? 
-					new ResponseEntity<>("success",HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}//create
-		
-		//------- 목록조회 -------//
-		@GetMapping(
-				value="replies/pages/{rno}/{page}",
-				produces= {
-//						MediaType.APPLICATION_XML_VALUE,
-						MediaType.APPLICATION_JSON_VALUE 
-				})
-		public ResponseEntity<List<ReviewCommentUserVO>> getList(
-				@PathVariable("rno") int rno
-				){
-			log.debug("getList({}) invoked.",rno);
-
-			 
-			return new ResponseEntity<>(this.rcService.getList(rno), HttpStatus.OK);
-		}//getList
-
-		//------- 상세조회 -------//
-		@GetMapping(
-				value="replies/{rcno}",
-				produces= {
-//						MediaType.APPLICATION_XML_VALUE,
-						MediaType.APPLICATION_JSON_VALUE
-				})
-		public ResponseEntity<ReviewCommentVO> get(@PathVariable("rcno") Integer rcno){
-			log.debug("get({}) invoked.",rcno);
-			
-			return new ResponseEntity<>(this.rcService.get(rcno), HttpStatus.OK);
-		}//get
-
-		//------- 삭제 -------//
-		@PostMapping(
-				value="replies/{rcno}",
-				produces= {
-						MediaType.TEXT_PLAIN_VALUE
-				})
-		public ResponseEntity<String> remove(@PathVariable("rcno") int rcno){
-			log.debug("remove({}) invoked.",rcno);
-			
-			return this.rcService.remove(rcno) == 1 ? 
-					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}//remove
-
-		//------- 수정 -------//
-		@RequestMapping(
-				method= {RequestMethod.PUT, RequestMethod.PATCH},
-				value="replies/{rcno}",
-				consumes="application/json",
-				produces= {MediaType.TEXT_PLAIN_VALUE}
-				)
-		public ResponseEntity<String> modify( 
-				@RequestBody ReviewCommentVO vo,
-				@PathVariable("rcno") int rcno)
-				{
-			log.debug("modify({},{}) invoked.", vo, rcno);
-			
-			vo.setRcno(rcno);
-			return this.rcService.modify(vo) == 1 ?
-					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}//modify
-		
-		
-		@PostMapping(
-				value="report",
-				consumes="application/json",
-				produces= {MediaType.TEXT_PLAIN_VALUE})
-		public ResponseEntity<String> reportRegister(@RequestBody ReportVO report) {
-			log.debug("reportRegister({},report) invoked.");
-			
-			int aLine = this.rService.reportRegister(report);
-			
-			return aLine == 1 ?
-					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}//reportRegister
+//		//------- 등 록 -------//
+//		@PostMapping(
+//				value="replies/new",
+//				consumes="application/json",			//JSON 데이터사용
+//				produces= {MediaType.TEXT_PLAIN_VALUE})
+//		public ResponseEntity<String> create(@RequestBody ReviewCommentVO vo){	//@RequestBody :> JSON->BoardCommentVO
+//			log.debug("create({}) invoked.",vo);
+//			
+//			int affectedLines = this.rcService.register(vo);
+//			return affectedLines ==1 ? 
+//					new ResponseEntity<>("success",HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}//create
+//		
+//		//------- 목록조회 -------//
+//		@GetMapping(
+//				value="replies/pages/{rno}/{page}",
+//				produces= {
+////						MediaType.APPLICATION_XML_VALUE,
+//						MediaType.APPLICATION_JSON_VALUE 
+//				})
+//		public ResponseEntity<List<ReviewCommentUserVO>> getList(
+//				@PathVariable("rno") int rno
+//				){
+//			log.debug("getList({}) invoked.",rno);
+//
+//			 
+//			return new ResponseEntity<>(this.rcService.getList(rno), HttpStatus.OK);
+//		}//getList
+//
+//		//------- 상세조회 -------//
+//		@GetMapping(
+//				value="replies/{rcno}",
+//				produces= {
+////						MediaType.APPLICATION_XML_VALUE,
+//						MediaType.APPLICATION_JSON_VALUE
+//				})
+//		public ResponseEntity<ReviewCommentVO> get(@PathVariable("rcno") Integer rcno){
+//			log.debug("get({}) invoked.",rcno);
+//			
+//			return new ResponseEntity<>(this.rcService.get(rcno), HttpStatus.OK);
+//		}//get
+//
+//		//------- 삭제 -------//
+//		@PostMapping(
+//				value="replies/{rcno}",
+//				produces= {
+//						MediaType.TEXT_PLAIN_VALUE
+//				})
+//		public ResponseEntity<String> remove(@PathVariable("rcno") int rcno){
+//			log.debug("remove({}) invoked.",rcno);
+//			
+//			return this.rcService.remove(rcno) == 1 ? 
+//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}//remove
+//
+//		//------- 수정 -------//
+//		@RequestMapping(
+//				method= {RequestMethod.PUT, RequestMethod.PATCH},
+//				value="replies/{rcno}",
+//				consumes="application/json",
+//				produces= {MediaType.TEXT_PLAIN_VALUE}
+//				)
+//		public ResponseEntity<String> modify( 
+//				@RequestBody ReviewCommentVO vo,
+//				@PathVariable("rcno") int rcno)
+//				{
+//			log.debug("modify({},{}) invoked.", vo, rcno);
+//			
+//			vo.setRcno(rcno);
+//			return this.rcService.modify(vo) == 1 ?
+//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//		}//modify
+//		
+//		
+//		// 신고 
+//		
+//		@PostMapping(
+//				value="report",
+//				consumes="application/json",
+//				produces= {MediaType.TEXT_PLAIN_VALUE})
+//		public ResponseEntity<String> reportRegister(@RequestBody ReportVO report) {
+//			log.debug("reportRegister({},report) invoked.");
+//			
+//			int aLine = this.rService.reportRegister(report);
+//			
+//			return aLine == 1 ?
+//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);		
+//		}//reportRegister
 } // end class

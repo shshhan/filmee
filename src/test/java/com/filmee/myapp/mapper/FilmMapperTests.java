@@ -17,8 +17,9 @@ import com.filmee.myapp.domain.CriteriaFilmReview;
 import com.filmee.myapp.domain.FilmGenreVO;
 import com.filmee.myapp.domain.FilmPeopleVO;
 import com.filmee.myapp.domain.FilmVO;
-import com.filmee.myapp.domain.ReviewFilmUserVO;
 import com.filmee.myapp.domain.ReviewDTO;
+import com.filmee.myapp.domain.ReviewFilmUserVO;
+import com.filmee.myapp.domain.ReviewVO;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -82,9 +83,7 @@ public class FilmMapperTests {
 
 	} // testSelectGenre
 
-	// --------------------------------------//
-	// 리뷰 관련 테스트
-	// --------------------------------------//
+	
 	@Test
 	public void testInsert() {
 		log.debug("testInsert() invoked.");
@@ -143,22 +142,21 @@ public class FilmMapperTests {
 		log.debug("testUpdate() invoked.");
 		
 
-		ReviewDTO review = new ReviewDTO();
+		
 
 		// 기존 리뷰를 변경(업데이트)함.
-//		ReviewDTO review = new ReviewDTO(
-//				126,
-//				577922,
-//				3,
-//				5.0,
-//				"또봐도재밌네....22",
-//				null,null,
-//				null,
-//				'F', null
-//				
-//		);
+		ReviewVO review = new ReviewVO(
+				126,
+				577922,
+				3, 
+				5.0,
+				"또봐도재밌네....22",
+				null,null,
+				null,
+				null
+		);
 
-		int updatedReview = this.mapper.update(review);
+		int updatedReview = this.mapper.modify(review);
 		log.info("\t+ updatedReview: " + updatedReview);
 	} // testUpdateReview
 
@@ -169,10 +167,10 @@ public class FilmMapperTests {
 		
 		Objects.requireNonNull(mapper);
 		
-		CriteriaFilmReview cri = new CriteriaFilmReview();
-		cri.setCurrPage(1);
-		cri.setAmount(10);
-		cri.setFilm_id(577922);
+		CriteriaFilmReview cri = new CriteriaFilmReview(577922);
+//		cri.setCurrPage(1);
+//		cri.setAmount(10);
+//		cri.setFilm_id(577922);
 		
 		List<ReviewFilmUserVO> list = mapper.selectListWithPaging(cri);
 		
@@ -186,13 +184,14 @@ public class FilmMapperTests {
 		
 		Objects.requireNonNull(mapper);
 
-		CriteriaFilmReview cri = new CriteriaFilmReview();
-		cri.setCurrPage(1);
-		cri.setAmount(10);
+		CriteriaFilmReview cri = new CriteriaFilmReview(577922);
+//		cri.setCurrPage(1);
+//		cri.setAmount(10);
 		
-		int totalAmount = this.mapper.selectTotalCount(577922,cri);
+		int totalAmount = this.mapper.selectTotalCount(577922);
 		log.info("\t+ totalAmount: " + totalAmount);
 	} // testSelectTotalCount
+	
 	
 	
 	@After
