@@ -16,8 +16,9 @@ import com.filmee.myapp.domain.CriteriaFilmReview;
 import com.filmee.myapp.domain.FilmGenreVO;
 import com.filmee.myapp.domain.FilmPeopleVO;
 import com.filmee.myapp.domain.FilmVO;
-import com.filmee.myapp.domain.ReviewFilmUserVO;
 import com.filmee.myapp.domain.ReviewDTO;
+import com.filmee.myapp.domain.ReviewFilmUserVO;
+import com.filmee.myapp.domain.ReviewVO;
 
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -136,16 +137,16 @@ public class FilmServiceTests {
 		log.debug("testModify() invoked.");
 
 		
-		ReviewDTO review = new ReviewDTO();
-//		ReviewDTO review = 
-//			new ReviewDTO(
-//				131, 
-//				577922, 
-//				3, 
-//				4.5, 
-//				"테넷ㅅㅅㅅㅅㅅ", 
-//				null, null,null,
-//				'f',0);
+	
+		ReviewVO review = 
+			new ReviewVO(
+				131, 
+				577922, 
+				3, 
+				4.5, 
+				"테넷ㅅㅅㅅㅅㅅ", 
+				null, null,null,
+				null);
 		
 		log.info("\t+ review: " + review);
 		
@@ -162,7 +163,7 @@ public class FilmServiceTests {
 	public void testGetListWithPaging() {
 		log.debug("testGetListWithPaging() invoked.");
 		
-		CriteriaFilmReview cri = new CriteriaFilmReview();
+		CriteriaFilmReview cri = new CriteriaFilmReview(577922);
 		cri.setCurrPage(1);
 		cri.setAmount(5);
 		cri.setPagesPerPage(10);
@@ -179,11 +180,11 @@ public class FilmServiceTests {
 	public void testGetTotalCount() {
 		log.debug("testGetTotalCount() invoked.");
 		
-		CriteriaFilmReview cri = new CriteriaFilmReview();
+		CriteriaFilmReview cri = new CriteriaFilmReview(577922);
 		cri.setCurrPage(1);
 		cri.setAmount(10);
 		
-		int totalAmount = this.service.getTotalCount(577922, cri);
+		int totalAmount = this.service.getTotalCount(577922);
 		log.info("\t+ totalAmount: {}", totalAmount);
 	} // testGetTotalCount
 	

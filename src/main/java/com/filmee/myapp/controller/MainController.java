@@ -1,5 +1,6 @@
 package com.filmee.myapp.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,11 +37,8 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/main")
 @Controller
 public class MainController {
-	
-	
+		
 	public static final String loginKey = "__LOGIN__";
-	public static final String requestURIKey = "__REQUEST_URI__";
-	public static final String queryStringKey = "__QUERYSTRING__";
 	public static final String rememberMeKey = "__REMEMBER_ME__"; 
 	
 	@Setter(onMethod_=@Autowired)
@@ -87,19 +85,27 @@ public class MainController {
 			
 		UserVO user = this.loginService.login(dto);		//회원 정보 확인
 		log.info("user : {}", user);
-			
+				
 		Map<String, String> resultMap = new HashMap<>();
 			
 		if(user == null) {		//로그인 정보가 없다면
 			log.info("return 1");
 			resultMap.put("loginNum", "1");
 								
-		} else if ( !user.getAuthCode().equals("authorized") ) {	//이메일 인증을 하지 않은 유저가 로그인을 시도했다면
+		} else if( !user.getAuthCode().equals("authorized") ) {	//이메일 인증을 하지 않은 유저가 로그인을 시도했다면
 			log.info("return 2");
 			resultMap.put("loginNum", "2");
 			
-		} else {	//이메일 인증까지 마친 유저가 로그인을 시도했다면
+		} else if( user.getSusTo() != null && user.getSusTo().after(new Date()) ) {	//활동정지일이 현재 시간보다 뒤라면
 			log.info("return 3");
+			resultMap.put("loginNum", "3");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+			
+			resultMap.put("susTo", sdf.format(user.getSusTo()).toString());
+			
+		} else {	//이메일 인증까지 마친 유저가 로그인을 시도했다면
+			log.info("return 4");
 
 			session.setAttribute(MainController.loginKey, user);
 			log.info(">>>>> LoginKey added on SessionScope. >>>>>");
@@ -120,7 +126,7 @@ public class MainController {
 				
 			}//if(dto.isRememberMe())
 			
-			resultMap.put("loginNum", "3");
+			resultMap.put("loginNum", "4");
 			
 		}//if-elseIf-else
 			

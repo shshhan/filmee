@@ -1,7 +1,5 @@
 package com.filmee.myapp.domain;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.ToString;
 
@@ -13,6 +11,7 @@ public class ReviewPageDTO {
 	// 아래 2개의 필드는, 페이징 처리에 필요한 방정식의 "상수"를 저장
 	private CriteriaFilmReview cri;	
 	private int totalAmount;
+
 	
 	// 위의 상수들에 기반하여, 공식대로 페이지징처리에 필요한 변수값을 계산/저장
 	private int endPage;		// 단순 형식적인 끝 페이지 번호
@@ -24,16 +23,16 @@ public class ReviewPageDTO {
 	private boolean next;		// 다음 페이지로의 이동버튼의 생성여부
 	
 	
-	private int replyCnt;
-	private List<ReviewCommentVO> list;
+//	private int replyCnt;
+//	private List<ReviewCommentVO> list;
 	
-	public ReviewPageDTO(int replyCnt, List<ReviewCommentVO> list) {
-		this.replyCnt=replyCnt;
-		this.list=list;
-	}
+//	public ReviewPageDTO(int replyCnt, List<ReviewCommentVO> list) {
+//		this.replyCnt=replyCnt;
+//		this.list=list;
+//	}
 	
 	
-	public ReviewPageDTO(CriteriaFilmReview cri, int totalAmount) {
+	public ReviewPageDTO(Integer film_id, CriteriaFilmReview cri, int totalAmount) {
 		this.cri = cri;		
 		this.totalAmount = totalAmount;
 		

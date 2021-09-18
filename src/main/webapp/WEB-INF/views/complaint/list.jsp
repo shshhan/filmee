@@ -1,138 +1,218 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
- 	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-     
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    
+    <meta charset="UTF-8" name="viewport" content="width=device=width, initial-scale=1.0">
+    <title>FILMEE | FILM MEETING</title>
+    <link rel="icon" href="../../resources/img/favicon_noback.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/resources/css/bootstrap.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script>
+        $(function(){
+            console.clear();
+            console.log("jq started");
+
+            $('#searchBtn').click(function(e){
+                console.log('onclick on #searchBtn clicked..');
+                console.log('\t+ this :{} ', this);
+                //Event에 의한 선택된 요소의 기본등작을 금지(무력화)
+                e.preventDefault();
+
+                // 아래 지역변수에는 Rvalue선택자에 의해서 선택된 요소
+                // (즉, form 태그)가 저장됨
+                var searchForm = $('#searchForm');
+
+                searchForm.attr('action', '/complaint/listPerPage');
+                searchForm.attr('method', 'GET');
+
+                searchForm.find('input[name=currPage]').val($(this).attr('href'));
+                //paginationForm에서 name 속성의 값이 currPage인 input태그를 찾아라
+                //이벤트 타겟의 속성 중 href의 값을 해당 input 태그에 값으로 넣어준다.
+                searchForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
+                searchForm.find('input[name=pagesPerPage]').val('${pageMaker.cri.pagesPerPage}');
+
+
+
+                searchForm.submit();
+
+            })
+
+
+        })//jq
+        function detail(compno, code, send, writer, content, content_re){
+            var detail=$('#detailmodal');
+            console.log("detail>> " + compno); 
+            if(code==1){
+                $('#complaintcode').attr("value", "서비스 개선요청");
+            } else if (code==2){
+                $('#complaintcode').attr("value", "영화정보 추가요청");
+            } else if (code==3){
+                $('#complaintcode').attr("value", "영화정보 수정요청");
+            } else{
+                $('#complaintcode').attr("value", "기타");
+            }
+            $('#complaintwriter').attr("value",writer);
+            $('#complaintcode').attr("value", code);
+            $('#complaintcontent').attr("value", content);
+            $('#complaintcontent_re').attr("value", content_re);
+
+            $(detail).modal("show");
+
+
+            $("#modalSaveBtn").on('click',function(){
+                
+                var modalComplaintForm = $('#modalComplaintForm');
+                modalComplaintForm.attr('action', '/complaint/temporary');
+                modalComplaintForm.attr('method', 'POST');
+
+                searchForm.submit();
+
+            })//modalSavenBtn
+
+            $("#modalCompletionBtn").on('click',function(){
+                
+                var modalComplaintForm = $('#modalComplaintForm');
+                modalComplaintForm.attr('action', '/complaint/completion');
+                modalComplaintForm.attr('method', 'POST');
+
+                searchForm.submit();
+
+            })//modalCompletionBtn
+        }//detail
+            
+
+            
+        
+    </script>
+
+
+    <%@ include file="/resources/html/header.jsp" %>
+
     <style>
-        body,input,textarea,select,button,table{font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-size:12px; color:#333;}
-        body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,p,form,fieldset,input,table,tr,th,td{margin:0;padding:0;}
-        h1,h2,h3,h4,h5,h6{font-weight:normal;font-size:100%;}
-        ul,ol{list-style:none;}
-        fieldset,img{border:0; vertical-align:top;}
-        address{font-style:normal;}
-        p,li,dd{font-size:1em; line-height:1.5em; text-align:justify;}
-        a, a:hover,a:active,a:focus,a:visited{color:#333;text-decoration:none;}
-
-        a, a:link, a:visited{
-            cursor : pointer;
+        body{
+            -ms-user-select: none; 
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none; 
         }
-        
-        
+        hr{
+            width: 998px;
+            margin: 0 auto;
+        }
+
         #container{
-            width: 898px;
-            display: flex;
+        	margin-bottom: 50px;
+            display: flexbox;
             flex-flow: column nowrap;
-
-            justify-content: center;
         }
-        #sort{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+                
+        #menu{
+        	font-size: 40px;
+        	width: 998px;
+        	margin: 0 auto;
+        	text-align: center;
         }
+		#adminboardlist {
+			width: 998px;
+			margin: 0 auto;
+		    text-align: center;
+		    font-size: 20px;
+            font-family: 'ELAND 초이스';
+  			border-collapse: collapse;
+            border-bottom: 1px solid rgb(224, 224, 224);	
 
-        #com_table table{
-			width: 100%;
-            white-space: nowrap;
-            
-            border-collapse: collapse;
-            text-align : center;
         }
-
-        #com_table th{
-            padding: 10px;
-            border-bottom: 3px solid black ;
-            text-align : center;
+        #adminselect{
+            width: 998px;
+			margin: 0 auto;
+		    text-align: right;
+		    font-size: 20px;
+            font-family: 'ELAND 초이스';
         }
-
-        #com_table td{
-            padding: 10px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.561) ;
-
-            text-align : center;
+		#adminboardlist>tbody>tr>td{
+		  	color: black;
+		  	font-size:15px;
+		  	padding: 15px;
         }
-        #com_code_td{
-            width: 450px;
+        #listline{ 
+            background-color: #dddddd;
+            color:rgb(0, 0, 0);
+            font-weight: bold;
+		  	border:10px;
+		  	margin:10px;
+		  	padding:15px;
+            font-size: 18px;
+  			border-bottom: 1px solid #ddd;
+  			height: 50px;
+  			line-height: 50px;
         }
-        .com_table_th{
-        	text-align: left;
-        }
-
-        #caption{
-
-            font-size: 22px;
-            width: 100%;
-            height: 40px;
-            border: 2px solid rgba(0, 0, 0, 0.411);
-            
-            margin-bottom: 10px ;
+        #adminmenuinfo{
+            width: 100px;
+            background-color: rgba(65, 105, 225, 0.185);
+            border-radius: 10px;
+            margin: 0 auto;
             text-align: center;
-            padding-top:auto; padding-bottom:auto;
-
-
+            margin-bottom: 10px;
+        }
+        #adminboardlist>tbody>tr:hover {
+  		  	background-color: #dddddd60;
+        }
+        #beforeComplete{
+            color: rgb(192, 192, 192)
+        }
+        #pageNumber{
+		  	text-align: center;
+            padding: 8px 16px;
+        }
+        #pageNumber>li{
+		 	display:inline-table;
+		    text-align: center;
+		    padding: 10px;
+			font-size: 15px;
+        }
+        #pageNumber>li:hover{
+            background-color: rgb(224, 224, 224);
+        }
+        #detailbtn{
+            border-radius: 5px; 
+            margin-right:-4px;
+            border: 1px solid skyblue; 
+            background-color: rgba(0,0,0,0); 
+            color: skyblue; 
+            padding: 5px;
+        }
+        #detailbtn:hover{ 
+            color:rgb(221, 250, 255);
+            background-color: rgb(0, 0, 0); 
+        }
+        .forAdmin:hover{
+            font-size: 17px;
+            font-weight: bold;
+            color: cornflowerblue;
+        }
+		.prev, .next{
+			font-size: 20px;
+		}
+		.currPage{
+            width: 15px;
+        	background-color: #d8d8d88f;
+        	color: rgb(45, 78, 139)!important;
+            border-radius: 10%;
+            font-size: 15px;
         }
 
-        #caption_text{
-            text-align: center;
+        #searchimg{
+            width: 20px;
         }
-        #pagination{
-            width : 95%;
-            margin : 0 auto;
-        }
-
-        #pagination ul {
-            float : right ;
-        }
-
-        #pagination li{
-            float : left;
-            
-            width : 30px;
-            height : 30px;
-
-            border : 1px solid #0000005d;
-    
-            text-align: center;
-            list-style : none;
-            line-height: 30px;
-
-        }
-        #state_hover{
-            display: none;
-            visibility: hidden;
-            position: relative;
-            z-index: 1150;
-        }
-        
-
-        .prev, .next {
-            width : 70px!important;
-
-            color : white!important;
-            background-color: #747577c9!important;
-        }
-
-        .currPage {
-            font-weight : bold;
-            background-color: #f0adce70;
-        }
-        .searchBtn{
-            width: 165px;
-            border: none;
-            background-color: rgba(97, 93, 88, 0.945);
-            color: white;
-        }
-        
         #comModal{
                 
                 display: flex;
@@ -157,247 +237,213 @@
                 transition: all 0.5s;
                 display: none;
                 font-size: 18px;
-                
+                    
             }
     </style>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
-
-    <script>
-         $(function() {
-            console.clear();
-            console.debug('jq started..');
-
-            if(comResult != null){  
-            	alert(comResult);
-                $("#comModal").show("slow");
-                $("#comModal").add("z-index=1160");
-	        }//if
-
-            $('#get').click(function(){
-                console.log('onclick on #get clicked..');
-
-            })
-
-            $("state").hover(function(){
-                console.log("onclick on #get clicked..");
-                $("state_hover").show("slow");
-
-            })
-            
-            $("a.prev, a.next").on("click", function(e) {
-                console.debug("onclicked for a.next or a.prev...");
-                console.log('\t+ this : ', this);
-
-                //Event에 의한 선택된 요소의 기본등작을 금지(무력화)
-                e.preventDefault();
-
-                // 아래 지역변수에는 Rvalue선택자에 의해서 선택된 요소
-                // (즉, form 태그)가 저장됨
-                var paginationForm = $("#paginationForm");
-                
-                paginationForm.attr("action", "/complaint/listPerPage");
-                paginationForm.attr("method", "GET");
-
-                paginationForm.find("input[name=currPage]").val($(this).attr("href"));
-                //paginationForm에서 name 속성의 값이 currPage인 input태그를 찾아라
-                //이벤트 타겟의 속성 중 href의 값을 해당 input 태그에 값으로 넣어준다.
-                paginationForm.find("input[name=amount]").val("${pageMaker.cri.amount}");
-                paginationForm.find("input[name=pagesPerPage]").val("${pageMaker.cri.pagesPerPage}");
-
-
-                
-                paginationForm.submit();
-            });//onclick a.prev, a.next
-
-            $('#searchBtn').click(function(e){
-                console.log('onclick on #searchBtn clicked..');
-                
-                //Event에 의한 선택된 요소의 기본등작을 금지(무력화)
-                e.preventDefault();
-
-                // 아래 지역변수에는 Rvalue선택자에 의해서 선택된 요소
-                // (즉, form 태그)가 저장됨
-                var searchForm = $('#searchForm');
-
-                searchForm.attr('action', '/complaint/listPerPage');
-                searchForm.attr('method', 'GET');
-
-                searchForm.find('input[name=currPage]').val($(this).attr('href'));
-                //paginationForm에서 name 속성의 값이 currPage인 input태그를 찾아라
-                //이벤트 타겟의 속성 중 href의 값을 해당 input 태그에 값으로 넣어준다.
-                searchForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
-                searchForm.find('input[name=pagesPerPage]').val('${pageMaker.cri.pagesPerPage}');
-
-
-
-                searchForm.submit();
-
-            })
-            
-        });//jq
-    </script>
 </head>
+
 <body>
- 	<div id="comModal">
-        <div id="comModalClo" >${comResult}</div>
-     </div>
-
-        
     <div id="container">
-       
-        <div id="caption">
-            <b id="caption_text">요청관리</b>
-        </div>
-        <div id="sort">
-            <div id="state">
-               <span id="stateStart">&#9723</span> &#10072;<span id="stateMiddle">&#9724</span> &#10072;<span id="stateEnd">&#10003</span>
-            </div> 
-            <div id="state_hover">
-                <p>&#9723: 미확인, &#9724: 확인, &#10003: 처리완료</p>
+        <div>
+            <div id="adminmenuinfo">관리자 전용</div>
+            <div id=menu>
+            	<h2>요청 현황</h2>
+                <%@include file="/WEB-INF/views/admin/menu.jsp"%>
+                
             </div>
-
+            
+        </div>
+        
+        <div id="admincontainer">
+            
             <div>
+                <div id="adminselect">
                     <form id="searchForm">
-                        <input type="hidden" name="currPage" value="1">
-                        <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-                        <input type="hidden" name="pagesPerPage" value="${pageMaker.cri.pagesPerPage}">
-                        <input type="hidden" name="totalAmount" value="${pageMaker.totalAmount}">
-                        
-                        <select name="code" class="search">
-                        
-                            <option value="" ${ ( "" eq pageMaker.cri.code) ? "selected" : ""}>전체</option>
-                            <option value="1" ${ ( "1" eq pageMaker.cri.code) ? "selected" : ""}>서비스 개선요청</option>
-                            <option value="2" ${ ( "3" eq pageMaker.cri.code) ? "selected" : ""}>영화정보 추가요청</option>
-                            <option value="3" ${ ( "2" eq pageMaker.cri.code) ? "selected" : ""}>영화정보 수정요청</option>
-                            <option value="4" ${ ( "4" eq pageMaker.cri.code) ? "selected" : ""}>기타</option>
-                        </select>
-						
-                        <button id="searchBtn"  >Search</button>
-                
+	                    <input type="hidden" name="currPage" value="1">
+	                    <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+	                    <input type="hidden" name="pagesPerPage" value="${pageMaker.cri.pagesPerPage}">
+	                    <input type="hidden" name="totalAmount" value="${pageMaker.totalAmount}">
+	                    
+	                    <select name="code" class="search">
+	                    
+	                        <option value="" ${ ( "" eq pageMaker.cri.code) ? "selected" : ""}>전체</option>
+	                        <option value="1" ${ ( "1" eq pageMaker.cri.code) ? "selected" : ""}>서비스 개선요청</option>
+	                        <option value="2" ${ ( "3" eq pageMaker.cri.code) ? "selected" : ""}>영화정보 추가요청</option>
+	                        <option value="3" ${ ( "2" eq pageMaker.cri.code) ? "selected" : ""}>영화정보 수정요청</option>
+	                        <option value="4" ${ ( "4" eq pageMaker.cri.code) ? "selected" : ""}>기타</option>
+	                    </select>
+	                    
+	                    <button><img id="searchimg" src="/resources/img/search.png"></button>
+	            
+	                </form>
+                </div>
+                <div>
+                	
+	                
+            	
+                    <table id="adminboardlist">
+                        <colgroup>
+                            <col width="8%"/>
+                            <col width="22%"/>
+                            <col width="12%"/>
+                            <col width="18%"/>
+                            <col width="18%"/>
+                            <col width="12%"/>
+                            <col width="10%"/>
+                        </colgroup>
+                        <thead>
+                            <tr id=listline>
+                                <th>No.</th>
+                                <th>유형</th>
+                                <th>요청회원</th>
+                                <th>접수일</th>
+                                <th>처리일</th>
+                                <th>처리자</th>
+                                <th>확인</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${list}" var="complaint" varStatus="vs">
+                                    <tr>
+                                        <td>${complaint.compno}</td>
+                                        <td>
+                                            <c:choose>
+                                                
+                                                <c:when test="${complaint.code == 1}">
+                                                    서비스 개선요청
+                                                </c:when>
+                                                <c:when test="${complaint.code == 2}">
+                                                    영화정보 추가요청
+                                                </c:when>
+                                                <c:when test="${complaint.code == 3}">
+                                                    영화정보 수정요청
+                                                </c:when>
+                                                <c:otherwise>
+                                                    기타
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${complaint.writer}</td>
+                                        <td><fmt:formatDate pattern="yyyy/MM/dd" value="${complaint.insert_ts}"/></td>
+                                        <td>
+                                            <c:choose>
+                                            <c:when test="${complaint.complete_ts != null}">
+                                                <fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.complete_ts}"/>
+                                            </c:when>
+                                            <c:when test="${complaint.check_ts != null}">
+                                                처리중
+                                            </c:when>
+                                            <c:otherwise>
+                                                처리전
+                                            </c:otherwise>
+                                        </c:choose>
+                                        </td>
+                                        <td>${complaint.mgr_id}</td>
+                                        <td>
+                                            <button type="button" id='detailbtn' onclick="detail('${complaint.compno}', '${complaint.code}', '${complaint.send}', '${complaint.writer}', '${complaint.content}', '${complaint.content_re}')">상세확인</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                    </table>
+                </div>
+
+                <div>
+                    <form id="paginationForm">
+                        <input type="hidden" name="currPage">
+                        <input type="hidden" name="amount">
+                        <input type="hidden" name="pagesPerPage">
+                        <input type="hidden" name="code">
+    
+                        <ul id="pageNumber">
+                            <c:if test="${pageMaker.prev}">
+                                <li class="prev"><a class="prev" href="/complaint/listPerPage?currPage=${pageMaker.startPage-1}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}"> < </a></li>
+                                
+                            </c:if>
+    
+                            <!-- begin~end까지 반복하고, 현재의 번호값은 var 속성에 넣어준다 -->
+                            <c:forEach 
+                                begin="${pageMaker.startPage}" 
+                                end="${pageMaker.endPage}" 
+                                var="pageNum">
+    
+                                <li class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}">
+                                    <a 
+                                        class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}"
+                                        href="/complaint/listPerPage?currPage=${pageNum}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}">
+                                        ${pageNum}
+                                    </a>
+                                </li>
+                    
+                            </c:forEach>
+    
+                            <c:if test="${pageMaker.next}">
+                                <li class="next"><a class="next" href="/complaint/listPerPage?currPage=${pageMaker.endPage+1}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}"> > </a></li>
+                            </c:if>
+                        </ul>
+    
                     </form>
+                </div>
 
-            </div>   
+            </div>
         </div>
-        <table id="com_table">
-           
-            
-            <thead>
-                <tr>
-                    <th class="com_table_th">번호</th>
-                    <th>상태</th>
-                    <th>요청 사항</th>
-                    <th>회원</th>
-                    <th>작성 날자</th>
-                    <th>수정된 날짜</th>
-                </tr>
-                
-            </thead>
-                <c:forEach items="${list}" var="complaint">
-                    <tr>
-                        <td>
-                            
-                            <c:out value="${complaint.compno}"/>
-                        </td>
-                        <td>
-                            <c:choose>
-                                	
-                                    <c:when test="${complaint.complete_ts != null}">
-                                        &#10003;
-                                    </c:when>
-                                    <c:when test="${complaint.check_ts != null}">
-                                        &#9724;
-                                    </c:when>
-                                    <c:otherwise>
-                                        &#9723;
-                                    </c:otherwise>
-                                </c:choose>
-                            
-                        </td>
-                        <td id="com_code_td">
-
-                            <a href="/complaint/get?compno=${complaint.compno}">
-                                <c:choose>
-                                	
-                                    <c:when test="${complaint.code == 1}">
-                                        서비스 개선요청
-                                    </c:when>
-                                    <c:when test="${complaint.code == 2}">
-                                        영화정보 추가요청
-                                    </c:when>
-                                    <c:when test="${complaint.code == 3}">
-                                        영화정보 수정요청
-                                    </c:when>
-                                    <c:otherwise>
-                                        기타
-                                    </c:otherwise>
-                                </c:choose>
-                            </a>
-                        </td>
-                        <td><c:out value="${complaint.writer}"/></td>
-                        <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.insert_ts}"/></td>
-
-                        <c:choose>
-                            <c:when test="${complaint.complete_ts != null}">
-                                <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.complete_ts}"/></td>
-                            </c:when>
-                            <c:otherwise>
-                                <td><fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.check_ts}"/></td>
-                            </c:otherwise>
-                        </c:choose>
-
-
-                    </tr>
-                </c:forEach>
-                
-            <tbody> 	
-		
-            </tbody>
-        </table>
-        
-
-        
     </div>
-    <br>
-    <div id="pagination">
-            <form id="paginationForm">
-                <!-- 어느 화면에서든, 게시판 목록 페이지로 이동시, 반드시 아래 3개의 기준 전송파라미터를 전송시키기위해 hidden 값으로 설정 -->
-                <input type="hidden" name="currPage">
-                <input type="hidden" name="amount">
-                <input type="hidden" name="pagesPerPage">
-                <input type="hidden" name="code">
-                <!-- hidden 태그는 랜더링은 안하지만 서버로 value값을 전달한다. -->
-                <!-- JQuery로 value를 넣는다. -->
+    <%@ include file="/resources/html/footer.jsp" %>
 
-                <ul>
-                    <c:if test="${pageMaker.prev}">
-                        <li class="prev"><a class="prev" href="${pageMaker.startPage-1}">Prev</a></li>
-                    </c:if>
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><img src="/resources/img/siren.jpg" alt="" width="20px" height="20px"> 요청사항 상세 및 처리</h5>
+                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                </div>
 
-                    <!-- begin~end까지 반복하고, 현재의 번호값은 var 속성에 넣어준다 -->
-                    <c:forEach 
-                        begin="${pageMaker.startPage}" 
-                        end="${pageMaker.endPage}" 
-                        var="pageNum">
+                <form action="#" id="modalComplaintForm">
+                    <input type="hidden" name="currPage" value="${cri.currPage}">
+                    <input type="hidden" name="amount" value="${cri.amount}">
+                    <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
+                    <input type="hidden" name="compno" value="${complaint.compno}">
+                    <div class="modal-body">
+                        <div>
+                            <label for="complaintcode">요청유형</label>
+                            <input class="form-control" name="code" id="complaintcode" readonly>
+                        </div>
+                        <div class="form-group">
+                            요청회원 <input class="form-control" name="writer" id="complaintwriter" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="complaintcontent">내용</label>
+                            <textarea name="content" class="form-control" cols="28" rows="5" id="complaintcontent"  readonly></textarea>
+                        </div>      
+                        <div class="form-group">
+                            <label for="complaintcontent_re">처리사항</label>
+                            <textarea name="content_re" class="form-control" cols="28" rows="5"  id="complaintcontent_re"></textarea>
+                        </div>
+                        <div>
+                            <label for="mgrid">현재 처리할 관리자</label>
+                            <input class="form-control" type="text" id="mgrid" name="mar_id" value="${__LOGIN__.nickname}" readonly>
+                        </div>
+                        <div>
+                            <c:choose>
+                                <c:when test="${complaint.send == 1 }">
+                                    mail:o
+                                </c:when>
+                                <c:when test="${complaint.send == 2 }">
+                                    mail:x
+                                </c:when>
+                            </c:choose>
+                        
+                        </div>
+                    <div class="modal-footer">
+                        <button id='modalCloseBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button id='modalSaveBtn' type="button" class="btn btn-secondary" data-bs-dismiss="modal">임시저장</button>
+                        <button id='modalCompletionBtn' type="button" class="btn btn-danger" data-bs-dismiss="modal">처리완료</button>
+                    </div> 
+                </form>
 
-                        <li class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}">
-                            <a 
-                                class="${pageMaker.cri.currPage == pageNum ? 'currPage' : ''}"
-                                href="/complaint/listPerPage?currPage=${pageNum}&amount=${pageMaker.cri.amount}&pagesPerPage=${pageMaker.cri.pagesPerPage}&totalAmount=${pageMaker.totalAmount}&code=${pageMaker.cri.code}">
-                                ${pageNum}
-                            </a>
-                        </li>
-             
-                    </c:forEach>
-
-                    <c:if test="${pageMaker.next}">
-                        <li class="next"><a class="next" href="${pageMaker.endPage+1}">Next</a></li>
-                    </c:if>
-                </ul>
-            </form>
-            
+            </div>
         </div>
-
-    </body>
-    </html>
+    </div>
+</body>
+</html>

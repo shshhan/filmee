@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
+
 
 
 <!DOCTYPE html>
@@ -38,13 +39,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
 
-    <style>
-        .btn-primary{
-            background-color: #445566;
-            border-color: #445566;
-        }
-    </style>
-    
+  
      <script>
 
         $(function () {
@@ -133,8 +128,18 @@
     }
     
     #backdrop{
-    width:998px; 
+    width:998px;
     height:560px;   
+    }
+    
+    .film backdropped{
+	width: 998px;
+	margin: 0 auto;
+	}
+    
+    .btn-primary{
+        background-color: #445566;
+        border-color: #445566;
     }
 
     </style>
@@ -167,7 +172,7 @@
                 <div class="col-6 gutter-right-1 col-poster-large" id="js-poster-col">
                             <img
                                 src="https://www.themoviedb.org/t/p/original${filmVO.poster_path}"
-                                width="230" height="345" alt="${filmVO.original_title}" class="image"                               
+                                width="230" height="345" alt="${filmVO.title}" class="image"                               
                                 itemprop="image" /> <span class="frame"><span class="frame-title"></span></span>
                         </div>
                         <div class="js-serial-csi" data-src="/esi/film/the-social-network/stats/" data-on-load="">
@@ -272,31 +277,37 @@
                            
                             <ul class="js-actions-panel">
 
-
+								
+								<!-- 보고싶은 영화  -->
+								
                                 <li class="action-large -watch"><span class="film-watch-link-target"
-                                        data-film-id="26711"><span class="film-watch-link -large"><span
-                                                class="action -watch ajax-click-action"
-                                                data-action="/film/the-social-network/mark-as-watched/">Watch</span></span></span>
+                                        ><span class="film-watch-link -large">
+                                        <span class="action -watch ajax-click-action">
+                                        <img src="/resources/img/want1.png"></span></span></span>
                                 </li>
+                                
+                                <!-- 좋아하는 영화  -->
                                 <li class="action-large -like"><span class="like-link-target react-component"
                                         data-component-class="globals.comps.LikeLinkComponent"
-                                        data-likeable-uid="film:26711" data-likeable-name="film" data-likeable="true"
-                                        data-likes-page="/film/the-social-network/likes/" data-format="large"><span
-                                            class="like-link"><span class="action -like ajax-click-action  "
-                                                data-action="/s/film:26711/like/"
-                                                data-recaptcha-action="film_like">Like</span></span></span></li>
+                                        data-format="large"><span class="like-link">
+                                        <span class="action -like ajax-click-action  ">
+                                       <img src="/resources/img/like1.png"></span></span></span>
+                                </li>
 
 
 
-                                <li class="hidden action-large -watchlist"><a href="#" data-film-id="26711"
-                                        class="action -watchlist -on remove-from-watchlist ajax-click-action"
-                                        data-action="/film/the-social-network/remove-from-watchlist/"><span
-                                            class="watchlist-link-text"><span class="_hidetext">This film is in your
-                                            </span>Watchlist</span></a></li>
+        <!--                         <li class="hidden action-large -watchlist">
+                                        <span class="watchlist-link-text">
+                                        <img src="/resources/img/watched2.png">
+                                        </span>
+                                 </li> -->
+                                 
+                                 <!-- 이미 본 영화  -->                                
                                 <li class="action-large -watchlist"><a href="#"
-                                        class="action -watchlist add-to-watchlist ajax-click-action"
-                                        data-film-id="26711"
-                                        data-action="/film/the-social-network/add-to-watchlist/">Watchlist</a></li>
+                                        class="action -watchlist add-to-watchlist ajax-click-action">
+                                        <img src="/resources/img/watched1.png"></a>
+                                </li>
+                                        
 
                                 <li class="-row-clear panel-rate js-panel-rate">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeModal">
@@ -311,8 +322,7 @@
                                         
 
                                 
-                          <!-- Button trigger modal -->
-        
+      <!-- Button trigger modal -->
         
         <!-- Modal -->
         <div class="modal fade" id="writeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -326,7 +336,7 @@
          <!-- 모달 내용 적기 -->
         
                 
-                        <% 
+                    <% 
             Integer writer = (Integer) session.getAttribute("userId");
                     %>
         
@@ -368,16 +378,13 @@
                     <div class="form-row clearfix row-last  row-sharing"></div>
                 </fieldset>
              </form> 
-        </section>
-                                        
+        </section>                                       
                     </div>
             
                           
                         </div>
                       </div>
                     </div>
-                                
-
                             </ul> 
                         </section>
 
@@ -450,14 +457,16 @@
 
             <section id="popular-reviews" class="film-reviews section">
                     
-                <h2 class="section-heading"><a href="페이징처리주소">Popular reviews</a></h2>
-                <a href="페이징처리주소" class="all-link">More</a>
+                <h2 class="section-heading"><a href="/film/${filmVO.film_id}/reviews">Popular reviews</a></h2>
+                <a href="/film/${filmVO.film_id}/reviews" class="all-link">More</a>
                 <ul class="film-popular-review">
                     
                       <c:forEach items="${reviewFilmUserVOList}" var="reviewFilmUserVO" begin="0" end="2"  varStatus="status">                                 
                         <li class="film-detail"> 
-                            <a class="avatar -a40" href="/mypage/main?userid=${reviewFilmUserVO.writer}" > 
-                            <img src="https://a.ltrbxd.com/resized/avatar/upload/3/3/8/3/4/3/shard/avtr-0-80-0-80-crop.jpg?k=4e24a2ba14"  width="40" height="40" /> </a> 
+                         <a class="avatar -a40" href="/mypage/main?userid=${reviewFilmUserVO.writer}" > 
+                             <img src="https://younghoon.s3.ap-northeast-2.amazonaws.com/${reviewFilmUserVO.profile_photo_path}"  width="40" height="40" />
+                            </a> 
+                            
                             <div class="film-detail-content"> <div class="attribution-block -large"> 
                             <p class="attribution"> <a href="/film/${reviewFilmUserVO.film_id}/review/${reviewFilmUserVO.rno}" class="context" title="${reviewFilmUserVO.nickname}의 리뷰"> 
                             Review by <strong class="name">${reviewFilmUserVO.nickname}</strong> </a> 
@@ -477,8 +486,8 @@
 
     </div>
 
-<%@include file="/resources/html/footer.jsp" %>
-
-</body>
+ 
+	<%@ include file="/resources/html/footer.jsp" %>
+	</body>
 
 </html>

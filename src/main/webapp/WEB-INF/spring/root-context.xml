@@ -89,16 +89,13 @@
       <property name="dataSource" ref="hikariDataSource" />
    </bean>
    
+   <tx:annotation-driven />      
+   
    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> 
-           
-         <property name="maxUploadSize" value="52428800" />
-
-
-
-                 <property name="defaultEncoding" value="utf-8" />
+ 		<property name="maxUploadSize" value="52428800" />
+		<property name="defaultEncoding" value="utf-8" />
    </bean>
       
-   <tx:annotation-driven />      
 
    <!-- Mail sender -->
    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
