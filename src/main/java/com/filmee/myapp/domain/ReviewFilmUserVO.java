@@ -28,6 +28,7 @@ public class ReviewFilmUserVO {
 	private String poster_path;
 	
 	// fm_user에서 필요한 칼럼 
-	private String nickname; // 추가 
+	private String nickname;
+	private String profile_photo_path;
 
 } // end class

@@ -39,7 +39,7 @@ public class BoardServiceImpl
 	public BoardUserVO get(Integer bno) {
 		log.debug("get({}) invoked.",bno);
 		Objects.requireNonNull(this.mapper);
-		this.mapper.viewCnt(bno);
+		this.mapper.viewCnt(bno, 1);
 		
 		return this.mapper.select(bno);
 	}//get

@@ -8,8 +8,8 @@
 
 	    <insert id="insert">
 	        
-	        INSERT INTO fm_complaint (code, content,writer)
-	        VALUES(#{code},#{content},#{writer})
+	        INSERT INTO fm_complaint (code, content,writer,send)
+	        VALUES(#{code},#{content},#{writer},#{send})
 	
 	    </insert>
 	
