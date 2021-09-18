@@ -13,7 +13,12 @@ public class ComCriteria {
    private int amount = 10;   //한 페이지당 보여줄 게시물 개수
    private int pagesPerPage = 10; //페이지 아래에 보여줄 페이지 번호의 개수
    
- 
+	//Search
+	private String type;	//검색유형
+	private String keyword;	//검색어
+	
+	//CategorySelect
+	private String category;//카테고리선택
    private String code;
    
    public String getPagingUri() {
