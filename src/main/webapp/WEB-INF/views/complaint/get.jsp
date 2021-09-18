@@ -110,7 +110,7 @@
 
     <script>
         $(function(){
-            console.clear();
+            
             console.debug('jq started..');
 
        

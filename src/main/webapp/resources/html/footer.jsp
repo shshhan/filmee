@@ -84,12 +84,13 @@
                     </a>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-outline-secondary" id="com_register_btn">의견보내기</button>
+                <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
+                    
                 </div>
             </div>    
         </div>
     </footer>
-    <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
+    
     
 </body>
 </html>
