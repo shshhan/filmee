@@ -252,7 +252,7 @@
                     </section>
 
             
-                   <!-- 좋볼본, 리뷰, 별점 남기는 부분  -->
+                 
                     <aside class="sidebar">
                         <section id="userpanel" class="actions-panel">
                            
@@ -300,7 +300,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-         <!-- 모달 내용 적기 -->
+  
         
                 
                     <% 
