@@ -1,6 +1,7 @@
 package com.filmee.myapp.exception;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -96,5 +97,19 @@ public class CommonExceptionHandler {	//예외처리용 클래스
 		
 		return "errorPage";	// viewResolver 작동
 	}//handleIllegalStateException
+	
+	@ExceptionHandler(SQLException.class)
+	public String SQLException(
+			Exception e, Model model) {		//Exception 객체를 받아올 수 있음
+		log.debug("handleNoHandlerFoundException(e, model) invoked.");
+		
+		log.error("1. Exception Type : " + e.getClass().getName());
+		log.error("2. Exception Message : " + e.getMessage());
+		
+		model.addAttribute("exception", e);
+		//화면으로 보낼 내용 있을 때 model 생성
+		
+		return "errorPage";	// viewResolver 작동
+	}//handleNoHandlerFoundException
 	
 }//end class

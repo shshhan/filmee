@@ -20,7 +20,7 @@ public interface BoardMapper {
 	
 	public abstract int getTotalCount(Criteria cri);	//게시판의 총 게시물 개수
 	
-	public abstract int viewCnt(Integer bno);	//조회수
+	public abstract int viewCnt(Integer bno, Integer amount);	//조회수
 	
 	public abstract void commentCnt(Integer bno, Integer amount);	//댓글 수 +-
 	

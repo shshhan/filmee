@@ -49,7 +49,6 @@ public class HeartServiceImpl implements HeartService {
 		log.info("-------------------------------------");
 		log.debug(">> heartUncheck({},{})invoked.", bno,userid);
 		Objects.requireNonNull(this.mapper);
-		
 		this.bmapper.heartCnt(bno, -1);
 		
 		return this.mapper.heartUncheck(bno, userid);

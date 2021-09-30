@@ -28,8 +28,26 @@
 
     <update id="complete">
         UPDATE fm_report
-        SET complete_ts=current_date, mgr_id=#{mgr_id}
+        SET complete_ts=current_date, 
+        	mgr_id=#{mgrId},
+        	sus_period=#{susPeriod}
         WHERE rptno=#{rptno}
+    </update>
+
+    <update id="updateUserSus">
+    	<![CDATA[ 
+			UPDATE fm_user
+			SET sus_from=current_date,
+			    sus_to=(SELECT case
+			                    WHEN sus_to is null			then current_date
+			                    WHEN sus_to > current_date 	then sus_to
+			                    WHEN sus_to <= current_date then current_date
+			                    END
+			            FROM fm_user
+			            WHERE user_id=#{suspect}) + #{susPeriod},
+			    sus_reason=#{rptno}
+			WHERE user_id=#{suspect}
+		]]>	
     </update>
     
 </mapper>

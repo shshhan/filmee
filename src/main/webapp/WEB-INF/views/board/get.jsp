@@ -54,7 +54,9 @@
             }//if-else
 
             //관리자일 경우 관리자 권한버튼 보임
-            if("${__LOGIN__.isAdmin=='T'}"){
+            var isAdmin='${__LOGIN__.isAdmin}'
+            console.log("isAdmin::"+isAdmin);
+            if(isAdmin==='T'){
                 $("#admindeleteBtn").show();
             } else{
                 $("#admindeleteBtn").hide();
@@ -99,7 +101,7 @@
                     }
                     var str="";
                     if(list==null||list.length==0){
-                        str+="<div>아직 댓글이 없습니다.</div>"
+                        str+="<div id='nocomment'>아직 댓글이 없습니다.</div>"
                         // return;
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
@@ -136,7 +138,7 @@
                     writer:"${__LOGIN__.userId}"
                 };
                 replyService.add(reply,function(result){
-                    alert(result); 
+                    alert("댓글을 작성했습니다."); 
                     modal.find("input").val("");
                     modal.modal("hide");
                     showList(1);
@@ -192,7 +194,7 @@
                 console.log("reportBtn clicked>>")
                 $("#reportmodal").modal("show");
             })
-      
+
             $("#modalReportBtn").on("click",function(e){
             	 var modalReportCode=modal.find("#reportcode").val();
                  console.log(modalReportCode);
@@ -359,6 +361,9 @@
             margin-top: 200px;
             margin-left: 400px;
         }
+        #nocomment{
+            margin-bottom: 250px;
+        }
     </style>
 
 </head>
@@ -477,7 +482,6 @@
                             <i class="fa fa-comments fa-fw"></i><strong>댓글 목록</strong>
                             <button type="button" id="addReplyBtn" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">새 댓글 쓰기</button>
                             <hr>
-                            <!-- Modal -->
                         </div>
                         <div class="panel-body">
                             <ul class="chat">
