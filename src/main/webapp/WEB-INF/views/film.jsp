@@ -464,5 +464,5 @@
     </div>
 
  
-	<%@ include file="/resources/html/filmfooter.jsp" %>
+	<%@ include file="/resources/html/filmFooter.jsp" %>
 	</body>
