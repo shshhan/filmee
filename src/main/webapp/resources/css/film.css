@@ -1,4 +1,4 @@
-:focus {
+ :focus {
   outline: 0;
 }
  body {
@@ -25,8 +25,8 @@ nav,
 section,
 summary{
   display: block;
-}
-table {
+} 
+ table {
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -48,7 +48,7 @@ html {
 body {
   font-size: 1rem;
   background-position: 0 0;
-}
+} 
 
 blockquote,
 cite,
@@ -246,7 +246,7 @@ aside p.icon-text {
 .col-6 {
   float: left;
   width: 230px;
-}
+} 
 .col-7 {
   float: left;
   width: 270px;
@@ -1675,7 +1675,7 @@ body.in-app .site-body {
   margin: 0 auto 3px;
   width: 50px;
   height: 40px;
-/*   background-image: url(../svg/sprite.c475d153.svg); */
+  background-image: url(../svg/sprite.c475d153.svg);
   background-repeat: no-repeat;
   background-size: 800px 1000px;
 }
@@ -2270,9 +2270,9 @@ body.popular-reviews .sidebar {
 .capitalize a {
   text-transform: capitalize;
 }
-.text-footer {
+/* .text-footer {
   margin-top: 20px;
-}
+} */
 .film-detail-meta a.author {
   margin-right: 5px;
   display: inline-block;
@@ -2715,29 +2715,29 @@ p.optional-add .modal-link {
   max-height: 100%;
   overflow-y: scroll;
 }
-#colorbox.-addtolist .modal-container > .footer {
+/* #colorbox.-addtolist .modal-container > .footer {
   display: flex;
   justify-content: space-between;
   margin-top: auto;
   padding: 16px 30px;
-}
-.mobile #colorbox.-addtolist .modal-container > .footer {
+} */
+/* .mobile #colorbox.-addtolist .modal-container > .footer {
   padding-left: 20px;
   padding-right: 20px;
-}
-#colorbox.-addtolist .modal-container > .footer > .status {
+} */
+/* #colorbox.-addtolist .modal-container > .footer > .status {
   align-self: center;
   color: #9ab;
   font-size: 1rem;
   line-height: 1.46153846;
-}
-#colorbox.-addtolist .modal-container > .footer > .status p {
+} */
+/* #colorbox.-addtolist .modal-container > .footer > .status p {
   margin: 0;
 }
 #colorbox.-addtolist .modal-container > .footer > .actions > .button {
   padding-left: 20px;
   padding-right: 20px;
-}
+} */
 #colorbox.-addtolist.-loading .modal-container > .header > .segmented-control {
   opacity: 0.5;
   pointer-events: none;
@@ -2762,12 +2762,12 @@ p.optional-add .modal-link {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-#colorbox.-addtolist.-loading .modal-container > .footer .button {
+/* #colorbox.-addtolist.-loading .modal-container > .footer .button {
   pointer-events: none;
 }
 #colorbox.-addtolist .-addalltolist .footer {
   display: none !important;
-}
+} */
 #colorbox.-addtolist #cboxClose {
   right: 16px;
   top: 16px;
@@ -2947,10 +2947,10 @@ p.optional-add .modal-link {
   left: -2px;
   position: relative;
 }
-.modal-container > .footer {
+/* .modal-container > .footer {
   background: #345;
   padding: 26px 40px;
-}
+} */
 .modal-splitcontent {
   display: flex;
 }
