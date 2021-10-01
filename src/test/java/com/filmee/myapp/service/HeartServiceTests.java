@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.filmee.myapp.domain.HeartDTO;
 import com.filmee.myapp.domain.HeartVO;
 
 import lombok.NoArgsConstructor;
@@ -44,9 +45,13 @@ public class HeartServiceTests {
 	@Test
 	public void testInsert() {
 		log.debug("testInsert() inovked.");
-		HeartVO vo = new HeartVO(null, 401, 533, 0);
+		HeartDTO dto = null;
+		dto.setBno(123);
+		dto.setHno(1);
+		dto.setLikecheck(1);
+		dto.setUserid(123);
 
-		this.service.heartInsert(vo);
+		this.service.heartInsert(dto);
 	}//testInsert
 	
 	@Test

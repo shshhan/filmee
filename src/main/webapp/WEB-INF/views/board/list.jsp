@@ -26,10 +26,9 @@
             $('a.prev,a.next').on('click', function(e){
                 console.debug("on clicked for NEXT or PREV");
                 console.log('\t+this:',this);
-                e.preventDefault(); //Event에 의한 선택된 요소의 기본 동작을 금지
-                //Rvalue선택자에 의해서 선택된 요소. 즉 form태그가 저장됨.
+                e.preventDefault();
                 var paginationForm = $('#paginationForm');
-                paginationForm.attr('action', '/board/listPerPage');
+                paginationForm.attr('action', '/board/list');
                 paginationForm.attr('method', 'GET');
                 paginationForm.find('input[name=currPage]').val($(this).attr('href'));
                 paginationForm.find('input[name=amount]').val('${pageMaker.cri.amount}');
@@ -215,8 +214,8 @@
             </div>
             <div id="boardSearch">
                 <ul id="boardSearchMenu">
-                    <li>
-                        <form id="searchForm" action="/board/list" method="GET">
+                    <form id="searchForm" action="/board/list" method="GET">
+	                    <li>
                             <input type="hidden" name="currPage" value="1">
                             <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
                             <input type="hidden" name="pagesPerPage" value="${pageMaker.cri.pagesPerPage}">
@@ -231,7 +230,7 @@
                             <input type="text" name="keyword" class="board_search_box" value="${pageMaker.cri.keyword}" placeholder="SEARCH">
                             <button><img id="searchimg" src="/resources/img/search.png"></button>
                         </li>
-                        </form>
+                    </form>
                 </ul>
             </div>
 

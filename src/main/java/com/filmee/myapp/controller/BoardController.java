@@ -123,13 +123,10 @@ public class BoardController {
 				int aLine = this.hService.heartInsert(heart);
 				log.info(">>>>>>> heartInsert : "+heart);
 				log.info(">>>>>>> Result : "+aLine);
-				heart=this.hService.check(bno, user.getUserId());
-				model.addAttribute("heart", heart);			
-			} else {
-				heart=this.hService.check(bno, user.getUserId());
-				model.addAttribute("heart", heart);			
-			}
-		}
+			}//if
+			heart=this.hService.check(bno, user.getUserId());
+			model.addAttribute("heart", heart);			
+		}//if
 			
 		model.addAttribute("board",board);
 		model.addAttribute("file", fileVO);
@@ -150,35 +147,40 @@ public class BoardController {
         FileVO fileVO = this.service.fileDetail(bno);
         
         try{
-            String fileUrl = fileVO.getPath();
+            String fileUrl = fileVO.getPath();	//저장된 경로
             fileUrl += "/";
             String savePath = fileUrl;
             String fileName = fileVO.getUuid();
             
-            String oriFileName = fileVO.getFname();
+            String oriFileName = fileVO.getFname();	//원본파일명
             InputStream in = null;
             OutputStream os = null;
             File file = null;
             boolean skip = false;
             String client = "";
             
+            //파일을 읽어 스트림에 담기
             try{
                 file = new File(savePath, fileName);
                 in = new FileInputStream(file);
             } catch (FileNotFoundException fe) {
-                skip = true;
+                skip = true;	// = ;; 
             }
             
-            client = request.getHeader("User-Agent");
+            client = request.getHeader("User-Agent");	//유저의 브라우저정보 가져오기 브라우저별 User-Agent값이 있음
             
-            response.reset();
+            
+            response.reset();	//ContentType 초기화
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Description", "JSP Generated Data");
+            response.setHeader("Content-Description", "JSP Generated Data");	//파일링크를 클릭했을 때 다운로드
             
+            //브라우저 정보 확인하여 다운로드(User-Agent)
             if (!skip) {
+            	//IE(10까지)
                 if (client.indexOf("MSIE") != -1) {
                     response.setHeader("Content-Disposition", "attachment; filename=\""
                             + java.net.URLEncoder.encode(oriFileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
+                //IE11(MSIE로 체크불가)
                 } else if (client.indexOf("Trident") != -1) {
                     response.setHeader("Content-Disposition", "attachment; filename=\""
                             + java.net.URLEncoder.encode(oriFileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
@@ -188,6 +190,8 @@ public class BoardController {
                     response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
                 }
                 response.setHeader("Content-Length", "" + file.length());
+                
+                //파일출력
                 os = response.getOutputStream();
                 byte b[] = new byte[(int) file.length()];
                 int leng = 0;
@@ -214,7 +218,7 @@ public class BoardController {
 	}//register
 	
 	//게시글작성 & 파일업로드
-	@PostMapping(path = "register", consumes = {"multipart/form-data"})
+	@PostMapping(path = "register", consumes = "multipart/form-data")
 	public String register(@ModelAttribute("cri")Criteria cri,  BoardVO board, RedirectAttributes rttrs,
 			@RequestPart MultipartFile files) throws IllegalStateException, IOException {
 		log.debug("register({},{},{}) invoked",board,rttrs,files);
@@ -235,21 +239,22 @@ public class BoardController {
 		} else {
 			this.service.register(board);
 			
-			String fileNameExtension=FilenameUtils.getExtension(fileName).toLowerCase();
-			File destinationFile;
-			String destinationFileName;
-			String fileUrl="C:/Temp/upload/";
-			String mimeType=files.getContentType();
+			String fileNameExtension=FilenameUtils.getExtension(fileName).toLowerCase();	//commons dependency > 확장자명 얻기
+			File destinationFile;	//업로드한 파일을 담을 File변수
+			String destinationFileName; //RandomID담을 변수
+			String fileUrl="C:/Temp/upload/";	//업로드한 파일을 저장할 경로
+			String mimeType=files.getContentType();	//contentType
 
-            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
+            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;	//RandomID
             destinationFile = new File(fileUrl+ destinationFileName);
            
             log.info(" ***** >>> destinationFileName : "+destinationFileName);
             log.info(" ***** >>> destinationFile : "+destinationFile);
 		
-			destinationFile.getParentFile().mkdirs();
-			files.transferTo(destinationFile);
+			destinationFile.getParentFile().mkdirs();	//재귀적 부모폴더생성
+			files.transferTo(destinationFile);	//MultiPart사용시 , = FileInputStream, 편리
 			
+			//정보 저장
 			file.setBno(board.getBno()+1);
 			file.setFname(fileName);
 			file.setUuid(destinationFileName);
@@ -288,9 +293,9 @@ public class BoardController {
 	//------- 등 록 -------//
 	@PostMapping(
 			value="replies/new",
-			consumes="application/json",			//JSON 데이터사용
-			produces= {MediaType.TEXT_PLAIN_VALUE})
-	public ResponseEntity<String> create(@RequestBody BoardCommentVO vo){	//@RequestBody :> JSON->BoardCommentVO
+			consumes="application/json", //JSON 데이터요청	//에러시415
+			produces= MediaType.TEXT_PLAIN_VALUE)//응답//에러시406
+	public ResponseEntity<String> create(@RequestBody BoardCommentVO vo){ //ResponseEntity: Client의 요청에 대한 응답을 한번 더 감싸는 역할. 응답의 상태코드에 따라 다른 화면을 노출시킬 수도있고, Header값에 따라 다른 동작을 할 수도 있다.(사실 이것 때문에 Value못쓴것,,DefaultConstructor 필요함)
 		log.debug("create({}) invoked.",vo);
 		
 		int affectedLines = this.cService.register(vo);
@@ -301,10 +306,7 @@ public class BoardController {
 	//------- 목록조회 -------//
 	@GetMapping(
 			value="replies/pages/{bno}/{page}",
-			produces= {
-//					MediaType.APPLICATION_XML_VALUE,
-					MediaType.APPLICATION_JSON_VALUE 
-			})
+			produces= MediaType.APPLICATION_JSON_VALUE )
 	public ResponseEntity<List<BoardCommentUserVO>> getList(
 			@PathVariable("bno") int bno
 			){
@@ -317,10 +319,7 @@ public class BoardController {
 	//------- 상세조회 -------//
 	@GetMapping(
 			value="replies/{bcno}",
-			produces= {
-//					MediaType.APPLICATION_XML_VALUE,
-					MediaType.APPLICATION_JSON_VALUE
-			})
+			produces= MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BoardCommentVO> get(@PathVariable("bcno") Integer bcno){
 		log.debug("get({}) invoked.",bcno);
 		
@@ -330,9 +329,7 @@ public class BoardController {
 	//------- 삭제 -------//
 	@PostMapping(
 			value="replies/{bcno}",
-			produces= {
-					MediaType.TEXT_PLAIN_VALUE
-			})
+			produces= MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> remove(@PathVariable("bcno") int bcno){
 		log.debug("remove({}) invoked.",bcno);
 		
@@ -345,7 +342,7 @@ public class BoardController {
 			method= {RequestMethod.PUT, RequestMethod.PATCH},
 			value="replies/{bcno}",
 			consumes="application/json",
-			produces= {MediaType.TEXT_PLAIN_VALUE}
+			produces= MediaType.TEXT_PLAIN_VALUE
 			)
 	public ResponseEntity<String> modify( 
 			@RequestBody BoardCommentVO vo,
@@ -398,7 +395,7 @@ public class BoardController {
 	@PostMapping(
 			value="report",
 			consumes="application/json",
-			produces= {MediaType.TEXT_PLAIN_VALUE})
+			produces= MediaType.TEXT_PLAIN_VALUE)
 	public ResponseEntity<String> reportRegister(@RequestBody ReportVO report) {
 		log.debug("reportRegister({},report) invoked.");
 		
