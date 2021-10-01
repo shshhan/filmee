@@ -43,14 +43,11 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 public class FilmController {
 
-	
-	@Autowired private FilmService service;  // ReviewService에 있을 내용은 모두 FilmService에 있음 
-	@Autowired private ReviewCommentService rcService;
-//	@Autowired private ReportService rService;
+	@Autowired
+	private FilmService service;
+	@Autowired
+	private ReviewCommentService rcService;
 
-
-//	@GetMapping("info")
-//	public String getFilmInfo(@RequestParam("filmid") Integer film_id, Model model) {
 	@GetMapping("/{filmid}")
 	public String getFilmInfo(@PathVariable("filmid") Integer film_id, Integer rno, Model model) {
 		log.debug("getFilmInfo({}, {}, {}) invoked.", film_id, rno, model);
@@ -65,11 +62,10 @@ public class FilmController {
 		assert filmGenreVOList != null;
 		assert reviewFilmUserVOList != null;
 
-		// 일단 막아둠
-//		log.info("\t+ filmVO: {}", filmVO);
-//		filmPeopleVOList.forEach(log::info);
-//		filmGenreVOList.forEach(log::info);
-//		reviewFilmUserVOList.forEach(log::info);
+		log.info("\t+ filmVO: {}", filmVO);
+		filmPeopleVOList.forEach(log::info);
+		filmGenreVOList.forEach(log::info);
+		reviewFilmUserVOList.forEach(log::info);
 
 		model.addAttribute("filmVO", filmVO);
 		model.addAttribute("filmPeopleVOList", filmPeopleVOList);
@@ -81,50 +77,44 @@ public class FilmController {
 
 	// ----------------------------------------------------//
 
-	@GetMapping({"/{filmid}/review/{rno}"})  
+	@GetMapping({ "/{filmid}/review/{rno}" })
 	public String getReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
-			ReviewHeartVO heart,
-			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
+			ReviewHeartVO heart, @SessionAttribute(value = "__LOGIN__", required = false) UserVO user,
 			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
-		log.debug("getReview({}, {}, {}, {}) invoked.", film_id,rno, heart, user);
+		log.debug("getReview({}, {}, {}, {}) invoked.", film_id, rno, heart, user);
 
-		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);		
+		ReviewFilmUserVO reviewFilmUserVO = this.service.get(rno);
 		List<ReviewCommentUserVO> reviewCommentList = this.rcService.getList(rno);
 
 		assert reviewFilmUserVO != null;
 		log.info("\t+ reviewFilmUserVO: {}", reviewFilmUserVO);
-		
+
 		int heartCnt = this.service.heartCnt(rno);
-		 
-		if(user!=null) {
+
+		if (user != null) {
 			heart.setRno(rno);
 			heart.setUserId(user.getUserId());
-			if(this.service.check(rno, user.getUserId())==null) {
+			if (this.service.check(rno, user.getUserId()) == null) {
 				int aLine = this.service.heartInsert(heart);
-				log.info(">>>>>>> heartInsert : "+heart);
-				log.info(">>>>>>> Result : "+aLine);
-				heart=this.service.check(rno, user.getUserId());
-				model.addAttribute("heart", heart);			
+				log.info(">>>>>>> heartInsert : " + heart);
+				log.info(">>>>>>> Result : " + aLine);
+				heart = this.service.check(rno, user.getUserId());
+				model.addAttribute("heart", heart);
 			} else {
-				heart=this.service.check(rno, user.getUserId());
-				model.addAttribute("heart", heart);			
+				heart = this.service.check(rno, user.getUserId());
+				model.addAttribute("heart", heart);
 			}
-			
+
 		}
-		
-		
+
 		model.addAttribute("reviewFilmUserVO", reviewFilmUserVO);
 		model.addAttribute("reviewCommentList", reviewCommentList);
 		model.addAttribute("heartCnt", heartCnt);
-		
 
 		return "review/get";
 	} // getReview
-	
-	
-	
-	
-	@GetMapping({"/{filmid}/review/m/{rno}/"})  
+
+	@GetMapping({ "/{filmid}/review/m/{rno}/" })
 	public String modifyReview(@PathVariable("filmid") Integer film_id, @PathVariable("rno") Integer rno,
 //			@SessionAttribute(value="__LOGIN__", required=false) UserVO user,
 			@ModelAttribute("cri") CriteriaFilmReview cri, Model model) {
@@ -139,253 +129,111 @@ public class FilmController {
 
 		return "review/modify";
 	} // getReview
-	
+
 	@PostMapping("/{filmid}/review/m/{rno}/")
-	public String modify(
-			@ModelAttribute("cri") CriteriaFilmReview criFR,
-			ReviewVO review,
-			RedirectAttributes rttrs) {
+	public String modify(@ModelAttribute("cri") CriteriaFilmReview criFR, ReviewVO review, RedirectAttributes rttrs) {
 		log.debug("modifyReview({}, {}) invoked.", review, rttrs);
-		
+
 		int modifiedReview = this.service.modify(review);
-		
-		if(modifiedReview == 1) {
+
+		if (modifiedReview == 1) {
 			rttrs.addFlashAttribute("result", "success");
 		} // if
-//		
-//		rttrs.addAttribute("currPage", criFR.getCurrPage());
-//		rttrs.addAttribute("amount", criFR.getAmount());
-//		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
-		
-		return "redirect:/film/{filmid}/review/{rno}"; 
-	} //modify
 
+		return "redirect:/film/{filmid}/review/{rno}";
+	} // modify
 
 	@PostMapping("/{filmid}/review/register")
-	public String register(@PathVariable("filmid") Integer film_id, 
-							@ModelAttribute("reviewCri") CriteriaFilmReview cri,
-							ReviewDTO review, 
-							HttpSession session,
-							UserVO user,
-							RedirectAttributes rttrs) {
+	public String register(@PathVariable("filmid") Integer film_id, @ModelAttribute("reviewCri") CriteriaFilmReview cri,
+			ReviewDTO review, HttpSession session, UserVO user, RedirectAttributes rttrs) {
 		log.debug("register({}, {}, {}, {}) invoked.", film_id, cri, review, rttrs);
 
 		this.service.register(review);
-		
 
 		rttrs.addFlashAttribute("result", review.getRno());
 
-//		return "redirect:/film/" + filmIdPath; // 리뷰쓴 영화의 상세페이지나, 마이페이지의 리뷰페이지로 redirect
 		return "redirect:/film/{filmid}";
 	} // registerReview
 
 	@GetMapping("/{filmid}/review/register")
-	public String register(@PathVariable("filmid") Integer film_id,							
-							@ModelAttribute("reviewCri") CriteriaFilmReview cri, 
-							Model model) {
+	public String register(@PathVariable("filmid") Integer film_id, @ModelAttribute("reviewCri") CriteriaFilmReview cri,
+			Model model) {
 		log.debug("register({}, {}) invoked.", film_id, cri);
-		
+
 		FilmVO filmVO = this.service.getFilmInfo(film_id);
-		
 
 		model.addAttribute("filmVO", filmVO);
 
 		return "review/register";
 	} // register
 
-//	@GetMapping("list")
-//	public void getReviewList(Integer film_id, Model model) {
-//		log.debug("list({}) invoked.", model);
-//		
-//		List<ReviewVO> reviewList = this.service.getList(film_id);
-//		
-//		Objects.requireNonNull(reviewList);
-//		reviewList.forEach(log::info);
-//		
-//		model.addAttribute("reviewList", reviewList);
-//	} // getReviewList
-
-	
 	@PostMapping("review/remove")
-	public String remove(@ModelAttribute("criR")CriteriaReview criR, UserVO user, Integer rno, RedirectAttributes rttrs) {
+	public String remove(@ModelAttribute("criR") CriteriaReview criR, UserVO user, Integer rno,
+			RedirectAttributes rttrs) {
 		log.debug("remove({}, {}, {}, {}) invoked.", criR, user, rno, rttrs);
-		
+
 		int removed = this.service.remove(rno);
-			
-		rttrs.addAttribute("userid", criR.getUserid());		
+
+		rttrs.addAttribute("userid", criR.getUserid());
 		rttrs.addAttribute("currPage", criR.getCurrPage());
 		rttrs.addAttribute("amount", criR.getAmount());
 		rttrs.addAttribute("pagesPerPage", criR.getPagesPerPage());
 
-		return "redirect:/mypage/myreviews?userid="+user.getUserId()+"&currPage="+criR.getCurrPage()+"&amount="+criR.getAmount()+"&pagesPerPage="+criR.getPagesPerPage();
+		return "redirect:/mypage/myreviews?userid=" + user.getUserId() + "&currPage=" + criR.getCurrPage() + "&amount="
+				+ criR.getAmount() + "&pagesPerPage=" + criR.getPagesPerPage();
 
-	} //deleteMyReview
-	
-	
+	} // deleteMyReview
 
-	
-	
 	@GetMapping("/{filmid}/reviews")
-	public String listPerPage(
-			@PathVariable("filmid") Integer film_id,
-			@ModelAttribute("criFR") CriteriaFilmReview criFR,
-//			ReviewFilmUserVO reviewFilmUserVO,
-			RedirectAttributes rttrs,
-			Model model
-		) {
+	public String listPerPage(@PathVariable("filmid") Integer film_id,
+			@ModelAttribute("criFR") CriteriaFilmReview criFR, RedirectAttributes rttrs, Model model) {
 		log.debug("listPerPage({}) invoked.", model);
-		
-		List<ReviewFilmUserVO> reviewFilmUserVOList = 
-				this.service.getListWithPaging(new CriteriaFilmReview(film_id));
-		
+
+		List<ReviewFilmUserVO> reviewFilmUserVOList = this.service.getListWithPaging(new CriteriaFilmReview(film_id));
+
 		FilmVO filmVO = this.service.getFilmInfo(film_id);
 		int totalCount = this.service.getTotalCount(film_id);
-		
+
 		Objects.requireNonNull(reviewFilmUserVOList);
-//		reviewFilmUserVOList.forEach(log::info);
-//		log.info(filmVO);
-		
+		reviewFilmUserVOList.forEach(log::info);
+		log.info(filmVO);
+
 		ReviewPageDTO pageDTO = new ReviewPageDTO(film_id, criFR, this.service.getTotalCount(film_id));
-		rttrs.addAttribute("film_id", film_id);		
+		rttrs.addAttribute("film_id", film_id);
 		rttrs.addAttribute("currPage", criFR.getCurrPage());
 		rttrs.addAttribute("amount", criFR.getAmount());
 		rttrs.addAttribute("pagesPerPage", criFR.getPagesPerPage());
-		
+
 		model.addAttribute("reviewFilmUserVOList", reviewFilmUserVOList);
 		model.addAttribute("ReviewPageDTO", pageDTO);
-		model.addAttribute("filmVO",filmVO);
-		model.addAttribute("totalCount",totalCount);
-		
-		
-		
-		
+		model.addAttribute("filmVO", filmVO);
+		model.addAttribute("totalCount", totalCount);
 
-		
-		
 		return "review/list";
 	} // listPerPage
-	
-	
-		// 좋아요
-		@PostMapping("review/like/{rno}/{userid}")
-		public ResponseEntity<String> likeIt( 
-				@PathVariable("rno") int rno,
-				@PathVariable("userid") int userid
-			){
-			log.debug("likeIt({},{}) invoked.", rno,userid);
-			
-			int aLine = this.service.heartCheck(rno, userid);
-			this.service.heartCnt(rno);
-			
-			return aLine == 1 ?
-					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}//likeIt
-		
-		//좋아요 취소
-		@PostMapping("review/unlike/{rno}/{userid}")
-		
-		public ResponseEntity<String> unLike(
-				@PathVariable("rno") int rno,
-				@PathVariable("userid") int userid
-				){
-			log.debug("unLike({},{}) invoked.", rno,userid);
-			
-			int aLine = this.service.heartUncheck(rno, userid);
-			this.service.heartCnt(rno);
-			return aLine == 1 ?
-					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}//unLike
-		
-		//===========//
-		// 댓글처리영역  //
-		//===========//
-		
-//		//------- 등 록 -------//
-//		@PostMapping(
-//				value="replies/new",
-//				consumes="application/json",			//JSON 데이터사용
-//				produces= {MediaType.TEXT_PLAIN_VALUE})
-//		public ResponseEntity<String> create(@RequestBody ReviewCommentVO vo){	//@RequestBody :> JSON->BoardCommentVO
-//			log.debug("create({}) invoked.",vo);
-//			
-//			int affectedLines = this.rcService.register(vo);
-//			return affectedLines ==1 ? 
-//					new ResponseEntity<>("success",HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}//create
-//		
-//		//------- 목록조회 -------//
-//		@GetMapping(
-//				value="replies/pages/{rno}/{page}",
-//				produces= {
-////						MediaType.APPLICATION_XML_VALUE,
-//						MediaType.APPLICATION_JSON_VALUE 
-//				})
-//		public ResponseEntity<List<ReviewCommentUserVO>> getList(
-//				@PathVariable("rno") int rno
-//				){
-//			log.debug("getList({}) invoked.",rno);
-//
-//			 
-//			return new ResponseEntity<>(this.rcService.getList(rno), HttpStatus.OK);
-//		}//getList
-//
-//		//------- 상세조회 -------//
-//		@GetMapping(
-//				value="replies/{rcno}",
-//				produces= {
-////						MediaType.APPLICATION_XML_VALUE,
-//						MediaType.APPLICATION_JSON_VALUE
-//				})
-//		public ResponseEntity<ReviewCommentVO> get(@PathVariable("rcno") Integer rcno){
-//			log.debug("get({}) invoked.",rcno);
-//			
-//			return new ResponseEntity<>(this.rcService.get(rcno), HttpStatus.OK);
-//		}//get
-//
-//		//------- 삭제 -------//
-//		@PostMapping(
-//				value="replies/{rcno}",
-//				produces= {
-//						MediaType.TEXT_PLAIN_VALUE
-//				})
-//		public ResponseEntity<String> remove(@PathVariable("rcno") int rcno){
-//			log.debug("remove({}) invoked.",rcno);
-//			
-//			return this.rcService.remove(rcno) == 1 ? 
-//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}//remove
-//
-//		//------- 수정 -------//
-//		@RequestMapping(
-//				method= {RequestMethod.PUT, RequestMethod.PATCH},
-//				value="replies/{rcno}",
-//				consumes="application/json",
-//				produces= {MediaType.TEXT_PLAIN_VALUE}
-//				)
-//		public ResponseEntity<String> modify( 
-//				@RequestBody ReviewCommentVO vo,
-//				@PathVariable("rcno") int rcno)
-//				{
-//			log.debug("modify({},{}) invoked.", vo, rcno);
-//			
-//			vo.setRcno(rcno);
-//			return this.rcService.modify(vo) == 1 ?
-//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}//modify
-//		
-//		
-//		// 신고 
-//		
-//		@PostMapping(
-//				value="report",
-//				consumes="application/json",
-//				produces= {MediaType.TEXT_PLAIN_VALUE})
-//		public ResponseEntity<String> reportRegister(@RequestBody ReportVO report) {
-//			log.debug("reportRegister({},report) invoked.");
-//			
-//			int aLine = this.rService.reportRegister(report);
-//			
-//			return aLine == 1 ?
-//					new ResponseEntity<>("success", HttpStatus.OK) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);		
-//		}//reportRegister
+
+	// 좋아요
+	@PostMapping("review/like/{rno}/{userid}")
+	public ResponseEntity<String> likeIt(@PathVariable("rno") int rno, @PathVariable("userid") int userid) {
+		log.debug("likeIt({},{}) invoked.", rno, userid);
+
+		int aLine = this.service.heartCheck(rno, userid);
+		this.service.heartCnt(rno);
+
+		return aLine == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}// likeIt
+
+	// 좋아요 취소
+	@PostMapping("review/unlike/{rno}/{userid}")
+
+	public ResponseEntity<String> unLike(@PathVariable("rno") int rno, @PathVariable("userid") int userid) {
+		log.debug("unLike({},{}) invoked.", rno, userid);
+
+		int aLine = this.service.heartUncheck(rno, userid);
+		this.service.heartCnt(rno);
+		return aLine == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}// unLike
+
 } // end class
