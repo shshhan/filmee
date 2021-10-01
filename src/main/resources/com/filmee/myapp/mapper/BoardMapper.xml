@@ -10,9 +10,9 @@
 
     <select id="getList" resultType="com.filmee.myapp.domain.BoardUserVO">
 
-        SELECT b.*, u.user_id, u.nickname
+        SELECT b.*, u.user_id, u.profile_photo_path profilePhotoPath, u.nickname nickname
 		FROM fm_board b 
-		INNER JOIN fm_user u ON( b.writer=u.user_id)
+		INNER JOIN fm_user u ON(b.writer=u.user_id)
         <where>
             <choose>
                 <when test="type eq 'T'.toString()">
@@ -54,7 +54,7 @@
 
     <select id="select" resultType="com.filmee.myapp.domain.BoardUserVO">
       <![CDATA[ 
-        SELECT b.*, u.user_id, u.nickname
+        SELECT b.*, u.user_id, u.nickname, u.profile_photo_path profilePhotoPath
         FROM fm_board b, fm_user u 
         WHERE b.writer=u.user_id
         AND bno=#{bno}
