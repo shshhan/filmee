@@ -46,10 +46,31 @@
             })
 
 
+              $("#modalSaveBtn").on('click',function(){
+                
+                var modalComplaintForm = $('#modalComplaintForm');
+                modalComplaintForm.attr('action', '/complaint/temporary');
+
+                modalComplaintForm.submit();
+
+            })//modalSavenBtn
+
+            $("#modalCompletionBtn").on('click',function(){
+                
+                var modalComplaintForm = $('#modalComplaintForm');
+                modalComplaintForm.attr('action', '/complaint/completion');
+
+                modalComplaintForm.submit();
+
+            })//modalCompletionBtn
+            
         })//jq
         function detail(compno, code, send, writer, content, content_re){
             var detail=$('#detailmodal');
             console.log("detail>> " + compno); 
+            console.log("content>> " + content); 
+            $('#complaintcompno').attr("value",compno);
+
             if(code==1){
                 $('#complaintcode').attr("value", "서비스 개선요청");
             } else if (code==2){
@@ -60,32 +81,15 @@
                 $('#complaintcode').attr("value", "기타");
             }
             $('#complaintwriter').attr("value",writer);
-            $('#complaintcode').attr("value", code);
-            $('#complaintcontent').attr("value", content);
-            $('#complaintcontent_re').attr("value", content_re);
+            $('#complaintcontent').attr("value",content);
+
+
+            $('#complaintcontent_re').attr("value",content_re);
 
             $(detail).modal("show");
 
 
-            $("#modalSaveBtn").on('click',function(){
-                
-                var modalComplaintForm = $('#modalComplaintForm');
-                modalComplaintForm.attr('action', '/complaint/temporary');
-                modalComplaintForm.attr('method', 'POST');
-
-                searchForm.submit();
-
-            })//modalSavenBtn
-
-            $("#modalCompletionBtn").on('click',function(){
-                
-                var modalComplaintForm = $('#modalComplaintForm');
-                modalComplaintForm.attr('action', '/complaint/completion');
-                modalComplaintForm.attr('method', 'POST');
-
-                searchForm.submit();
-
-            })//modalCompletionBtn
+          
         }//detail
             
 
@@ -239,6 +243,7 @@
                 font-size: 18px;
                     
             }
+        
     </style>
 </head>
 
@@ -331,16 +336,16 @@
                                                 <fmt:formatDate pattern="yyyy/MM/dd " value="${complaint.complete_ts}"/>
                                             </c:when>
                                             <c:when test="${complaint.check_ts != null}">
-                                                처리중
+                                                <beforeCom id="beforeComplete">처리중</beforeCom>
                                             </c:when>
                                             <c:otherwise>
-                                                처리전
+                                                 <beforeCom id="beforeComplete">처리전</beforeCom>
                                             </c:otherwise>
                                         </c:choose>
                                         </td>
                                         <td>${complaint.mgr_id}</td>
                                         <td>
-                                            <button type="button" id='detailbtn' onclick="detail('${complaint.compno}', '${complaint.code}', '${complaint.send}', '${complaint.writer}', '${complaint.content}', '${complaint.content_re}')">상세확인</button>
+                                            <button type="button" id='detailbtn' onclick="detail('${complaint.compno}', '${complaint.code}', '${complaint.send}', '${complaint.writer}', '${complaint.content}', '${complaint.content_re}','${complaint.mgr_id}')">상세확인</button>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -399,30 +404,35 @@
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
 
-                <form action="#" id="modalComplaintForm">
+                <form id="modalComplaintForm" action="#" method="POST">
                     <input type="hidden" name="currPage" value="${cri.currPage}">
                     <input type="hidden" name="amount" value="${cri.amount}">
                     <input type="hidden" name="pagesPerPage" value="${cri.pagesPerPage}">
-                    <input type="hidden" name="compno" value="${complaint.compno}">
+                    <input type="hidden" name="mgr_id" value="${__LOGIN__.userId}">
+					
+                    
                     <div class="modal-body">
-                        <div>
+                    <input type="hidden" name="compno" id="complaintcompno">
+                    
+                        <div class="form-group">
                             <label for="complaintcode">요청유형</label>
-                            <input class="form-control" name="code" id="complaintcode" readonly>
+                            <input class="form-control" name="code_code" id="complaintcode" readonly>
                         </div>
                         <div class="form-group">
-                            요청회원 <input class="form-control" name="writer" id="complaintwriter" readonly>
+                            <label for="complaintwriter">요청회원</label>
+                            <input class="form-control" name="writer_writer" id="complaintwriter" value="" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="complaintcontent">내용</label>
-                            <textarea name="content" class="form-control" cols="28" rows="5" id="complaintcontent"  readonly></textarea>
+                            <label >내용</label>
+                            <input type="text" name="content" class="form-control" cols="44" rows="5" id="complaintcontent" value="" readonly>
                         </div>      
                         <div class="form-group">
                             <label for="complaintcontent_re">처리사항</label>
-                            <textarea name="content_re" class="form-control" cols="28" rows="5"  id="complaintcontent_re"></textarea>
+                        	<input type="text" name="content_re" class="form-control" cols="44" rows="5" id="complaintcontent_re" value="" placeholder="요청사항에 대한 답변을 입력하세요.">
                         </div>
                         <div>
                             <label for="mgrid">현재 처리할 관리자</label>
-                            <input class="form-control" type="text" id="mgrid" name="mar_id" value="${__LOGIN__.nickname}" readonly>
+                            <input class="form-control" type="text" id="mgrid" name="mar_nickname" value="${__LOGIN__.nickname}" readonly>
                         </div>
                         <div>
                             <c:choose>
