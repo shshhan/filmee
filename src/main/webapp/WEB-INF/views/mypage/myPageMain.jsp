@@ -707,8 +707,8 @@
                                   </c:when>
                                   <c:when test="${type eq 'FW'}">
                                       <td>
-                                         <a class='activity_a' href='/mypage/main?userid=${activityVO.followerid}'>${activityVO.nicknameFollower}</a>님이 
-                                         <a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nickname}</a>님을 팔로우 하였습니다.
+                                         <a class='activity_a' href='/mypage/main?userid=${activityVO.followerid}'>${activityVO.nickname}</a>님이 
+                                         <a class='activity_a' href='/mypage/main?userid=${activityVO.userid}'>${activityVO.nicknameFollower}</a>님을 팔로우 하였습니다.
                                       </td>
                                       <td>${activityVO.insertTs}</td>
                                   </c:when>

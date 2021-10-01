@@ -54,10 +54,10 @@
                 display: none;
             }
             hr{
-            	width: 100%;
+               width: 100%;
             }
             #com_register_btn:hover{
-            	color: white;
+               color: white;
                 background-color: #212529;;
             }
 
@@ -184,25 +184,25 @@
      
             $(function(){               
                  var comResult = "<c:out value='${comResult}'/>";
-    	        console.log("comResult:"+comResult);
-    	        
-    	        if(comResult.length > 0){
+               console.log("comResult:"+comResult);
+               
+               if(comResult.length > 0){
 
 
-					if(comResult==true){  
-	                    
-	                    $("#comModal").show("slow");
-	                    $("#comModal").add("z-index=1100")
-	    	        }//if
-	    	        
-	    	        jQuery(document).ready(function() {
-	                    $('#comModal').show();
-		            });	    	        
-		    	           
-		            //모달을 시간이 지나면 자동으로 숨김 1000초가 1초
-		            setTimeout(function() { $('#comModal').hide();}, 2000);																												
+               if(comResult==true){  
+                       
+                       $("#comModal").show("slow");
+                       $("#comModal").add("z-index=1100")
+                  }//if
+                  
+                  jQuery(document).ready(function() {
+                       $('#comModal').show();
+                  });                  
+                        
+                  //모달을 시간이 지나면 자동으로 숨김 1000초가 1초
+                  setTimeout(function() { $('#comModal').hide();}, 2000);                                                                                    
                 }//if
-    	        
+               
                 
                 $("#compl_close").click(function(){
                     $("#popup").hide("com_register_btn");
@@ -213,24 +213,23 @@
                     $("#popup").add("z-index=1100")
                 });
            
-				
+            
                 var login="${__LOGIN__.userId}";
                  
-				if(login.length>0){
-                	
-                	$(document).ready(function(){
+            if(login.length>0){
+                   
+                   $(document).ready(function(){
                         $("#com_register_btn").show("slow");
-                   	})
+                      })
                 }
             });
-			
+         
             
         </script>
 
 
     </head>
     <body>
-		<button type="button" class="btn btn-outline-secondary" id="com_register_btn">의견</button>
         <div id="popup"> 
             <form action="/complaint/register" method="POST">
                 <input type="hidden" name="writer" value="${__LOGIN__.userId}">
@@ -268,7 +267,7 @@
                 </div>
             </form>
         </div>
-		
+      
         <div id="comModal">
             <div id="comModalClo" >${comResult}</div>
         </div>
