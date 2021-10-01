@@ -17,8 +17,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     
     
- 
-    <!--이거없으면 BACKDROP이미지 흐리게보임  -->
    <script>
         var isMobile = false,
             isMobileOptimised = true,
@@ -44,16 +42,8 @@
         $(function () {
             console.clear();
             console.debug('jq started...');
-            // 리뷰의 등록, 수정, 삭제 처리 후, 리다이렉션을 통해,
-            // 게시글 목록화면으로 이동시킬 때 함께 임시박스(rttrs)로 전송시킨
-            // 처리결과를 경고창으로 출력시키자!
-      /*       var result = '<c:out value="${reviewFilmUserVO.nickname}님의 리뷰가 등록되었습니다" />';
-            if(result.length > 0) {
-                alert(result);
-            } // if */
             $('#regBtn').click(function () {
                 console.log('onclick on #regBtn clicked...');
-/*                 location.href = "/film/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";  // GET, Request URI: /board/register */            
                   location.href = "/film/${filmVO.film_id}/register";
  }); // onclick
         
@@ -262,7 +252,7 @@
                     </section>
 
             
-                   <!-- 좋볼본, 리뷰, 별점 남기는 부분  -->
+                 
                     <aside class="sidebar">
                         <section id="userpanel" class="actions-panel">
                            
@@ -310,7 +300,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-         <!-- 모달 내용 적기 -->
+  
         
                 
                     <% 

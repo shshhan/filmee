@@ -77,22 +77,22 @@
                     <p>
                         ⓒ2021.FILMEE All rights reserved.
                     </p>
+                </div>
 
-	                <div class="col-3" id="footer_buttons">
-	                    <div>
-	                        <a href="#"">
-	                            <button type="button" class="btn btn-outline-dark">TOP</button>
-	                        </a>
-	                    </div>
-		                <div>
-		                	<jsp:include page="/WEB-INF/views/complaint/register.jsp"/>                    
-		                </div>
-		        	</div>
-	        	</div>    
+                <div class="col-3" id="footer_buttons">
+                    <div>
+                        <a href="#"">
+                            <button type="button" class="btn btn-outline-dark">TOP</button>
+                        </a>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-secondary">의견</button>
+                    </div>
+                </div>    
             </div>
         </div>
     </footer>
-    
+    <jsp:include page="/WEB-INF/views/complaint/register.jsp"/>
     
 </body>
 </html>
