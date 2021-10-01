@@ -6,7 +6,8 @@ import lombok.Data;
 public class HeartDTO {
 	
 	private Integer hno;
-	private Integer user_id;
+	private Integer userid;
 	private Integer bno;
+	private Integer likecheck;
 	
 }

@@ -17,8 +17,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     
     
- 
-    <!--이거없으면 BACKDROP이미지 흐리게보임  -->
    <script>
         var isMobile = false,
             isMobileOptimised = true,
@@ -41,30 +39,15 @@
 
   
      <script>
-
         $(function () {
             console.clear();
             console.debug('jq started...');
-
-            // 리뷰의 등록, 수정, 삭제 처리 후, 리다이렉션을 통해,
-            // 게시글 목록화면으로 이동시킬 때 함께 임시박스(rttrs)로 전송시킨
-            // 처리결과를 경고창으로 출력시키자!
-      /*       var result = '<c:out value="${reviewFilmUserVO.nickname}님의 리뷰가 등록되었습니다" />';
-            if(result.length > 0) {
-                alert(result);
-            } // if */
-
             $('#regBtn').click(function () {
                 console.log('onclick on #regBtn clicked...');
-
-/*                 location.href = "/film/register?currPage=${cri.currPage}&amount=${cri.amount}&pagesPerPage=${cri.pagesPerPage}";  // GET, Request URI: /board/register */            
                   location.href = "/film/${filmVO.film_id}/register";
-
  }); // onclick
-
         
         }); // .jq
-
     </script>
     
 
@@ -124,7 +107,6 @@
     color:black;
     border-radius: 2%;
     padding: 8px;
-
     }
     
     #backdrop{
@@ -141,7 +123,6 @@
         background-color: #445566;
         border-color: #445566;
     }
-
     </style>
 
 </head>
@@ -271,44 +252,32 @@
                     </section>
 
             
-                    <!-- 좋볼본, 리뷰, 별점 남기는 부분  -->
+                 
                     <aside class="sidebar">
                         <section id="userpanel" class="actions-panel">
                            
                             <ul class="js-actions-panel">
-
-								
-								<!-- 보고싶은 영화  -->
-								
                                 <li class="action-large -watch"><span class="film-watch-link-target"
-                                        ><span class="film-watch-link -large">
-                                        <span class="action -watch ajax-click-action">
-                                        <img src="/resources/img/want1.png"></span></span></span>
+                                        data-film-id="26711"><span class="film-watch-link -large"><span
+                                                class="action -watch ajax-click-action"
+                                                data-action="/film/the-social-network/mark-as-watched/">Watch</span></span></span>
                                 </li>
-                                
-                                <!-- 좋아하는 영화  -->
                                 <li class="action-large -like"><span class="like-link-target react-component"
                                         data-component-class="globals.comps.LikeLinkComponent"
-                                        data-format="large"><span class="like-link">
-                                        <span class="action -like ajax-click-action  ">
-                                       <img src="/resources/img/like1.png"></span></span></span>
-                                </li>
-
-
-
-        <!--                         <li class="hidden action-large -watchlist">
-                                        <span class="watchlist-link-text">
-                                        <img src="/resources/img/watched2.png">
-                                        </span>
-                                 </li> -->
-                                 
-                                 <!-- 이미 본 영화  -->                                
+                                        data-likeable-uid="film:26711" data-likeable-name="film" data-likeable="true"
+                                        data-likes-page="/film/the-social-network/likes/" data-format="large"><span
+                                            class="like-link"><span class="action -like ajax-click-action  "
+                                                data-action="/s/film:26711/like/"
+                                                data-recaptcha-action="film_like">Like</span></span></span></li>
+                                <li class="hidden action-large -watchlist"><a href="#" data-film-id="26711"
+                                        class="action -watchlist -on remove-from-watchlist ajax-click-action"
+                                        data-action="/film/the-social-network/remove-from-watchlist/"><span
+                                            class="watchlist-link-text"><span class="_hidetext">This film is in your
+                                            </span>Watchlist</span></a></li>
                                 <li class="action-large -watchlist"><a href="#"
-                                        class="action -watchlist add-to-watchlist ajax-click-action">
-                                        <img src="/resources/img/watched1.png"></a>
-                                </li>
-                                        
-
+                                        class="action -watchlist add-to-watchlist ajax-click-action"
+                                        data-film-id="26711"
+                                        data-action="/film/the-social-network/add-to-watchlist/">Watchlist</a></li>
                                 <li class="-row-clear panel-rate js-panel-rate">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#writeModal">
                                   리뷰와 별점을 남겨보세요 
@@ -319,8 +288,6 @@
                                                     <span class="rateit-label js-rateit-label">   </span>
                     
                                 </li>
-                                        
-
                                 
       <!-- Button trigger modal -->
         
@@ -333,7 +300,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-         <!-- 모달 내용 적기 -->
+  
         
                 
                     <% 
@@ -458,7 +425,7 @@
             <section id="popular-reviews" class="film-reviews section">
                     
                 <h2 class="section-heading"><a href="/film/${filmVO.film_id}/reviews">Popular reviews</a></h2>
-                <a href="/film/${filmVO.film_id}/reviews" class="all-link">More</a>
+                <a href="<%-- /film/${filmVO.film_id}/reviews --%> #" class="all-link">More</a>
                 <ul class="film-popular-review">
                     
                       <c:forEach items="${reviewFilmUserVOList}" var="reviewFilmUserVO" begin="0" end="2"  varStatus="status">                                 
@@ -487,7 +454,5 @@
     </div>
 
  
-	<%@ include file="/resources/html/footer.jsp" %>
+	<%@ include file="/resources/html/filmFooter.jsp" %>
 	</body>
-
-</html>
