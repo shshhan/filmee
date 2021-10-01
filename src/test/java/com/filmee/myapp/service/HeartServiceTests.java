@@ -42,17 +42,17 @@ public class HeartServiceTests {
 	}//testHeartInsert
 	
 	
-	@Test
-	public void testInsert() {
-		log.debug("testInsert() inovked.");
-		HeartDTO dto = null;
-		dto.setBno(123);
-		dto.setHno(1);
-		dto.setLikecheck(1);
-		dto.setUserid(123);
-
-		this.service.heartInsert(dto);
-	}//testInsert
+//	@Test
+//	public void testInsert() {
+//		log.debug("testInsert() inovked.");
+//		HeartDTO dto = null;
+//		dto.setBno(123);
+//		dto.setHno(1);
+//		dto.setLikecheck(1);
+//		dto.setUserid(123);
+//
+//		this.service.heartInsert(dto);
+//	}//testInsert
 	
 	@Test
 	public void testLikeCheck() {
