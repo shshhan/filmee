@@ -103,7 +103,7 @@
                     }//if
                     for(var i=0, len=list.length||0; i<len; i++){
                         str+="      <div class='header'>";
-                        str+="          <a href='/mypage/main?userid="+list[i].writer+"'><img class='rounded-circle' src='/resources/img/common.jpg' width='30px' height='30px'></a>";
+                        str+="          <a href='/mypage/main?userid="+list[i].writer+"'><img class='rounded-circle' src='https://younghoon.s3.ap-northeast-2.amazonaws.com/"+list[i].profilePhotoPath+"' width='30px' height='30px'></a>";
                         str+="          <strong class='primary-font'>"+list[i].nickname+"</strong>";
                         // str+="          <button type='button' id='reportBtn'> <img src='/resources/img/siren.jpg' width='20px' height='20px'>신고</button>";
                         str+="          <samll class='pull-right text-muted' id='commentTs'>등록 "+replyService.displayTime(list[i].insert_ts)+" <c:if test='"+list[i].update_ts+"'><br>수정 "+replyService.displayTime(list[i].update_ts)+"</c:if>"+"</small>";
@@ -414,7 +414,7 @@
                 <form action="/mypage/main">
                     <ul id="userinfo">
                         <li>
-                            <a href="/mypage/main?userid=${board.writer}"><img class="rounded-circle" src="/resources/img/common.jpg" alt="내사진" width="100px" height="100px"></a>
+                            <a href="/mypage/main?userid=${board.writer}"><img class="rounded-circle" src="https://younghoon.s3.ap-northeast-2.amazonaws.com/${board.profilePhotoPath}" alt="내사진" width="100px" height="100px"></a>
                         </li>
                         <li><a href="/mypage/main?userid=${board.writer}">${board.nickname}</a></li>
                     </ul>
